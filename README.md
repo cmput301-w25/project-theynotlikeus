@@ -5,7 +5,7 @@
 | Name        | CCID   | GitHub Username |
 | ----------- | ------ | --------------- |
 | Subaita Mamun | Subaita1 | SubaitaM     |
-| [Full Name] | [CCID] | [@username]     |
+| Nour Chouman | chouman | nchouman     |
 | [Full Name] | [CCID] | [@username]     |
 | [Full Name] | [CCID] | [@username]     |
 | [Full Name] | [CCID] | [@username]     |
