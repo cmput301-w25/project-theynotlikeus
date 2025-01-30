@@ -6,7 +6,7 @@
 | ----------- | ------ | --------------- |
 | Subaita Mamun | Subaita1 | SubaitaM     |
 | Nour Chouman | chouman | nchouman     |
-| [Full Name] | [CCID] | [@username]     |
+| Kehan Chen | kehan | KarlFranzman     |
 | [Full Name] | [CCID] | [@username]     |
 | [Full Name] | [CCID] | [@username]     |
 | [Full Name] | [CCID] | [@username]     |
