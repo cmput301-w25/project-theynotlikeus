@@ -7,7 +7,7 @@
 | Subaita Mamun | Subaita1 | SubaitaM     |
 | Nour Chouman | chouman | nchouman     |
 | Kehan Chen | kehan | KarlFranzman     |
-| [Full Name] | [CCID] | [@username]     |
+| Ercel Angeles | erceljoh | ercelangeles     |
 | [Full Name] | [CCID] | [@username]     |
 | [Full Name] | [CCID] | [@username]     |
 
