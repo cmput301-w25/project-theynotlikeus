@@ -8,7 +8,7 @@
 | Nour Chouman | chouman | nchouman     |
 | Kehan Chen | kehan | KarlFranzman     |
 | Ercel Angeles | erceljoh | ercelangeles     |
-| [Full Name] | [CCID] | [@username]     |
+| Nymur Rahman Nyar | nyar | nymur-rahman-nyar  |
 | [Full Name] | [CCID] | [@username]     |
 
 ## Project Description
