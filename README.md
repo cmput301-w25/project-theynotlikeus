@@ -9,7 +9,7 @@
 | Kehan Chen | kehan | KarlFranzman     |
 | Ercel Angeles | erceljoh | ercelangeles     |
 | Nymur Rahman Nyar | nyar | nymur-rahman-nyar  |
-| [Full Name] | [CCID] | [@username]     |
+| Abhi Patel | abhi | ap001AP    |
 
 ## Project Description
 
