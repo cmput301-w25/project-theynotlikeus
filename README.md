@@ -1,4 +1,4 @@
-# CMPUT 301 W25 - Team [TheyNotLikeUs]
+# CMPUT 301 W25 - Team `TheyNotLikeUs`
 
 ## Team Members
 
