@@ -21,7 +21,11 @@
         android:id="@+id/userLoginFrag"
         android:name="com.example.theynotlikeus.UserLoginFrag"
         android:label="fragment_user_login"
-        tools:layout="@layout/fragment_user_login" />
+        tools:layout="@layout/fragment_user_login" >
+        <action
+            android:id="@+id/action_userLoginFrag_to_loginUserSelectionFrag"
+            app:destination="@id/loginUserSelectionFrag" />
+    </fragment>
     <fragment
         android:id="@+id/adminLoginFrag"
         android:name="com.example.theynotlikeus.AdminLoginFrag"
