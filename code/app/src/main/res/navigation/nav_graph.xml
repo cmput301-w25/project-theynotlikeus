@@ -3,20 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/loginActivity">
-    <activity
-        android:id="@+id/loginActivity"
-        android:name="com.example.theynotlikeus.LoginActivity"
-        android:label="activity_login"
-        tools:layout="@layout/activity_login" />
-    <activity
-        android:id="@+id/adminActivity"
-        android:name="com.example.theynotlikeus.AdminActivity"
-        android:label="activity_admin"
-        tools:layout="@layout/activity_admin" />
-    <activity
-        android:id="@+id/mainActivity"
-        android:name="com.example.theynotlikeus.MainActivity"
-        android:label="activity_main"
-        tools:layout="@layout/activity_main" />
+    app:startDestination="@id/loginUserSelectionFrag">
+
+    <fragment
+        android:id="@+id/loginUserSelectionFrag"
+        android:name="com.example.theynotlikeus.LoginUserSelectionFrag"
+        android:label="Login User Selection"
+        tools:layout="@layout/fragment_login_user_selection" >
+        <action
+            android:id="@+id/action_loginUserSelectionFrag_to_userLoginFrag"
+            app:destination="@id/userLoginFrag" />
+        <action
+            android:id="@+id/action_loginUserSelectionFrag_to_adminLoginFrag"
+            app:destination="@id/adminLoginFrag" />
+    </fragment>
+    <fragment
+        android:id="@+id/userLoginFrag"
+        android:name="com.example.theynotlikeus.UserLoginFrag"
+        android:label="fragment_user_login"
+        tools:layout="@layout/fragment_user_login" />
+    <fragment
+        android:id="@+id/adminLoginFrag"
+        android:name="com.example.theynotlikeus.AdminLoginFrag"
+        android:label="fragment_admin_login"
+        tools:layout="@layout/fragment_admin_login" />
+
 </navigation>
