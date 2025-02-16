@@ -1,5 +1,6 @@
 package com.example.theynotlikeus;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -77,12 +78,24 @@ public class UserLoginFrag extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Find button
+        // back button button
         MaterialToolbar backButton = view.findViewById(R.id.button_userloginfrag_back);
         NavController navController = Navigation.findNavController(view);
         backButton.setOnClickListener(v ->
                 navController.navigate(R.id.action_userLoginFrag_to_loginUserSelectionFrag)
         );
+
+
+        // sign in button
+
+        Button SignIn = view.findViewById(R.id.button_UserLogIn_SignIn);
+        SignIn.setOnClickListener(v -> {
+            Intent intent = new Intent(requireActivity(), MainActivity.class);
+            startActivity(intent);
+            requireActivity().finish(); // closing login activity as we don't need em anymore ;-;
+        });
+
+
 
 
 
