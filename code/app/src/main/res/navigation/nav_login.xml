@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginUserSelectionFrag">
+
+    <fragment
+        android:id="@+id/loginUserSelectionFrag"
+        android:name="com.example.theynotlikeus.LoginUserSelectionFrag"
+        android:label="Login User Selection"
+        tools:layout="@layout/fragment_login_user_selection" >
+        <action
+            android:id="@+id/action_loginUserSelectionFrag_to_userLoginFrag"
+            app:destination="@id/userLoginFrag" />
+        <action
+            android:id="@+id/action_loginUserSelectionFrag_to_adminLoginFrag"
+            app:destination="@id/adminLoginFrag" />
+    </fragment>
+    <fragment
+        android:id="@+id/userLoginFrag"
+        android:name="com.example.theynotlikeus.UserLoginFrag"
+        android:label="fragment_user_login"
+        tools:layout="@layout/fragment_user_login" >
+        <action
+            android:id="@+id/action_userLoginFrag_to_loginUserSelectionFrag"
+            app:destination="@id/loginUserSelectionFrag" />
+        <action
+            android:id="@+id/action_userLoginFrag_to_userSignUpFrag"
+            app:destination="@id/userSignUpFrag" />
+    </fragment>
+    <fragment
+        android:id="@+id/adminLoginFrag"
+        android:name="com.example.theynotlikeus.AdminLoginFrag"
+        android:label="fragment_admin_login"
+        tools:layout="@layout/fragment_admin_login" >
+        <action
+            android:id="@+id/action_adminLoginFrag_to_loginUserSelectionFrag"
+            app:destination="@id/loginUserSelectionFrag" />
+    </fragment>
+    <fragment
+        android:id="@+id/userSignUpFrag"
+        android:name="com.example.theynotlikeus.userSignUpFrag"
+        android:label="fragment_user_sign_up"
+        tools:layout="@layout/fragment_user_sign_up" >
+        <action
+            android:id="@+id/action_userSignUpFrag_to_userLoginFrag"
+            app:destination="@id/userLoginFrag" />
+    </fragment>
+
+</navigation>

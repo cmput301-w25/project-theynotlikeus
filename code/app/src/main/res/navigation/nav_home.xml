@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.theynotlikeus.homeMyMoodsFrag"
+        android:label="fragment_home_my_moods"
+        tools:layout="@layout/fragment_home_my_moods" />
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.example.theynotlikeus.FriendRequestFrag"
+        android:label="fragment_friend_request"
+        tools:layout="@layout/fragment_friend_request" />
+
+    <fragment
+        android:id="@+id/nav_map"
+        android:name="com.example.theynotlikeus.HomeMapFrag"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_home_map" />
+
+    <fragment
+        android:id="@+id/nav_community"
+        android:name="com.example.theynotlikeus.CommunityFrag"
+        android:label="fragment_community"
+        tools:layout="@layout/fragment_community" />
+</navigation>
