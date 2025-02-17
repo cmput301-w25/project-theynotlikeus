@@ -1,5 +1,8 @@
 plugins {
-    alias(libs.plugins.android.application)
+    //alias(libs.plugins.android.application) // i really don't know why removing this works but hey bug fixed eh?
+    id("com.android.application")
+    id("com.google.gms.google-services")
+
 }
 
 android {
@@ -32,7 +35,7 @@ android {
 }
 
 dependencies {
-
+    implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
