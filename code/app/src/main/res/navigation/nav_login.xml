@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_userLoginFrag_to_loginUserSelectionFrag"
             app:destination="@id/loginUserSelectionFrag" />
+        <action
+            android:id="@+id/action_userLoginFrag_to_userSignUpFrag"
+            app:destination="@id/userSignUpFrag" />
     </fragment>
     <fragment
         android:id="@+id/adminLoginFrag"
@@ -34,6 +37,15 @@
         <action
             android:id="@+id/action_adminLoginFrag_to_loginUserSelectionFrag"
             app:destination="@id/loginUserSelectionFrag" />
+    </fragment>
+    <fragment
+        android:id="@+id/userSignUpFrag"
+        android:name="com.example.theynotlikeus.userSignUpFrag"
+        android:label="fragment_user_sign_up"
+        tools:layout="@layout/fragment_user_sign_up" >
+        <action
+            android:id="@+id/action_userSignUpFrag_to_userLoginFrag"
+            app:destination="@id/userLoginFrag" />
     </fragment>
 
 </navigation>

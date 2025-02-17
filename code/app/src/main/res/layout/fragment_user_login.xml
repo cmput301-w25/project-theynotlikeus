@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:navigationIcon="@drawable/icon_white_back_button" />
+            app:navigationIcon="@drawable/ic_white_back_button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -56,7 +56,7 @@
 
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/textButton_UserLoginFrag_signUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"

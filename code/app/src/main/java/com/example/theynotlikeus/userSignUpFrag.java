@@ -13,18 +13,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 
-import org.w3c.dom.Text;
-
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link UserLoginFrag#newInstance} factory method to
+ * Use the {@link userSignUpFrag#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class UserLoginFrag extends Fragment {
+public class userSignUpFrag extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,7 +32,7 @@ public class UserLoginFrag extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public UserLoginFrag() {
+    public userSignUpFrag() {
         // Required empty public constructor
     }
 
@@ -45,11 +42,11 @@ public class UserLoginFrag extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment UserLoginFrag.
+     * @return A new instance of fragment userSignUpFrag.
      */
     // TODO: Rename and change types and number of parameters
-    public static UserLoginFrag newInstance(String param1, String param2) {
-        UserLoginFrag fragment = new UserLoginFrag();
+    public static userSignUpFrag newInstance(String param1, String param2) {
+        userSignUpFrag fragment = new userSignUpFrag();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -70,43 +67,30 @@ public class UserLoginFrag extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-
-
-
-        return inflater.inflate(R.layout.fragment_user_login, container, false);
+        return inflater.inflate(R.layout.fragment_user_sign_up, container, false);
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         // back button button
-        MaterialToolbar backButton = view.findViewById(R.id.button_userloginfrag_back);
+        MaterialToolbar backButton = view.findViewById(R.id.button_userSignUpFrag_back);
         NavController navController = Navigation.findNavController(view);
         backButton.setOnClickListener(v ->
-                navController.navigate(R.id.action_userLoginFrag_to_loginUserSelectionFrag)
+                navController.navigate(R.id.action_userSignUpFrag_to_userLoginFrag)
         );
 
 
         // sign in button
 
-        Button SignIn = view.findViewById(R.id.button_UserLogIn_SignIn);
+        Button SignIn = view.findViewById(R.id.button_userSignUpFrag_createandlogin);
         SignIn.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), MainActivity.class);
             startActivity(intent);
             requireActivity().finish(); // closing login activity as we don't need em anymore ;-;
         });
 
-        // sign up button
-        TextView SignUp = view.findViewById(R.id.textButton_UserLoginFrag_signUp);
-        ((View) SignUp).setOnClickListener(v -> {
-            navController.navigate(R.id.action_userLoginFrag_to_userSignUpFrag);
-        });
 
-
-
-
-
-    }
-}
+    }}
