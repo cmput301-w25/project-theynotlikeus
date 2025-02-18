@@ -1,7 +1,9 @@
 package com.example.theynotlikeus;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,10 +43,10 @@ public class MainActivity extends AppCompatActivity {
             NavigationUI.setupWithNavController(bottomNavigationView, navController);
         }
 
-        Button addMoodButton = findViewById(R.id.add_mood_button);
+        ImageButton addMoodButton = findViewById(R.id.add_mood_button);
         addMoodButton.setOnClickListener(v -> {
-            NavController navController = Navigation.findNavController(this, R.id.fragmentContainerView2);
-            navController.navigate(R.id.nav_mood_event);
+            Intent intent = new Intent(this, MoodEventActivity.class);
+            startActivity(intent);
         });
     }
 }
