@@ -17,15 +17,12 @@ import androidx.navigation.Navigation;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class userSignUpFrag extends Fragment {
-
-    // Parameter names if needed (or remove if not used)
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
     private String mParam1;
     private String mParam2;
@@ -37,8 +34,8 @@ public class userSignUpFrag extends Fragment {
     public static userSignUpFrag newInstance(String param1, String param2) {
         userSignUpFrag fragment = new userSignUpFrag();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString("param1", param1);
+        args.putString("param2", param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -47,20 +44,24 @@ public class userSignUpFrag extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mParam1 = getArguments().getString("param1");
+            mParam2 = getArguments().getString("param2");
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(
+            LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState
+    ) {
         return inflater.inflate(R.layout.fragment_user_sign_up, container, false);
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(
+            @NonNull View view,
+            @Nullable Bundle savedInstanceState
+    ) {
         super.onViewCreated(view, savedInstanceState);
 
         // Back button navigation
@@ -88,32 +89,48 @@ public class userSignUpFrag extends Fragment {
                 return;
             }
 
-            //checking if the passwords are the same or not
-            if(!password.equals(repassword)){
+            // Checking if the passwords are the same or not
+            if (!password.equals(repassword)) {
                 Toast.makeText(getContext(), "Password mismatched lil bro", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-
-            // Create a map to hold the user data
-            Map<String, Object> user = new HashMap<>();
-            user.put("username", username);
-            user.put("password", password);
-
-
             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-            db.collection("users")
-                    .add(user)
-                    .addOnSuccessListener(documentReference -> {
 
-                        Intent intent = new Intent(requireActivity(), MainActivity.class);
-                        startActivity(intent);
-                        requireActivity().finish();
+            db.collection("users")
+                    .whereEqualTo("username", username)
+                    .get()
+                    .addOnSuccessListener(querySnapshot -> {
+                        if (!querySnapshot.isEmpty()) {
+
+                            Toast.makeText(getContext(), "User already exists. Please sign in.", Toast.LENGTH_SHORT).show();
+
+
+                            navController.navigate(R.id.action_userSignUpFrag_to_userLoginFrag);
+                        } else {
+
+                            Map<String, Object> user = new HashMap<>();
+                            user.put("username", username);
+                            user.put("password", password);
+
+                            db.collection("users")
+                                    .add(user)
+                                    .addOnSuccessListener(documentReference -> {
+                                        Toast.makeText(getContext(), "Account created successfully!", Toast.LENGTH_SHORT).show();
+
+
+                                        Intent intent = new Intent(requireActivity(), MainActivity.class);
+                                        startActivity(intent);
+                                        requireActivity().finish();
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Toast.makeText(getContext(), "Error creating account: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    });
+                        }
                     })
                     .addOnFailureListener(e -> {
-
-                        Toast.makeText(getContext(), "Error creating account: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Error checking username: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     });
         });
     }
