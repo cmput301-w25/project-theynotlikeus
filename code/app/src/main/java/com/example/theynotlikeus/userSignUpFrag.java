@@ -74,17 +74,26 @@ public class userSignUpFrag extends Fragment {
         Button signInButton = view.findViewById(R.id.button_userSignUpFrag_createandlogin);
         EditText usernameEditText = view.findViewById(R.id.editText_UserSignUpFrag_username);
         EditText passwordEditText = view.findViewById(R.id.editText_UserSignUpFrag_password);
+        EditText repasswordEditText = view.findViewById(R.id.editText_userSignUpFrag_reEnterPassword);
 
         signInButton.setOnClickListener(v -> {
             // Retrieve user inputs
             String username = usernameEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
+            String repassword = repasswordEditText.getText().toString().trim();
 
             // Basic validation
-            if (username.isEmpty() || password.isEmpty()) {
+            if (username.isEmpty() || password.isEmpty() || repassword.isEmpty()) {
                 Toast.makeText(getContext(), "Username and Password cannot be empty", Toast.LENGTH_SHORT).show();
                 return;
             }
+
+            //checking if the passwords are the same or not
+            if(!password.equals(repassword)){
+                Toast.makeText(getContext(), "Password mismatched lil bro", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
 
             // Create a map to hold the user data
             Map<String, Object> user = new HashMap<>();
