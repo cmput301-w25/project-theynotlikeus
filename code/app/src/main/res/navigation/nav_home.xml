@@ -28,4 +28,14 @@
         android:name="com.example.theynotlikeus.CommunityFrag"
         android:label="fragment_community"
         tools:layout="@layout/fragment_community" />
+
+    <fragment
+        android:id="@+id/nav_mood_event"
+        android:name="com.example.theynotlikeus.MoodEventActivity"
+        android:label="mood_event"
+        tools:layout="@layout/activity_mood_event"/>
+
+    <action
+        android:id="@+id/action_home_to_mood_event"
+        app:destination="@+id/nav_mood_event"/>
 </navigation>

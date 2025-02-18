@@ -1,12 +1,17 @@
 package com.example.theynotlikeus;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.ImageButton;
+
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -37,5 +42,11 @@ public class MainActivity extends AppCompatActivity {
             NavController navController = navHostFragment.getNavController();
             NavigationUI.setupWithNavController(bottomNavigationView, navController);
         }
+
+        ImageButton addMoodButton = findViewById(R.id.add_mood_button);
+        addMoodButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, MoodEventActivity.class);
+            startActivity(intent);
+        });
     }
 }

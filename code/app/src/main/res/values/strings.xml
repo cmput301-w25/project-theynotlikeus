@@ -2,4 +2,14 @@
     <string name="app_name">theynotlikeus</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="moods">
+        <item>Anger</item>
+        <item>Confusion</item>
+        <item>Disgust</item>
+        <item>Fear</item>
+        <item>Happiness</item>
+        <item>Sadness</item>
+        <item>Shame</item>
+        <item>Surprise</item>
+    </string-array>
 </resources>

@@ -33,6 +33,11 @@
             android:name=".MainActivity"
             android:exported="true"/>
 
+        <!-- Mood Event Activity (Newly Added) -->
+        <activity
+            android:name=".MoodEventActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>
