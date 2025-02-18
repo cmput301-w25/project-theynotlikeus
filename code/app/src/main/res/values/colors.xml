@@ -5,5 +5,7 @@
 
     <!--App's custom color-->
     <color name="primary_blue">#22238B</color>
+    <color name="black_background">#212020</color>
+    <color name="grey_button">#2F2F2F</color>
 
 </resources>
