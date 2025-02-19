@@ -8,7 +8,7 @@
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/back_button"
+        android:id="@+id/button_activitymoodevent_backbutton"
         android:src="@drawable/ic_white_back_button"
         android:background="@color/black_background"
         app:layout_constraintStart_toStartOf="parent"
@@ -16,7 +16,7 @@
         android:contentDescription="Select image for mood event"/>
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/textview_activitymoodevent_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="monospace"
@@ -30,68 +30,68 @@
     <ImageButton
         android:layout_width="240dp"
         android:layout_height="240dp"
-        android:id="@+id/select_image_button"
+        android:id="@+id/imagebutton_activitymoodevent_selectimage"
         android:src="@drawable/ic_add"
         android:background="@drawable/round_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title"
+        app:layout_constraintTop_toBottomOf="@+id/textview_activitymoodevent_title"
         android:contentDescription="Go back"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Select Image (Optional)"
-        android:id="@+id/select_image_text"
+        android:id="@+id/textview_activitymoodevent_selectimagetext"
         android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@+id/select_image_button"
+        app:layout_constraintTop_toBottomOf="@+id/imagebutton_activitymoodevent_selectimage"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:id="@+id/current_mood_spinner"
+        android:id="@+id/spinner_activitymoodevent_currentmood"
         android:entries="@array/moods"
-        app:layout_constraintTop_toBottomOf="@id/select_image_text"
+        app:layout_constraintTop_toBottomOf="@id/textview_activitymoodevent_selectimagetext"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:id="@+id/trigger_input"
+        android:id="@+id/edittext_activitymoodevent_trigger"
         android:hint="Trigger (Optional)"
         android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/current_mood_spinner"
+        app:layout_constraintTop_toBottomOf="@id/spinner_activitymoodevent_currentmood"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:id="@+id/social_situation_input"
+        android:id="@+id/edittext_activitymoodevent_socialsituation"
         android:hint="Social Situation (Optional)"
         android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/trigger_input"
+        app:layout_constraintTop_toBottomOf="@id/edittext_activitymoodevent_trigger"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <Switch
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:id="@+id/geo_switch"
+        android:id="@+id/switch_activitymoodevent_geolocation"
         android:text="Geolocation (Optional)"
-        app:layout_constraintTop_toBottomOf="@id/social_situation_input"
+        app:layout_constraintTop_toBottomOf="@id/edittext_activitymoodevent_socialsituation"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/save_button"
+        android:id="@+id/button_activitymoodevent_save"
         android:text="Save"
         android:backgroundTint="@color/primary_blue"
-        app:layout_constraintTop_toBottomOf="@id/geo_switch"
+        app:layout_constraintTop_toBottomOf="@id/switch_activitymoodevent_geolocation"
         app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
