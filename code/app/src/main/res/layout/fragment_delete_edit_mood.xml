@@ -8,7 +8,7 @@
 
 
     <ImageButton
-        android:id="@+id/back_button"
+        android:id="@+id/button_DeleteEditMoodFrag_back"
         android:layout_width="48dp"
         android:layout_height="52dp"
         android:layout_marginTop="12dp"
@@ -16,12 +16,12 @@
         android:background="@color/black_background"
         android:contentDescription="Back_button"
         android:src="@drawable/ic_white_back_button"
-        app:layout_constraintEnd_toStartOf="@+id/title"
+        app:layout_constraintEnd_toStartOf="@+id/textView_DeleteEditMoodFrag_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/delete_button"
+        android:id="@+id/button_DeleteEditMoodFrag_delete"
         android:layout_width="63dp"
         android:layout_height="57dp"
         android:layout_marginStart="76dp"
@@ -34,11 +34,11 @@
         android:src="@drawable/ic_delete_button"
         app:backgroundTint="@color/black_background"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/title"
+        app:layout_constraintStart_toEndOf="@+id/textView_DeleteEditMoodFrag_title"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/textView_DeleteEditMoodFrag_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="132dp"
@@ -51,7 +51,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/select_image_button"
+        android:id="@+id/button_DeleteEditMoodFrag_selectImage"
         android:layout_width="240dp"
         android:layout_height="240dp"
         android:layout_marginTop="32dp"
@@ -61,10 +61,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_DeleteEditMoodFrag_title" />
 
     <TextView
-        android:id="@+id/select_image_text"
+        android:id="@+id/textView_DeleteEditMoodFrag_selectImagetext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
@@ -72,10 +72,10 @@
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/select_image_button" />
+        app:layout_constraintTop_toBottomOf="@+id/button_DeleteEditMoodFrag_selectImage" />
 
     <Spinner
-        android:id="@+id/current_mood_spinner"
+        android:id="@+id/spinner_DeleteEditMoodFrag_currentMoodspinner"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginStart="32dp"
@@ -88,10 +88,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/select_image_text" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_DeleteEditMoodFrag_selectImagetext" />
 
     <EditText
-        android:id="@+id/trigger_input"
+        android:id="@+id/editText_DeleteEditMoodFrag_triggerInput"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginStart="32dp"
@@ -104,10 +104,10 @@
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/current_mood_spinner" />
+        app:layout_constraintTop_toBottomOf="@id/spinner_DeleteEditMoodFrag_currentMoodspinner" />
 
     <EditText
-        android:id="@+id/social_situation_input"
+        android:id="@+id/editText_DeleteEditMoodFrag_socialSituationinput"
         android:layout_width="357dp"
         android:layout_height="117dp"
         android:layout_marginStart="32dp"
@@ -120,20 +120,20 @@
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/trigger_input" />
+        app:layout_constraintTop_toBottomOf="@id/editText_DeleteEditMoodFrag_triggerInput" />
 
     <Switch
-        android:id="@+id/geo_switch"
+        android:id="@+id/switch_DeleteEditMoodFrag_geoSwitch"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:text="Geolocation (Optional)"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/social_situation_input" />
+        app:layout_constraintTop_toBottomOf="@id/editText_DeleteEditMoodFrag_socialSituationinput" />
 
     <Button
-        android:id="@+id/save_button"
+        android:id="@+id/button_DeleteEditMoodFrag_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -141,6 +141,6 @@
         android:text="Save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/geo_switch" />
+        app:layout_constraintTop_toBottomOf="@id/switch_DeleteEditMoodFrag_geoSwitch" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
