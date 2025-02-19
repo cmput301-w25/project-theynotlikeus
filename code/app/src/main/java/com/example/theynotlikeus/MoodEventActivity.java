@@ -17,7 +17,7 @@ public class MoodEventActivity extends AppCompatActivity {
             finish(); // Closes activity and returns to previous screen
         });
 
-        findViewById(R.id.back_button).setOnClickListener(v -> finish()); // Back to previous screen when you hit back button
+        findViewById(R.id.textview_activitymoodeventdetails_backbutton).setOnClickListener(v -> finish()); // Back to previous screen when you hit back button
     }
 }
 
