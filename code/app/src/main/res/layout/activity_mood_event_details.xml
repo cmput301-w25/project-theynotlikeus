@@ -67,7 +67,7 @@
         android:layout_marginStart="12dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="12dp"
-        android:layout_marginBottom="-12dp"
+        android:layout_marginBottom="-16dp"
         android:background="#282727"
         app:layout_constraintBottom_toBottomOf="@id/user_mood_event_location"
         app:layout_constraintEnd_toEndOf="parent"
