@@ -16,7 +16,7 @@
     -->
 
     <ImageButton
-        android:id="@+id/textview_activitymoodeventdetails_backbutton"
+        android:id="@+id/imagebutton_activitymoodeventdetails_backbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
@@ -58,7 +58,7 @@
         android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_constraintEnd_toStartOf="@id/imagebutton_activitymoodeventdetails_editbutton"
-        app:layout_constraintStart_toEndOf="@id/textview_activitymoodeventdetails_backbutton"
+        app:layout_constraintStart_toEndOf="@id/imagebutton_activitymoodeventdetails_backbutton"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
