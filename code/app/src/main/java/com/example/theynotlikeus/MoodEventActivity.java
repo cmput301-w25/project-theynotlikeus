@@ -11,7 +11,7 @@ public class MoodEventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood_event);
 
-        Button saveButton = findViewById(R.id.save_button);
+        Button saveButton = findViewById(R.id.button_activitymoodevent_save);
         saveButton.setOnClickListener(v -> {
             // TODO: Handle saving logic, including connecting with database
             finish(); // Closes activity and returns to previous screen
