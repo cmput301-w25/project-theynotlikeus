@@ -20,7 +20,7 @@ public class Mood {
     private SocialSituation socialSituation;
     private String reason;
     private byte[] photo;
-    private int photoSize;
+    private int photoSize = 65536;
     private Double latitude;
     private Double longitude;
 
