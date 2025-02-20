@@ -62,6 +62,7 @@
         android:layout_height="50dp"
         android:id="@+id/edittext_activitymoodevent_trigger"
         android:hint="Trigger (Optional)"
+        android:textColorHint="@color/white"
         android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@id/spinner_activitymoodevent_currentmood"
         app:layout_constraintEnd_toEndOf="parent"
@@ -72,6 +73,7 @@
         android:layout_height="50dp"
         android:id="@+id/edittext_activitymoodevent_socialsituation"
         android:hint="Social Situation (Optional)"
+        android:textColorHint="@color/white"
         android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@id/edittext_activitymoodevent_trigger"
         app:layout_constraintStart_toStartOf="parent"
@@ -82,6 +84,7 @@
         android:layout_height="50dp"
         android:id="@+id/switch_activitymoodevent_geolocation"
         android:text="Geolocation (Optional)"
+        android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@id/edittext_activitymoodevent_socialsituation"
         app:layout_constraintStart_toStartOf="parent"/>
 
