@@ -18,11 +18,12 @@ import androidx.navigation.Navigation;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 public class UserLoginFrag extends Fragment {
 
-    private String mParam1;
-    private String mParam2;
+    //private String mParam1;
+    //private String mParam2;
 
     public UserLoginFrag() {
         // Required empty public constructor
@@ -40,10 +41,13 @@ public class UserLoginFrag extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*
         if (getArguments() != null) {
             mParam1 = getArguments().getString("param1");
             mParam2 = getArguments().getString("param2");
         }
+
+         */
     }
 
     @Override
@@ -96,17 +100,18 @@ public class UserLoginFrag extends Fragment {
 
                             Toast.makeText(getContext(), "Incorrect username or password", Toast.LENGTH_SHORT).show();
                         } else {
+                            for (QueryDocumentSnapshot document : querySnapshot){
+                                User user = document.toObject(User.class);
 
-                            DocumentSnapshot document = querySnapshot.getDocuments().get(0);
-                            String dbPassword = document.getString("password");
-                            if (dbPassword != null && dbPassword.equals(password)) {
+                                if (user.getPassword().equals(password)){
+                                    Intent intent = new Intent(requireActivity(), MainActivity.class);
+                                    startActivity(intent);
+                                    requireActivity().finish();
+                                }
 
-                                Intent intent = new Intent(requireActivity(), MainActivity.class);
-                                startActivity(intent);
-                                requireActivity().finish();
-                            } else {
-                                // Password doesn't match
-                                Toast.makeText(getContext(), "Incorrect username or password", Toast.LENGTH_SHORT).show();
+                                else {
+                                    Toast.makeText(getContext(), "Incorrect username or password", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         }
                     })
