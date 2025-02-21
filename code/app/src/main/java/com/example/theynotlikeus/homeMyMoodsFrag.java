@@ -7,7 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import androidx.appcompat.widget.SearchView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.Fragment;
 
@@ -33,21 +36,40 @@ public class homeMyMoodsFrag extends Fragment {
             startActivity(intent);
         });
 
-        // Handle drop-down menu (filter)
+        // Set up the AutoCompleteTextView for emotional state filtering
         AutoCompleteTextView autoCompleteTextView = view.findViewById(R.id.autoCompleteTextView);
-
-        // Define filter options
         String[] filterOptions = {"All Moods", "Happiness", "Sadness", "Anger", "Surprise", "Fear", "Disgust", "Shame"};
-
-        // Set up an ArrayAdapter with the options
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 requireContext(),
-                android.R.layout.simple_dropdown_item_1line,  // Pre-built drop-down item layout
+                android.R.layout.simple_dropdown_item_1line,
                 filterOptions
         );
-
-        // Attach the adapter to the AutoCompleteTextView
         autoCompleteTextView.setAdapter(adapter);
+        // TODO: Implement filter logic for emotional state selection
+
+        // Set up SearchView for filtering by "reason why" text
+        SearchView searchView = view.findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // TODO: Filter mood events based on the entered text (reason why)
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // TODO: Update filtering as text changes if desired
+                return false;
+            }
+        });
+
+        // Add a CheckBox for filtering by recent week (time filter subgroup)
+        CheckBox recentWeekCheckBox = view.findViewById(R.id.checkBox_recentWeek);
+        recentWeekCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // TODO: Filter mood events to include only those from the most recent week if isChecked is true.
+            }
+        });
 
         return view;
     }
