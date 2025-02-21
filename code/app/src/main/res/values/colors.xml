@@ -8,5 +8,6 @@
     <color name="black_background">#212020</color>
     <color name="grey_button">#2F2F2F</color>
     <color name="text_box_background">#282727</color>
+    <color name="light_grey">#B6B6B6</color>
 
 </resources>
