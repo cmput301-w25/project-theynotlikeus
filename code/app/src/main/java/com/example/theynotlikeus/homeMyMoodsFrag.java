@@ -35,7 +35,7 @@ public class homeMyMoodsFrag extends Fragment {
             Intent intent = new Intent(getActivity(), PersonalProfileDetailsActivity.class);
             startActivity(intent);
         });
-
+        /*
         // Set up the AutoCompleteTextView for emotional state filtering
         AutoCompleteTextView autoCompleteTextView = view.findViewById(R.id.autoCompleteTextView);
         String[] filterOptions = {"All Moods", "Happiness", "Sadness", "Anger", "Surprise", "Fear", "Disgust", "Shame"};
@@ -46,6 +46,8 @@ public class homeMyMoodsFrag extends Fragment {
         );
         autoCompleteTextView.setAdapter(adapter);
         // TODO: Implement filter logic for emotional state selection
+
+         */
 
         // Set up SearchView for filtering by "reason why" text
         SearchView searchView = view.findViewById(R.id.searchView);
@@ -62,6 +64,7 @@ public class homeMyMoodsFrag extends Fragment {
             }
         });
 
+        /*
         // Add a CheckBox for filtering by recent week (time filter subgroup)
         CheckBox recentWeekCheckBox = view.findViewById(R.id.checkBox_recentWeek);
         recentWeekCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -70,6 +73,8 @@ public class homeMyMoodsFrag extends Fragment {
                 // TODO: Filter mood events to include only those from the most recent week if isChecked is true.
             }
         });
+
+         */
 
         return view;
     }
