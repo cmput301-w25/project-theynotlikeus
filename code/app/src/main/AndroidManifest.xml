@@ -12,32 +12,28 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Theynotlikeus"
         tools:targetApi="31">
-
+        <activity
+            android:name=".PersonalProfileDetailsActivity"
+            android:exported="false" />
         <!-- Admin Activity -->
         <activity
             android:name=".AdminActivity"
-            android:exported="false" />
-
-        <!-- Login Activity (Launcher Activity) -->
+            android:exported="false" /> <!-- Login Activity (Launcher Activity) -->
         <activity
             android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- Main Activity -->
+        </activity> <!-- Main Activity -->
         <activity
             android:name=".MainActivity"
-            android:exported="true"/>
-
-        <!-- Mood Event Activity (Newly Added) -->
+            android:exported="true" /> <!-- Mood Event Activity (Newly Added) -->
         <activity
             android:name=".MoodEventActivity"
             android:exported="false" />
-
     </application>
 
 </manifest>
