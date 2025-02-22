@@ -24,8 +24,8 @@ import java.util.Map;
 
 public class userSignUpFrag extends Fragment {
 
-    private String mParam1;
-    private String mParam2;
+    //private String mParam1;
+    //private String mParam2;
 
     public userSignUpFrag() {
         // Required empty public constructor
@@ -43,10 +43,13 @@ public class userSignUpFrag extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*
         if (getArguments() != null) {
             mParam1 = getArguments().getString("param1");
             mParam2 = getArguments().getString("param2");
         }
+        */
+
     }
 
     @Override
@@ -109,10 +112,7 @@ public class userSignUpFrag extends Fragment {
 
                             navController.navigate(R.id.action_userSignUpFrag_to_userLoginFrag);
                         } else {
-
-                            Map<String, Object> user = new HashMap<>();
-                            user.put("username", username);
-                            user.put("password", password);
+                            User user = new User(username, password); //enter the username and password into the database
 
                             db.collection("users")
                                     .add(user)
