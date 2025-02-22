@@ -49,6 +49,7 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <Spinner
+
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:id="@+id/spinner_activitymoodevent_currentmood"

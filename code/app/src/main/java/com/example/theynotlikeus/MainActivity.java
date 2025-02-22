@@ -43,10 +43,6 @@ public class MainActivity extends AppCompatActivity {
             NavigationUI.setupWithNavController(bottomNavigationView, navController);
         }
 
-        ImageButton addMoodButton = findViewById(R.id.add_mood_button);
-        addMoodButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this, MoodEventActivity.class);
-            startActivity(intent);
-        });
+
     }
 }
