@@ -121,6 +121,7 @@ public class userSignUpFrag extends Fragment {
 
 
                                         Intent intent = new Intent(requireActivity(), MainActivity.class);
+                                        intent.putExtra("username", user.getUsername());
                                         startActivity(intent);
                                         requireActivity().finish();
                                     })
