@@ -23,18 +23,20 @@ public class MoodEvent implements Serializable {
 
     // Constructor
     public MoodEvent(String userID, String moodEventID, String moodEventDate, String moodEventTime, String moodEventEmotionalState,
-                     @Nullable String moodEventOptionalTrigger, @Nullable String moodEventOptionalSocialSituation,
-                     @Nullable String moodEventLatitude, @Nullable String moodEventLongitude, @Nullable Integer moodEventPhotoSize) {
+                     @Nullable String moodEventOptionalTrigger,@Nullable String moodEventOptionalSocialSituation,@Nullable String moodEventLatitude,@Nullable String moodEventLongitude,@Nullable Integer moodEventPhotoSize) {
         this.userID = userID;
         this.moodEventID = moodEventID;
         this.moodEventDate = moodEventDate;
         this.moodEventTime = moodEventTime;
         this.moodEventEmotionalState = moodEventEmotionalState;
+
         this.moodEventOptionalTrigger = moodEventOptionalTrigger;
         this.moodEventOptionalSocialSituation = moodEventOptionalSocialSituation;
         this.moodEventLatitude = moodEventLatitude;
         this.moodEventLongitude = moodEventLongitude;
         this.moodEventPhotoSize = moodEventPhotoSize;
+
+
     }
 
     // Getters and Setters
@@ -78,20 +80,20 @@ public class MoodEvent implements Serializable {
         this.moodEventEmotionalState = moodEventEmotionalState;
     }
 
-    public String getMoodEventOptionalTrigger() {
-        return moodEventOptionalTrigger;
-    }
-
-    public void setMoodEventOptionalTrigger(String moodEventOptionalTrigger) {
-        this.moodEventOptionalTrigger = moodEventOptionalTrigger;
-    }
-
     public String getMoodEventOptionalSocialSituation() {
         return moodEventOptionalSocialSituation;
     }
 
     public void setMoodEventOptionalSocialSituation(String moodEventOptionalSocialSituation) {
         this.moodEventOptionalSocialSituation = moodEventOptionalSocialSituation;
+    }
+
+    public String getMoodEventOptionalTrigger() {
+        return moodEventOptionalTrigger;
+    }
+
+    public void setMoodEventOptionalTrigger(String moodEventOptionalTrigger) {
+        this.moodEventOptionalTrigger = moodEventOptionalTrigger;
     }
 
     public String getMoodEventLatitude() {
@@ -117,5 +119,7 @@ public class MoodEvent implements Serializable {
     public void setMoodEventPhotoSize(Integer moodEventPhotoSize) {
         this.moodEventPhotoSize = moodEventPhotoSize;
     }
+
+
 
 }

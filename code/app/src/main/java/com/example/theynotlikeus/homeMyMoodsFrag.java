@@ -2,6 +2,7 @@ package com.example.theynotlikeus;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,19 +12,31 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class homeMyMoodsFrag extends Fragment {
     private List<MoodEvent> userMoodEventList = new ArrayList<MoodEvent>();
     private RecyclerView userRecyclerView;
     private RecyclerView.Adapter userRecyclerViewAdapter;
     private RecyclerView.LayoutManager userRecyclerViewLayoutManager;
+    private FirebaseFirestore db;
+    private CollectionReference moodListRef;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -87,25 +100,13 @@ public class homeMyMoodsFrag extends Fragment {
 
         return view;
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        // Test
-        String userID;
-        String moodEventID;
-        String emotionalState;
-        String date;
-        String time;
-
-
-
-        super.onViewCreated(view, savedInstanceState);
-        userRecyclerView = view.findViewById(R.id.recyclerview_fragmenthomemymoods_userrecyclerview);
-        userRecyclerView.setHasFixedSize(true);
-        userRecyclerViewLayoutManager = new LinearLayoutManager(getContext());
-        userRecyclerView.setLayoutManager(userRecyclerViewLayoutManager);
-        userRecyclerViewAdapter = new UserRecyclerViewAdapter(getContext(), userMoodEventList);
-        userRecyclerView.setAdapter(userRecyclerViewAdapter);
-
     }
+
+
 }
+
+

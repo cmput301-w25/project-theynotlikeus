@@ -10,11 +10,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.List;
 
 public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerViewAdapter.MyViewHolder> {
-    List<MoodEvent> userMoodEventList;
-    Context context;
+    private List<MoodEvent> userMoodEventList;
+    private Context context;
+
+    private FirebaseFirestore db;
 
     public UserRecyclerViewAdapter(Context context, List<MoodEvent> userMoodEventList) {
         this.userMoodEventList = userMoodEventList;
