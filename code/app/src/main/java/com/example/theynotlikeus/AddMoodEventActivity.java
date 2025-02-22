@@ -1,6 +1,7 @@
 package com.example.theynotlikeus;
 
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -28,6 +29,16 @@ public class AddMoodEventActivity extends AppCompatActivity {
         EditText triggerEditText = findViewById(R.id.edittext_activitymoodevent_trigger);
         EditText socialSituationEditText = findViewById(R.id.edittext_activitymoodevent_socialsituation);
         Switch geolocationSwitch = findViewById(R.id.switch_activitymoodevent_geolocation); // optional: for geolocation logic
+
+        // Spinner visibility
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.moods,
+                R.layout.addmoodevent_spinner
+        );
+        adapter.setDropDownViewResource(R.layout.addmoodevent_spinner);
+        moodSpinner.setAdapter(adapter);
+        // End of spinner adjustments
 
         Button saveButton = findViewById(R.id.button_activitymoodevent_save);
         saveButton.setOnClickListener(v -> {
