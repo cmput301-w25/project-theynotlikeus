@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 public class homeMyMoodsFrag extends Fragment {
+    private static homeMyMoodsFrag instance;
     private List<MoodEvent> userMoodEventList = new ArrayList<MoodEvent>();
     private RecyclerView userRecyclerView;
     private RecyclerView.Adapter userRecyclerViewAdapter;
@@ -103,10 +104,27 @@ public class homeMyMoodsFrag extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        userMoodEventList.clear();
+        userRecyclerView = view.findViewById(R.id.recyclerview_fragmenthomemymoods_userrecyclerview);
+        userRecyclerView.setHasFixedSize(true);
+        userRecyclerViewLayoutManager = new LinearLayoutManager(getContext());
+        userRecyclerView.setLayoutManager(userRecyclerViewLayoutManager);
+        userRecyclerViewAdapter = new UserRecyclerViewAdapter(getContext(), userMoodEventList);
+        userRecyclerView.setAdapter(userRecyclerViewAdapter);
 
+        db = FirebaseFirestore.getInstance();
+        moodListRef = db.collection("moods");
+
+        // test code
+        String emotionalState = "eeee";
+        String userID = "ee";
+        String moodEventID = "EE";
+        String date = "feb 19";
+        String time = "5:59 PM";
+        userMoodEventList.add(new MoodEvent(userID, moodEventID, date, time, emotionalState, null, null, null, null, null));
+        userRecyclerViewAdapter.notifyDataSetChanged();
     }
-
-
 }
 
 
