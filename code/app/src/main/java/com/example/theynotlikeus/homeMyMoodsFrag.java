@@ -10,17 +10,34 @@ import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.appcompat.widget.SearchView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.Fragment;
 
 public class homeMyMoodsFrag extends Fragment {
 
+    private String username;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_my_moods, container, false);
+
+        // Retrieve the username from the Activity's Intent extras
+        if (getActivity() != null && getActivity().getIntent() != null) {
+            username = getActivity().getIntent().getStringExtra("username");
+        }
+
+        // Set the welcome message with the username
+        TextView usernameTextView = view.findViewById(R.id.textView_homeMyMoodFrag_welcomeUser);
+        if (username != null) {
+            usernameTextView.setText("Welcome, " + username + "!");
+        } else {
+            usernameTextView.setText("Welcome!");
+        }
 
         // Handle Floating Action Button (FAB) click
         FloatingActionButton addMoodButton = view.findViewById(R.id.floatingActionButton_homeMyMoodsFrag_addmood);
@@ -45,7 +62,6 @@ public class homeMyMoodsFrag extends Fragment {
                 filterOptions
         );
         autoCompleteTextView.setAdapter(adapter);
-        // TODO: Implement filter logic for emotional state selection
 
         // Set up SearchView for filtering by "reason why" text
         SearchView searchView = view.findViewById(R.id.searchView);

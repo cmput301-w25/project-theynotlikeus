@@ -105,11 +105,11 @@ public class UserLoginFrag extends Fragment {
 
                                 if (user.getPassword().equals(password)){
                                     Intent intent = new Intent(requireActivity(), MainActivity.class);
+                                    // Attach the username to the Intent extras
+                                    intent.putExtra("username", user.getUsername());
                                     startActivity(intent);
                                     requireActivity().finish();
-                                }
-
-                                else {
+                                } else {
                                     Toast.makeText(getContext(), "Incorrect username or password", Toast.LENGTH_SHORT).show();
                                 }
                             }
