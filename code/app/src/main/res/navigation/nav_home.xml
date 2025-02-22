@@ -31,9 +31,9 @@
 
     <fragment
         android:id="@+id/nav_mood_event"
-        android:name="com.example.theynotlikeus.MoodEventActivity"
+        android:name="com.example.theynotlikeus.AddMoodEventActivity"
         android:label="mood_event"
-        tools:layout="@layout/activity_mood_event"/>
+        tools:layout="@layout/activity_add_mood_event"/>
 
     <action
         android:id="@+id/action_home_to_mood_event"
