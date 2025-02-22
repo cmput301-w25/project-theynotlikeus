@@ -42,7 +42,8 @@ public class homeMyMoodsFrag extends Fragment {
         // Handle Floating Action Button (FAB) click
         FloatingActionButton addMoodButton = view.findViewById(R.id.floatingActionButton_homeMyMoodsFrag_addmood);
         addMoodButton.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), MoodEventActivity.class);
+            Intent intent = new Intent(getActivity(), AddMoodEventActivity.class);
+            intent.putExtra("username", username);
             startActivity(intent);
         });
 
@@ -66,16 +67,19 @@ public class homeMyMoodsFrag extends Fragment {
         // Set up SearchView for filtering by "reason why" text
         SearchView searchView = view.findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
             @Override
             public boolean onQueryTextSubmit(String query) {
                 // TODO: Filter mood events based on the entered text (reason why)
                 return false;
             }
+
             @Override
             public boolean onQueryTextChange(String newText) {
                 // TODO: Update filtering as text changes if desired
                 return false;
             }
+
         });
 
         // Add a CheckBox for filtering by recent week (time filter subgroup)

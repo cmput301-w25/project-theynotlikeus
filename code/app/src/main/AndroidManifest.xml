@@ -32,7 +32,7 @@
             android:name=".MainActivity"
             android:exported="true" /> <!-- Mood Event Activity (Newly Added) -->
         <activity
-            android:name=".MoodEventActivity"
+            android:name=".AddMoodEventActivity"
             android:exported="false" />
     </application>
 
