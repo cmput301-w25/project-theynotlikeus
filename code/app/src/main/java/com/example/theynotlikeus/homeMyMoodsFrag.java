@@ -5,22 +5,31 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class homeMyMoodsFrag extends Fragment {
-
+    private List<MoodEvent> userMoodEventList = new ArrayList<MoodEvent>();
+    private RecyclerView userRecyclerView;
+    private RecyclerView.Adapter userRecyclerViewAdapter;
+    private RecyclerView.LayoutManager userRecyclerViewLayoutManager;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_my_moods, container, false);
+
 
         // Handle Floating Action Button (FAB) click
         FloatingActionButton addMoodButton = view.findViewById(R.id.floatingActionButton_homeMyMoodsFrag_addmood);
@@ -77,5 +86,26 @@ public class homeMyMoodsFrag extends Fragment {
          */
 
         return view;
+    }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+        // Test
+        String userID;
+        String moodEventID;
+        String emotionalState;
+        String date;
+        String time;
+
+
+
+        super.onViewCreated(view, savedInstanceState);
+        userRecyclerView = view.findViewById(R.id.recyclerview_fragmenthomemymoods_userrecyclerview);
+        userRecyclerView.setHasFixedSize(true);
+        userRecyclerViewLayoutManager = new LinearLayoutManager(getContext());
+        userRecyclerView.setLayoutManager(userRecyclerViewLayoutManager);
+        userRecyclerViewAdapter = new UserRecyclerViewAdapter(getContext(), userMoodEventList);
+        userRecyclerView.setAdapter(userRecyclerViewAdapter);
+
     }
 }
