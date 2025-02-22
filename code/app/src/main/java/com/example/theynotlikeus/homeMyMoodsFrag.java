@@ -116,14 +116,32 @@ public class homeMyMoodsFrag extends Fragment {
         db = FirebaseFirestore.getInstance();
         moodListRef = db.collection("moods");
 
-        // test code
-        String emotionalState = "eeee";
-        String userID = "ee";
-        String moodEventID = "EE";
-        String date = "feb 19";
-        String time = "5:59 PM";
-        userMoodEventList.add(new MoodEvent(userID, moodEventID, date, time, emotionalState, null, null, null, null, null));
-        userRecyclerViewAdapter.notifyDataSetChanged();
+        DocumentReference docRef = moodListRef.document("111");
+
+        // Replace the below code with addSnapshotListener from Lab 5
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Map<String, Object> data = document.getData();
+                        String emotionalState = document.getString("EmotionalState");
+                        String userID = "ee";
+                        String moodEventID = "EE";
+                        String date = "feb 19";
+                        String time = "5:59 PM";
+                        userMoodEventList.add(new MoodEvent(userID, moodEventID, date, time, emotionalState, null, null, null, null, null));
+                        userRecyclerViewAdapter.notifyDataSetChanged();
+                        Log.d("Firestore", "DocumentSnapshot data: " + document.getData());
+                    } else {
+                        Log.d("Firestore", "No such document");
+                    }
+                } else {
+                    Log.d("Firestore","get failed with ", task.getException());
+                }
+            }
+        });
     }
 }
 
