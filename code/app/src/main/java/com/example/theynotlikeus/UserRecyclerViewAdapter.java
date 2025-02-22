@@ -15,13 +15,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.List;
 
 public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerViewAdapter.MyViewHolder> {
-    private List<MoodEvent> userMoodEventList;
+    private List<Mood> userMoodList;
     private Context context;
 
     private FirebaseFirestore db;
 
-    public UserRecyclerViewAdapter(Context context, List<MoodEvent> userMoodEventList) {
-        this.userMoodEventList = userMoodEventList;
+    public UserRecyclerViewAdapter(Context context, List<Mood> userMoodList) {
+        this.userMoodList = userMoodList;
         this.context = context;
     }
 
@@ -33,19 +33,21 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
         return holder;
     }
 
+    // **EDIT**
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.imageViewMoodIcon.setImageResource(R.drawable.ic_happy_emoticon);    // Needs to be changed
-        holder.textViewMoodTitle.setText(userMoodEventList.get(position).getMoodEventEmotionalState());
-        holder.textViewSocialSituation.setText(userMoodEventList.get(position).getMoodEventOptionalSocialSituation());
-        holder.textViewDate.setText(userMoodEventList.get(position).getMoodEventDate());
+        holder.textViewMoodTitle.setText(String.valueOf(userMoodList.get(position).getMoodState()));
+        holder.textViewSocialSituation.setText(String.valueOf(userMoodList.get(position).getSocialSituation()));
+        holder.textViewDate.setText(String.valueOf(userMoodList.get(position).getDateTime()));
     }
 
     @Override
     public int getItemCount() {
-        return userMoodEventList.size();
+        return userMoodList.size();
     }
 
+    // Make sure that everything works here
     public class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView imageViewMoodIcon;
         TextView textViewMoodTitle;
