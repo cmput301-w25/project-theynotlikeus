@@ -12,12 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerViewAdapter.MyViewHolder> {
     private List<Mood> userMoodList;
     private Context context;
-
     private FirebaseFirestore db;
 
     public UserRecyclerViewAdapter(Context context, List<Mood> userMoodList) {
@@ -29,17 +30,25 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_mood_event_layout, parent, false);
-        MyViewHolder holder = new MyViewHolder(view);
-        return holder;
+        return new MyViewHolder(view);
     }
 
-    // **EDIT**
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.imageViewMoodIcon.setImageResource(R.drawable.ic_happy_emoticon);    // Needs to be changed
-        holder.textViewMoodTitle.setText(String.valueOf(userMoodList.get(position).getMoodState()));
-        holder.textViewSocialSituation.setText(String.valueOf(userMoodList.get(position).getSocialSituation()));
-        holder.textViewDate.setText(String.valueOf(userMoodList.get(position).getDateTime()));
+        Mood mood = userMoodList.get(position);
+
+
+        int moodIconRes = getMoodIcon(mood.getMoodState());
+        holder.imageViewMoodIcon.setImageResource(moodIconRes);
+
+        holder.textViewMoodTitle.setText(mood.getMoodState().toString());
+
+
+        holder.textViewSocialSituation.setText(mood.getSocialSituation() != null ? mood.getSocialSituation().toString() : "Unknown");
+
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
+        holder.textViewDate.setText(dateFormat.format(mood.getDateTime()));
     }
 
     @Override
@@ -47,8 +56,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
         return userMoodList.size();
     }
 
-    // Make sure that everything works here
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView imageViewMoodIcon;
         TextView textViewMoodTitle;
         TextView textViewSocialSituation;
@@ -63,5 +71,28 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
         }
     }
 
-
+    private int getMoodIcon(Mood.MoodState moodState) {
+        switch (moodState) {
+            case ANGER:
+                return R.drawable.ic_angry_emoticon;
+            case CONFUSION:
+                return R.drawable.ic_confused_emoticon;
+            case DISGUST:
+                return R.drawable.ic_disgust_emoticon;
+            case FEAR:
+                return R.drawable.ic_fear_emoticon;
+            case HAPPINESS:
+                return R.drawable.ic_happy_emoticon;
+            case SADNESS:
+                return R.drawable.ic_sad_emoticon;
+            case SHAME:
+                return R.drawable.ic_shame_emoticon;
+            case SURPRISE:
+                return R.drawable.ic_surprised_emoticon;
+            case BOREDOM:
+                return R.drawable.ic_bored_emoticon;
+            default:
+                return R.drawable.ic_happy_emoticon; // Default icon
+        }
+    }
 }

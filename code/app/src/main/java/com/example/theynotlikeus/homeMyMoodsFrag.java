@@ -47,8 +47,7 @@ public class homeMyMoodsFrag extends Fragment {
     private FirebaseFirestore db;
     private CollectionReference moodListRef;
     private RecyclerView recyclerView;
-    private MoodEventAdapter adapter;
-    private List<Mood> moodEventList;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -111,6 +110,26 @@ public class homeMyMoodsFrag extends Fragment {
             }
 
         });
+        //userRecyclerView
+        userRecyclerView = view.findViewById(R.id.recyclerview_fragmenthomemymoods_userrecyclerview);
+        userRecyclerView.setHasFixedSize(true);
+
+
+        userRecyclerViewLayoutManager = new LinearLayoutManager(getContext());
+        userRecyclerView.setLayoutManager(userRecyclerViewLayoutManager);
+
+
+        userRecyclerViewAdapter = new UserRecyclerViewAdapter(getContext(), userMoodList);
+
+        userRecyclerView.setAdapter(userRecyclerViewAdapter);
+
+        // load data
+        db = FirebaseFirestore.getInstance();
+        moodListRef = db.collection("moods");
+        loadMoodsFromFirebase();
+
+
+
 
         // Add a CheckBox for filtering by recent week (time filter subgroup)
         CheckBox recentWeekCheckBox = view.findViewById(R.id.checkBox_recentWeek);
@@ -127,51 +146,51 @@ public class homeMyMoodsFrag extends Fragment {
 
 
     // ***EDIT***
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        userRecyclerView = view.findViewById(R.id.recyclerview_fragmenthomemymoods_userrecyclerview);
-        userRecyclerView.setHasFixedSize(true);
-        userRecyclerViewLayoutManager = new LinearLayoutManager(getContext());
-        userRecyclerView.setLayoutManager(userRecyclerViewLayoutManager);
-        userRecyclerViewAdapter = new UserRecyclerViewAdapter(getContext(), userMoodList);
-        userRecyclerView.setAdapter(userRecyclerViewAdapter);
-
-        db = FirebaseFirestore.getInstance();
-        moodListRef = db.collection("moods");
-
-        // Log.d messages are still to be added to see if it was successful.
-        moodListRef.addSnapshotListener((value, error) -> {
-            if (error != null) {
-                Log.e("Firestore", error.toString());
-            }
-            if (value != null) {
-                userMoodList.clear();
-                for (QueryDocumentSnapshot snapshot : value) {
-                    //Timestamp timestamp = snapshot.getTimestamp("dateTime");
-                    String selectedMoodState = snapshot.getString("moodState");
-                    Mood.MoodState moodState;
-                    if (selectedMoodState != null) {
-                        moodState = Mood.MoodState.valueOf(selectedMoodState);
-                    } else {
-                        // Use a default mood state if none is provided
-                        moodState = Mood.MoodState.ANGER; // Make sure DEFAULT is defined in your enum
-                        Log.w("Firestore", "moodState field is null, using default.");
-                    }
-                    /*
-                    if (timestamp != null) {
-                        Date date = timestamp.toDate();
-                        Log.d("Firestore", "Date: " + date.toString());
-                    }
-
-                     */
-                    moodListRef.add(new Mood(moodState));
-                }
-                userRecyclerViewAdapter.notifyDataSetChanged();
-            }
-        });
-    }
+//    @Override
+//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//
+//        userRecyclerView = view.findViewById(R.id.recyclerview_fragmenthomemymoods_userrecyclerview);
+//        userRecyclerView.setHasFixedSize(true);
+//        userRecyclerViewLayoutManager = new LinearLayoutManager(getContext());
+//        userRecyclerView.setLayoutManager(userRecyclerViewLayoutManager);
+//        userRecyclerViewAdapter = new UserRecyclerViewAdapter(getContext(), userMoodList);
+//        userRecyclerView.setAdapter(userRecyclerViewAdapter);
+//
+//        db = FirebaseFirestore.getInstance();
+//        moodListRef = db.collection("moods");
+//
+//        // Log.d messages are still to be added to see if it was successful.
+//        moodListRef.addSnapshotListener((value, error) -> {
+//            if (error != null) {
+//                Log.e("Firestore", error.toString());
+//            }
+//            if (value != null) {
+//                userMoodList.clear();
+//                for (QueryDocumentSnapshot snapshot : value) {
+//                    //Timestamp timestamp = snapshot.getTimestamp("dateTime");
+//                    String selectedMoodState = snapshot.getString("moodState");
+//                    Mood.MoodState moodState;
+//                    if (selectedMoodState != null) {
+//                        moodState = Mood.MoodState.valueOf(selectedMoodState);
+//                    } else {
+//                        // Use a default mood state if none is provided
+//                        moodState = Mood.MoodState.ANGER; // Make sure DEFAULT is defined in your enum
+//                        Log.w("Firestore", "moodState field is null, using default.");
+//                    }
+//                    /*
+//                    if (timestamp != null) {
+//                        Date date = timestamp.toDate();
+//                        Log.d("Firestore", "Date: " + date.toString());
+//                    }
+//
+//                     */
+//                    moodListRef.add(new Mood(moodState));
+//                }
+//                userRecyclerViewAdapter.notifyDataSetChanged();
+//            }
+//        });
+//    }
 
 
     private void loadMoodsFromFirebase() {
@@ -195,9 +214,9 @@ public class homeMyMoodsFrag extends Fragment {
                 userMoodList.add(mood);
             }
 
-            userRecyclerViewAdapter.notifyDataSetChanged();
+//            userRecyclerViewAdapter.notifyDataSetChanged();
         });
-    }
+    }// MoodEvent RecyclerView
 
 
 
