@@ -46,7 +46,7 @@ public class homeMyMoodsFrag extends Fragment {
     private RecyclerView.LayoutManager userRecyclerViewLayoutManager;
     private FirebaseFirestore db;
     private CollectionReference moodListRef;
-
+    String loggedInUsername = LoginActivity.getLoggedInUsername();
 
 
     @Override
@@ -144,7 +144,8 @@ public class homeMyMoodsFrag extends Fragment {
     }
 
     private void loadMoodsFromFirebase() {
-        moodListRef.get().addOnCompleteListener(task -> {
+
+        moodListRef.whereEqualTo("username", loggedInUsername).get().addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {
                 Log.e("Firestore", "Error fetching moods", task.getException());
                 return;

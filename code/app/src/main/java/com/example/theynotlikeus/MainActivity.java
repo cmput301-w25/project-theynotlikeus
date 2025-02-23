@@ -24,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
+
+
+
         // Apply System Insets for Edge-To-Edge UI
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -45,4 +48,5 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
 }
