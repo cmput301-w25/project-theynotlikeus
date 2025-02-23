@@ -46,7 +46,7 @@ public class homeMyMoodsFrag extends Fragment {
     private RecyclerView.LayoutManager userRecyclerViewLayoutManager;
     private FirebaseFirestore db;
     private CollectionReference moodListRef;
-    private RecyclerView recyclerView;
+
 
 
     @Override
@@ -143,7 +143,30 @@ public class homeMyMoodsFrag extends Fragment {
         return view;
     }
 
+    private void loadMoodsFromFirebase() {
+        moodListRef.get().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.e("Firestore", "Error fetching moods", task.getException());
+                return;
+            }
 
+            userMoodList.clear();
+
+            for (QueryDocumentSnapshot snapshot : task.getResult()) {
+                Mood mood = snapshot.toObject(Mood.class);
+                // fetch mood
+
+                if (mood.getMoodState() == null) {
+                    mood.setMoodState(Mood.MoodState.HAPPINESS);
+                    //default as Happy
+                }
+
+                userMoodList.add(mood);
+            }
+
+            userRecyclerViewAdapter.notifyDataSetChanged();
+        });
+    }// MoodEvent RecyclerView
 
     // ***EDIT***
 //    @Override
@@ -193,30 +216,7 @@ public class homeMyMoodsFrag extends Fragment {
 //    }
 
 
-    private void loadMoodsFromFirebase() {
-        moodListRef.get().addOnCompleteListener(task -> {
-            if (!task.isSuccessful()) {
-                Log.e("Firestore", "Error fetching moods", task.getException());
-                return;
-            }
 
-            userMoodList.clear();
-
-            for (QueryDocumentSnapshot snapshot : task.getResult()) {
-                Mood mood = snapshot.toObject(Mood.class);
-                // fetch mood
-
-                if (mood.getMoodState() == null) {
-                    mood.setMoodState(Mood.MoodState.HAPPINESS);
-                    //default as Happy
-                }
-
-                userMoodList.add(mood);
-            }
-
-//            userRecyclerViewAdapter.notifyDataSetChanged();
-        });
-    }// MoodEvent RecyclerView
 
 
 

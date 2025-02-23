@@ -37,18 +37,25 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Mood mood = userMoodList.get(position);
 
-
-        int moodIconRes = getMoodIcon(mood.getMoodState());
+        int moodIconRes = getMoodIcon(mood.getMoodState() != null ? mood.getMoodState() : Mood.MoodState.SURPRISE);
         holder.imageViewMoodIcon.setImageResource(moodIconRes);
+        //photo
 
-        holder.textViewMoodTitle.setText(mood.getMoodState().toString());
+
+        holder.textViewMoodTitle.setText(mood.getMoodState() != null ? mood.getMoodState().toString() : "Unknown");
 
 
         holder.textViewSocialSituation.setText(mood.getSocialSituation() != null ? mood.getSocialSituation().toString() : "Unknown");
 
+        String username = mood.getUsername() != null ? mood.getUsername() : "Unknown";
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
-        holder.textViewDate.setText(dateFormat.format(mood.getDateTime()));
+
+        if (mood.getDateTime() != null) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
+            holder.textViewDate.setText(dateFormat.format(mood.getDateTime()));
+        } else {
+            holder.textViewDate.setText("Unknown");
+        }//date
     }
 
     @Override
