@@ -3,7 +3,8 @@ package com.example.theynotlikeus;
 import java.util.Date;
 
 public class Mood {
-
+    public Mood() {
+    }
     public enum MoodState {
         // Enumeration for the mood state, all required moods available
         ANGER, CONFUSION, DISGUST, FEAR, HAPPINESS, SADNESS, SHAME, SURPRISE, BOREDOM
@@ -15,6 +16,10 @@ public class Mood {
     }
 
     private Date dateTime;
+    public void setDateTime(Date dateTime) {
+        this.dateTime = dateTime;
+    }
+
     private MoodState moodState;
     private String trigger;
     private SocialSituation socialSituation;

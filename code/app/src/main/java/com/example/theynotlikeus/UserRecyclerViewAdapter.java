@@ -10,12 +10,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
-
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerViewAdapter.MyViewHolder> {
     private List<Mood> userMoodList;
     private Context context;
@@ -49,13 +50,18 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
 
         String username = mood.getUsername() != null ? mood.getUsername() : "Unknown";
 
-
         if (mood.getDateTime() != null) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm a", Locale.getDefault());
             holder.textViewDate.setText(dateFormat.format(mood.getDateTime()));
         } else {
             holder.textViewDate.setText("Unknown");
         }//date
+//        if (mood.getDateTime() != null) {
+//            SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
+//            holder.textViewDate.setText(dateFormat.format(mood.getDateTime()));
+//        } else {
+//            holder.textViewDate.setText("Unknown");
+//        }
     }
 
     @Override

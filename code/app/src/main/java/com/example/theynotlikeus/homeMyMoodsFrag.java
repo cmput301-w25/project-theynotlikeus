@@ -163,7 +163,7 @@ public class homeMyMoodsFrag extends Fragment {
 
                 userMoodList.add(mood);
             }
-
+            Log.d("Firestore", "Total Moods Fetched: " + userMoodList.size());
             userRecyclerViewAdapter.notifyDataSetChanged();
         });
     }// MoodEvent RecyclerView
