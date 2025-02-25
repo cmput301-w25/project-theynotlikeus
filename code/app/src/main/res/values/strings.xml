@@ -2,6 +2,9 @@
     <string name="app_name">theynotlikeus</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="restrict_the_size_of_the_imagines_to_be_under_65536_bytes">Restrict the size of the imagines to be under 65536 bytes</string>
+    <string name="logout">Logout</string>
+    <string name="image_size_restriction">Image size restriction</string>
     <string-array name="moods">
         <item>Anger</item>
         <item>Confusion</item>
