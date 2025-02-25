@@ -1,6 +1,7 @@
 package com.example.theynotlikeus;
 
 import android.os.Bundle;
+import android.widget.Switch;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,5 +21,6 @@ public class AdminActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+//        Switch limitSize = findViewById(R.id.switch_limit_size);
     }
 }

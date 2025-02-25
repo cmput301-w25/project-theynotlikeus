@@ -1,5 +1,6 @@
 package com.example.theynotlikeus;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,8 +12,13 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -79,7 +85,47 @@ public class AdminLoginFrag extends Fragment {
                 navController.navigate(R.id.action_adminLoginFrag_to_loginUserSelectionFrag)
         );
 
+        Button signInButton = view.findViewById(R.id.button_AdminLogIn_SignIn);
+        EditText usernameEditText = view.findViewById(R.id.editText_adminLoginFrag_username);
+        EditText passwordEditText = view.findViewById(R.id.editText_adminLoginFrag_password);
+        signInButton.setOnClickListener(v -> {
+            String username = usernameEditText.getText().toString().trim();
+            String password = passwordEditText.getText().toString().trim();
+            if (username.isEmpty() || password.isEmpty()) {
+                Toast.makeText(getContext(), "Username and Password cannot be empty", Toast.LENGTH_SHORT).show();
+                return;
+            };
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("admin")
+                    .whereEqualTo("username", username)
+                    .get()
+                    .addOnSuccessListener(querySnapshot -> {
+                        if (querySnapshot.isEmpty()) {
+
+                            Toast.makeText(getContext(), "Incorrect username or password", Toast.LENGTH_SHORT).show();
+                        } else {
+                            for (QueryDocumentSnapshot document : querySnapshot){
+                                User user = document.toObject(User.class);
+
+                                if (user.getPassword().equals(password)){
+                                    Intent intent = new Intent(requireActivity(), AdminActivity.class);
+                                    intent.putExtra("username", user.getUsername());
+                                    startActivity(intent);
+                                    requireActivity().finish();
+                                } else {
+                                    Toast.makeText(getContext(), "Incorrect username or password", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
 
 
+
+
+
+        });
     }
 }

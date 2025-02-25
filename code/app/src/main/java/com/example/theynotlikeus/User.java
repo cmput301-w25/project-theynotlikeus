@@ -3,7 +3,7 @@ package com.example.theynotlikeus;
 public class User {
     private String username;
     private String password;
-    private boolean isAdmin;
+
 
     public User(){}; //empty constructor for firestore
 
@@ -28,7 +28,5 @@ public class User {
         this.password = password;
     }
 
-    public boolean getAdminStatus(){
-        return isAdmin;
-    };
+
 }
