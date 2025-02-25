@@ -3,8 +3,7 @@ package com.example.theynotlikeus;
 import java.util.Date;
 
 public class Mood {
-    public Mood() {
-    }
+
     public enum MoodState {
         // Enumeration for the mood state, all required moods available
         ANGER, CONFUSION, DISGUST, FEAR, HAPPINESS, SADNESS, SHAME, SURPRISE, BOREDOM
@@ -16,10 +15,6 @@ public class Mood {
     }
 
     private Date dateTime;
-    public void setDateTime(Date dateTime) {
-        this.dateTime = dateTime;
-    }
-
     private MoodState moodState;
     private String trigger;
     private SocialSituation socialSituation;
@@ -29,6 +24,13 @@ public class Mood {
     private Double latitude;
     private Double longitude;
     private String username;
+
+    /**
+     * **No-argument constructor** required by Firestore for automatic deserialization.
+     */
+    public Mood() {
+        // You can set defaults here if needed
+    }
 
     public Mood(MoodState moodState) {
         this.dateTime = new Date();
@@ -42,6 +44,10 @@ public class Mood {
 
     public Date getDateTime() {
         return dateTime;
+    }
+
+    public void setDateTime(Date dateTime) {
+        this.dateTime = dateTime;
     }
 
     public MoodState getMoodState() {
