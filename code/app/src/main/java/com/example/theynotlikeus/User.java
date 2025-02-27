@@ -1,7 +1,7 @@
 package com.example.theynotlikeus;
 
 public class User {
-    private String username;
+    private  String username;
     private String password;
 
 
@@ -12,7 +12,7 @@ public class User {
         this.password = password;
     }
 
-    public String getUsername(){
+    public  String getUsername(){
         return username;
     }
 

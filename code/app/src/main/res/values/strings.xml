@@ -2,6 +2,14 @@
     <string name="app_name">theynotlikeus</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="welcome_username">Welcome Username!</string>
+    <string name="feb_01_2025">Feb,01,2025</string>
+    <string name="social_situation_i_hit_chest_today">Social Situation: I hit chest today!</string>
+    <string name="happy">Happy</string>
+    <string name="select_date_drop_down">Select Date</string>
+    <string name="select_mood_drop_down">Select Mood</string>
+    <string name="filter_your_moods_by">Filter your moods by:</string>
+    <string name="search_keyword">Search keyword</string>
     <string-array name="moods">
         <item>Anger</item>
         <item>Confusion</item>

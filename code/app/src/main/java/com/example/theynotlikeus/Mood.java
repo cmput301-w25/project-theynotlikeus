@@ -25,6 +25,13 @@ public class Mood {
     private Double longitude;
     private String username;
 
+    /**
+     * **No-argument constructor** required by Firestore for automatic deserialization.
+     */
+    public Mood() {
+        // empty instance to satisfy firebase requirement
+    }
+
     public Mood(MoodState moodState) {
         this.dateTime = new Date();
         this.moodState = moodState;
@@ -37,6 +44,10 @@ public class Mood {
 
     public Date getDateTime() {
         return dateTime;
+    }
+
+    public void setDateTime(Date dateTime) {
+        this.dateTime = dateTime;
     }
 
     public MoodState getMoodState() {
