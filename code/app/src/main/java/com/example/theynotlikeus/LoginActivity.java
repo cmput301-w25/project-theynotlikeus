@@ -24,6 +24,7 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("username")) {
             loggedInUsername = intent.getStringExtra("username");
+            //pass username
         }
     }
     public static String getLoggedInUsername() {

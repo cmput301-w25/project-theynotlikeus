@@ -40,14 +40,14 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
 
         int moodIconRes = getMoodIcon(mood.getMoodState() != null ? mood.getMoodState() : Mood.MoodState.SURPRISE);
         holder.imageViewMoodIcon.setImageResource(moodIconRes);
-        //photo
+        //get photo, Unknown if null
 
 
         holder.textViewMoodTitle.setText(mood.getMoodState() != null ? mood.getMoodState().toString() : "Unknown");
-
+        //get mood state, Unknown if null
 
         holder.textViewSocialSituation.setText(mood.getSocialSituation() != null ? mood.getSocialSituation().toString() : "Unknown");
-
+        //get social situation, Unknown if null
         String username = mood.getUsername() != null ? mood.getUsername() : "Unknown";
 
         if (mood.getDateTime() != null) {
@@ -55,7 +55,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
             holder.textViewDate.setText(dateFormat.format(mood.getDateTime()));
         } else {
             holder.textViewDate.setText("Unknown");
-        }//date
+        }//set date to the correct format, Unknown if null
 //        if (mood.getDateTime() != null) {
 //            SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
 //            holder.textViewDate.setText(dateFormat.format(mood.getDateTime()));
@@ -107,5 +107,5 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
             default:
                 return R.drawable.ic_happy_emoticon; // Default icon
         }
-    }
+    }// find picture for each mood
 }

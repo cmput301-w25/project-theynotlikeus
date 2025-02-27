@@ -29,7 +29,7 @@ public class Mood {
      * **No-argument constructor** required by Firestore for automatic deserialization.
      */
     public Mood() {
-        // You can set defaults here if needed
+        // empty instance to satisfy firebase requirement
     }
 
     public Mood(MoodState moodState) {
