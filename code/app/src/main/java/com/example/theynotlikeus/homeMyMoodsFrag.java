@@ -158,7 +158,7 @@ public class homeMyMoodsFrag extends Fragment {
         // Apply emotional state filter if not "All Moods"
         if (filterEmotionalstate != null && !filterEmotionalstate.equals("All Moods") && !filterEmotionalstate.isEmpty()) {
             String filterValue = filterEmotionalstate.toUpperCase();
-            query = query.whereEqualTo("moodState", filterEmotionalstate);
+            query = query.whereEqualTo("moodState", filterValue);
         }
 
         // Execute the query (one-time read)
