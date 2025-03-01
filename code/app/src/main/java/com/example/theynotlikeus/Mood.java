@@ -27,11 +27,22 @@ public class Mood {
     private Double longitude;
     private String username;
 
+    private String docId;
+
     /**
      * **No-argument constructor** required by Firestore for automatic deserialization.
      */
     public Mood() {
         // empty instance to satisfy firebase requirement
+    }
+
+
+    public String getDocId() {
+        return docId;
+    }
+
+    public void setDocId(String docId) {
+        this.docId = docId;
     }
 
     public Mood(MoodState moodState) {
