@@ -74,6 +74,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageButton_DeleteEditMoodActivity_selectImage" />
 
+    <TextView
+        android:id="@+id/textView_triggerLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="Trigger"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/editText_DeleteEditMoodActivity_triggerInput"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_DeleteEditMoodActivity_currentMoodspinner" />
+
+    <TextView
+        android:id="@+id/textView_moodLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="4dp"
+        android:text="Mood"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_DeleteEditMoodActivity_selectImagetext" />
+
     <Spinner
         android:id="@+id/spinner_DeleteEditMoodActivity_currentMoodspinner"
         android:layout_width="match_parent"
@@ -100,12 +124,24 @@
         android:background="@color/text_box_background"
         android:backgroundTint="#282727"
         android:backgroundTintMode="src_over"
-        android:hint="Trigger (Optional)"
+        android:hint="Trigger"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/spinner_DeleteEditMoodActivity_currentMoodspinner" />
 
+    <TextView
+        android:id="@+id/textView_socialSituationLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:text="Social Situation"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/editText_DeleteEditMoodActivity_socialSituationinput"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editText_DeleteEditMoodActivity_triggerInput" />
     <EditText
         android:id="@+id/editText_DeleteEditMoodActivity_socialSituationinput"
         android:layout_width="357dp"
@@ -118,6 +154,8 @@
         android:backgroundTintMode="src_over"
         android:hint="Social Situation (Optional)"
         android:textColor="@color/white"
+        android:gravity="start|top"
+        android:paddingTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/editText_DeleteEditMoodActivity_triggerInput" />
@@ -129,6 +167,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:text="Geolocation (Optional)"
+        android:textColor="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/editText_DeleteEditMoodActivity_socialSituationinput"
         tools:ignore="UseSwitchCompatOrMaterialXml" />
