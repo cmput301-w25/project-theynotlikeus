@@ -27,7 +27,10 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+/**
+ * Fragment that displays and manages a list of the user's moods.
+ * Options for filtering, searching, and adding moods.
+ */
 public class homeMyMoodsFrag extends Fragment {
 
     private String username;
@@ -38,7 +41,7 @@ public class homeMyMoodsFrag extends Fragment {
     private FirebaseFirestore db;
     private CollectionReference moodListRef;
 
-    // current filter values
+    // filter options
     private boolean filterRecentweek = false;
     private String filterEmotionalstate = "All Moods";
     private String filterReason = "";
@@ -49,7 +52,7 @@ public class homeMyMoodsFrag extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_my_moods, container, false);
 
-        // Retrieve the username from the Activity's Intent extras
+        // Retrieve the username from the activity's intent
         if (getActivity() != null && getActivity().getIntent() != null) {
             username = getActivity().getIntent().getStringExtra("username");
         }
@@ -62,7 +65,7 @@ public class homeMyMoodsFrag extends Fragment {
             usernameTextView.setText("Welcome!");
         }
 
-        // Handle Floating Action Button (FAB) click to add a new mood
+        // Floating Action Button (FAB) to add a new mood
         FloatingActionButton addMoodButton = view.findViewById(R.id.floatingActionButton_homeMyMoodsFrag_addmood);
         addMoodButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AddMoodEventActivity.class);
@@ -70,14 +73,13 @@ public class homeMyMoodsFrag extends Fragment {
             startActivity(intent);
         });
 
-        // Handle profile picture click to go to profile activity
+        // Profile image click listener to navigate to profile
         ImageView profileImage = view.findViewById(R.id.ImageView_homeMyMoodsFrag_userProfile);
         profileImage.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), PersonalProfileDetailsActivity.class);
             startActivity(intent);
         });
-
-        // Setup AutoCompleteTextView for emotional state filtering
+        // Emotional state filter dropdown
         AutoCompleteTextView autoCompleteTextView = view.findViewById(R.id.autoCompleteTextView);
         String[] filterOptions = {"All Moods", "Happiness", "Sadness", "Anger", "Surprise", "Fear", "Disgust", "Shame"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
@@ -91,7 +93,7 @@ public class homeMyMoodsFrag extends Fragment {
             loadMoodsFromFirebase();
         });
 
-        // Setup SearchView for filtering by reason text
+        // SearchView for filtering by reason
         SearchView searchView = view.findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -148,13 +150,12 @@ public class homeMyMoodsFrag extends Fragment {
                 .whereEqualTo("username", username)
                 .orderBy("dateTime", Query.Direction.DESCENDING);
 
-        // Apply recent week filter if enabled
+        // Apply recent week filter if checked
         if (filterRecentweek) {
             long recentWeekMillis = System.currentTimeMillis() - (7L * 24 * 60 * 60 * 1000);
             Timestamp recentWeekTimestamp = new Timestamp(new Date(recentWeekMillis));
             query = query.whereGreaterThanOrEqualTo("dateTime", recentWeekTimestamp);
         }
-
         // Apply emotional state filter if not "All Moods"
         if (filterEmotionalstate != null && !filterEmotionalstate.equals("All Moods") && !filterEmotionalstate.isEmpty()) {
             String filterValue = filterEmotionalstate.toUpperCase();
@@ -192,10 +193,12 @@ public class homeMyMoodsFrag extends Fragment {
                 moods = filteredList;
             }
 
+
             userMoodList.clear();
             userMoodList.addAll(moods);
             userRecyclerViewAdapter.notifyDataSetChanged();
-            // log for testing
+
+            // set log for testing
             Log.d("Firestore", "Total Moods Fetched: " + userMoodList.size());
         });
     }

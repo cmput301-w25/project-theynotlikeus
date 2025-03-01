@@ -11,10 +11,16 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.FirebaseFirestore;
-
+/**
+ * * Activity for users to add a new mood event.
+ * Allows users to select a mood state, enter a trigger, and optionally add a social situation.
+ *
+ *
+ */
 public class AddMoodEventActivity extends AppCompatActivity {
 
     private String username;
+    // added for main
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +28,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_mood_event);
 
         // Retrieve the username passed from the previous screen
+
         username = getIntent().getStringExtra("username");
 
         // UI references
@@ -30,7 +37,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
         EditText socialSituationEditText = findViewById(R.id.edittext_activitymoodevent_socialsituation);
         Switch geolocationSwitch = findViewById(R.id.switch_activitymoodevent_geolocation); // optional: for geolocation logic
 
-        // Spinner visibility
+        // Setup spinner for mood selection
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this,
                 R.array.moods,
@@ -41,28 +48,30 @@ public class AddMoodEventActivity extends AppCompatActivity {
         // End of spinner adjustments
 
         Button saveButton = findViewById(R.id.button_activitymoodevent_save);
+
+
         saveButton.setOnClickListener(v -> {
             // Get the selected mood from the spinner
             String selectedMood = moodSpinner.getSelectedItem().toString();
             Mood.MoodState moodState;
             try {
-                // Convert the selected string to a MoodState enum (assuming strings match the enum names)
+                // Convert selected string to MoodState enum
                 moodState = Mood.MoodState.valueOf(selectedMood.toUpperCase());
             } catch (IllegalArgumentException e) {
                 Toast.makeText(this, "Invalid mood selection.", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // Create a new Mood object with the selected mood state
+            // Create a new Mood object
             Mood mood = new Mood(moodState);
 
-            // Set the trigger (if provided)
+            // Set optional trigger
             String trigger = triggerEditText.getText().toString().trim();
             if (!trigger.isEmpty()) {
                 mood.setTrigger(trigger);
             }
 
-            // Set the social situation (if provided)
+            // Set optional social situation
             String socialText = socialSituationEditText.getText().toString().trim();
             if (!socialText.isEmpty()) {
                 try {
@@ -95,7 +104,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
                     });
         });
 
-        // Back button handler
+        // Back button to return to the previous screen
         findViewById(R.id.button_activitymoodevent_backbutton).setOnClickListener(v -> finish());
     }
 }

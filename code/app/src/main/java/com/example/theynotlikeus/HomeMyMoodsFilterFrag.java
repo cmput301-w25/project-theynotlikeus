@@ -7,7 +7,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+/**
+ * Fragment that provides filtering options for mood events.
+ * Filter mood events based on different criteria.
+ */
 public class HomeMyMoodsFilterFrag extends Fragment {
 
 

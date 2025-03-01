@@ -21,7 +21,11 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * Handles user sign-up.
+ * Checks if a username already exists before registering a new user.
+ * Navigates to the login screen or main activity upon successful signup.
+ * */
 public class userSignUpFrag extends Fragment {
 
     //private String mParam1;

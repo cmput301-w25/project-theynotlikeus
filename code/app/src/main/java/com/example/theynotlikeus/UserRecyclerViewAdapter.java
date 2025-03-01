@@ -17,6 +17,11 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+/*
+*   Adapter for displaying moods in RecyclerView.
+*   Retrieves and formats mood states, dates, and associated icons.
+* */
 public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerViewAdapter.MyViewHolder> {
     private List<Mood> userMoodList;
     private Context context;
@@ -37,19 +42,17 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Mood mood = userMoodList.get(position);
-
+        // Set mood icon
         int moodIconRes = getMoodIcon(mood.getMoodState() != null ? mood.getMoodState() : Mood.MoodState.SURPRISE);
         holder.imageViewMoodIcon.setImageResource(moodIconRes);
-        //get photo, Unknown if null
 
 
+        // Set text details, defaulting to "Unknown" if null
         holder.textViewMoodTitle.setText(mood.getMoodState() != null ? mood.getMoodState().toString() : "Unknown");
-        //get mood state, Unknown if null
-
         holder.textViewSocialSituation.setText(mood.getSocialSituation() != null ? mood.getSocialSituation().toString() : "Unknown");
-        //get social situation, Unknown if null
-        String username = mood.getUsername() != null ? mood.getUsername() : "Unknown";
 
+        String username = mood.getUsername() != null ? mood.getUsername() : "Unknown";
+        //get date and set to the correct format
         if (mood.getDateTime() != null) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm a", Locale.getDefault());
             holder.textViewDate.setText(dateFormat.format(mood.getDateTime()));

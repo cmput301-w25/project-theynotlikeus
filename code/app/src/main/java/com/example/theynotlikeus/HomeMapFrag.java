@@ -9,9 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeMapFrag#newInstance} factory method to
- * create an instance of this fragment.
+ *  Fragment that displays a map for mood-related locations.
+ *  This fragment may be used to visualize mood events on a map.
  */
 public class HomeMapFrag extends Fragment {
 
@@ -25,13 +24,13 @@ public class HomeMapFrag extends Fragment {
     private String mParam2;
 
     public HomeMapFrag() {
-        // Required empty public constructor
+        // Required empty public constructor for firebase
     }
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
+     * Creates a new instance of HomeMapFrag with parameters.
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
      * @return A new instance of fragment Map.
