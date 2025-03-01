@@ -179,12 +179,13 @@ public class homeMyMoodsFrag extends Fragment {
                 moods.add(mood);
             }
 
-            // Apply local reason filter if provided
+            // Apply local reason filter to trigger
+            // since the user mood correlates to the trigger of what caused the mood event
             if (filterReason != null && !filterReason.isEmpty()) {
                 List<Mood> filteredList = new ArrayList<>();
                 for (Mood mood : moods) {
-                    if (mood.getReason() != null &&
-                            mood.getReason().toLowerCase().contains(filterReason.toLowerCase())) {
+                    if (mood.getTrigger() != null &&
+                            mood.getTrigger().toLowerCase().contains(filterReason.toLowerCase())) {
                         filteredList.add(mood);
                     }
                 }
