@@ -1,6 +1,8 @@
 package com.example.theynotlikeus;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,17 +12,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
+import java.util.concurrent.atomic.AtomicReference;
+
+import com.google.firebase.firestore.QuerySnapshot;
+
 public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerViewAdapter.MyViewHolder> {
     private List<Mood> userMoodList;
     private Context context;
     private FirebaseFirestore db;
+
+    private Mood mood;
 
     public UserRecyclerViewAdapter(Context context, List<Mood> userMoodList) {
         this.userMoodList = userMoodList;
@@ -36,23 +43,23 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Mood mood = userMoodList.get(position);
+        AtomicReference<Mood> mood = new AtomicReference<>(userMoodList.get(position));
 
-        int moodIconRes = getMoodIcon(mood.getMoodState() != null ? mood.getMoodState() : Mood.MoodState.SURPRISE);
+        int moodIconRes = getMoodIcon(mood.get().getMoodState() != null ? mood.get().getMoodState() : Mood.MoodState.SURPRISE);
         holder.imageViewMoodIcon.setImageResource(moodIconRes);
         //get photo, Unknown if null
 
 
-        holder.textViewMoodTitle.setText(mood.getMoodState() != null ? mood.getMoodState().toString() : "Unknown");
+        holder.textViewMoodTitle.setText(mood.get().getMoodState() != null ? mood.get().getMoodState().toString() : "Unknown");
         //get mood state, Unknown if null
 
-        holder.textViewSocialSituation.setText(mood.getSocialSituation() != null ? mood.getSocialSituation().toString() : "Unknown");
+        holder.textViewSocialSituation.setText(mood.get().getSocialSituation() != null ? mood.get().getSocialSituation().toString() : "Unknown");
         //get social situation, Unknown if null
-        String username = mood.getUsername() != null ? mood.getUsername() : "Unknown";
+        String username = mood.get().getUsername() != null ? mood.get().getUsername() : "Unknown";
 
-        if (mood.getDateTime() != null) {
+        if (mood.get().getDateTime() != null) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm a", Locale.getDefault());
-            holder.textViewDate.setText(dateFormat.format(mood.getDateTime()));
+            holder.textViewDate.setText(dateFormat.format(mood.get().getDateTime()));
         } else {
             holder.textViewDate.setText("Unknown");
         }//set date to the correct format, Unknown if null
@@ -62,6 +69,17 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
 //        } else {
 //            holder.textViewDate.setText("Unknown");
 //        }
+
+            /*
+            Intent intent = new Intent(context, MoodEventDetailsActivity.class);
+            intent.putExtra("moodState", mood.getMoodState() != null ? mood.getMoodState().toString() : "Unknown");
+            intent.putExtra("socialSituation", mood.getSocialSituation() != null ? mood.getSocialSituation().toString() : "Unknown");
+            //intent.putExtra("dateTime", mood.getDateTime() != null ? mood.getDateTime().toDate().getTime() : 0);
+            intent.putExtra("reason", mood.getReason() != null ? mood.getReason() : "No reason provided");
+            intent.putExtra("trigger",mood.getTrigger()!=null?mood.getReason() : "No reason provided");
+            intent.putExtra("username", mood.getUsername() != null ? mood.getUsername() : "Unknown");;
+            context.startActivity(intent);*/
+
     }
 
     @Override

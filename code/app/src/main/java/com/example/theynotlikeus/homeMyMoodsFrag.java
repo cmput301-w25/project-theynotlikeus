@@ -20,9 +20,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,6 +39,7 @@ public class homeMyMoodsFrag extends Fragment {
     private RecyclerView.LayoutManager userRecyclerViewLayoutManager;
     private FirebaseFirestore db;
     private CollectionReference moodListRef;
+
 
     // current filter values
     private boolean filterRecentweek = false;
@@ -130,7 +133,53 @@ public class homeMyMoodsFrag extends Fragment {
             loadMoodsFromFirebase();
         });
 
+        userRecyclerView.setOnItemClickListener((adapterView, view, i, l) ->  {
+            Mood selectedMood = userMoodList.get(position);
+
+            Intent intent = new Intent(getActivity(), MoodEventDetailsActivity.class);
+            intent.putExtra("moodId", selectedMood.getMoodId());
+            startActivity(intent);
+        });
+
+
+        /*
+        //click and open mood event detail
+        userRecyclerView.setOnItemClickListener((parent, view1, position, id) -> {
+            //@Override
+            public void onItemClick(View view, int position) {
+                Mood selectedMood = userMoodList.get(position);  // Get the clicked item
+                Log.d("RecyclerView", "Item clicked: " + position);
+
+                String moodState = selectedMood.getMoodState() != null ? selectedMood.getMoodState().toString() : "Unknown";
+                String trigger = selectedMood.getTrigger() != null ? selectedMood.getTrigger() : "No trigger provided";
+                String socialSituation = selectedMood.getSocialSituation() != null ? selectedMood.getSocialSituation().toString() : "Unknown";
+
+                // Query Firestore for the moodId based on moodState, trigger, or socialSituation
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                db.collection("moods")
+                        .whereEqualTo("moodState", moodState)
+                        .whereEqualTo("trigger", trigger)
+                        .whereEqualTo("socialSituation", socialSituation)
+                        .limit(1)
+                        .get()
+                        .addOnCompleteListener(task -> {
+                            QuerySnapshot querySnapshot = task.getResult();
+                            DocumentSnapshot document = querySnapshot.getDocuments().get(0);
+                            String moodId = document.getId();  // Get Firestore document ID
+
+                            // Open MoodEventDetailsActivity with moodId
+                            Intent intent = new Intent(getActivity(), MoodEventDetailsActivity.class);
+                            intent.putExtra("moodId", moodId);
+                            startActivity(intent);
+                        });
+
+
+            }
+        });
+        */
+
         return view;
+
     }
 
     @Override
