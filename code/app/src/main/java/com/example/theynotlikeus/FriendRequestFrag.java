@@ -9,9 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link FriendRequestFrag#newInstance} factory method to
- * create an instance of this fragment.
+ * Fragment for handling friend requests.
+ * Users can view and manage incoming/outgoing friend requests.
+ *
+ *
  */
 public class FriendRequestFrag extends Fragment {
 

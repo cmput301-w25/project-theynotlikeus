@@ -15,7 +15,11 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
+/*
+*   Main entry point of the application.
+*  Handles navigation using a BottomNavigationView.
+*
+* */
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -24,9 +28,6 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-
-
-
         // Apply System Insets for Edge-To-Edge UI
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -34,10 +35,10 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Find BottomNavigationView
+        // Initialize bottom navigation
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
-        // Get NavController from NavHostFragment
+        // Setup navigation controller
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragmentContainerView2);
 

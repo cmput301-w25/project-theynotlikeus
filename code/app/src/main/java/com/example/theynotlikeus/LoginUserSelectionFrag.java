@@ -17,6 +17,8 @@ import android.widget.Button;
  * A simple {@link Fragment} subclass.
  * Use the {@link LoginUserSelectionFrag#newInstance} factory method to
  * create an instance of this fragment.
+ * Displays the user selection screen (User vs. Admin).
+ * Navigates to the appropriate login screen.
  */
 public class LoginUserSelectionFrag extends Fragment {
 

@@ -8,7 +8,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
+/*
+*   Activity that displays the user's personal profile details.
+*  Includes a back button for navigation.
+* */
 public class PersonalProfileDetailsActivity extends AppCompatActivity {
 
     @Override
@@ -17,14 +20,14 @@ public class PersonalProfileDetailsActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_personal_profile_details);
 
-        // Apply window insets
+        // Apply system insets for edge-to-edge UI
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        // Find the toolbar and set back button functionality
+        // Set up the back button
         Toolbar backButton = findViewById(R.id.button_PersonalProfileDetailsActivity_back);
         backButton.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

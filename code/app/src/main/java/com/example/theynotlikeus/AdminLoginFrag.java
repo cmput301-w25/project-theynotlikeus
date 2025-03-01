@@ -15,9 +15,9 @@ import android.view.ViewGroup;
 import com.google.android.material.appbar.MaterialToolbar;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link AdminLoginFrag#newInstance} factory method to
- * create an instance of this fragment.
+ * Fragment for admin login.
+ * Allows an admin to sign in and access the admin panel.
+ * Admins can only be registered via firebase
  */
 public class AdminLoginFrag extends Fragment {
 
@@ -75,6 +75,8 @@ public class AdminLoginFrag extends Fragment {
         // Find button
         MaterialToolbar backButton = view.findViewById(R.id.button_AdminLoginFrag_back);
         NavController navController = Navigation.findNavController(view);
+        // Back button navigation
+
         backButton.setOnClickListener(v ->
                 navController.navigate(R.id.action_adminLoginFrag_to_loginUserSelectionFrag)
         );
