@@ -118,7 +118,7 @@ public class homeMyMoodsFrag extends Fragment {
 
         // Set the adapter’s item-click listener -> EditDeleteMoodActivity
         userRecyclerViewAdapter.setOnItemClickListener(mood -> {
-            Intent intent = new Intent(getActivity(), EditDeleteMoodActivity.class);
+            Intent intent = new Intent(getActivity(), MoodEventDetailsActivity.class);
             intent.putExtra("moodId", mood.getDocId());
             startActivity(intent);
         });

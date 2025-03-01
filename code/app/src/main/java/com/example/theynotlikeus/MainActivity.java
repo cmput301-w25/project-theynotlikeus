@@ -46,6 +46,14 @@ public class MainActivity extends AppCompatActivity {
             NavigationUI.setupWithNavController(bottomNavigationView, navController);
         }
 
+        /*
+        // Check for an extra that indicates which fragment to load
+        String fragmentToLoad = getIntent().getStringExtra("fragmentToLoad");
+        if ("homeMyMoodsFrag".equals(fragmentToLoad) && navController != null) {
+            // Assumes the destination id for homeMyMoodsFrag is defined as R.id.homeMyMoodsFrag in your navigation graph
+            bottomNavigationView.setSelectedItemId(R.id.homeMyMoodsFrag);
+        }
+*/
 
     }
 

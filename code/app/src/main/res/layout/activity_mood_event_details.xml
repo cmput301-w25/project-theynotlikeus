@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraintlayout_activitymoodeventdetails_level1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black_background">
-
 
     <!--
     Code for adjusting image size of image button taken from: https://stackoverflow.com/questions/23461391/android-imagebutton-crops-on-resize/23461524
@@ -26,6 +26,7 @@
         android:maxHeight="40dp"
         android:scaleType="fitXY"
         android:src="@drawable/ic_white_back_button"
+        android:translationY="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/textview_activitymoodeventdetails_title"
         app:layout_constraintEnd_toStartOf="@+id/textview_activitymoodeventdetails_title"
         app:layout_constraintHorizontal_bias="0.595"
@@ -41,6 +42,7 @@
         android:maxWidth="40dp"
         android:maxHeight="40dp"
         android:scaleType="fitXY"
+        android:translationY="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/textview_activitymoodeventdetails_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.627"
@@ -175,6 +177,5 @@
         android:textColorHint="#898888"
         app:layout_constraintStart_toStartOf="@+id/textview_activitymoodeventdetails_time"
         app:layout_constraintTop_toBottomOf="@+id/textview_activitymoodeventdetails_time" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

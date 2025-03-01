@@ -1,6 +1,8 @@
 package com.example.theynotlikeus;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -111,10 +113,13 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
 
         // Handle DELETE
         deleteButton.setOnClickListener(v -> {
+            Toast.makeText(EditDeleteMoodActivity.this, "Delete button clicked", Toast.LENGTH_SHORT).show();
+            Log.d("EditDeleteMoodActivity", "Delete button clicked");
             if (moodToEdit == null) {
                 Toast.makeText(this, "Mood not loaded yet.", Toast.LENGTH_SHORT).show();
                 return;
             }
+            Log.d("EditDeleteMoodActivity", "Attempting to delete mood with docId: " + moodToEdit.getDocId());
             db.collection("moods").document(moodToEdit.getDocId())
                     .delete()
                     .addOnSuccessListener(aVoid -> {
@@ -123,6 +128,10 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                                 "Mood deleted successfully!",
                                 Toast.LENGTH_SHORT
                         ).show();
+                        // After deletion, go back to MoodEventDetailsActivity
+                        Intent intent = new Intent(EditDeleteMoodActivity.this, MoodEventDetailsActivity.class);
+                        intent.putExtra("moodId", moodId);
+                        startActivity(intent);
                         finish();
                     })
                     .addOnFailureListener(e -> {
@@ -131,11 +140,45 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                                 "Error deleting mood: " + e.getMessage(),
                                 Toast.LENGTH_SHORT
                         ).show();
+                        Log.e("EditDeleteMoodActivity", "Delete failed", e);
                     });
         });
 
-        // Handle BACK
-        backButton.setOnClickListener(v -> finish());
+
+        // Handle DELETE
+        deleteButton.setOnClickListener(v -> {
+            Toast.makeText(EditDeleteMoodActivity.this, "Delete button clicked", Toast.LENGTH_SHORT).show();
+            Log.d("EditDeleteMoodActivity", "Delete button clicked");
+            if (moodToEdit == null) {
+                Toast.makeText(this, "Mood not loaded yet.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Log.d("EditDeleteMoodActivity", "Attempting to delete mood with docId: " + moodToEdit.getDocId());
+            db.collection("moods").document(moodToEdit.getDocId())
+                    .delete()
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(
+                                EditDeleteMoodActivity.this,
+                                "Mood deleted successfully!",
+                                Toast.LENGTH_SHORT
+                        ).show();
+                        // After deletion, navigate back to MainActivity with homeMyMoodsFrag loaded
+                        Intent intent = new Intent(EditDeleteMoodActivity.this, MainActivity.class);
+                        intent.putExtra("fragmentToLoad", "homeMyMoodsFrag");
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        startActivity(intent);
+                        finish();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(
+                                EditDeleteMoodActivity.this,
+                                "Error deleting mood: " + e.getMessage(),
+                                Toast.LENGTH_SHORT
+                        ).show();
+                        Log.e("EditDeleteMoodActivity", "Delete failed", e);
+                    });
+        });
+
     }
 
     private void loadMoodData() {
