@@ -20,6 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class AddMoodEventActivity extends AppCompatActivity {
 
     private String username;
+    // added for main
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
