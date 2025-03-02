@@ -8,11 +8,15 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+/*
+*   Activity that displays the details of a mood event.
+* */
 public class MoodEventDetailsActivity extends AppCompatActivity {
 
     TextView socialSituationTextView;

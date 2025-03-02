@@ -9,9 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link CommunityFrag#newInstance} factory method to
- * create an instance of this fragment.
+ * Fragment for the community section.
+ * Allows users to interact with each other within the app.
+ *
  */
 public class CommunityFrag extends Fragment {
 

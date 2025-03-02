@@ -35,6 +35,7 @@ public class Mood {
     public Mood() {
         // empty instance to satisfy firebase requirement
     }
+    //Constructor for creating a mood entry with the current date.
 
 
     public String getDocId() {
@@ -50,6 +51,7 @@ public class Mood {
         this.moodState = moodState;
     }
 
+    //Constructor for creating a mood entry with a specified date.
     public Mood(Date dateTime, MoodState moodState) {
         this.dateTime = dateTime;
         this.moodState = moodState;
@@ -90,7 +92,7 @@ public class Mood {
     public String getReason() {
         return reason;
     }
-
+    //Sets the reason for the mood event(ensures the reason does not exceed 20 characters or 3 words).
     public void setReason(String reason) {
         if (reason != null && (reason.length() > 20 || reason.split("\\s+").length > 3)) {
             throw new IllegalArgumentException("Reason must be at most 20 characters or 3 words.");
@@ -109,7 +111,7 @@ public class Mood {
     public byte[] getPhoto() {
         return photo;
     }
-
+    //Sets the photo for the mood entry(ensures the photo size is within the allowed limit).
     public void setPhoto(byte[] photo) {
         if (photo != null && photo.length > photoSize) {
             throw new IllegalArgumentException("Photo size must be under 65536 bytes.");
@@ -124,7 +126,7 @@ public class Mood {
     public Double getLongitude() {
         return longitude;
     }
-
+    //Sets the location (latitude and longitude) of the mood event.
     public void setLocation(Double latitude, Double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;

@@ -18,7 +18,6 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
     private List<Mood> userMoodList;
     private Context context;
 
-    // Define an interface for item clicks
     public interface OnItemClickListener {
         void onItemClick(Mood mood);
     }
@@ -28,10 +27,6 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
     public UserRecyclerViewAdapter(Context context, List<Mood> userMoodList) {
         this.userMoodList = userMoodList;
         this.context = context;
-    }
-
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
     }
 
     @NonNull
@@ -44,7 +39,6 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Mood mood = userMoodList.get(position);
-
         int moodIconRes = getMoodIcon(mood.getMoodState() != null ? mood.getMoodState() : Mood.MoodState.SURPRISE);
         holder.imageViewMoodIcon.setImageResource(moodIconRes);
         holder.textViewMoodTitle.setText(mood.getMoodState() != null ? mood.getMoodState().toString() : "Unknown");
@@ -57,7 +51,6 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
             holder.textViewDate.setText("Unknown");
         }
 
-        // Set the click listener for the whole itemView
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
                 int pos = holder.getAdapterPosition();
@@ -109,7 +102,11 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
             case BOREDOM:
                 return R.drawable.ic_bored_emoticon;
             default:
-                return R.drawable.ic_happy_emoticon; // Default icon
+                return R.drawable.ic_happy_emoticon;
         }
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 }

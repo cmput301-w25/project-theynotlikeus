@@ -37,32 +37,21 @@ public class homeMyMoodsFrag extends Fragment {
     private RecyclerView.LayoutManager userRecyclerViewLayoutManager;
     private FirebaseFirestore db;
     private CollectionReference moodListRef;
-
-    // current filter values
     private boolean filterRecentweek = false;
     private String filterEmotionalstate = "All Moods";
-    private String filterReason = "";
+    private String filterTrigger = "";
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home_my_moods, container, false);
 
-        // Retrieve the username from the Activity's Intent extras
         if (getActivity() != null && getActivity().getIntent() != null) {
             username = getActivity().getIntent().getStringExtra("username");
         }
 
-        // Set the welcome message
         TextView usernameTextView = view.findViewById(R.id.textView_homeMyMoodFrag_welcomeUser);
-        if (username != null) {
-            usernameTextView.setText("Welcome, " + username + "!");
-        } else {
-            usernameTextView.setText("Welcome!");
-        }
+        usernameTextView.setText(username != null ? "Welcome, " + username + "!" : "Welcome!");
 
-        // Floating Action Button to add a new mood
         FloatingActionButton addMoodButton = view.findViewById(R.id.floatingActionButton_homeMyMoodsFrag_addmood);
         addMoodButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AddMoodEventActivity.class);
@@ -70,45 +59,37 @@ public class homeMyMoodsFrag extends Fragment {
             startActivity(intent);
         });
 
-        // Profile picture click -> profile activity
         ImageView profileImage = view.findViewById(R.id.ImageView_homeMyMoodsFrag_userProfile);
         profileImage.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), PersonalProfileDetailsActivity.class);
             startActivity(intent);
         });
 
-        // Setup AutoCompleteTextView for emotional state filtering
         AutoCompleteTextView autoCompleteTextView = view.findViewById(R.id.autoCompleteTextView);
         String[] filterOptions = {"All Moods", "Happiness", "Sadness", "Anger", "Surprise", "Fear", "Disgust", "Shame"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                requireContext(),
-                android.R.layout.simple_dropdown_item_1line,
-                filterOptions
-        );
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, filterOptions);
         autoCompleteTextView.setAdapter(adapter);
         autoCompleteTextView.setOnItemClickListener((parent, view1, position, id) -> {
             filterEmotionalstate = parent.getItemAtPosition(position).toString();
             loadMoodsFromFirebase();
         });
 
-        // Setup SearchView for filtering by reason
         SearchView searchView = view.findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                filterReason = query;
+                filterTrigger = query;
                 loadMoodsFromFirebase();
                 return false;
             }
             @Override
             public boolean onQueryTextChange(String newText) {
-                filterReason = newText;
+                filterTrigger = newText;
                 loadMoodsFromFirebase();
                 return false;
             }
         });
 
-        // Initialize RecyclerView + Adapter
         userRecyclerView = view.findViewById(R.id.recyclerview_fragmenthomemymoods_userrecyclerview);
         userRecyclerView.setHasFixedSize(true);
         userRecyclerViewLayoutManager = new LinearLayoutManager(getContext());
@@ -116,29 +97,22 @@ public class homeMyMoodsFrag extends Fragment {
         userRecyclerViewAdapter = new UserRecyclerViewAdapter(getContext(), userMoodList);
         userRecyclerView.setAdapter(userRecyclerViewAdapter);
 
-        // Set the adapter’s item-click listener -> EditDeleteMoodActivity
         userRecyclerViewAdapter.setOnItemClickListener(mood -> {
             Intent intent = new Intent(getActivity(), MoodEventDetailsActivity.class);
             intent.putExtra("moodId", mood.getDocId());
             startActivity(intent);
         });
 
-        // Initialize Firestore references
         db = FirebaseFirestore.getInstance();
         moodListRef = db.collection("moods");
 
-        // Load moods
         loadMoodsFromFirebase();
 
-        // CheckBox for filtering by recent week
         CheckBox recentWeekCheckBox = view.findViewById(R.id.checkBox_recentWeek);
         recentWeekCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             filterRecentweek = isChecked;
             loadMoodsFromFirebase();
         });
-
-        // NOTE: Remove any ListView-like "setOnItemClickListener" calls on RecyclerView
-        // Because RecyclerView doesn't support setOnItemClickListener natively.
 
         return view;
     }
@@ -146,34 +120,25 @@ public class homeMyMoodsFrag extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        // Refresh the mood list every time the fragment is resumed
         loadMoodsFromFirebase();
     }
 
     private void loadMoodsFromFirebase() {
         Log.d("UserProfile", "Loading moods for username: '" + username + "'");
-
-        // Build query: moods for the given username, ordered by dateTime descending
-        Query query = moodListRef
-                .whereEqualTo("username", username)
+        Query query = moodListRef.whereEqualTo("username", username)
                 .orderBy("dateTime", Query.Direction.DESCENDING);
 
-        // Apply recent-week filter if enabled
         if (filterRecentweek) {
             long recentWeekMillis = System.currentTimeMillis() - (7L * 24 * 60 * 60 * 1000);
             Timestamp recentWeekTimestamp = new Timestamp(new Date(recentWeekMillis));
             query = query.whereGreaterThanOrEqualTo("dateTime", recentWeekTimestamp);
         }
 
-        // Apply emotional state filter if not "All Moods"
-        if (filterEmotionalstate != null
-                && !filterEmotionalstate.equals("All Moods")
-                && !filterEmotionalstate.isEmpty()) {
+        if (filterEmotionalstate != null && !filterEmotionalstate.equals("All Moods") && !filterEmotionalstate.isEmpty()) {
             String filterValue = filterEmotionalstate.toUpperCase();
             query = query.whereEqualTo("moodState", filterValue);
         }
 
-        // Execute the query
         query.get().addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {
                 Log.e("Firestore", "Error fetching moods", task.getException());
@@ -183,26 +148,18 @@ public class homeMyMoodsFrag extends Fragment {
             List<Mood> moods = new ArrayList<>();
             for (QueryDocumentSnapshot snapshot : task.getResult()) {
                 Log.d("Firestore", "Document ID: " + snapshot.getId() + ", Data: " + snapshot.getData());
-
-                // Convert to Mood object
                 Mood mood = snapshot.toObject(Mood.class);
-
-                // IMPORTANT: set the Firestore doc ID on the Mood
                 mood.setDocId(snapshot.getId());
-
-                // If moodState is null, set default
                 if (mood.getMoodState() == null) {
                     mood.setMoodState(Mood.MoodState.HAPPINESS);
                 }
                 moods.add(mood);
             }
 
-            // Local reason filter if provided
-            if (filterReason != null && !filterReason.isEmpty()) {
+            if (filterTrigger != null && !filterTrigger.isEmpty()) {
                 List<Mood> filteredList = new ArrayList<>();
                 for (Mood mood : moods) {
-                    if (mood.getReason() != null &&
-                            mood.getReason().toLowerCase().contains(filterReason.toLowerCase())) {
+                    if (mood.getTrigger() != null && mood.getTrigger().toLowerCase().contains(filterTrigger.toLowerCase())) {
                         filteredList.add(mood);
                     }
                 }
@@ -212,7 +169,6 @@ public class homeMyMoodsFrag extends Fragment {
             userMoodList.clear();
             userMoodList.addAll(moods);
             userRecyclerViewAdapter.notifyDataSetChanged();
-
             Log.d("Firestore", "Total Moods Fetched: " + userMoodList.size());
         });
     }
