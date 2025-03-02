@@ -3,8 +3,8 @@ package com.example.theynotlikeus;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +18,8 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
     TextView dateTextView;
     TextView triggerTextView;
     TextView usernameTextView;
+
+    ImageView moodImageView;
 
     ImageButton backButton;
     ImageButton editButton;
@@ -36,21 +38,28 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
         dateTextView = findViewById(R.id.textview_activitymoodeventdetails_date);
         triggerTextView = findViewById(R.id.textview_activitymoodeventdetails_triggervalue);
         usernameTextView = findViewById(R.id.textview_activitymoodeventdetails_username);
+        moodImageView = findViewById(R.id.imageview_activitymoodeventdetails_moodimage);
 
         editButton = findViewById(R.id.imagebutton_activitymoodeventdetails_editbutton);
-        backButton = findViewById(R.id.imagebutton_activitymoodeventdetails_backbutton); // Initialize backButton
+        backButton = findViewById(R.id.imagebutton_activitymoodeventdetails_backbutton);
 
         moodId = getIntent().getStringExtra("moodId");
 
-        // Access the specific document by its ID
+        //gets mood details using the mood id from the database
         db.collection("moods").document(moodId).get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
                 DocumentSnapshot document = task.getResult();
                 Mood mood = document.toObject(Mood.class);
                 if (mood != null) {
-                    socialSituationTextView.setText(mood.getSocialSituation() != null ? String.valueOf(mood.getSocialSituation()) : "Unknown");
+                    socialSituationTextView.setText(mood.getSocialSituation() != null
+                            ? mood.getSocialSituation().toString() : "Unknown");
                     triggerTextView.setText(mood.getTrigger() != null ? mood.getTrigger() : "No trigger provided");
-                    usernameTextView.setText(mood.getUsername() != null ? mood.getUsername() : "Unknown");
+                    usernameTextView.setText(mood.getMoodState() != null
+                            ? mood.getMoodState().toString() : "Unknown");
+
+                    //display the mood icon
+                    int iconRes = getMoodIcon(mood.getMoodState());
+                    moodImageView.setImageResource(iconRes);
                 }
             }
         });
@@ -70,6 +79,34 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+    }
 
+
+    private int getMoodIcon(Mood.MoodState moodState) {
+        if (moodState == null) {
+            return R.drawable.ic_happy_emoticon; // Default icon
+        }
+        switch (moodState) {
+            case ANGER:
+                return R.drawable.ic_angry_emoticon;
+            case CONFUSION:
+                return R.drawable.ic_confused_emoticon;
+            case DISGUST:
+                return R.drawable.ic_disgust_emoticon;
+            case FEAR:
+                return R.drawable.ic_fear_emoticon;
+            case HAPPINESS:
+                return R.drawable.ic_happy_emoticon;
+            case SADNESS:
+                return R.drawable.ic_sad_emoticon;
+            case SHAME:
+                return R.drawable.ic_shame_emoticon;
+            case SURPRISE:
+                return R.drawable.ic_surprised_emoticon;
+            case BOREDOM:
+                return R.drawable.ic_bored_emoticon;
+            default:
+                return R.drawable.ic_happy_emoticon;
+        }
     }
 }

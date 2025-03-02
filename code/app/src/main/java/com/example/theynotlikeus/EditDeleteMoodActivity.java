@@ -145,7 +145,7 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
         });
 
 
-        // Handle DELETE
+        /* Handle DELETE
         deleteButton.setOnClickListener(v -> {
             Toast.makeText(EditDeleteMoodActivity.this, "Delete button clicked", Toast.LENGTH_SHORT).show();
             Log.d("EditDeleteMoodActivity", "Delete button clicked");
@@ -177,6 +177,14 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                         ).show();
                         Log.e("EditDeleteMoodActivity", "Delete failed", e);
                     });
+        });*/
+        backButton.setOnClickListener(v -> {
+            Toast.makeText(EditDeleteMoodActivity.this, "Back button clicked", Toast.LENGTH_SHORT).show();
+            Log.d("EditDeleteMoodActivity", "Back button clicked");
+            Intent intent = new Intent(EditDeleteMoodActivity.this, MoodEventDetailsActivity.class);
+            intent.putExtra("moodId", moodId);
+            startActivity(intent);
+            finish();
         });
 
     }
