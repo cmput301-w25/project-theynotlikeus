@@ -19,6 +19,8 @@ import java.util.Locale;
 /*
 *   Adapter for displaying moods in RecyclerView.
 *   Retrieves and formats mood states, dates, and associated icons.
+*   updating
+*
 * */
 public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerViewAdapter.MyViewHolder> {
     private List<Mood> userMoodList;
