@@ -18,8 +18,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class EditDeleteMoodActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
-
-    // This is the Firestore document ID passed from the previous screen
     private String moodId;
     private Mood moodToEdit;
 
@@ -42,21 +40,17 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
         ImageButton backButton = findViewById(R.id.imageButton_DeleteEditMoodActivity_back);
         Button saveButton = findViewById(R.id.button_DeleteEditMoodActivity_save);
 
-        // Initialize Firestore and get the doc ID from the Intent
         db = FirebaseFirestore.getInstance();
         moodId = getIntent().getStringExtra("moodId");
 
-        // Set up spinner adapter
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this, R.array.moods, R.layout.addmoodevent_spinner
         );
         adapter.setDropDownViewResource(R.layout.addmoodevent_spinner);
         moodSpinner.setAdapter(adapter);
 
-        // Load existing mood data from Firestore
         loadMoodData();
 
-        // Handle SAVE
         saveButton.setOnClickListener(v -> {
             if (moodToEdit == null) {
                 Toast.makeText(this, "Mood not loaded yet.", Toast.LENGTH_SHORT).show();
@@ -88,10 +82,6 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                 }
             }
 
-            // If geolocationSwitch is checked => handle Part 4, etc.
-
-            // Use moodToEdit.getDocId() for the reference,
-            // which should match the Firestore document ID
             db.collection("moods").document(moodToEdit.getDocId())
                     .set(moodToEdit)
                     .addOnSuccessListener(aVoid -> {
@@ -111,15 +101,11 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                     });
         });
 
-        // Handle DELETE
         deleteButton.setOnClickListener(v -> {
-            Toast.makeText(EditDeleteMoodActivity.this, "Delete button clicked", Toast.LENGTH_SHORT).show();
-            Log.d("EditDeleteMoodActivity", "Delete button clicked");
             if (moodToEdit == null) {
                 Toast.makeText(this, "Mood not loaded yet.", Toast.LENGTH_SHORT).show();
                 return;
             }
-            Log.d("EditDeleteMoodActivity", "Attempting to delete mood with docId: " + moodToEdit.getDocId());
             db.collection("moods").document(moodToEdit.getDocId())
                     .delete()
                     .addOnSuccessListener(aVoid -> {
@@ -128,41 +114,6 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                                 "Mood deleted successfully!",
                                 Toast.LENGTH_SHORT
                         ).show();
-                        // After deletion, go back to MoodEventDetailsActivity
-                        //Intent intent = new Intent(EditDeleteMoodActivity.this, MoodEventDetailsActivity.class);
-                        //intent.putExtra("moodId", moodId);
-                        //startActivity(intent);
-                        finish();
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(
-                                EditDeleteMoodActivity.this,
-                                "Error deleting mood: " + e.getMessage(),
-                                Toast.LENGTH_SHORT
-                        ).show();
-                        Log.e("EditDeleteMoodActivity", "Delete failed", e);
-                    });
-        });
-
-
-        /* Handle DELETE
-        deleteButton.setOnClickListener(v -> {
-            Toast.makeText(EditDeleteMoodActivity.this, "Delete button clicked", Toast.LENGTH_SHORT).show();
-            Log.d("EditDeleteMoodActivity", "Delete button clicked");
-            if (moodToEdit == null) {
-                Toast.makeText(this, "Mood not loaded yet.", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            Log.d("EditDeleteMoodActivity", "Attempting to delete mood with docId: " + moodToEdit.getDocId());
-            db.collection("moods").document(moodToEdit.getDocId())
-                    .delete()
-                    .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(
-                                EditDeleteMoodActivity.this,
-                                "Mood deleted successfully!",
-                                Toast.LENGTH_SHORT
-                        ).show();
-                        // After deletion, navigate back to MainActivity with homeMyMoodsFrag loaded
                         Intent intent = new Intent(EditDeleteMoodActivity.this, MainActivity.class);
                         intent.putExtra("fragmentToLoad", "homeMyMoodsFrag");
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -175,25 +126,15 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                                 "Error deleting mood: " + e.getMessage(),
                                 Toast.LENGTH_SHORT
                         ).show();
-                        Log.e("EditDeleteMoodActivity", "Delete failed", e);
                     });
-        });*/
-        backButton.setOnClickListener(v -> {
-            Toast.makeText(EditDeleteMoodActivity.this, "Back button clicked", Toast.LENGTH_SHORT).show();
-            Log.d("EditDeleteMoodActivity", "Back button clicked");
-            //Intent intent = new Intent(EditDeleteMoodActivity.this, MoodEventDetailsActivity.class);
-            //intent.putExtra("moodId", moodId);
-            //startActivity(intent);
-            finish();
         });
 
+        backButton.setOnClickListener(v -> finish());
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // Refresh the mood data every time the activity resumes
-        Log.d("MoodDetails", "onResume called, refreshing mood data");
         loadMoodData();
     }
 
@@ -202,14 +143,9 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
-                        // Convert to Mood object
                         moodToEdit = documentSnapshot.toObject(Mood.class);
-
-                        // Set the docId on the object
                         if (moodToEdit != null) {
                             moodToEdit.setDocId(documentSnapshot.getId());
-
-                            // Now populate the UI
                             moodSpinner.setSelection(getMoodStateIndex(moodToEdit.getMoodState()));
                             triggerEditText.setText(moodToEdit.getTrigger());
                             if (moodToEdit.getSocialSituation() != null) {
@@ -217,7 +153,6 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                                         moodToEdit.getSocialSituation().toString().replace("_", " ")
                                 );
                             }
-                            // Geolocation part (Part 4) if needed
                         }
                     } else {
                         Toast.makeText(
@@ -236,7 +171,6 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                 });
     }
 
-    // Used by the spinner to identify which mood is selected
     private int getMoodStateIndex(Mood.MoodState moodState) {
         ArrayAdapter<CharSequence> adapter =
                 (ArrayAdapter<CharSequence>) moodSpinner.getAdapter();
