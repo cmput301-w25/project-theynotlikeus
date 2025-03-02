@@ -23,7 +23,7 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
 
     Spinner moodSpinner;
     EditText triggerEditText;
-    EditText socialSituationEditText;
+    Spinner socialSituationSpinner;
     Switch geolocationSwitch;
 
     @Override
@@ -33,7 +33,7 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
 
         moodSpinner = findViewById(R.id.spinner_DeleteEditMoodActivity_currentMoodspinner);
         triggerEditText = findViewById(R.id.editText_DeleteEditMoodActivity_triggerInput);
-        socialSituationEditText = findViewById(R.id.editText_DeleteEditMoodActivity_socialSituationinput);
+        socialSituationSpinner = findViewById(R.id.spinner_activityeditdeletemoodevent_socialsituation);
         geolocationSwitch = findViewById(R.id.switch_DeleteEditMoodActivity_geoSwitch);
 
         ImageButton deleteButton = findViewById(R.id.imageButton_DeleteEditMoodActivity_delete);
@@ -48,6 +48,12 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
         );
         adapter.setDropDownViewResource(R.layout.addmoodevent_spinner);
         moodSpinner.setAdapter(adapter);
+
+        ArrayAdapter<CharSequence> socialAdapter = ArrayAdapter.createFromResource(
+                this, R.array.social_situations, R.layout.addmoodevent_spinner
+        );
+        socialAdapter.setDropDownViewResource(R.layout.addmoodevent_spinner);
+        socialSituationSpinner.setAdapter(socialAdapter);
 
         loadMoodData();
 
@@ -71,7 +77,7 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                 moodToEdit.setTrigger(trigger);
             }
 
-            String socialText = socialSituationEditText.getText().toString().trim();
+            String socialText = socialSituationSpinner.getSelectedItem().toString().trim();
             if (!socialText.isEmpty()) {
                 try {
                     Mood.SocialSituation socialSituation =
@@ -149,8 +155,8 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                             moodSpinner.setSelection(getMoodStateIndex(moodToEdit.getMoodState()));
                             triggerEditText.setText(moodToEdit.getTrigger());
                             if (moodToEdit.getSocialSituation() != null) {
-                                socialSituationEditText.setText(
-                                        moodToEdit.getSocialSituation().toString().replace("_", " ")
+                                socialSituationSpinner.setSelection(
+                                        getSocialSituationIndex(moodToEdit.getSocialSituation())
                                 );
                             }
                         }
@@ -169,6 +175,16 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT
                     ).show();
                 });
+    }
+
+    private int getSocialSituationIndex(Mood.SocialSituation socialSituation) {
+        ArrayAdapter<CharSequence> adapter = (ArrayAdapter<CharSequence>) socialSituationSpinner.getAdapter();
+        for (int i = 0; i < adapter.getCount(); i++) {
+            if (adapter.getItem(i).toString().equalsIgnoreCase(socialSituation.toString().replace("_", " "))) {
+                return i;
+            }
+        }
+        return 0;
     }
 
     private int getMoodStateIndex(Mood.MoodState moodState) {

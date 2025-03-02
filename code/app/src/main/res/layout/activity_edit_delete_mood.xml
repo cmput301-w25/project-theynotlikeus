@@ -140,27 +140,23 @@
         android:text="Social Situation"
         android:textColor="@color/white"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/editText_DeleteEditMoodActivity_socialSituationinput"
+        app:layout_constraintBottom_toTopOf="@+id/spinner_activityeditdeletemoodevent_socialsituation"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/editText_DeleteEditMoodActivity_triggerInput" />
 
-    <EditText
-        android:id="@+id/editText_DeleteEditMoodActivity_socialSituationinput"
-        android:layout_width="357dp"
-        android:layout_height="117dp"
+    <Spinner
+        android:id="@+id/spinner_activityeditdeletemoodevent_socialsituation"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:entries="@array/social_situations"
+        android:popupBackground="@color/black_background"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="28dp"
         android:layout_marginEnd="32dp"
-        android:background="@color/text_box_background"
-        android:backgroundTint="#282727"
-        android:backgroundTintMode="src_over"
-        android:hint="Social Situation (Optional)"
-        android:textColor="@color/white"
-        android:gravity="start|top"
-        android:paddingTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editText_DeleteEditMoodActivity_triggerInput" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_socialSituationLabel" />
+
 
     <Switch
         android:id="@+id/switch_DeleteEditMoodActivity_geoSwitch"
@@ -171,7 +167,7 @@
         android:text="Geolocation (Optional)"
         android:textColor="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editText_DeleteEditMoodActivity_socialSituationinput"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_activityeditdeletemoodevent_socialsituation"
         tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <Button
