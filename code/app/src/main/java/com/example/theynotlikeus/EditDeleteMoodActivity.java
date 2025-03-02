@@ -129,9 +129,9 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                                 Toast.LENGTH_SHORT
                         ).show();
                         // After deletion, go back to MoodEventDetailsActivity
-                        Intent intent = new Intent(EditDeleteMoodActivity.this, MoodEventDetailsActivity.class);
-                        intent.putExtra("moodId", moodId);
-                        startActivity(intent);
+                        //Intent intent = new Intent(EditDeleteMoodActivity.this, MoodEventDetailsActivity.class);
+                        //intent.putExtra("moodId", moodId);
+                        //startActivity(intent);
                         finish();
                     })
                     .addOnFailureListener(e -> {
@@ -181,12 +181,20 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
         backButton.setOnClickListener(v -> {
             Toast.makeText(EditDeleteMoodActivity.this, "Back button clicked", Toast.LENGTH_SHORT).show();
             Log.d("EditDeleteMoodActivity", "Back button clicked");
-            Intent intent = new Intent(EditDeleteMoodActivity.this, MoodEventDetailsActivity.class);
-            intent.putExtra("moodId", moodId);
-            startActivity(intent);
+            //Intent intent = new Intent(EditDeleteMoodActivity.this, MoodEventDetailsActivity.class);
+            //intent.putExtra("moodId", moodId);
+            //startActivity(intent);
             finish();
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Refresh the mood data every time the activity resumes
+        Log.d("MoodDetails", "onResume called, refreshing mood data");
+        loadMoodData();
     }
 
     private void loadMoodData() {
