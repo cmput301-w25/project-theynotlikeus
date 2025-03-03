@@ -36,7 +36,7 @@ import java.util.List;
  * Provides filtering options including recent week, emotional state, and trigger text.
  * Displays mood events in a RecyclerView, allowing users to click on an item for more details.
  */
-public class homeMyMoodsFrag extends Fragment {
+public class HomeMyMoodsFrag extends Fragment {
 
 
     private String username; //Stores the currently logged-in user's username.
