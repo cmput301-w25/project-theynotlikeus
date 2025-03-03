@@ -26,17 +26,17 @@ import java.util.Map;
  * Checks if a username already exists before registering a new user.
  * Navigates to the login screen or main activity upon successful signup.
  * */
-public class UserSignUpFrag extends Fragment {
+public class userSignUpFrag extends Fragment {
 
     //private String mParam1;
     //private String mParam2;
 
-    public UserSignUpFrag() {
+    public userSignUpFrag() {
         // Required empty public constructor
     }
 
-    public static UserSignUpFrag newInstance(String param1, String param2) {
-        UserSignUpFrag fragment = new UserSignUpFrag();
+    public static userSignUpFrag newInstance(String param1, String param2) {
+        userSignUpFrag fragment = new userSignUpFrag();
         Bundle args = new Bundle();
         args.putString("param1", param1);
         args.putString("param2", param2);
