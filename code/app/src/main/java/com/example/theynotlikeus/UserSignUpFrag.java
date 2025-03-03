@@ -17,10 +17,6 @@ import androidx.navigation.Navigation;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This fragment provides a user interface for new users to create an account.
@@ -32,21 +28,21 @@ import java.util.Map;
  * Checks for an existing username in the Firestore database.
  * If the username does not exist, registers the new user and navigates to MainActivity.
  */
-public class userSignUpFrag extends Fragment {
+public class UserSignUpFrag extends Fragment {
 
 
     //private String mParam1;
     //private String mParam2;
 
 
-    public userSignUpFrag() {
+    public UserSignUpFrag() {
         //Required empty public constructor
     }
 
 
      //Factory method to create a new instance of userSignUpFrag.
-    public static userSignUpFrag newInstance(String param1, String param2) {
-        userSignUpFrag fragment = new userSignUpFrag();
+    public static UserSignUpFrag newInstance(String param1, String param2) {
+        UserSignUpFrag fragment = new UserSignUpFrag();
         Bundle args = new Bundle();
         args.putString("param1", param1);
         args.putString("param2", param2);
