@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="social_situations">
+        <item>Alone</item>
+        <item>One To Other</item>
+        <item>Two To Several</item>
+        <item>To Crowd</item>
+    </string-array>
+</resources>

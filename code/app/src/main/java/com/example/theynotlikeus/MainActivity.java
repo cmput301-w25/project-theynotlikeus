@@ -15,7 +15,11 @@ import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
+/*
+*   Main entry point of the application.
+*  Handles navigation using a BottomNavigationView.
+*
+* */
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -31,10 +35,10 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Find BottomNavigationView
+        // Initialize bottom navigation
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
-        // Get NavController from NavHostFragment
+        // Setup navigation controller
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragmentContainerView2);
 
@@ -43,6 +47,15 @@ public class MainActivity extends AppCompatActivity {
             NavigationUI.setupWithNavController(bottomNavigationView, navController);
         }
 
+        /*
+        // Check for an extra that indicates which fragment to load
+        String fragmentToLoad = getIntent().getStringExtra("fragmentToLoad");
+        if ("homeMyMoodsFrag".equals(fragmentToLoad) && navController != null) {
+            // Assumes the destination id for homeMyMoodsFrag is defined as R.id.homeMyMoodsFrag in your navigation graph
+            bottomNavigationView.setSelectedItemId(R.id.homeMyMoodsFrag);
+        }
+*/
 
     }
+
 }

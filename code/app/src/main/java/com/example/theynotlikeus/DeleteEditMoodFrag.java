@@ -8,9 +8,10 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link DeleteEditMoodFrag#newInstance} factory method to
- * create an instance of this fragment.
+ * Fragment for deleting or editing a mood event.
+ * Handles interactions for modifying stored mood data.
+ *
+ *
  */
 public class DeleteEditMoodFrag extends Fragment {
 
@@ -58,6 +59,6 @@ public class DeleteEditMoodFrag extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_delete_edit_mood, container, false);
+        return inflater.inflate(R.layout.activity_edit_delete_mood, container, false);
     }
 }

@@ -8,7 +8,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
+/**
+ * Activity for admin users.
+ *
+ */
 public class AdminActivity extends AppCompatActivity {
 
     @Override
