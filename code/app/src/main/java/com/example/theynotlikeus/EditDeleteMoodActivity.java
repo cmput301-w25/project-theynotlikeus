@@ -144,7 +144,7 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
 
                         //Navigate back to MainActivity, loading the homeMyMoodsFrag fragment.
                         Intent intent = new Intent(EditDeleteMoodActivity.this, MainActivity.class);
-                        intent.putExtra("fragmentToLoad", "homeMyMoodsFrag");
+                        intent.putExtra("fragmentToLoad", "HomeMyMoodsFrag");
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                         startActivity(intent);
                         finish();
