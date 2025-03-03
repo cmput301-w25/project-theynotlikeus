@@ -50,9 +50,9 @@ public class MainActivity extends AppCompatActivity {
         /*
         // Check for an extra that indicates which fragment to load
         String fragmentToLoad = getIntent().getStringExtra("fragmentToLoad");
-        if ("homeMyMoodsFrag".equals(fragmentToLoad) && navController != null) {
-            // Assumes the destination id for homeMyMoodsFrag is defined as R.id.homeMyMoodsFrag in your navigation graph
-            bottomNavigationView.setSelectedItemId(R.id.homeMyMoodsFrag);
+        if ("HomeMyMoodsFrag".equals(fragmentToLoad) && navController != null) {
+            // Assumes the destination id for HomeMyMoodsFrag is defined as R.id.HomeMyMoodsFrag in your navigation graph
+            bottomNavigationView.setSelectedItemId(R.id.HomeMyMoodsFrag);
         }
 */
 
