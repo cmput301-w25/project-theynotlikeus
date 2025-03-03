@@ -17,26 +17,23 @@ import androidx.navigation.Navigation;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.util.HashMap;
-import java.util.Map;
 /**
  * Handles user sign-up.
  * Checks if a username already exists before registering a new user.
  * Navigates to the login screen or main activity upon successful signup.
  * */
-public class userSignUpFrag extends Fragment {
+public class UserSignUpFrag extends Fragment {
 
     //private String mParam1;
     //private String mParam2;
 
-    public userSignUpFrag() {
+    public UserSignUpFrag() {
         // Required empty public constructor
     }
 
-    public static userSignUpFrag newInstance(String param1, String param2) {
-        userSignUpFrag fragment = new userSignUpFrag();
+    public static UserSignUpFrag newInstance(String param1, String param2) {
+        UserSignUpFrag fragment = new UserSignUpFrag();
         Bundle args = new Bundle();
         args.putString("param1", param1);
         args.putString("param2", param2);
