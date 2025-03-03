@@ -48,7 +48,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Social Situation"
-        android:textColor="@android:color/white"
         android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/imageview_fragmentmoodeventlayout_moodicon"
         app:layout_constraintTop_toBottomOf="@+id/textview_fragmentmoodeventlayout_trigger" />
