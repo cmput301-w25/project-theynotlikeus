@@ -18,6 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class AddMoodEventActivity extends AppCompatActivity {
 
     private String username;
+    private int trigger_length_limit = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,15 @@ public class AddMoodEventActivity extends AppCompatActivity {
             String trigger = triggerEditText.getText().toString().trim();
             if (!trigger.isEmpty()) {
                 mood.setTrigger(trigger);
+            }
+            try {
+                int trigger_length = trigger.length();
+                if (trigger_length > trigger_length_limit) {
+                    throw new ArithmeticException("Trigger has too many characters!");
+                }
+            } catch (ArithmeticException e) {
+                Toast.makeText(AddMoodEventActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                return;
             }
 
             String selectedSocial = socialSituationSpinner.getSelectedItem().toString();
