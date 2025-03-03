@@ -80,17 +80,17 @@ public class UserSignUpFrag extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         //when the back button is clicked the user is navigated back to the user login fragment.
-        MaterialToolbar backButton = view.findViewById(R.id.button_userSignUpFrag_back);
+        MaterialToolbar backButton = view.findViewById(R.id.button_UserSignUpFrag_back);
         NavController navController = Navigation.findNavController(view);
         backButton.setOnClickListener(v ->
                 navController.navigate(R.id.action_userSignUpFrag_to_userLoginFrag)
         );
 
         //Get references to UI elements for user input in order to implement them
-        Button signInButton = view.findViewById(R.id.button_userSignUpFrag_createandlogin);
+        Button signInButton = view.findViewById(R.id.button_UserSignUpFrag_createandlogin);
         EditText usernameEditText = view.findViewById(R.id.editText_UserSignUpFrag_username);
         EditText passwordEditText = view.findViewById(R.id.editText_UserSignUpFrag_password);
-        EditText repasswordEditText = view.findViewById(R.id.editText_userSignUpFrag_reEnterPassword);
+        EditText repasswordEditText = view.findViewById(R.id.editText_UserSignUpFrag_reEnterPassword);
 
         //Set click listener for the sign-up button to handle account creation.
         signInButton.setOnClickListener(v -> {
