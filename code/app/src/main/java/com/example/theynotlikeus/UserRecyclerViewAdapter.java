@@ -162,6 +162,8 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
                 return R.drawable.ic_shame_emoticon;
             case SURPRISE:
                 return R.drawable.ic_surprised_emoticon;
+            case BOREDOM:
+                return R.drawable.ic_bored_emoticon;
             default:
                 //Return a default icon if the mood state doesn't match any known type.
                 return R.drawable.ic_happy_emoticon;
