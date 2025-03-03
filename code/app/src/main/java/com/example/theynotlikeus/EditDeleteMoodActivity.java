@@ -41,7 +41,7 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
         //Bind UI elements to their respective views in order to implement them
         moodSpinner = findViewById(R.id.spinner_DeleteEditMoodActivity_currentMoodspinner);
         triggerEditText = findViewById(R.id.editText_DeleteEditMoodActivity_triggerInput);
-        socialSituationSpinner = findViewById(R.id.spinner_activityeditdeletemoodevent_socialsituation);
+        socialSituationSpinner = findViewById(R.id.spinner_DeleteEditMoodActivity_socialsituation);
         geolocationSwitch = findViewById(R.id.switch_DeleteEditMoodActivity_geoSwitch);
         ImageButton deleteButton = findViewById(R.id.imageButton_DeleteEditMoodActivity_delete);
         ImageButton backButton = findViewById(R.id.imageButton_DeleteEditMoodActivity_back);
