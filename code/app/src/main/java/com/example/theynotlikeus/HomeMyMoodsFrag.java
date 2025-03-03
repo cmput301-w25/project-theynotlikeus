@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class homeMyMoodsFrag extends Fragment {
+public class HomeMyMoodsFrag extends Fragment {
 
     private String username;
     private List<Mood> userMoodList = new ArrayList<>();

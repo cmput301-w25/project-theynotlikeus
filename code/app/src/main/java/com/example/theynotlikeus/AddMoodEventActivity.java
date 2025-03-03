@@ -31,9 +31,9 @@ public class AddMoodEventActivity extends AppCompatActivity {
         username = getIntent().getStringExtra("username"); //Retrieve the username passed from the previous activity.
 
         //UI components to their views.
-        Spinner moodSpinner = findViewById(R.id.spinner_activitymoodevent_currentmood);
-        EditText triggerEditText = findViewById(R.id.edittext_activitymoodevent_trigger);
-        Spinner socialSituationSpinner = findViewById(R.id.spinner_activitymoodevent_socialsituation);
+        Spinner moodSpinner = findViewById(R.id.spinner_ActivityAddMoodEvent_currentmood);
+        EditText triggerEditText = findViewById(R.id.edittext_ActivityAddMoodEvent_trigger);
+        Spinner socialSituationSpinner = findViewById(R.id.spinner_ActivityAddMoodEvent_socialsituation);
 
         //Setting up a mood spinner that contains a list of all possible moods the user can select
         ArrayAdapter<CharSequence> moodAdapter = ArrayAdapter.createFromResource(
@@ -54,7 +54,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
         socialSituationSpinner.setAdapter(socialAdapter);
 
         //Implementing the save button to save all the mood details into Firebase
-        Button saveButton = findViewById(R.id.button_activitymoodevent_save);
+        Button saveButton = findViewById(R.id.button_ActivityAddMoodEvent_save);
 
         saveButton.setOnClickListener(v -> {
             String selectedMood = moodSpinner.getSelectedItem().toString(); //String vaue of the mood selected
@@ -101,6 +101,6 @@ public class AddMoodEventActivity extends AppCompatActivity {
         });
 
         //Implementing the back button to finish the back button when clicked
-        findViewById(R.id.button_activitymoodevent_backbutton).setOnClickListener(v -> finish());
+        findViewById(R.id.button_ActivityAddMoodEvent_backbutton).setOnClickListener(v -> finish());
     }
 }
