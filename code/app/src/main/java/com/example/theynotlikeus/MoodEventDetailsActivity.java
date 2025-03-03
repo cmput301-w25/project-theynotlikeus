@@ -135,8 +135,6 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
                 return R.drawable.ic_shame_emoticon;
             case SURPRISE:
                 return R.drawable.ic_surprised_emoticon;
-            case BOREDOM:
-                return R.drawable.ic_bored_emoticon;
             default:
                 return R.drawable.ic_happy_emoticon;
         }
