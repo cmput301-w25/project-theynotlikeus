@@ -8,35 +8,27 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 /**
- * Fragment for deleting or editing a mood event.
- * Handles interactions for modifying stored mood data.
- *
- *
+ * This fragment allows the user to edit and delete a mood event by providing a user interface for modifying stored mood data
+ * including interactive buttons like save and delete.
  */
+
 public class DeleteEditMoodFrag extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    //Parameter keys for future customization.
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
+    //Variables to hold the parameters passed into the fragment.
     private String mParam1;
     private String mParam2;
 
-    public DeleteEditMoodFrag(){
-        // Required empty public constructor
 
+    public DeleteEditMoodFrag() {
+        //Required empty public constructor
     }
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DeleteEditMood.
-     */
-    // TODO: Rename and change types and number of parameters
+
+
+     //Factory method to create a new instance of DeleteEditMoodFrag using the provided parameters.
     public static DeleteEditMoodFrag newInstance(String param1, String param2) {
         DeleteEditMoodFrag fragment = new DeleteEditMoodFrag();
         Bundle args = new Bundle();
@@ -49,16 +41,17 @@ public class DeleteEditMoodFrag extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Retrieve parameters from the arguments bundle if available.
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.activity_edit_delete_mood, container, false);
     }
 }

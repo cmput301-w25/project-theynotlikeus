@@ -15,35 +15,28 @@ import android.widget.Button;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link LoginUserSelectionFrag#newInstance} factory method to
- * create an instance of this fragment.
- * Displays the user selection screen (User vs. Admin).
- * Navigates to the appropriate login screen.
+ * Use the {@link LoginUserSelectionFrag#newInstance} factory method to create an instance of this fragment.
+ *
+ * It also:
+ * - Displays the user selection screen where users choose between a User or Admin login.
+ * - Navigates to the appropriate login screen based on the user's selection.
  */
 public class LoginUserSelectionFrag extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    //Parameter argument keys for potential future customization.
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
+    //Parameters that can be used to customize this fragment.
     private String mParam1;
     private String mParam2;
 
     public LoginUserSelectionFrag() {
-        // Required empty public constructor
+        //Required empty public constructor.
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment LoginUserSelection.
-     */
-    // TODO: Rename and change types and number of parameters
+
+     //Factory method to create a new instance of LoginUserSelectionFrag using the provided parameters.
     public static LoginUserSelectionFrag newInstance(String param1, String param2) {
         LoginUserSelectionFrag fragment = new LoginUserSelectionFrag();
         Bundle args = new Bundle();
@@ -52,6 +45,7 @@ public class LoginUserSelectionFrag extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,11 +56,11 @@ public class LoginUserSelectionFrag extends Fragment {
         }
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login_user_selection, container, false);
+        return inflater.inflate(R.layout.fragment_login_user_selection, container, false);//Inflate the layout for this fragment
     }
 
 
@@ -74,17 +68,17 @@ public class LoginUserSelectionFrag extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Find button
+        //Find buttons for user and admin login selections for implementation
         Button buttonGoToLoginUser = view.findViewById(R.id.button_user);
         Button buttonGoToLoginAdmin = view.findViewById(R.id.button_admin);
 
-        // Get NavController and set navigation action
+        //Get the NavController and set up navigation so the user navigate to the user login fragment.
         NavController navController = Navigation.findNavController(view);
-
         buttonGoToLoginUser.setOnClickListener(v ->
                 navController.navigate(R.id.action_loginUserSelectionFrag_to_userLoginFrag)
         );
 
+        //When the admin button is clicked, navigate to the admin login fragment.
         buttonGoToLoginAdmin.setOnClickListener(v ->
                 navController.navigate(R.id.action_loginUserSelectionFrag_to_adminLoginFrag)
         );

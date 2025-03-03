@@ -20,8 +20,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 /*
-*   Fragment handling user login functionality.
-*   Users can log in with their credentials, navigate to sign-up, or go back to selection.
+*   Fragment handling user login functionality where users can log in with their credentials,
+* navigate to sign-up, or go back to selection.
 */
 
 public class UserLoginFrag extends Fragment {
@@ -66,35 +66,36 @@ public class UserLoginFrag extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //Initialize UI elements
-
         MaterialToolbar backButton = view.findViewById(R.id.button_userloginfrag_back);
         NavController navController = Navigation.findNavController(view);
         EditText usernameEditText = view.findViewById(R.id.editText_userLoginFrag_username);
         EditText passwordEditText = view.findViewById(R.id.editText_userLoginFrag_password);
         Button signInButton = view.findViewById(R.id.button_UserLogIn_SignIn);
-        //Handle back button navigation
+
+        //Handle back button navigation so the user can navigate to the login/signup page when clicked
         backButton.setOnClickListener(v ->
                 navController.navigate(R.id.action_userLoginFrag_to_loginUserSelectionFrag)
         );
 
 
-        // Navigate to the sign-up screen
+        //Navigate to the sign-up screen
         view.findViewById(R.id.textButton_UserLoginFrag_signUp).setOnClickListener(v ->
                 navController.navigate(R.id.action_userLoginFrag_to_userSignUpFrag)
         );
-        // Handle sign-in process
+
+        //Handle sign-in process after the user clicks on the sign in button
         signInButton.setOnClickListener(v -> {
 
             String username = usernameEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
 
 
-            if (username.isEmpty() || password.isEmpty()) {
+            if (username.isEmpty() || password.isEmpty()) { //Ensuring no field is left blank
                 Toast.makeText(getContext(), "Username and Password cannot be empty", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // Authenticate user from Firestore
+            //Authenticate user from Firestore by searching for the username entered by the user in the database
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             db.collection("users")
                     .whereEqualTo("username", username)
@@ -105,13 +106,13 @@ public class UserLoginFrag extends Fragment {
                             Toast.makeText(getContext(), "Incorrect username or password", Toast.LENGTH_SHORT).show();
                         } else {
                             for (QueryDocumentSnapshot document : querySnapshot){
-                                User user = document.toObject(User.class);
+                                User user = document.toObject(User.class); //converting the user to a user class upon successful log in
 
-                                if (user.getPassword().equals(password)){
-                                    // Successful login, redirect to main activity
+                                if (user.getPassword().equals(password)){ //checks whether the passwords match
+                                    //Successful login, redirect to main activity
                                     Intent intent = new Intent(requireActivity(), MainActivity.class);
 
-                                    intent.putExtra("username", user.getUsername());
+                                    intent.putExtra("username", user.getUsername()); //Passing the username to the next activity
                                     startActivity(intent);
                                     requireActivity().finish();
                                 } else {

@@ -21,20 +21,30 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
+
 /**
- * Handles user sign-up.
+ * This fragment provides a user interface for new users to create an account.
+ *
+ * This fragment:
  * Checks if a username already exists before registering a new user.
- * Navigates to the login screen or main activity upon successful signup.
- * */
+ * Provides a user interface for new users to create an account.
+ * Validates that required fields are filled and that the passwords match.
+ * Checks for an existing username in the Firestore database.
+ * If the username does not exist, registers the new user and navigates to MainActivity.
+ */
 public class userSignUpFrag extends Fragment {
+
 
     //private String mParam1;
     //private String mParam2;
 
+
     public userSignUpFrag() {
-        // Required empty public constructor
+        //Required empty public constructor
     }
 
+
+     //Factory method to create a new instance of userSignUpFrag.
     public static userSignUpFrag newInstance(String param1, String param2) {
         userSignUpFrag fragment = new userSignUpFrag();
         Bundle args = new Bundle();
@@ -43,6 +53,7 @@ public class userSignUpFrag extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,7 +64,6 @@ public class userSignUpFrag extends Fragment {
             mParam2 = getArguments().getString("param2");
         }
         */
-
     }
 
     @Override
@@ -61,8 +71,10 @@ public class userSignUpFrag extends Fragment {
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-        return inflater.inflate(R.layout.fragment_user_sign_up, container, false);
+
+        return inflater.inflate(R.layout.fragment_user_sign_up, container, false);//Inflate the layout for this fragment
     }
+
 
     @Override
     public void onViewCreated(
@@ -71,62 +83,64 @@ public class userSignUpFrag extends Fragment {
     ) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Back button navigation
+        //when the back button is clicked the user is navigated back to the user login fragment.
         MaterialToolbar backButton = view.findViewById(R.id.button_userSignUpFrag_back);
         NavController navController = Navigation.findNavController(view);
         backButton.setOnClickListener(v ->
                 navController.navigate(R.id.action_userSignUpFrag_to_userLoginFrag)
         );
 
-        // Get references to UI elements
+        //Get references to UI elements for user input in order to implement them
         Button signInButton = view.findViewById(R.id.button_userSignUpFrag_createandlogin);
         EditText usernameEditText = view.findViewById(R.id.editText_UserSignUpFrag_username);
         EditText passwordEditText = view.findViewById(R.id.editText_UserSignUpFrag_password);
         EditText repasswordEditText = view.findViewById(R.id.editText_userSignUpFrag_reEnterPassword);
 
+        //Set click listener for the sign-up button to handle account creation.
         signInButton.setOnClickListener(v -> {
-            // Retrieve user inputs
+            //Retrieve user inputs and trim any extra spaces.
             String username = usernameEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
             String repassword = repasswordEditText.getText().toString().trim();
 
-            // Basic validation
+            //Ensure no field is empty.
             if (username.isEmpty() || password.isEmpty() || repassword.isEmpty()) {
                 Toast.makeText(getContext(), "Username and Password cannot be empty", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // Checking if the passwords are the same or not
+            //Check if the two password entries match.
             if (!password.equals(repassword)) {
                 Toast.makeText(getContext(), "Password mismatched lil bro", Toast.LENGTH_SHORT).show();
                 return;
             }
 
+            //Get an instance of Firestore.
             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-
+            //Query the "users" collection to check if the username already exists.
             db.collection("users")
                     .whereEqualTo("username", username)
                     .get()
                     .addOnSuccessListener(querySnapshot -> {
-                        if (!querySnapshot.isEmpty()) {
-
+                        if (!querySnapshot.isEmpty()) {//If the query returns a non-empty result, the user already exists.
                             Toast.makeText(getContext(), "User already exists. Please sign in.", Toast.LENGTH_SHORT).show();
-
-
                             navController.navigate(R.id.action_userSignUpFrag_to_userLoginFrag);
                         } else {
-                            User user = new User(username, password); //enter the username and password into the database
+                            //Create a new User object with the provided username and password.
+                            User user = new User(username, password);
 
+                            //Add the new user to the "users" collection in Firestore.
                             db.collection("users")
                                     .add(user)
                                     .addOnSuccessListener(documentReference -> {
                                         Toast.makeText(getContext(), "Account created successfully!", Toast.LENGTH_SHORT).show();
 
-
+                                        // Navigate to MainActivity after successful account creation.
                                         Intent intent = new Intent(requireActivity(), MainActivity.class);
                                         intent.putExtra("username", user.getUsername());
                                         startActivity(intent);
+                                        // Finish the current activity to prevent navigating back to the sign-up screen.
                                         requireActivity().finish();
                                     })
                                     .addOnFailureListener(e -> {
@@ -135,6 +149,7 @@ public class userSignUpFrag extends Fragment {
                         }
                     })
                     .addOnFailureListener(e -> {
+                        //Handle errors that occur while checking if the username exists.
                         Toast.makeText(getContext(), "Error checking username: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     });
         });
