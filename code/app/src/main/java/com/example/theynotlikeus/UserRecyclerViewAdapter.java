@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
@@ -44,6 +46,9 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
         holder.textViewMoodTitle.setText(mood.getMoodState() != null ? mood.getMoodState().toString() : "Unknown");
         holder.textViewSocialSituation.setText(mood.getSocialSituation() != null ? mood.getSocialSituation().toString() : "Unknown");
 
+        holder.textViewTrigger.setText(mood.getTrigger() != null ? mood.getTrigger().toString() : "");
+        String username = mood.getUsername() != null ? mood.getUsername() : "Unknown";
+        //get date and set to the correct format
         if (mood.getDateTime() != null) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm a", Locale.getDefault());
             holder.textViewDate.setText(dateFormat.format(mood.getDateTime()));
@@ -69,15 +74,18 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView imageViewMoodIcon;
         TextView textViewMoodTitle;
-        TextView textViewSocialSituation;
+        TextView textViewTrigger;
         TextView textViewDate;
+        TextView textViewSocialSituation; // 1) Add this field
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             imageViewMoodIcon = itemView.findViewById(R.id.imageview_fragmentmoodeventlayout_moodicon);
             textViewMoodTitle = itemView.findViewById(R.id.textview_fragmentmoodeventlayout_moodtitle);
-            textViewSocialSituation = itemView.findViewById(R.id.textview_fragmentmoodeventlayout_socialsituation);
+            textViewTrigger = itemView.findViewById(R.id.textview_fragmentmoodeventlayout_trigger);
             textViewDate = itemView.findViewById(R.id.textview_fragmentmoodeventlayout_date);
+            textViewSocialSituation = itemView.findViewById(R.id.textview_fragmentmoodeventlayout_socialsituation);
+
         }
     }
 
