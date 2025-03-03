@@ -60,7 +60,7 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
         backButton.setOnClickListener(v -> {
             // Navigate back to MainActivity (or previous screen)
             Intent intent = new Intent(MoodEventDetailsActivity.this, MainActivity.class);
-            intent.putExtra("fragmentToLoad", "homeMyMoodsFrag");
+            intent.putExtra("fragmentToLoad", "HomeMyMoodsFrag");
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
             finish();
