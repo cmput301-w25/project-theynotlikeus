@@ -131,10 +131,10 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             //Initialize UI components in order to implement them
-            imageViewMoodIcon = itemView.findViewById(R.id.imageview_fragmentmoodeventlayout_moodicon);
-            textViewMoodTitle = itemView.findViewById(R.id.textview_fragmentmoodeventlayout_moodtitle);
-            textViewSocialSituation = itemView.findViewById(R.id.textview_fragmentmoodeventlayout_socialsituation);
-            textViewDate = itemView.findViewById(R.id.textview_fragmentmoodeventlayout_date);
+            imageViewMoodIcon = itemView.findViewById(R.id.imageview_FragmentMoodEventLayout_moodicon);
+            textViewMoodTitle = itemView.findViewById(R.id.textview_FragmentMoodEventLayout_moodtitle);
+            textViewSocialSituation = itemView.findViewById(R.id.textview_FragmentMoodEventLayout_socialsituation);
+            textViewDate = itemView.findViewById(R.id.textview_FragmentMoodEventLayout_date);
         }
     }
 
