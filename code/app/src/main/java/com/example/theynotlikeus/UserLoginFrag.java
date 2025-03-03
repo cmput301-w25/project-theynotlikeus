@@ -66,11 +66,11 @@ public class UserLoginFrag extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //Initialize UI elements
-        MaterialToolbar backButton = view.findViewById(R.id.button_userloginfrag_back);
+        MaterialToolbar backButton = view.findViewById(R.id.button_FragmentUserLogin_back);
         NavController navController = Navigation.findNavController(view);
-        EditText usernameEditText = view.findViewById(R.id.editText_userLoginFrag_username);
-        EditText passwordEditText = view.findViewById(R.id.editText_userLoginFrag_password);
-        Button signInButton = view.findViewById(R.id.button_UserLogIn_SignIn);
+        EditText usernameEditText = view.findViewById(R.id.editText_FragmentUserLogin_username);
+        EditText passwordEditText = view.findViewById(R.id.editText_FragmentUserLogin_password);
+        Button signInButton = view.findViewById(R.id.button_FragmentUserLogin_SignIn);
 
         //Handle back button navigation so the user can navigate to the login/signup page when clicked
         backButton.setOnClickListener(v ->
@@ -79,7 +79,7 @@ public class UserLoginFrag extends Fragment {
 
 
         //Navigate to the sign-up screen
-        view.findViewById(R.id.textButton_UserLoginFrag_signUp).setOnClickListener(v ->
+        view.findViewById(R.id.textButton_FragmentUserLogin_signUp).setOnClickListener(v ->
                 navController.navigate(R.id.action_userLoginFrag_to_userSignUpFrag)
         );
 
