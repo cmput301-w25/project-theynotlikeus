@@ -1,20 +1,18 @@
 package com.example.theynotlikeus;
 
+import android.os.Parcelable;
+
 import java.util.Date;
-/*
-*   Represents a user's mood entry.
-*   Contains mood state, social situation, reason, location, and optional photo.
-*
-* */
+
 public class Mood {
 
     public enum MoodState {
-        // Enum representing different mood states.
+        // Enumeration for the mood state, all required moods available
         ANGER, CONFUSION, DISGUST, FEAR, HAPPINESS, SADNESS, SHAME, SURPRISE, BOREDOM
     }
 
     public enum SocialSituation {
-        // Enum representing social situations in which the mood was recorded.
+        // Enumeration for social situation of the user on given event.
         ALONE, ONE_TO_OTHER, TWO_TO_SEVERAL, TO_CROWD
     }
 
@@ -29,10 +27,25 @@ public class Mood {
     private Double longitude;
     private String username;
 
+    private String docId;
+
+    /**
+     * **No-argument constructor** required by Firestore for automatic deserialization.
+     */
     public Mood() {
-        // No-argument constructor required for Firestore.
+        // empty instance to satisfy firebase requirement
     }
     //Constructor for creating a mood entry with the current date.
+
+
+    public String getDocId() {
+        return docId;
+    }
+
+    public void setDocId(String docId) {
+        this.docId = docId;
+    }
+
     public Mood(MoodState moodState) {
         this.dateTime = new Date();
         this.moodState = moodState;
