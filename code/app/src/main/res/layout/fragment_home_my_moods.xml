@@ -84,7 +84,7 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
-            android:id="@+id/textView_homeMyMoodFrag_welcomeUser"
+            android:id="@+id/textView_FragmentHomeMyMoods_welcomeUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -96,7 +96,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/ImageView_homeMyMoodsFrag_userProfile"
+            android:id="@+id/ImageView_FragmentHomeMyMoods_userProfile"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_margin="16dp"
@@ -109,7 +109,7 @@
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton_homeMyMoodsFrag_addmood"
+        android:id="@+id/floatingActionButton_FragmentHomeMyMoods_addmood"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
