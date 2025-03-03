@@ -85,6 +85,7 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
                         if (document.exists()) {
                             Mood mood = document.toObject(Mood.class);
                             if (mood != null) {
+                                // DEBUG: Check if the strings below are actually set
                                 // Update UI elements with the latest data
                                 socialSituationTextView.setText(mood.getSocialSituation() != null
                                         ? mood.getSocialSituation().toString() : "Unknown");
