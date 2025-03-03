@@ -20,6 +20,7 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private String moodId;
     private Mood moodToEdit;
+    private int trigger_length_limit = 20;
 
     Spinner moodSpinner;
     EditText triggerEditText;
@@ -75,6 +76,16 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
             String trigger = triggerEditText.getText().toString().trim();
             if (!trigger.isEmpty()) {
                 moodToEdit.setTrigger(trigger);
+            }
+
+            try {
+                int trigger_length = trigger.length();
+                if (trigger_length > trigger_length_limit) {
+                    throw new ArithmeticException("Trigger has too many characters!");
+                }
+            } catch (ArithmeticException e) {
+                Toast.makeText(EditDeleteMoodActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                return;
             }
 
             String socialText = socialSituationSpinner.getSelectedItem().toString().trim();
