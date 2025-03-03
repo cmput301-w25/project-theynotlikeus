@@ -90,7 +90,7 @@ public class HomeMyMoodsFrag extends Fragment {
         });
 
         //Initialize SearchView to filter mood events by trigger text.
-        SearchView searchView = view.findViewById(R.id.searchView);
+        SearchView searchView = view.findViewById(R.id.searchView_FragmentHomeMyMoods);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             //When the query is submitted, update the trigger filter and reload the moods.
             @Override
@@ -109,7 +109,7 @@ public class HomeMyMoodsFrag extends Fragment {
         });
 
         //Set up the RecyclerView to display mood events.
-        userRecyclerView = view.findViewById(R.id.recyclerview_fragmenthomemymoods_userrecyclerview);
+        userRecyclerView = view.findViewById(R.id.recyclerview_FragmentHomeMyMoods_userrecyclerview);
         userRecyclerView.setHasFixedSize(true);
         userRecyclerViewLayoutManager = new LinearLayoutManager(getContext());//Using a LinearLayoutManager for vertical scrolling.
         userRecyclerView.setLayoutManager(userRecyclerViewLayoutManager);
@@ -131,7 +131,7 @@ public class HomeMyMoodsFrag extends Fragment {
         loadMoodsFromFirebase();
 
         //Set up a CheckBox to enable filtering of moods from the recent week.
-        CheckBox recentWeekCheckBox = view.findViewById(R.id.checkBox_recentWeek);
+        CheckBox recentWeekCheckBox = view.findViewById(R.id.checkBox_FragmentHomeMyMoods_recentWeek);
         recentWeekCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             filterRecentweek = isChecked;
             loadMoodsFromFirebase();

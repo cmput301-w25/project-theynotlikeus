@@ -50,13 +50,13 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
         moodId = getIntent().getStringExtra("moodId");
 
         //Bind UI elements to their respective views for implementation
-        socialSituationTextView = findViewById(R.id.textview_activitymoodeventdetails_socialsituation);
-        dateTextView = findViewById(R.id.textview_activitymoodeventdetails_date);
-        triggerTextView = findViewById(R.id.textview_activitymoodeventdetails_triggervalue);
-        usernameTextView = findViewById(R.id.textview_activitymoodeventdetails_username);
-        moodImageView = findViewById(R.id.imageview_activitymoodeventdetails_moodimage);
-        editButton = findViewById(R.id.imagebutton_activitymoodeventdetails_editbutton);
-        backButton = findViewById(R.id.imagebutton_activitymoodeventdetails_backbutton);
+        socialSituationTextView = findViewById(R.id.textview_ActivityMoodEventDetails_socialsituation);
+        dateTextView = findViewById(R.id.textview_ActivityMoodEventDetails_date);
+        triggerTextView = findViewById(R.id.textview_ActivityMoodEventDetails_triggervalue);
+        usernameTextView = findViewById(R.id.textview_ActivityMoodEventDetails_username);
+        moodImageView = findViewById(R.id.imageview_ActivityMoodEventDetails_moodimage);
+        editButton = findViewById(R.id.imagebutton_ActivityMoodEventDetails_editbutton);
+        backButton = findViewById(R.id.imagebutton_ActivityMoodEventDetails_backbutton);
 
         //Log the moodId for debugging purposes.
         Log.d("MoodDetails", "onCreate: Mood ID = " + moodId);

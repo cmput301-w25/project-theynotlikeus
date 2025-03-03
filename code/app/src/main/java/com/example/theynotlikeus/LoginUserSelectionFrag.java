@@ -69,8 +69,8 @@ public class LoginUserSelectionFrag extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         //Find buttons for user and admin login selections for implementation
-        Button buttonGoToLoginUser = view.findViewById(R.id.button_user);
-        Button buttonGoToLoginAdmin = view.findViewById(R.id.button_admin);
+        Button buttonGoToLoginUser = view.findViewById(R.id.button_LoginUserFrag_user);
+        Button buttonGoToLoginAdmin = view.findViewById(R.id.button_LoginUserFrag_admin);
 
         //Get the NavController and set up navigation so the user navigate to the user login fragment.
         NavController navController = Navigation.findNavController(view);

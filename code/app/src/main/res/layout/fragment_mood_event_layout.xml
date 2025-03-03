@@ -11,7 +11,7 @@
     android:radius="12dp">
 
     <ImageView
-        android:id="@+id/imageview_fragmentmoodeventlayout_moodicon"
+        android:id="@+id/imageview_FragmentMoodEventLayout_moodicon"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginStart="4dp"
@@ -23,7 +23,7 @@
         app:layout_constraintVertical_bias="0.479" />
 
     <TextView
-        android:id="@+id/textview_fragmentmoodeventlayout_moodtitle"
+        android:id="@+id/textview_FragmentMoodEventLayout_moodtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -31,22 +31,22 @@
         android:textColor="@android:color/white"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/imageview_fragmentmoodeventlayout_moodicon"
-        app:layout_constraintTop_toTopOf="@+id/imageview_fragmentmoodeventlayout_moodicon" />
+        app:layout_constraintStart_toEndOf="@+id/imageview_FragmentMoodEventLayout_moodicon"
+        app:layout_constraintTop_toTopOf="@+id/imageview_FragmentMoodEventLayout_moodicon" />
 
     <TextView
-        android:id="@+id/textview_fragmentmoodeventlayout_socialsituation"
+        android:id="@+id/textview_FragmentMoodEventLayout_socialsituation"
         android:layout_width="180dp"
         android:layout_height="57dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/social_situation_i_hit_chest_today"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageview_fragmentmoodeventlayout_moodicon"
-        app:layout_constraintTop_toBottomOf="@+id/textview_fragmentmoodeventlayout_moodtitle" />
+        app:layout_constraintStart_toEndOf="@+id/imageview_FragmentMoodEventLayout_moodicon"
+        app:layout_constraintTop_toBottomOf="@+id/textview_FragmentMoodEventLayout_moodtitle" />
 
     <TextView
-        android:id="@+id/textview_fragmentmoodeventlayout_date"
+        android:id="@+id/textview_FragmentMoodEventLayout_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="4dp"
