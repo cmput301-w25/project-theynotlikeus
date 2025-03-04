@@ -39,7 +39,7 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
         moodId = getIntent().getStringExtra("moodId");
 
         socialSituationTextView = findViewById(R.id.textview_activitymoodeventdetails_socialsituation);
-        dateTextView = findViewById(R.id.textview_activitymoodeventdetails_date);
+        dateTextView = findViewById(R.id.textview_activitymoodeventdetails_dateandtime);
         triggerTextView = findViewById(R.id.textview_activitymoodeventdetails_triggervalue);
         usernameTextView = findViewById(R.id.textview_activitymoodeventdetails_username);
         moodImageView = findViewById(R.id.imageview_activitymoodeventdetails_moodimage);

@@ -9,10 +9,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 /**
-* Manages user login.
-* Stores the logged-in username.
-* Sets up the UI with edge-to-edge support.
-* */
+ * Manages user login.
+ * Stores the logged-in username.
+ * Sets up the UI with edge-to-edge support.
+ * */
 public class LoginActivity extends AppCompatActivity {
     private static String loggedInUsername;
     @Override
