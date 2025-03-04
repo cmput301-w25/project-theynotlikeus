@@ -13,7 +13,7 @@ import android.view.ViewGroup;
  * for handling friend requests.
  *
  */
-public class FriendRequestFrag extends Fragment {
+public class FollowerRequestFrag extends Fragment {
 
     //Parameter keys for potential customization.
     private static final String ARG_PARAM1 = "param1";
@@ -24,14 +24,14 @@ public class FriendRequestFrag extends Fragment {
     private String mParam2;
 
 
-    public FriendRequestFrag() {
+    public FollowerRequestFrag() {
         //Required empty public constructor
     }
 
 
      //Factory method to create a new instance of FriendRequestFrag using the provided parameters.
-    public static FriendRequestFrag newInstance(String param1, String param2) {
-        FriendRequestFrag fragment = new FriendRequestFrag();
+    public static FollowerRequestFrag newInstance(String param1, String param2) {
+        FollowerRequestFrag fragment = new FollowerRequestFrag();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -54,6 +54,6 @@ public class FriendRequestFrag extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_friend_request, container, false); //Inflate and return the layout for this fragment.
+        return inflater.inflate(R.layout.fragment_follower_request, container, false); //Inflate and return the layout for this fragment.
     }
 }
