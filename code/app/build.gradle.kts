@@ -46,6 +46,9 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.fragment:fragment-testing:1.5.7")
     androidTestImplementation("androidx.navigation:navigation-testing:2.8.8")
+    testImplementation("org.mockito:mockito-core:5.2.0")
+    androidTestImplementation("org.mockito:mockito-android:5.2.0")
+    testImplementation("androidx.test:core:1.5.0")
 
 
 
