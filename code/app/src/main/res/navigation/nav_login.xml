@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/userSignUpFrag"
-        android:name="com.example.theynotlikeus.userSignUpFrag"
+        android:name="com.example.theynotlikeus.UserSignUpFrag"
         android:label="fragment_user_sign_up"
         tools:layout="@layout/fragment_user_sign_up" >
         <action
