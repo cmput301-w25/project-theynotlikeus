@@ -1,7 +1,6 @@
 package com.example.theynotlikeus;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -9,10 +8,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
-import com.example.theynotlikeus.Mood;
-import com.example.theynotlikeus.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 /**
  * This activity allows the user to select a mood, specify a trigger, and choose a social situation which is then
@@ -41,18 +37,18 @@ public class AddMoodEventActivity extends AppCompatActivity {
         ArrayAdapter<CharSequence> moodAdapter = ArrayAdapter.createFromResource(
                 this,
                 R.array.moods,
-                R.layout.addmoodevent_spinner
+                R.layout.add_mood_event_spinner
         );
-        moodAdapter.setDropDownViewResource(R.layout.addmoodevent_spinner);
+        moodAdapter.setDropDownViewResource(R.layout.add_mood_event_spinner);
         moodSpinner.setAdapter(moodAdapter);
 
         //Setting up the social situation spinner
         ArrayAdapter<CharSequence> socialAdapter = ArrayAdapter.createFromResource(
                 this,
                 R.array.social_situations,
-                R.layout.addmoodevent_spinner
+                R.layout.add_mood_event_spinner
         );
-        socialAdapter.setDropDownViewResource(R.layout.addmoodevent_spinner);
+        socialAdapter.setDropDownViewResource(R.layout.add_mood_event_spinner);
         socialSituationSpinner.setAdapter(socialAdapter);
 
         //Implementing the save button to save all the mood details into Firebase

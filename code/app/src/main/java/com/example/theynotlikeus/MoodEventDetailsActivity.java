@@ -14,9 +14,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-/*
-*   Activity that displays the details of a mood event.
-* */
+/**
+ * Activity for displaying the details of a mood event.
+ *
+ * Retrieves mood data from Firestore and updates the UI.
+ * Displays social situation, trigger, mood state, and date.
+ * Allows navigation to edit or delete the mood entry.
+ * Provides a back button to return to the main screen.
+ */
+
 public class MoodEventDetailsActivity extends AppCompatActivity {
 
     TextView socialSituationTextView;
@@ -27,7 +33,7 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
     ImageButton backButton;
     ImageButton editButton;
 
-    private FirebaseFirestore db;
+    private FirebaseFirestore db; //initializing the databse
     private String moodId;
 
     @Override
@@ -38,13 +44,13 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         moodId = getIntent().getStringExtra("moodId");
 
-        socialSituationTextView = findViewById(R.id.textview_activitymoodeventdetails_socialsituation);
-        dateTextView = findViewById(R.id.textview_activitymoodeventdetails_dateandtime);
-        triggerTextView = findViewById(R.id.textview_activitymoodeventdetails_triggervalue);
-        usernameTextView = findViewById(R.id.textview_activitymoodeventdetails_username);
-        moodImageView = findViewById(R.id.imageview_activitymoodeventdetails_moodimage);
-        editButton = findViewById(R.id.imagebutton_activitymoodeventdetails_editbutton);
-        backButton = findViewById(R.id.imagebutton_activitymoodeventdetails_backbutton);
+        socialSituationTextView = findViewById(R.id.textview_ActivityMoodEventDetails_socialsituation);
+        dateTextView = findViewById(R.id.textview_ActivityMoodEventDetails_dateandtime);
+        triggerTextView = findViewById(R.id.textview_ActivityMoodEventDetails_triggervalue);
+        usernameTextView = findViewById(R.id.textview_ActivityMoodEventDetails_username);
+        moodImageView = findViewById(R.id.imageview_ActivityMoodEventDetails_moodimage);
+        editButton = findViewById(R.id.imagebutton_ActivityMoodEventDetails_editbutton);
+        backButton = findViewById(R.id.imagebutton_ActivityMoodEventDetails_backbutton);
 
         // Log the moodId
         Log.d("MoodDetails", "onCreate: Mood ID = " + moodId);

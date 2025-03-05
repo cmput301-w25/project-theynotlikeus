@@ -2,7 +2,6 @@ package com.example.theynotlikeus;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -52,16 +51,16 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
 
         //Setting up the mood spinner with mood options from resources.
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this, R.array.moods, R.layout.addmoodevent_spinner
+                this, R.array.moods, R.layout.add_mood_event_spinner
         );
-        adapter.setDropDownViewResource(R.layout.addmoodevent_spinner);
+        adapter.setDropDownViewResource(R.layout.add_mood_event_spinner);
         moodSpinner.setAdapter(adapter);
 
         //Setting up the social situation spinner with options from resources
         ArrayAdapter<CharSequence> socialAdapter = ArrayAdapter.createFromResource(
-                this, R.array.social_situations, R.layout.addmoodevent_spinner
+                this, R.array.social_situations, R.layout.add_mood_event_spinner
         );
-        socialAdapter.setDropDownViewResource(R.layout.addmoodevent_spinner);
+        socialAdapter.setDropDownViewResource(R.layout.add_mood_event_spinner);
         socialSituationSpinner.setAdapter(socialAdapter);
 
         //load existing mood data from Firestore.
