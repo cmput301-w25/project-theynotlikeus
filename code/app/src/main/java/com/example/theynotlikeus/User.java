@@ -4,7 +4,10 @@ package com.example.theynotlikeus;
 *   Used for authentication and storing user data in Firestore.
 * */
 public class User {
-    private  String username;
+
+    //Field to store the user's username.
+    private String username;
+    //Field to store the user's password.
     private String password;
 
 
@@ -21,37 +24,41 @@ public class User {
     }
 
     /**
-     * Gets the username
-     * @return the username
+     * Retrieves the username of the user.
+     *
+     * @return the user's username.
      */
-    public  String getUsername(){
+    public String getUsername() {
         return username;
         //Retrieves the username of the user.
     }
 
     /**
-     * Sets a new username
-     * @param username new username
+     * Sets a new username for the user.
+     *
+     * @param username the new username to set.
      */
-    public void setUsername(String username){
+    public void setUsername(String username) {
         this.username = username;
         //Sets a new password for the user.
     }
 
     /**
-     * Gets the password.
-     * @return the password
+     * Retrieves the user's password.
+     *
+     * @return the user's password.
      */
-    public String getPassword(){
+    public String getPassword() {
         return password;
         //Retrieves the user's password.
     }
 
     /**
-     * Sets a new password
-     * @param password new password
+     * Sets a new password for the user.
+     *
+     * @param password the new password to set.
      */
-    public void setPassword( String password){
+    public void setPassword(String password) {
         this.password = password;
         //Sets a new password for the user.
     }

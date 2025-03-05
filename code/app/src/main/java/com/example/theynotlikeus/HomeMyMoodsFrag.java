@@ -27,16 +27,29 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+/**
+ * Fragment that displays the logged-in user's mood history.
+ *
+ * It also allows users to:
+ * View their moods in a RecyclerView.
+ * Filter moods by emotional state, time period, or trigger words.
+ * Add new mood events.
+ * Access their profile details.
+ */
 public class HomeMyMoodsFrag extends Fragment {
 
+    //Stores the username of the logged-in user.
     private String username;
+    //List to store user moods retrieved from Firestore.
     private List<Mood> userMoodList = new ArrayList<>();
+    //RecyclerView components for displaying moods.
     private RecyclerView userRecyclerView;
     private UserRecyclerViewAdapter userRecyclerViewAdapter;
     private RecyclerView.LayoutManager userRecyclerViewLayoutManager;
+    //Firebase Firestore instance and reference to moods collection.
     private FirebaseFirestore db;
     private CollectionReference moodListRef;
+    //Filters for displaying moods.
     private boolean filterRecentweek = false;
     private String filterEmotionalstate = "All Moods";
     private String filterTrigger = "";
@@ -45,26 +58,30 @@ public class HomeMyMoodsFrag extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home_my_moods, container, false);
 
+        //Retrieve the username from the Intent.
         if (getActivity() != null && getActivity().getIntent() != null) {
             username = getActivity().getIntent().getStringExtra("username");
         }
 
-        TextView usernameTextView = view.findViewById(R.id.textView_homeMyMoodFrag_welcomeUser);
+        TextView usernameTextView = view.findViewById(R.id.textView_HomeMyMoodsFragment_welcomeUser);
         usernameTextView.setText(username != null ? "Welcome, " + username + "!" : "Welcome!");
 
-        FloatingActionButton addMoodButton = view.findViewById(R.id.floatingActionButton_homeMyMoodsFrag_addmood);
+        //Floating action button to add a new mood event.
+        FloatingActionButton addMoodButton = view.findViewById(R.id.floatingActionButton_HomeMyMoodsFragment_addmood);
         addMoodButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AddMoodEventActivity.class);
             intent.putExtra("username", username);
             startActivity(intent);
         });
 
-        ImageView profileImage = view.findViewById(R.id.ImageView_homeMyMoodsFrag_userProfile);
+        //ImageView that navigates to the user's profile details.
+        ImageView profileImage = view.findViewById(R.id.ImageView_HomeMyMoodsFragment_userProfile);
         profileImage.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), PersonalProfileDetailsActivity.class);
             startActivity(intent);
         });
 
+        //Dropdown menu to filter moods by emotional state.
         AutoCompleteTextView autoCompleteTextView = view.findViewById(R.id.autoCompleteTextView);
         String[] filterOptions = {"All Moods", "Happiness", "Sadness", "Anger", "Surprise", "Fear", "Disgust", "Shame"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, filterOptions);
@@ -74,7 +91,8 @@ public class HomeMyMoodsFrag extends Fragment {
             loadMoodsFromFirebase();
         });
 
-        SearchView searchView = view.findViewById(R.id.searchView);
+        //SearchView to filter moods by trigger words.
+        SearchView searchView = view.findViewById(R.id.searchView_HomeMyMoodsFragment);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -90,25 +108,32 @@ public class HomeMyMoodsFrag extends Fragment {
             }
         });
 
-        userRecyclerView = view.findViewById(R.id.recyclerview_fragmenthomemymoods_userrecyclerview);
+        //Initialize and set up the RecyclerView.
+        userRecyclerView = view.findViewById(R.id.recyclerview_HomeMyMoodsFragment_userrecyclerview);
         userRecyclerView.setHasFixedSize(true);
         userRecyclerViewLayoutManager = new LinearLayoutManager(getContext());
         userRecyclerView.setLayoutManager(userRecyclerViewLayoutManager);
         userRecyclerViewAdapter = new UserRecyclerViewAdapter(getContext(), userMoodList);
         userRecyclerView.setAdapter(userRecyclerViewAdapter);
 
+
+        //Handle mood item clicks to view details.
         userRecyclerViewAdapter.setOnItemClickListener(mood -> {
             Intent intent = new Intent(getActivity(), MoodEventDetailsActivity.class);
             intent.putExtra("moodId", mood.getDocId());
             startActivity(intent);
         });
 
+
+        //Initialize Firestore and reference the moods collection.
         db = FirebaseFirestore.getInstance();
         moodListRef = db.collection("moods");
 
+        //Load moods from Firestore.
         loadMoodsFromFirebase();
 
-        CheckBox recentWeekCheckBox = view.findViewById(R.id.checkBox_recentWeek);
+        //Checkbox to filter moods from the recent week.
+        CheckBox recentWeekCheckBox = view.findViewById(R.id.checkBox_HomeMyMoodsFragment_recentWeek);
         recentWeekCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             filterRecentweek = isChecked;
             loadMoodsFromFirebase();
@@ -117,23 +142,33 @@ public class HomeMyMoodsFrag extends Fragment {
         return view;
     }
 
+    /**
+     * Called when the activity is resumed.
+     * Ensures the latest mood data is fetched from Firebase
+     * and displayed in the UI.
+     */
     @Override
     public void onResume() {
         super.onResume();
         loadMoodsFromFirebase();
     }
 
+    /**
+     * Retrieves and filters the user's moods from Firestore based on applied filters.
+     */
     private void loadMoodsFromFirebase() {
         Log.d("UserProfile", "Loading moods for username: '" + username + "'");
         Query query = moodListRef.whereEqualTo("username", username)
                 .orderBy("dateTime", Query.Direction.DESCENDING);
 
+        //Filter moods from the last seven days if the checkbox is checked.
         if (filterRecentweek) {
             long recentWeekMillis = System.currentTimeMillis() - (7L * 24 * 60 * 60 * 1000);
             Timestamp recentWeekTimestamp = new Timestamp(new Date(recentWeekMillis));
             query = query.whereGreaterThanOrEqualTo("dateTime", recentWeekTimestamp);
         }
 
+        //Apply emotional state filter if selected.
         if (filterEmotionalstate != null && !filterEmotionalstate.equals("All Moods") && !filterEmotionalstate.isEmpty()) {
             String filterValue = filterEmotionalstate.toUpperCase();
             query = query.whereEqualTo("moodState", filterValue);
