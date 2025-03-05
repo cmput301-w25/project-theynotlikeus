@@ -1,14 +1,8 @@
 package com.example.theynotlikeus;
-
-/**
- * Represents a user with a username and password.
- *
- * Purpose:
- * Represents a user with login credentials.
- * Used for authentication and storing user data in Firestore.
- * Provides constructors required for Firestore integration.
- * Contains getters and setters for the username and password.
- */
+/*
+    User class with a username and password.
+*   Used for authentication and storing user data in Firestore.
+* */
 public class User {
 
     //Field to store the user's username.
@@ -17,17 +11,14 @@ public class User {
     private String password;
 
 
-    public User() {
-        //Empty constructor to satisfy Firestore requirement.
-    }
+    public User(){}; //Empty constructor required for Firestore.
 
     /**
-     * Constructor to create a User object with specified username and password.
-     *
-     * @param username the username of the user.
-     * @param password the password for the user.
+     * This will construct a new user with a username and password.
+     * @param username
+     * @param password
      */
-    public User(String username, String password) {
+    public User(String username, String password){
         this.username = username;
         this.password = password;
     }
@@ -39,6 +30,7 @@ public class User {
      */
     public String getUsername() {
         return username;
+        //Retrieves the username of the user.
     }
 
     /**
@@ -48,6 +40,7 @@ public class User {
      */
     public void setUsername(String username) {
         this.username = username;
+        //Sets a new password for the user.
     }
 
     /**
@@ -57,6 +50,7 @@ public class User {
      */
     public String getPassword() {
         return password;
+        //Retrieves the user's password.
     }
 
     /**
@@ -66,5 +60,8 @@ public class User {
      */
     public void setPassword(String password) {
         this.password = password;
+        //Sets a new password for the user.
     }
+
+
 }
