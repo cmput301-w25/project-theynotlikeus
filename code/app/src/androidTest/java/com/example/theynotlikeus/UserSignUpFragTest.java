@@ -30,7 +30,7 @@ public class UserSignUpFragTest {
     @Test
     public void testSignUpSuccess() throws InterruptedException {
         // 1. Navigate from LoginUserSelectionFrag to UserSignUpFrag
-        onView(withId(R.id.button_user)).perform(click());
+        onView(withId(R.id.button_LoginUserSelectionFragment_user)).perform(click());
 
         // 2. TEMPORARY wait 2 seconds for Firestore + navigation to complete
         Thread.sleep(2000);
@@ -45,24 +45,24 @@ public class UserSignUpFragTest {
         // 4. Input a new user in the correct manner.
         onView(withId(R.id.editText_UserSignUpFrag_username)).perform(replaceText("123"));
         onView(withId(R.id.editText_UserSignUpFrag_password)).perform(replaceText("123"));
-        onView(withId(R.id.editText_userSignUpFrag_reEnterPassword)).perform(replaceText("123"));
-        onView(withId(R.id.button_userSignUpFrag_createandlogin)).perform(click());
+        onView(withId(R.id.editText_UserSignUpFrag_reEnterPassword)).perform(replaceText("123"));
+        onView(withId(R.id.button_UserSignUpFrag_createandlogin)).perform(click());
 
     }
 
     @Test
     public void testSignUpFailure() {
         // 1. Navigate from LoginUserSelectionFrag to UserSignUpFrag.
-        onView(withId(R.id.button_user)).perform(click());
+        onView(withId(R.id.button_LoginUserSelectionFragment_user)).perform(click());
         onView(withId(R.id.textButton_UserLoginFrag_signUp)).perform(click());
 
         // 2. Input user with password mismatch.
         onView(withId(R.id.editText_UserSignUpFrag_username)).perform(replaceText("newUser"));
         onView(withId(R.id.editText_UserSignUpFrag_password)).perform(replaceText("newPassword1"));
-        onView(withId(R.id.editText_userSignUpFrag_reEnterPassword)).perform(replaceText("newPassword2"));
+        onView(withId(R.id.editText_UserSignUpFrag_reEnterPassword)).perform(replaceText("newPassword2"));
 
         // 3. Click on the sign-in button.
-        onView(withId(R.id.button_userSignUpFrag_createandlogin)).perform(click());
+        onView(withId(R.id.button_UserSignUpFrag_createandlogin)).perform(click());
 
         // 4. Verify that the login fragment is still displayed by checking for a view with id "fragment_user_login_layout".
         onView(withId(R.id.fragment_user_sign_up_layout)).check(matches(isDisplayed()));
