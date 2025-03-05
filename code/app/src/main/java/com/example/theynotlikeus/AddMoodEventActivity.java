@@ -1,6 +1,7 @@
 package com.example.theynotlikeus;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -8,8 +9,11 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.theynotlikeus.Mood;
+import com.example.theynotlikeus.R;
 /**
  * This activity allows the user to select a mood, specify a trigger, and choose a social situation which is then
  * saved to Firestore.
