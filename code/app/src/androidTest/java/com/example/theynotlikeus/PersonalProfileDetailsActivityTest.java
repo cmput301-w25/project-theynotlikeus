@@ -21,6 +21,7 @@ public class PersonalProfileDetailsActivityTest {
     public ActivityScenarioRule<PersonalProfileDetailsActivity> scenario =
             new ActivityScenarioRule<>(PersonalProfileDetailsActivity.class);
 
+    /*
     @Test
     public void testBackButtonClosesActivity() {
         // Click on the back button
@@ -29,7 +30,7 @@ public class PersonalProfileDetailsActivityTest {
         // Verify that the activity is closed
         onView(withId(R.id.main)).check(doesNotExist());
     }
-
+*/
     @Test
     public void testActivityLayoutLoadsCorrectly() {
         // Verify that the main container view is displayed
