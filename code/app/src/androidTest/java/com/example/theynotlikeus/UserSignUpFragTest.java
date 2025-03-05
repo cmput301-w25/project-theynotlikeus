@@ -28,22 +28,24 @@ public class UserSignUpFragTest {
             new ActivityScenarioRule<>(LoginActivity.class);
 
     @Test
-    public void testSignUpSuccess() {
+    public void testSignUpSuccess() throws InterruptedException {
         // Navigate from LoginUserSelectionFrag to UserSignUpFrag
         onView(withId(R.id.button_user)).perform(click());
-        onView(withId(R.id.textButton_UserLoginFrag_signUp)).perform(click());
 
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        // 2. TEMPORARY wait 2 seconds for Firestore + navigation to complete
+        Thread.sleep(2000);
+
+        // 3. Now the UserLoginFrag should be loaded, so we can find the sign-up button
+        onView(withId(R.id.textButton_UserLoginFrag_signUp))
+                .perform(click());
+
+
 
 
         // Input a new user in the correct manner.
-        onView(withId(R.id.editText_UserSignUpFrag_username)).perform(replaceText("newUser"));
-        onView(withId(R.id.editText_UserSignUpFrag_password)).perform(replaceText("newPassword"));
-        onView(withId(R.id.editText_userSignUpFrag_reEnterPassword)).perform(replaceText("newPassword"));
+        onView(withId(R.id.editText_UserSignUpFrag_username)).perform(replaceText("123"));
+        onView(withId(R.id.editText_UserSignUpFrag_password)).perform(replaceText("123"));
+        onView(withId(R.id.editText_userSignUpFrag_reEnterPassword)).perform(replaceText("123"));
         onView(withId(R.id.button_userSignUpFrag_createandlogin)).perform(click());
 
     }
