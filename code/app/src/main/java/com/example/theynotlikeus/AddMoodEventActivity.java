@@ -11,13 +11,18 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.example.theynotlikeus.Mood;
 import com.example.theynotlikeus.R;
-import com.google.firebase.firestore.FirebaseFirestore;
-
+/**
+ * This activity allows the user to select a mood, specify a trigger, and choose a social situation which is then
+ * saved to Firestore.
+ *
+ * Also allows the user to exit the activity using the back button
+ */
 public class AddMoodEventActivity extends AppCompatActivity {
 
-    private String username;
+    private String username; //Stores the username passed from the previous screen
     private int trigger_length_limit = 20;
 
     @Override
@@ -25,29 +30,33 @@ public class AddMoodEventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_mood_event);
 
-        username = getIntent().getStringExtra("username");
+        username = getIntent().getStringExtra("username"); //Retrieve the username passed from the previous activity.
 
-        Spinner moodSpinner = findViewById(R.id.spinner_activitymoodevent_currentmood);
-        EditText triggerEditText = findViewById(R.id.edittext_activitymoodevent_trigger);
-        Spinner socialSituationSpinner = findViewById(R.id.spinner_activitymoodevent_socialsituation);
+        //UI components to their views.
+        Spinner moodSpinner = findViewById(R.id.spinner_ActivityAddMoodEvent_currentmood);
+        EditText triggerEditText = findViewById(R.id.edittext_ActivityAddMoodEvent_trigger);
+        Spinner socialSituationSpinner = findViewById(R.id.spinner_ActivityAddMoodEvent_socialsituation);
 
+        //Setting up a mood spinner that contains a list of all possible moods the user can select
         ArrayAdapter<CharSequence> moodAdapter = ArrayAdapter.createFromResource(
                 this,
                 R.array.moods,
-                R.layout.addmoodevent_spinner
+                R.layout.add_mood_event_spinner
         );
-        moodAdapter.setDropDownViewResource(R.layout.addmoodevent_spinner);
+        moodAdapter.setDropDownViewResource(R.layout.add_mood_event_spinner);
         moodSpinner.setAdapter(moodAdapter);
 
+        //Setting up the social situation spinner
         ArrayAdapter<CharSequence> socialAdapter = ArrayAdapter.createFromResource(
                 this,
                 R.array.social_situations,
-                R.layout.addmoodevent_spinner
+                R.layout.add_mood_event_spinner
         );
-        socialAdapter.setDropDownViewResource(R.layout.addmoodevent_spinner);
+        socialAdapter.setDropDownViewResource(R.layout.add_mood_event_spinner);
         socialSituationSpinner.setAdapter(socialAdapter);
 
-        Button saveButton = findViewById(R.id.button_activitymoodevent_save);
+        //Implementing the save button to save all the mood details into Firebase
+        Button saveButton = findViewById(R.id.button_ActivityAddMoodEvent_save);
         saveButton.setOnClickListener(v -> {
             String selectedMood = moodSpinner.getSelectedItem().toString();
             Mood.MoodState moodState;
@@ -82,8 +91,10 @@ public class AddMoodEventActivity extends AppCompatActivity {
             } catch (IllegalArgumentException e) {
             }
 
+            //Recording the username of the user adding the mood event
             mood.setUsername(username);
 
+            //Getting a Firestore instance and adding the new mood document to the "moods" collection.
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             db.collection("moods")
                     .add(mood)
@@ -96,7 +107,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
                     });
         });
 
-        findViewById(R.id.button_activitymoodevent_backbutton).setOnClickListener(v -> finish());
+        findViewById(R.id.button_ActivityAddMoodEvent_backbutton).setOnClickListener(v -> finish());
 
     }
 }

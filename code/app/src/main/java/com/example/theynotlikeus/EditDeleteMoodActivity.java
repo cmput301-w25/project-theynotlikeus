@@ -14,14 +14,20 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.FirebaseFirestore;
-
+/**
+ * This fragment allows the user to edit and delete a mood event by providing a user interface for modifying stored mood data
+ * including interactive buttons like save, delete and back (to navigate back to MainActivity).
+ *
+ * It loads an existing mood event from Firestore using a mood ID.
+ */
 public class EditDeleteMoodActivity extends AppCompatActivity {
 
-    private FirebaseFirestore db;
-    private String moodId;
-    private Mood moodToEdit;
+    private FirebaseFirestore db; //Firestore database instance.
+    private String moodId; //Stores the ID of the mood document to edit/delete.
+    private Mood moodToEdit; //Mood object to be edited.
     private int trigger_length_limit = 20;
 
+    //Defining variables that will store the ids of UI elements
     Spinner moodSpinner;
     EditText triggerEditText;
     Spinner socialSituationSpinner;
@@ -32,32 +38,36 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_delete_mood);
 
+        //Bind UI elements to their respective views in order to implement them
         moodSpinner = findViewById(R.id.spinner_DeleteEditMoodActivity_currentMoodspinner);
         triggerEditText = findViewById(R.id.editText_DeleteEditMoodActivity_triggerInput);
-        socialSituationSpinner = findViewById(R.id.spinner_activityeditdeletemoodevent_socialsituation);
+        socialSituationSpinner = findViewById(R.id.spinner_DeleteEditMoodActivity_socialsituation);
         geolocationSwitch = findViewById(R.id.switch_DeleteEditMoodActivity_geoSwitch);
-
         ImageButton deleteButton = findViewById(R.id.imageButton_DeleteEditMoodActivity_delete);
         ImageButton backButton = findViewById(R.id.imageButton_DeleteEditMoodActivity_back);
         Button saveButton = findViewById(R.id.button_DeleteEditMoodActivity_save);
 
-        db = FirebaseFirestore.getInstance();
-        moodId = getIntent().getStringExtra("moodId");
+        db = FirebaseFirestore.getInstance(); //Initialize Firestore
+        moodId = getIntent().getStringExtra("moodId"); //Retrieving the moodId from the Intent extras
 
+        //Setting up the mood spinner with mood options from resources.
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this, R.array.moods, R.layout.addmoodevent_spinner
+                this, R.array.moods, R.layout.add_mood_event_spinner
         );
-        adapter.setDropDownViewResource(R.layout.addmoodevent_spinner);
+        adapter.setDropDownViewResource(R.layout.add_mood_event_spinner);
         moodSpinner.setAdapter(adapter);
 
+        //Setting up the social situation spinner with options from resources
         ArrayAdapter<CharSequence> socialAdapter = ArrayAdapter.createFromResource(
-                this, R.array.social_situations, R.layout.addmoodevent_spinner
+                this, R.array.social_situations, R.layout.add_mood_event_spinner
         );
-        socialAdapter.setDropDownViewResource(R.layout.addmoodevent_spinner);
+        socialAdapter.setDropDownViewResource(R.layout.add_mood_event_spinner);
         socialSituationSpinner.setAdapter(socialAdapter);
 
+        //load existing mood data from Firestore.
         loadMoodData();
 
+        //Implementing the save button
         saveButton.setOnClickListener(v -> {
             if (moodToEdit == null) {
                 Toast.makeText(this, "Mood not loaded yet.", Toast.LENGTH_SHORT).show();
@@ -71,9 +81,10 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                 Toast.makeText(this, "Invalid mood selection", Toast.LENGTH_SHORT).show();
                 return;
             }
-            moodToEdit.setMoodState(moodState);
+            moodToEdit.setMoodState(moodState); //Updating the mood object's state.
 
-            String trigger = triggerEditText.getText().toString().trim();
+            //Updating all the fields
+            String trigger = triggerEditText.getText().toString().trim();//Update the trigger
             if (!trigger.isEmpty()) {
                 moodToEdit.setTrigger(trigger);
             }
@@ -88,7 +99,7 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                 return;
             }
 
-            String socialText = socialSituationSpinner.getSelectedItem().toString().trim();
+            String socialText = socialSituationSpinner.getSelectedItem().toString().trim(); //Update the social situation
             if (!socialText.isEmpty()) {
                 try {
                     Mood.SocialSituation socialSituation =
@@ -98,7 +109,7 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                     Toast.makeText(this, "Edit social situation", Toast.LENGTH_SHORT).show();
                 }
             }
-
+            //Save the updated mood object back to Firestore.
             db.collection("moods").document(moodToEdit.getDocId())
                     .set(moodToEdit)
                     .addOnSuccessListener(aVoid -> {
@@ -117,7 +128,7 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                         ).show();
                     });
         });
-
+        //Implementing a delete button listener to remove the mood document from Firestore and then naviagating to the landing page
         deleteButton.setOnClickListener(v -> {
             if (moodToEdit == null) {
                 Toast.makeText(this, "Mood not loaded yet.", Toast.LENGTH_SHORT).show();
@@ -131,6 +142,7 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                                 "Mood deleted successfully!",
                                 Toast.LENGTH_SHORT
                         ).show();
+                        //Navigate back to MainActivity, loading the homeMyMoodsFrag fragment.
                         Intent intent = new Intent(EditDeleteMoodActivity.this, MainActivity.class);
                         intent.putExtra("fragmentToLoad", "HomeMyMoodsFrag");
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -145,24 +157,32 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                         ).show();
                     });
         });
-
+        //Implementing the back button to take the user to the Mood details activity.
         backButton.setOnClickListener(v -> finish());
     }
 
+
+    /**
+     *Reload the mood data each time the activity resumes.
+     */
     @Override
     protected void onResume() {
         super.onResume();
         loadMoodData();
     }
 
+    /**
+     *Loads the mood data from Firestore and updates the UI elements.
+     */
     private void loadMoodData() {
         db.collection("moods").document(moodId)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
-                        moodToEdit = documentSnapshot.toObject(Mood.class);
+                        moodToEdit = documentSnapshot.toObject(Mood.class); //Convert the Firestore document to a Mood object.
                         if (moodToEdit != null) {
-                            moodToEdit.setDocId(documentSnapshot.getId());
+                            moodToEdit.setDocId(documentSnapshot.getId());//Set the document ID in the Mood object for reference.
+                            //Populating the fields with the data retrieved from the database
                             moodSpinner.setSelection(getMoodStateIndex(moodToEdit.getMoodState()));
                             triggerEditText.setText(moodToEdit.getTrigger());
                             if (moodToEdit.getSocialSituation() != null) {
@@ -171,7 +191,7 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                                 );
                             }
                         }
-                    } else {
+                    } else { //If the mood ID does not exist in the database, the error is handled by printing an error message.
                         Toast.makeText(
                                 EditDeleteMoodActivity.this,
                                 "Mood not found in Firestore.",
@@ -188,9 +208,16 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Returns the index in the social situation spinner that corresponds to the given social situation.
+     *
+     * @param socialSituation the social situation to match.
+     * @return the index of the matching social situation, or 0 if not found.
+     */
     private int getSocialSituationIndex(Mood.SocialSituation socialSituation) {
         ArrayAdapter<CharSequence> adapter = (ArrayAdapter<CharSequence>) socialSituationSpinner.getAdapter();
         for (int i = 0; i < adapter.getCount(); i++) {
+            //Compare ignoring case and replacing underscores with spaces
             if (adapter.getItem(i).toString().equalsIgnoreCase(socialSituation.toString().replace("_", " "))) {
                 return i;
             }
@@ -198,6 +225,11 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
         return 0;
     }
 
+    /**
+     * Returns the index in the mood spinner that corresponds to the given mood state.
+     * @param moodState the mood state to match.
+     * @return the index of the matching mood state, or 0 if not found.
+     */
     private int getMoodStateIndex(Mood.MoodState moodState) {
         ArrayAdapter<CharSequence> adapter =
                 (ArrayAdapter<CharSequence>) moodSpinner.getAdapter();
