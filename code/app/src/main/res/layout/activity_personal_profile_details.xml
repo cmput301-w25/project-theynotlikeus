@@ -18,7 +18,7 @@
         app:navigationIcon="@drawable/ic_white_back_button" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/textView_PersonalProfileDetailsActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Profile page "
