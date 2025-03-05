@@ -8,19 +8,19 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 /**
- * Activity for admin users.
- *
+ * This activity provides the interface for admin users, implements UI experience and adjusts
+ * the layout to account for system insets (such as the status bar and navigation bar) to allows admin users
  */
 public class AdminActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        EdgeToEdge.enable(this);//Enable immersive edge-to-edge UI.
         setContentView(R.layout.activity_admin);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> { //Adjusting the layout's padding to accommodate system bars using WindowInsets.
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom); //Setting padding on the view to ensure no UI elements are obscured
             return insets;
         });
     }
