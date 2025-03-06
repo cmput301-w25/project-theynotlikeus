@@ -22,7 +22,14 @@ import android.view.ViewGroup;
 
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-
+/**
+ * Fragment for selecting user or admin login. It displays buttons for user and admin login.
+ *
+ * It also:
+ * Checks network connectivity before proceeding.
+ * Verifies Firestore connection before allowing navigation.
+ * Navigates to the respective login fragment upon successful validation.
+ */
 public class LoginUserSelectionFrag extends Fragment {
 
     public LoginUserSelectionFrag() {
@@ -41,28 +48,27 @@ public class LoginUserSelectionFrag extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Retrieve any parameters if needed
+        //Retrieve any parameters if needed
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_login_user_selection, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // Find the buttons
-        Button buttonGoToLoginUser = view.findViewById(R.id.button_user);
-        Button buttonGoToLoginAdmin = view.findViewById(R.id.button_admin);
+        //Find the buttons for implementing them
+        Button buttonGoToLoginUser = view.findViewById(R.id.button_LoginUserSelectionFragment_user);
+        Button buttonGoToLoginAdmin = view.findViewById(R.id.button_LoginUserSelectionFragment_admin);
 
-        // Get NavController for navigation actions
+        //Get NavController for navigation actions
         NavController navController = Navigation.findNavController(view);
 
-        // Set onClickListener for User button with connectivity and Firestore test
-        // Blocks the user navigation if network fails
+        //Set onClickListener for User button with connectivity and Firestore test
+        //Blocks the user navigation if network fails
         buttonGoToLoginUser.setOnClickListener(v -> {
             if (!isNetworkConnected()) {
                 Toast.makeText(requireContext(),
@@ -71,14 +77,12 @@ public class LoginUserSelectionFrag extends Fragment {
 
                 return;
             }
-            // Test Firestore connection before navigating
-            // change documentPath: "connectionTest" to documentPath: "NoconnectionTest"
-            // to see the user blocked from logging in
+            //Test Firestore connection before navigating change documentPath: "connectionTest" to documentPath: "NoconnectionTest" to see the user blocked from logging in
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             DocumentReference testDocRef = db.collection("test").document("connectionTest");
             testDocRef.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful() && task.getResult() != null && task.getResult().exists()) {
-                    // Firestore connection successful – navigate to user login fragment
+                    //Firestore connection successful – navigate to user login fragment
                     navController.navigate(R.id.action_loginUserSelectionFrag_to_userLoginFrag);
                 } else {
                     Toast.makeText(requireContext(),
@@ -87,7 +91,7 @@ public class LoginUserSelectionFrag extends Fragment {
             });
         });
 
-        // Set onClickListener for Admin button with connectivity and Firestore test
+        //Set onClickListener for Admin button with connectivity and Firestore test
         buttonGoToLoginAdmin.setOnClickListener(v -> {
             if (!isNetworkConnected()) {
                 Toast.makeText(requireContext(),
@@ -99,7 +103,7 @@ public class LoginUserSelectionFrag extends Fragment {
             DocumentReference testDocRef = db.collection("test").document("connectionTest");
             testDocRef.get().addOnCompleteListener(task -> {
                 if (task.isSuccessful() && task.getResult() != null && task.getResult().exists()) {
-                    // Firestore connection successful – navigate to admin login fragment
+                    //Firestore connection successful – navigate to admin login fragment
                     navController.navigate(R.id.action_loginUserSelectionFrag_to_adminLoginFrag);
                 } else {
                     Toast.makeText(requireContext(),
@@ -109,7 +113,7 @@ public class LoginUserSelectionFrag extends Fragment {
         });
     }
 
-    // Helper method to check network connectivity
+    //Helper method to check network connectivity
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) requireContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cm != null) {

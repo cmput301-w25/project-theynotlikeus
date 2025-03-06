@@ -2,15 +2,16 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_user_login_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".UserLoginFrag">
 
-    <!-- TODO: Update blank fragment layout -->
+
 
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textView_UserLoginInFrag_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="User Login"
@@ -30,7 +31,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/button_userloginfrag_back"
+            android:id="@+id/button_UserLoginFrag_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +41,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
-        android:id="@+id/button_UserLogIn_SignIn"
+        android:id="@+id/button_UserLogin_SignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sign In"
@@ -48,7 +49,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/textView_UserLoginInFrag_title"
         app:layout_constraintVertical_bias="0.5" />
 
 
@@ -61,20 +62,22 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:text="Sign Up"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_UserLoginFrag_question" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/textView_UserLoginFrag_question"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Don't Have an account ? "
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_UserLogIn_SignIn" />
+        app:layout_constraintTop_toBottomOf="@+id/button_UserLogin_SignIn" />
 
     <EditText
         android:id="@+id/editText_userLoginFrag_username"
@@ -87,7 +90,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_UserLoginInFrag_title" />
 
     <EditText
         android:id="@+id/editText_userLoginFrag_password"

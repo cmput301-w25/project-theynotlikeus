@@ -77,7 +77,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageButton_DeleteEditMoodActivity_selectImage" />
 
     <TextView
-        android:id="@+id/textView_triggerLabel"
+        android:id="@+id/textView_DeleteEditMoodActivity_triggerLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -89,7 +89,7 @@
         app:layout_constraintTop_toBottomOf="@+id/spinner_DeleteEditMoodActivity_currentMoodspinner" />
 
     <TextView
-        android:id="@+id/textView_moodLabel"
+        android:id="@+id/textView_DeleteEditMoodActivity_moodLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -132,7 +132,7 @@
         app:layout_constraintTop_toBottomOf="@id/spinner_DeleteEditMoodActivity_currentMoodspinner" />
 
     <TextView
-        android:id="@+id/textView_socialSituationLabel"
+        android:id="@+id/textView_DeleteEditMoodActivity_socialSituationLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -140,12 +140,12 @@
         android:text="Social Situation"
         android:textColor="@color/white"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/spinner_activityeditdeletemoodevent_socialsituation"
+        app:layout_constraintBottom_toTopOf="@+id/spinner_DeleteEditMoodActivity_socialsituation"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/editText_DeleteEditMoodActivity_triggerInput" />
 
     <Spinner
-        android:id="@+id/spinner_activityeditdeletemoodevent_socialsituation"
+        android:id="@+id/spinner_DeleteEditMoodActivity_socialsituation"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:entries="@array/social_situations"
@@ -155,7 +155,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_socialSituationLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_DeleteEditMoodActivity_socialSituationLabel" />
 
 
     <Switch
@@ -167,7 +167,7 @@
         android:text="Geolocation (Optional)"
         android:textColor="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_activityeditdeletemoodevent_socialsituation"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_DeleteEditMoodActivity_socialsituation"
         tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <Button
