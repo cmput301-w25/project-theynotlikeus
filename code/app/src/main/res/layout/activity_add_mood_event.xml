@@ -49,7 +49,7 @@
         android:src="@drawable/ic_add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview_activitymoodevent_title" />
+        app:layout_constraintTop_toBottomOf="@+id/textview_ActivityAddMoodEvent_title" />
 
     <TextView
         android:id="@+id/textview_activitymoodevent_selectimagetext"

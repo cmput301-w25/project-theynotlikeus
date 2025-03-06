@@ -51,7 +51,7 @@ public class MainActivityTest {
         onView(withId(R.id.nav_home)).perform(click());
 
         // Navigate to Add Mood Event
-        onView(withId(R.id.nav_mood_event)).perform(click());
-        onView(withId(R.id.textview_ActivityAddMoodEvent_title)).check(matches(isDisplayed()));
+        onView(withId(R.id.floatingActionButton_homeMyMoodsFrag_addmood)).perform(click());
+        onView(withId(R.id.imagebutton_activitymoodevent_selectimage)).check(matches(isDisplayed()));
     }
 }
