@@ -25,6 +25,9 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -32,7 +35,12 @@ import java.util.concurrent.TimeUnit;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class MoodEventDetailsActivityTest {
-    private static String generatedMoodId;
+    private static String generatedMoodId;//MoodID to identify the mood
+    private static String testDate;
+    private static String testTime;
+    //Latitude and Longitude for the location attribute
+    private static double testLatitude = 37.7749;
+    private static double testLongitude = -122.4194;
 
     @BeforeClass
     public static void setup() {
@@ -44,25 +52,27 @@ public class MoodEventDetailsActivityTest {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference moodsRef = db.collection("moods");
 
+        //Creating a formatted date and time
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+        Date now = new Date();
+        testDate = dateFormat.format(now);
+        testTime = timeFormat.format(now);
+
+        //Storing a mood object with its attributes in Firestore
         Mood mood = new Mood();
-        mood.setTrigger("Finished a great book");
-        mood.setSocialSituation(Mood.SocialSituation.ALONE);
-        mood.setMoodState(Mood.MoodState.HAPPINESS);
+        mood.setTrigger("Finished a great book"); //trigger
+        mood.setSocialSituation(Mood.SocialSituation.ALONE); //social situation
+        mood.setMoodState(Mood.MoodState.HAPPINESS); //moodstate
+        mood.setDateTime(now); //date and time
+        mood.setLocation(testLatitude, testLongitude);//location
 
-        CountDownLatch latch = new CountDownLatch(1);
-
-        moodsRef.add(mood).addOnSuccessListener(documentReference -> {
-            generatedMoodId = documentReference.getId();
-            latch.countDown();
-        }).addOnFailureListener(e -> {
-            latch.countDown();
-        });
-
-        latch.await(5, TimeUnit.SECONDS);
+        moodsRef.add(mood);
     }
 
     @Test
     public void appShouldDisplayExistingMoodOnLaunch() {
+
         if (generatedMoodId == null) {
             return;
         }
@@ -71,15 +81,19 @@ public class MoodEventDetailsActivityTest {
         intent.putExtra("MOOD_ID", generatedMoodId);
         ActivityScenario<MoodEventDetailsActivity> scenario = ActivityScenario.launch(intent);
 
-        onView(withId(R.id.textview_activitymoodeventdetails_socialsituation))
-                .check(matches(withText("ALONE")));
+        // Check if mood details are displayed correctly
+        onView(withId(R.id.textview_activitymoodeventdetails_socialsituation)).check(matches(withText("ALONE"))); //social situation
+        onView(withId(R.id.textview_activitymoodeventdetails_username)).check(matches(withText("HAPPINESS"))); //moodState
+        onView(withId(R.id.textview_activitymoodeventdetails_triggervalue)).check(matches(withText("Finished a great book"))); //trigger
+        onView(withId(R.id.textview_activitymoodeventdetails_dateandtime)).check(matches(withText(testDate + " " + testTime)));//date and time
 
-        onView(withId(R.id.textview_activitymoodeventdetails_username))
-                .check(matches(withText("HAPPINESS")));
+        String expectedCoordinates = testLatitude + ", " + testLongitude;
+        onView(withId(R.id.textview_activitymoodeventdetails_location)).check(matches(withText(expectedCoordinates))); //location
 
-        onView(withId(R.id.textview_activitymoodeventdetails_triggervalue))
-                .check(matches(withText("Finished a great book")));
+        onView(withId(R.id.imageview_activitymoodeventdetails_moodimage)).check(matches(withId(R.drawable.ic_happy_emoticon))); //icon displayed
+
     }
+
 
 
     @After
