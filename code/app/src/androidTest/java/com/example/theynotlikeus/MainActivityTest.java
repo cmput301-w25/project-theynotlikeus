@@ -24,7 +24,7 @@ public class MainActivityTest {
     public void testBottomNavigationSwitchesFragments() {
         //Checking whether the home button works by checking if the main activity loads properly
         onView(withId(R.id.nav_home)).perform(click());
-        onView(withId(R.id.recyclerview_fragmenthomemymoods_userrecyclerview)).check(matches(isDisplayed()));
+        onView(withId(R.id.recyclerview_HomeMyMoodsFragment_userrecyclerview)).check(matches(isDisplayed()));
 
         //Verifying whether the PersonalProfileDetailsActivity launches when the profile icon is clicked
         onView(withId(R.id.nav_profile)).perform(click());
@@ -51,7 +51,7 @@ public class MainActivityTest {
         onView(withId(R.id.nav_home)).perform(click());
 
         //Navigate to Add Mood Event
-        onView(withId(R.id.floatingActionButton_homeMyMoodsFrag_addmood)).perform(click());
-        onView(withId(R.id.imagebutton_activitymoodevent_selectimage)).check(matches(isDisplayed()));
+        onView(withId(R.id.floatingActionButton_HomeMyMoodsFragment_addmood)).perform(click());
+        onView(withId(R.id.imagebutton_ActivityAddMoodEvent_selectimage)).check(matches(isDisplayed()));
     }
 }

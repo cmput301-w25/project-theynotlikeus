@@ -82,15 +82,15 @@ public class MoodEventDetailsActivityTest {
         ActivityScenario<MoodEventDetailsActivity> scenario = ActivityScenario.launch(intent);
 
         // Check if mood details are displayed correctly
-        onView(withId(R.id.textview_activitymoodeventdetails_socialsituation)).check(matches(withText("ALONE"))); //social situation
-        onView(withId(R.id.textview_activitymoodeventdetails_username)).check(matches(withText("HAPPINESS"))); //moodState
-        onView(withId(R.id.textview_activitymoodeventdetails_triggervalue)).check(matches(withText("Finished a great book"))); //trigger
-        onView(withId(R.id.textview_activitymoodeventdetails_dateandtime)).check(matches(withText(testDate + " " + testTime)));//date and time
+        onView(withId(R.id.textview_ActivityMoodEventDetails_socialsituation)).check(matches(withText("ALONE"))); //social situation
+        onView(withId(R.id.textview_ActivityMoodEventDetails_username)).check(matches(withText("HAPPINESS"))); //moodState
+        onView(withId(R.id.textview_ActivityMoodEventDetails_triggervalue)).check(matches(withText("Finished a great book"))); //trigger
+        onView(withId(R.id.textview_ActivityMoodEventDetails_dateandtime)).check(matches(withText(testDate + " " + testTime)));//date and time
 
         String expectedCoordinates = testLatitude + ", " + testLongitude;
-        onView(withId(R.id.textview_activitymoodeventdetails_location)).check(matches(withText(expectedCoordinates))); //location
+        onView(withId(R.id.textview_ActivityMoodEventDetails_location)).check(matches(withText(expectedCoordinates))); //location
 
-        onView(withId(R.id.imageview_activitymoodeventdetails_moodimage)).check(matches(withId(R.drawable.ic_happy_emoticon))); //icon displayed
+        onView(withId(R.id.imageview_ActivityMoodEventDetails_moodimage)).check(matches(withId(R.drawable.ic_happy_emoticon))); //icon displayed
 
     }
 
