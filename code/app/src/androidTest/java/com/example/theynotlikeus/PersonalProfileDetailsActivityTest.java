@@ -21,19 +21,11 @@ public class PersonalProfileDetailsActivityTest {
     public ActivityScenarioRule<PersonalProfileDetailsActivity> scenario =
             new ActivityScenarioRule<>(PersonalProfileDetailsActivity.class);
 
-    /*
-    @Test
-    public void testBackButtonClosesActivity() {
-        // Click on the back button
-        onView(withId(R.id.button_PersonalProfileDetailsActivity_back)).perform(click());
 
-        // Verify that the activity is closed
-        onView(withId(R.id.main)).check(doesNotExist());
-    }
-*/
     @Test
     public void testActivityLayoutLoadsCorrectly() {
-        // Verify that the main container view is displayed
+        //Verifying whether the activity loads properly by checking whether the
+        // activity container exists
         onView(withId(R.id.main)).check(matches(isDisplayed()));
     }
 }

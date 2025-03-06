@@ -12,6 +12,7 @@ public class MoodTest {
 
     @Before
     public void setUp() {
+        //creating a mood object for the purpose of testing
         mood=new Mood(Mood.MoodState.HAPPINESS);
     }
 
@@ -23,6 +24,7 @@ public class MoodTest {
 
     @Test
     public void testConstructorWithDateAndMoodState() {
+        //Verifying the constructor works
         Date date=new Date();
         Mood moodWithDate=new Mood(date, Mood.MoodState.SADNESS);
         assertEquals(date, moodWithDate.getDateTime());
