@@ -68,32 +68,32 @@ public class UserSignUpFrag extends Fragment {
     ) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Back button navigation
-        MaterialToolbar backButton = view.findViewById(R.id.button_userSignUpFrag_back);
+        //Back button navigation
+        MaterialToolbar backButton = view.findViewById(R.id.button_UserSignUpFrag_back);
         NavController navController = Navigation.findNavController(view);
         backButton.setOnClickListener(v ->
                 navController.navigate(R.id.action_userSignUpFrag_to_userLoginFrag)
         );
 
-        // Get references to UI elements
-        Button signInButton = view.findViewById(R.id.button_userSignUpFrag_createandlogin);
+        //Get references to UI elements
+        Button signInButton = view.findViewById(R.id.button_UserSignUpFrag_createandlogin);
         EditText usernameEditText = view.findViewById(R.id.editText_UserSignUpFrag_username);
         EditText passwordEditText = view.findViewById(R.id.editText_UserSignUpFrag_password);
-        EditText repasswordEditText = view.findViewById(R.id.editText_userSignUpFrag_reEnterPassword);
+        EditText repasswordEditText = view.findViewById(R.id.editText_UserSignUpFrag_reEnterPassword);
 
         signInButton.setOnClickListener(v -> {
-            // Retrieve user inputs
+            //Retrieve user inputs
             String username = usernameEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
             String repassword = repasswordEditText.getText().toString().trim();
 
-            // Basic validation
+            //Validating whether the fields are empty or not
             if (username.isEmpty() || password.isEmpty() || repassword.isEmpty()) {
                 Toast.makeText(getContext(), "Username and Password cannot be empty", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // Checking if the passwords are the same or not
+            //Checking if the passwords are the same or not
             if (!password.equals(repassword)) {
                 Toast.makeText(getContext(), "Password mismatched lil bro", Toast.LENGTH_SHORT).show();
                 return;
@@ -106,7 +106,7 @@ public class UserSignUpFrag extends Fragment {
                     .whereEqualTo("username", username)
                     .get()
                     .addOnSuccessListener(querySnapshot -> {
-                        if (!querySnapshot.isEmpty()) {
+                        if (!querySnapshot.isEmpty()) { //if the username is found, the user already exsits
 
                             Toast.makeText(getContext(), "User already exists. Please sign in.", Toast.LENGTH_SHORT).show();
 
@@ -122,7 +122,7 @@ public class UserSignUpFrag extends Fragment {
 
 
                                         Intent intent = new Intent(requireActivity(), MainActivity.class);
-                                        intent.putExtra("username", user.getUsername());
+                                        intent.putExtra("username", user.getUsername()); //passting the username to the next activity
                                         startActivity(intent);
                                         requireActivity().finish();
                                     })

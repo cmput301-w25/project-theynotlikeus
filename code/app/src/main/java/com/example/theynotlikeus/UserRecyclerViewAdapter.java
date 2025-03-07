@@ -16,16 +16,33 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * RecyclerView Adapter for displaying a list of user moods.
+ * It also:
+ * Binds mood data to the RecyclerView.
+ * Displays mood icon, title, trigger, date, and social situation.
+ * Handles click events on mood items.
+ */
+
 public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerViewAdapter.MyViewHolder> {
-    private List<Mood> userMoodList;
+    private List<Mood> userMoodList; //List of moods to be displayed
     private Context context;
 
+    /**
+     * Interface for handling click events on mood items.
+     */
     public interface OnItemClickListener {
         void onItemClick(Mood mood);
     }
 
-    private OnItemClickListener listener;
+    private OnItemClickListener listener; //Click listener for mood items
 
+    /**
+     * Constructor for initializing the adapter with context and mood list.
+     *
+     * @param context      The context where the adapter is used.
+     * @param userMoodList The list of mood objects to display.
+     */
     public UserRecyclerViewAdapter(Context context, List<Mood> userMoodList) {
         this.userMoodList = userMoodList;
         this.context = context;
@@ -40,9 +57,10 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Mood mood = userMoodList.get(position);
+        Mood mood = userMoodList.get(position); //Retrieve mood object at the given position
         int moodIconRes = getMoodIcon(mood.getMoodState() != null ? mood.getMoodState() : Mood.MoodState.SURPRISE);
-        holder.imageViewMoodIcon.setImageResource(moodIconRes);
+        //Setting the fields with information of the mood object
+        holder.imageViewMoodIcon.setImageResource(moodIconRes); //Set the mood icon based on the mood state
         holder.textViewMoodTitle.setText(mood.getMoodState() != null ? mood.getMoodState().toString() : "Unknown");
         holder.textViewSocialSituation.setText(mood.getSocialSituation() != null ? mood.getSocialSituation().toString() : "Unknown");
 
@@ -55,7 +73,7 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
         } else {
             holder.textViewDate.setText("Unknown");
         }
-
+        //Set click listener for the item
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
                 int pos = holder.getAdapterPosition();
@@ -66,11 +84,17 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
         });
     }
 
+    /**
+     *Return the number of moods in the list
+     */
     @Override
     public int getItemCount() {
         return userMoodList.size();
     }
 
+    /**
+     * ViewHolder class for holding views in a mood item.
+     */
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView imageViewMoodIcon;
         TextView textViewMoodTitle;
@@ -78,6 +102,11 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
         TextView textViewDate;
         TextView textViewSocialSituation; // 1) Add this field
 
+        /**
+         * Constructor for initializing UI elements in the ViewHolder.
+         *
+         * @param itemView The view representing a single mood item.
+         */
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             imageViewMoodIcon = itemView.findViewById(R.id.imageview_fragmentmoodeventlayout_moodicon);
@@ -88,6 +117,13 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
 
         }
     }
+
+    /**
+     * Returns the appropriate icon resource for a given mood state.
+     *
+     * @param moodState The mood state to get an icon for.
+     * @return The resource ID of the corresponding mood icon.
+     */
 
     private int getMoodIcon(Mood.MoodState moodState) {
         switch (moodState) {
@@ -112,6 +148,11 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
         }
     }
 
+    /**
+     * Sets the click listener for mood items.
+     *
+     * @param listener The listener to handle item click events.
+     */
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }

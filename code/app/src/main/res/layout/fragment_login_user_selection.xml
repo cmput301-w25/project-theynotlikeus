@@ -8,7 +8,7 @@
 
 
     <Button
-        android:id="@+id/button_user"
+        android:id="@+id/button_LoginUserSelectionFragment_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="User"
@@ -19,12 +19,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button_admin"
+        android:id="@+id/button_LoginUserSelectionFragment_admin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Admin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_user" />
+        app:layout_constraintTop_toBottomOf="@+id/button_LoginUserSelectionFragment_user" />
 </androidx.constraintlayout.widget.ConstraintLayout>
