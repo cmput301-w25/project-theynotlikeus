@@ -39,11 +39,13 @@ public class UserSignUpFragTest {
         onView(withId(R.id.textButton_UserLoginFrag_signUp))
                 .perform(click());
 
+        String uniqueUsername = "user" + System.currentTimeMillis();
+
 
 
 
         // 4. Input a new user in the correct manner.
-        onView(withId(R.id.editText_UserSignUpFrag_username)).perform(replaceText("123"));
+        onView(withId(R.id.editText_UserSignUpFrag_username)).perform(replaceText(uniqueUsername));
         onView(withId(R.id.editText_UserSignUpFrag_password)).perform(replaceText("123"));
         onView(withId(R.id.editText_UserSignUpFrag_reEnterPassword)).perform(replaceText("123"));
         onView(withId(R.id.button_UserSignUpFrag_createandlogin)).perform(click());
@@ -51,9 +53,11 @@ public class UserSignUpFragTest {
     }
 
     @Test
-    public void testSignUpFailure() {
+    public void testSignUpFailure() throws InterruptedException {
         // 1. Navigate from LoginUserSelectionFrag to UserSignUpFrag.
         onView(withId(R.id.button_LoginUserSelectionFragment_user)).perform(click());
+
+        Thread.sleep(2000);
         onView(withId(R.id.textButton_UserLoginFrag_signUp)).perform(click());
 
         // 2. Input user with password mismatch.
