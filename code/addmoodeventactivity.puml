@@ -1,0 +1,24 @@
+@startuml
+class com.example.theynotlikeus.AddMoodEventActivity {
+- String username
+- int trigger_length_limit
+# void onCreate(Bundle)
+}
+note top of com.example.theynotlikeus.AddMoodEventActivity
+
+ * This activity allows the user to select a mood, specify a trigger, and choose a social situation which is then
+ * saved to Firestore.
+ *
+ * Also allows the user to exit the activity using the back button
+ 
+end note
+
+note left of com.example.theynotlikeus.AddMoodEventActivity::username
+Stores the username passed from the previous screen
+end note
+
+
+
+
+androidx.appcompat.app.AppCompatActivity <|-- com.example.theynotlikeus.AddMoodEventActivity
+@enduml

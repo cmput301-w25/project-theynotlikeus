@@ -1,0 +1,383 @@
+@startuml
+class com.example.theynotlikeus.PersonalProfileDetailsActivity {
+# void onCreate(Bundle)
+}
+
+class com.example.theynotlikeus.PersonalProfileDetailsActivityTest {
+}
+class com.example.theynotlikeus.ExampleInstrumentedTest {
++ void useAppContext()
+}
+
+class com.example.theynotlikeus.HomeMyMoodsFilterFrag {
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
+}
+
+class com.example.theynotlikeus.UserSignUpFrag {
++ {static} UserSignUpFrag newInstance(String,String)
++ void onCreate(Bundle)
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
++ void onViewCreated(View,Bundle)
+}
+
+class com.example.theynotlikeus.EditDeleteMoodActivityUnitTest {
+- ActivityScenario<EditDeleteMoodActivity> scenario
++ void setUp()
++ void testIntentMoodId()
+}
+
+
+class com.example.theynotlikeus.EditDeleteMoodActivityTest {
+- {static} String TEST_MOOD_ID
+- FirebaseFirestore db
++ ActivityScenarioRule<EditDeleteMoodActivity> activityScenarioRule
++ void setUpFirestore()
++ void testActivityLaunch()
++ void testFirestoreDataLoads()
++ void testEditAndSaveMood()
++ void testClickDeleteButton()
+}
+
+
+class com.example.theynotlikeus.HomeMapFrag {
+- {static} String ARG_PARAM1
+- {static} String ARG_PARAM2
+- String mParam1
+- String mParam2
++ {static} HomeMapFrag newInstance(String,String)
++ void onCreate(Bundle)
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
+}
+
+
+class com.example.theynotlikeus.MoodEventDetailsActivityTest {
+- {static} String generatedMoodId
+- {static} String testDate
+- {static} String testTime
+- {static} double testLatitude
+- {static} double testLongitude
++ {static} void setup()
++ void seedDatabase()
++ void appShouldDisplayExistingMoodOnLaunch()
++ void tearDown()
+}
+
+
+class com.example.theynotlikeus.DeleteEditMoodFrag {
+- {static} String ARG_PARAM1
+- {static} String ARG_PARAM2
+- String mParam1
+- String mParam2
++ {static} DeleteEditMoodFrag newInstance(String,String)
++ void onCreate(Bundle)
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
+}
+
+
+class com.example.theynotlikeus.ExampleUnitTest {
++ void addition_isCorrect()
+}
+
+class com.example.theynotlikeus.User {
+- String username
+- String password
++ String getUsername()
++ void setUsername(String)
++ String getPassword()
++ void setPassword(String)
+}
+
+
+class com.example.theynotlikeus.UserLoginFragTest {
++ ActivityScenarioRule<LoginActivity> activityScenarioRule
++ void testLoginSuccess()
++ void testLoginFailure()
+}
+
+
+class com.example.theynotlikeus.UserLoginFrag {
++ {static} UserLoginFrag newInstance(String,String)
++ void onCreate(Bundle)
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
++ void onViewCreated(View,Bundle)
+}
+
+class com.example.theynotlikeus.UserTest {
+- User user
++ void setUp()
++ void testGetUSername()
++ void testSetUsername()
++ void testGetPassword()
++ void testSetPassword()
+}
+
+
+class com.example.theynotlikeus.AddMoodEventActivity {
+- String username
+- int trigger_length_limit
+# void onCreate(Bundle)
+}
+
+
+class com.example.theynotlikeus.Mood {
+- Date dateTime
+- MoodState moodState
+- String trigger
+- SocialSituation socialSituation
+- String reason
+- byte[] photo
+- int photoSize
+- Double latitude
+- Double longitude
+- String username
+- String docId
++ String getDocId()
++ void setDocId(String)
++ Date getDateTime()
++ void setDateTime(Date)
++ MoodState getMoodState()
++ void setMoodState(MoodState)
++ String getTrigger()
++ void setTrigger(String)
++ SocialSituation getSocialSituation()
++ void setSocialSituation(SocialSituation)
++ String getReason()
++ void setReason(String)
++ int getPhotoSize()
++ void setPhotoSize(int)
++ byte[] getPhoto()
++ void setPhoto(byte[])
++ Double getLatitude()
++ Double getLongitude()
++ void setLocation(Double,Double)
++ String getUsername()
++ void setUsername(String)
++ String toString()
+}
+
+
+enum com.example.theynotlikeus.MoodState {
++  ANGER
++  CONFUSION
++  DISGUST
++  FEAR
++  HAPPINESS
++  SADNESS
++  SHAME
++  SURPRISE
++  BOREDOM
+}
+
+enum com.example.theynotlikeus.SocialSituation {
++  ALONE
++  ONE_TO_OTHER
++  TWO_TO_SEVERAL
++  TO_CROWD
+}
+
+class com.example.theynotlikeus.MoodEventDetailsActivity {
+~ TextView socialSituationTextView
+~ TextView dateTextView
+~ TextView triggerTextView
+~ TextView usernameTextView
+~ ImageView moodImageView
+~ ImageButton backButton
+~ ImageButton editButton
+- FirebaseFirestore db
+- String moodId
+# void onCreate(Bundle)
+# void onResume()
+- void loadMoodData()
+- int getMoodIcon(Mood.MoodState)
+}
+
+
+class com.example.theynotlikeus.UserSignUpFragTest {
++ ActivityScenarioRule<LoginActivity> activityScenarioRule
++ void testSignUpSuccess()
++ void testSignUpFailure()
+}
+
+
+class com.example.theynotlikeus.HomeMyMoodsFrag {
+- String username
+- List<Mood> userMoodList
+- RecyclerView userRecyclerView
+- UserRecyclerViewAdapter userRecyclerViewAdapter
+- RecyclerView.LayoutManager userRecyclerViewLayoutManager
+- FirebaseFirestore db
+- CollectionReference moodListRef
+- boolean filterRecentweek
+- String filterEmotionalstate
+- String filterTrigger
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
++ void onResume()
+- void loadMoodsFromFirebase()
+}
+
+
+class com.example.theynotlikeus.PersonalProfileDetailsActivityTest {
++ ActivityScenarioRule<PersonalProfileDetailsActivity> scenario
++ void testActivityLayoutLoadsCorrectly()
+}
+
+
+class com.example.theynotlikeus.MoodTest {
+- Mood mood
++ void setUp()
++ void testConstructorWithMoodState()
++ void testConstructorWithDateAndMoodState()
++ void testSetAndGetDateTime()
++ void testSetAndGetMoodState()
++ void testSetAndGetTrigger()
++ void testSetAndGetSocialSituation()
++ void testSetAndGetReasonValid()
++ void testSetReasonInvalidTooLong()
++ void testSetReasonInvalidTooManyWords()
++ void testSetAndGetPhotoValid()
++ void testSetPhotoInvalidTooLarge()
++ void testSetAndGetLocation()
++ void testSetAndGetUsername()
++ void testToString()
+}
+
+
+class com.example.theynotlikeus.MainActivity {
+# void onCreate(Bundle)
+}
+
+class com.example.theynotlikeus.HomeMyMoodsFragTest {
++ ActivityScenarioRule<MainActivity> scenario
++ {static} void setup()
++ void seedDatabase()
++ void appShouldDisplayExistingMoviesOnLaunch()
++ void tearDown()
+}
+
+
+class com.example.theynotlikeus.AdminLoginFrag {
+- {static} String ARG_PARAM1
+- {static} String ARG_PARAM2
+- String mParam1
+- String mParam2
++ {static} AdminLoginFrag newInstance(String,String)
++ void onCreate(Bundle)
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
++ void onViewCreated(View,Bundle)
+}
+
+
+class com.example.theynotlikeus.MainActivityTest {
++ ActivityScenarioRule<MainActivity> scenario
++ void testBottomNavigationSwitchesFragments()
++ void testActivityLaunchesSuccessfully()
++ void testNavigationToAddMoodEvent()
+}
+
+
+class com.example.theynotlikeus.FollowerRequestFrag {
+- {static} String ARG_PARAM1
+- {static} String ARG_PARAM2
+- String mParam1
+- String mParam2
++ {static} FollowerRequestFrag newInstance(String,String)
++ void onCreate(Bundle)
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
+}
+
+
+class com.example.theynotlikeus.CommunityFrag {
+- {static} String ARG_PARAM1
+- {static} String ARG_PARAM2
+- String mParam1
+- String mParam2
++ {static} CommunityFrag newInstance(String,String)
++ void onCreate(Bundle)
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
+}
+
+
+class com.example.theynotlikeus.LoginActivity {
+- {static} String loggedInUsername
+# void onCreate(Bundle)
++ {static} String getLoggedInUsername()
+}
+
+
+class com.example.theynotlikeus.UserRecyclerViewAdapter {
+- List<Mood> userMoodList
+- Context context
+- OnItemClickListener listener
++ MyViewHolder onCreateViewHolder(ViewGroup,int)
++ void onBindViewHolder(MyViewHolder,int)
++ int getItemCount()
+- int getMoodIcon(Mood.MoodState)
++ void setOnItemClickListener(OnItemClickListener)
+}
+
+
+interface com.example.theynotlikeus.UserRecyclerViewAdapter$OnItemClickListener {
+~ void onItemClick(Mood)
+}
+
+class com.example.theynotlikeus.UserRecyclerViewAdapter$MyViewHolder {
+~ ImageView imageViewMoodIcon
+~ TextView textViewMoodTitle
+~ TextView textViewTrigger
+~ TextView textViewDate
+~ TextView textViewSocialSituation
+}
+
+class com.example.theynotlikeus.EditDeleteMoodActivity {
+- FirebaseFirestore db
+- String moodId
+- Mood moodToEdit
+- int trigger_length_limit
+~ Spinner moodSpinner
+~ EditText triggerEditText
+~ Spinner socialSituationSpinner
+~ Switch geolocationSwitch
+# void onCreate(Bundle)
+# void onResume()
+- void loadMoodData()
+- int getSocialSituationIndex(Mood.SocialSituation)
+- int getMoodStateIndex(Mood.MoodState)
+}
+
+
+class com.example.theynotlikeus.AdminActivity {
+# void onCreate(Bundle)
+}
+
+class com.example.theynotlikeus.LoginUserSelectionFrag {
++ {static} LoginUserSelectionFrag newInstance(String,String)
++ void onCreate(Bundle)
++ View onCreateView(LayoutInflater,ViewGroup,Bundle)
++ void onViewCreated(View,Bundle)
+- boolean isNetworkConnected()
+}
+
+
+
+androidx.appcompat.app.AppCompatActivity <|-- com.example.theynotlikeus.PersonalProfileDetailsActivity
+androidx.fragment.app.Fragment <|-- com.example.theynotlikeus.HomeMyMoodsFilterFrag
+androidx.fragment.app.Fragment <|-- com.example.theynotlikeus.UserSignUpFrag
+androidx.fragment.app.Fragment <|-- com.example.theynotlikeus.HomeMapFrag
+androidx.fragment.app.Fragment <|-- com.example.theynotlikeus.DeleteEditMoodFrag
+androidx.fragment.app.Fragment <|-- com.example.theynotlikeus.UserLoginFrag
+androidx.appcompat.app.AppCompatActivity <|-- com.example.theynotlikeus.AddMoodEventActivity
+androidx.appcompat.app.AppCompatActivity <|-- com.example.theynotlikeus.MoodEventDetailsActivity
+androidx.fragment.app.Fragment <|-- com.example.theynotlikeus.HomeMyMoodsFrag
+androidx.appcompat.app.AppCompatActivity <|-- com.example.theynotlikeus.MainActivity
+androidx.fragment.app.Fragment <|-- com.example.theynotlikeus.AdminLoginFrag
+androidx.fragment.app.Fragment <|-- com.example.theynotlikeus.FollowerRequestFrag
+androidx.fragment.app.Fragment <|-- com.example.theynotlikeus.CommunityFrag
+androidx.appcompat.app.AppCompatActivity <|-- com.example.theynotlikeus.LoginActivity
+com.example.theynotlikeus.Adapter <|-- com.example.theynotlikeus.UserRecyclerViewAdapter
+com.example.theynotlikeus.UserRecyclerViewAdapter +.. com.example.theynotlikeus.UserRecyclerViewAdapter$OnItemClickListener
+com.example.theynotlikeus.UserRecyclerViewAdapter +.. com.example.theynotlikeus.UserRecyclerViewAdapter$MyViewHolder
+com.example.theynotlikeus.ViewHolder <|-- com.example.theynotlikeus.UserRecyclerViewAdapter$MyViewHolder
+androidx.appcompat.app.AppCompatActivity <|-- com.example.theynotlikeus.EditDeleteMoodActivity
+androidx.appcompat.app.AppCompatActivity <|-- com.example.theynotlikeus.AdminActivity
+androidx.fragment.app.Fragment <|-- com.example.theynotlikeus.LoginUserSelectionFrag
+@enduml
