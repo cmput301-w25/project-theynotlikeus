@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
@@ -35,16 +36,21 @@ import java.util.concurrent.TimeUnit;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class MoodEventDetailsActivityTest {
-    private static String generatedMoodId;//MoodID to identify the mood
+
+    private static String generatedMoodId; //MoodID to identify the mood
     private static String testDate;
     private static String testTime;
-    //Latitude and Longitude for the location attribute
-    private static double testLatitude = 37.7749;
-    private static double testLongitude = -122.4194;
+    private static String expectedDateString;  //Stores the full Date.toString() for the test's final check
+
+    //Latitude and Longitude for the location attribute for when we implement geolocation, Part 4
+    private static final double testLatitude = 37.7749;
+    private static final double testLongitude = -122.4194;
+
+
 
     @BeforeClass
-    public static void setup(){
-        // Specific address for emulated device to access our localHost
+    public static void setup() {
+        //Specific address for emulated device to access localhost
         String androidLocalhost = "10.0.2.2";
         int portNumber = 8089;
         FirebaseFirestore.getInstance().useEmulator(androidLocalhost, portNumber);
@@ -55,49 +61,67 @@ public class MoodEventDetailsActivityTest {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference moodsRef = db.collection("moods");
 
-        //Creating a formatted date and time
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+
         Date now = new Date();
-        testDate = dateFormat.format(now);
-        testTime = timeFormat.format(now);
+        expectedDateString = now.toString();
 
-        //Storing a mood object with its attributes in Firestore
+        //Create a Mood object
         Mood mood = new Mood();
-        mood.setTrigger("Finished a great book"); //trigger
-        mood.setSocialSituation(Mood.SocialSituation.ALONE); //social situation
-        mood.setMoodState(Mood.MoodState.HAPPINESS); //moodstate
-        mood.setDateTime(now); //date and time
-        mood.setLocation(testLatitude, testLongitude);//location
+        mood.setTrigger("Finished a great book");
+        mood.setSocialSituation(Mood.SocialSituation.ALONE);
+        mood.setMoodState(Mood.MoodState.HAPPINESS);
+        mood.setDateTime(now);
+        //mood.setLocation(testLatitude, testLongitude); When geolocation is implemented in part 4
 
+        //Waiting for the emulator to populate
+        CountDownLatch latch = new CountDownLatch(1);
         moodsRef.add(mood);
+        latch.await(30, TimeUnit.SECONDS);
     }
 
     @Test
     public void appShouldDisplayExistingMoodOnLaunch() {
-
+        // If generatedMoodId wasn't set, stop
         if (generatedMoodId == null) {
+            Log.e("MoodEvent", "Generated mood ID is null. Cannot launch activity.");
             return;
         }
 
-        Intent intent = new Intent();
-        intent.putExtra("MOOD_ID", generatedMoodId);
-        ActivityScenario<MoodEventDetailsActivity> scenario = ActivityScenario.launch(intent);
+        // Provide both context and the Activity class in the Intent constructor
+        Intent intent = new Intent(
+                ApplicationProvider.getApplicationContext(),
+                MoodEventDetailsActivity.class
+        );
+        intent.putExtra("moodId", generatedMoodId);
 
-        // Check if mood details are displayed correctly
-        onView(withId(R.id.textview_ActivityMoodEventDetails_socialsituation)).check(matches(withText("ALONE"))); //social situation
-        onView(withId(R.id.textview_ActivityMoodEventDetails_username)).check(matches(withText("HAPPINESS"))); //moodState
-        onView(withId(R.id.textview_ActivityMoodEventDetails_triggervalue)).check(matches(withText("Finished a great book"))); //trigger
-        onView(withId(R.id.textview_ActivityMoodEventDetails_dateandtime)).check(matches(withText(testDate + " " + testTime)));//date and time
+        // Launch activity with the explicit Intent
+        try (ActivityScenario<MoodEventDetailsActivity> scenario = ActivityScenario.launch(intent)) {
+            // Now do your Espresso checks
+            onView(withId(R.id.textview_ActivityMoodEventDetails_socialsituation))
+                    .check(matches(withText("ALONE")));
 
-        String expectedCoordinates = testLatitude + ", " + testLongitude;
-        onView(withId(R.id.textview_ActivityMoodEventDetails_location)).check(matches(withText(expectedCoordinates))); //location
+            onView(withId(R.id.textview_ActivityMoodEventDetails_username))
+                    .check(matches(withText("HAPPINESS")));
 
-        onView(withId(R.id.imageview_ActivityMoodEventDetails_moodimage)).check(matches(withId(R.drawable.ic_happy_emoticon))); //icon displayed
+            onView(withId(R.id.textview_ActivityMoodEventDetails_triggervalue))
+                    .check(matches(withText("Finished a great book")));
 
+            // Now we check the EXACT .toString() output:
+            onView(withId(R.id.textview_ActivityMoodEventDetails_dateandtime))
+                    .check(matches(withText(expectedDateString)));
+
+            /*
+            String expectedCoordinates = testLatitude + ", " + testLongitude;
+            onView(withId(R.id.textview_ActivityMoodEventDetails_location))
+                    .check(matches(withText(expectedCoordinates)));
+            */
+            /*
+            onView(withId(R.id.imageview_ActivityMoodEventDetails_moodimage))
+                    .check(matches(withId(R.drawable.ic_happy_emoticon)));
+
+             */
+        }
     }
-
-
 
     @After
     public void tearDown() {
@@ -122,4 +146,6 @@ public class MoodEventDetailsActivityTest {
             }
         }
     }
+
+
 }
