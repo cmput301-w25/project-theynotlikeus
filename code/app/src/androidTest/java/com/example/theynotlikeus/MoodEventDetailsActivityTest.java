@@ -43,8 +43,11 @@ public class MoodEventDetailsActivityTest {
     private static double testLongitude = -122.4194;
 
     @BeforeClass
-    public static void setup() {
-        FirebaseFirestore.getInstance().useEmulator("10.0.2.2", 8080);
+    public static void setup(){
+        // Specific address for emulated device to access our localHost
+        String androidLocalhost = "10.0.2.2";
+        int portNumber = 8089;
+        FirebaseFirestore.getInstance().useEmulator(androidLocalhost, portNumber);
     }
 
     @Before
@@ -98,20 +101,25 @@ public class MoodEventDetailsActivityTest {
 
     @After
     public void tearDown() {
-
         String projectId = "theynotlikeus-6a9f1";
-        URL url;
+        URL url = null;
         try {
-            url = new URL("http://10.0.2.2:8080/emulator/v1/projects/" + projectId + "/databases/(default)/documents");
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("DELETE");
-            int response = urlConnection.getResponseCode();
-            Log.i("FirestoreCleanup", "Response Code: " + response);
-            urlConnection.disconnect();
+            url = new URL("http://10.0.2.2:8089/emulator/v1/projects/" + projectId + "/databases/(default)/documents");
         } catch (MalformedURLException exception) {
             Log.e("URL Error", Objects.requireNonNull(exception.getMessage()));
+        }
+        HttpURLConnection urlConnection = null;
+        try {
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setRequestMethod("DELETE");
+            int response = urlConnection.getResponseCode();
+            Log.i("Response Code", "Response Code: " + response);
         } catch (IOException exception) {
             Log.e("IO Error", Objects.requireNonNull(exception.getMessage()));
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
         }
     }
 }
