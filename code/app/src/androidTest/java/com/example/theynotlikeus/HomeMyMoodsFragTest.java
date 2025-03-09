@@ -42,7 +42,7 @@ public class HomeMyMoodsFragTest {
     private List<Date> dateInstance;
     private static String testUsername = "Username";
 
-    /* How to putExtra data using ActivityScenarioRule: https://stackoverflow.com/questions/54179560/how-to-putextra-data-using-newest-activityscenariorule-activityscenarioespress
+    /* How to putExtra data using ActivityScenarioRule from: https://stackoverflow.com/questions/54179560/how-to-putextra-data-using-newest-activityscenariorule-activityscenarioespress
      * Authored by: Jose Leles
      * Taken by: Ercel Angeles
      * Taken on: March 8, 2025
@@ -99,12 +99,11 @@ public class HomeMyMoodsFragTest {
             // Add other details
             currentMoodEvent.setTrigger(moodTriggerTests[i]);
             currentMoodEvent.setSocialSituation(Mood.SocialSituation.valueOf(moodSocialSituationTests[i]));
-            currentMoodEvent.setUsername(testUsername); // Keep this commented
+            currentMoodEvent.setUsername(testUsername);
             DocumentReference docRef = moodsRef.document();
             currentMoodEvent.setDocId(docRef.getId());
             docRef.set(currentMoodEvent);
         }
-
         Thread.sleep(2000);     // Very important or test will fail.
     }
 
@@ -121,10 +120,10 @@ public class HomeMyMoodsFragTest {
         // Check if social situations show
         onView(withText("TO_CROWD")).check(matches(isDisplayed()));
         onView(withText("ONE_TO_OTHER")).check(matches(isDisplayed()));
+
+        // Check if the fragment welcomes the user
         onView(withText("Welcome, " + testUsername + "!")).check(matches(isDisplayed()));
-
     }
-
 
     @After
     public void tearDown() {
