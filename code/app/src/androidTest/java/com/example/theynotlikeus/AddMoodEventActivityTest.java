@@ -54,6 +54,7 @@ import java.util.Objects;
  * UI test for adding a mood event
  * Launches the add mood event activity from home my moods fragment
  * Then verifies a valid mood event submission
+ *
 */
 
 @RunWith(AndroidJUnit4.class)
