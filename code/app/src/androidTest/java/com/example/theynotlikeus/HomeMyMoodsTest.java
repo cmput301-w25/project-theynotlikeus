@@ -3,6 +3,7 @@ package com.example.theynotlikeus;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
@@ -18,7 +19,7 @@ import androidx.test.filters.LargeTest;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,83 +36,101 @@ import java.util.Objects;
 public class HomeMyMoodsTest {
 
     /**
-     * Setup Firestore to use the local emulator and pre-populate it with a mood event
-     * for the test user "testUser".
+     * Pre-populate Firestore with multiple mood events for testUser.
+     * For each mood, two events are added:
+     *   - A recent event (current timestamp)
+     *   - An old event (timestamp older than 7 days)
      */
     @BeforeClass
-    public static void setup() {
+    public static void populateFirestore() {
         // Configure Firestore to use the local emulator.
         String androidLocalhost = "10.0.2.2";
         int portNumber = 8089;
-        FirebaseFirestore.getInstance().useEmulator(androidLocalhost, portNumber);
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        firestore.useEmulator(androidLocalhost, portNumber);
 
-        // Pre-populate Firestore with a test mood event.
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Map<String, Object> mood = new HashMap<>();
-        mood.put("username", "testUser");
-        mood.put("dateTime", new Timestamp(new Date()));
-        // The fragment expects moodState in uppercase.
-        mood.put("moodState", "HAPPINESS");
-        mood.put("trigger", "happy trigger");
-        // Using a fixed document id for testing.
-        db.collection("moods").document("testMoodDoc").set(mood);
+        String username = "testUser";
+        long now = System.currentTimeMillis();
+        long eightDaysAgo = now - (8L * 24 * 60 * 60 * 1000);
+
+        String[] moodStates = {"HAPPINESS", "SADNESS", "ANGER", "SURPRISE", "FEAR", "DISGUST", "SHAME"};
+        for (String moodState : moodStates) {
+            // Create a recent event.
+            Map<String, Object> recentEvent = new HashMap<>();
+            recentEvent.put("username", username);
+            recentEvent.put("dateTime", new Timestamp(new Date(now)));
+            recentEvent.put("moodState", moodState);
+            recentEvent.put("trigger", "recent " + moodState);
+            firestore.collection("moods").document("recent_" + moodState).set(recentEvent);
+
+            // Create an old event.
+            Map<String, Object> oldEvent = new HashMap<>();
+            oldEvent.put("username", username);
+            oldEvent.put("dateTime", new Timestamp(new Date(eightDaysAgo)));
+            oldEvent.put("moodState", moodState);
+            oldEvent.put("trigger", "old " + moodState);
+            firestore.collection("moods").document("old_" + moodState).set(oldEvent);
+        }
     }
 
     /**
-     * Test that when HomeActivity (which hosts HomeMyMoodsFrag) is launched with the username
-     * extra, the welcome message and the pre-populated mood event are displayed.
+     * Test that MainActivity (hosting HomeMyMoodsFrag) displays the welcome message and all pre-populated mood events.
      */
     @Test
-    public void testDisplayMoodsAndWelcomeMessage() throws InterruptedException {
-        // Launch HomeActivity with an intent extra "username" set to "testUser".
+    public void testDisplayAllMoods() throws InterruptedException {
+        // Launch MainActivity with the test user's username.
         Intent intent = new Intent(ApplicationProvider.getApplicationContext(), MainActivity.class);
         intent.putExtra("username", "testUser");
 
         try (ActivityScenario<MainActivity> scenario = ActivityScenario.launch(intent)) {
-            // Wait for Firestore to load the mood data.
-            Thread.sleep(3000);
+            // Wait for Firestore to load the mood events.
+            Thread.sleep(5000);
 
             // Verify the welcome message.
             onView(withId(R.id.textView_HomeMyMoodsFragment_welcomeUser))
                     .check(matches(withText("Welcome, testUser!")));
 
-            // Verify that the mood event's trigger text ("happy trigger") is displayed.
-            onView(withText("happy trigger"))
-                    .check(matches(isDisplayed()));
+            // Verify that each mood's recent and old events are displayed.
+            String[] moodStates = {"HAPPINESS", "SADNESS", "ANGER", "SURPRISE", "FEAR", "DISGUST", "SHAME"};
+            for (String moodState : moodStates) {
+                onView(withText("recent " + moodState)).check(matches(isDisplayed()));
+                onView(withText("old " + moodState)).check(matches(isDisplayed()));
+            }
         }
     }
 
     /**
-     * Test that clicking on the "add mood" FloatingActionButton navigates to the AddMoodEventActivity.
-     *
-     * This test assumes that the AddMoodEventActivity's layout contains a view with the id "add_mood_event_layout".
+     * Test that clicking the "Recent Week" checkbox filters the events, so that only recent events are displayed.
      */
     @Test
-    public void testAddMoodButtonNavigation() throws InterruptedException {
-        // Launch MainActivity with an intent extra "username" set to "testUser".
+    public void testRecentWeekFilter() throws InterruptedException {
+        // Launch MainActivity with the test user's username.
         Intent intent = new Intent(ApplicationProvider.getApplicationContext(), MainActivity.class);
         intent.putExtra("username", "testUser");
 
         try (ActivityScenario<MainActivity> scenario = ActivityScenario.launch(intent)) {
-            // Wait for the Firestore data to load.
-            Thread.sleep(3000);
+            // Wait for data to load.
+            Thread.sleep(5000);
 
-            // Click the FloatingActionButton to add a new mood event.
-            onView(withId(R.id.floatingActionButton_HomeMyMoodsFragment_addmood))
-                    .perform(click());
+            // Click the "Recent Week" checkbox to filter events.
+            onView(withId(R.id.checkBox_HomeMyMoodsFragment_recentWeek)).perform(click());
+            Thread.sleep(2000);
 
-            // Verify that AddMoodEventActivity is displayed by checking for the Save button.
-            onView(withId(R.id.button_ActivityAddMoodEvent_save))
-                    .check(matches(isDisplayed()));
+            // Only recent events should be visible; old events should be absent.
+            String[] moodStates = {"HAPPINESS", "SADNESS", "ANGER", "SURPRISE", "FEAR", "DISGUST", "SHAME"};
+            for (String moodState : moodStates) {
+                onView(withText("recent " + moodState)).check(matches(isDisplayed()));
+                onView(withText("old " + moodState)).check(doesNotExist());
+            }
         }
     }
 
     /**
-     * Clean up the Firestore emulator by deleting all documents in the "moods" collection.
+     * Clean up the Firestore emulator by deleting all documents in the "moods" collection after all tests.
      */
-    @After
-    public void tearDown() {
-        String projectId = "theynotlikeus-6a9f1"; // Update this if your project id is different.
+    @AfterClass
+    public static void cleanUpFirestore() {
+        String projectId = "theynotlikeus-6a9f1"; // Update this if your project ID is different.
         try {
             URL url = new URL("http://10.0.2.2:8089/emulator/v1/projects/" + projectId +
                     "/databases/(default)/documents/moods");
