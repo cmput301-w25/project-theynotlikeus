@@ -24,6 +24,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 *   Users can log in with their credentials, navigate to sign-up, or go back to selection.
 */
 
+/**
+ * A fragment that allows the user to login to their already existing account and select sign up if they do not have an account
+ */
 public class UserLoginFrag extends Fragment {
 
     //private String mParam1;

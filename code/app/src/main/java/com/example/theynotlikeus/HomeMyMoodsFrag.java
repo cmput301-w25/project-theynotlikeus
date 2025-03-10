@@ -29,6 +29,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * A fragment that displays the logged-in user's mood events.
+ *
+ * This fragment loads mood events from Firebase Firestore and allows the user to filter them by:
+ *     Time (recent week)
+ *     Emotional state
+ *     Trigger keywords
+ *
+ * It also provides functionality to navigate to add new mood events and view personal profile details.
+ *
+ */
 public class HomeMyMoodsFrag extends Fragment {
 
     // Stores the username of the logged-in user.

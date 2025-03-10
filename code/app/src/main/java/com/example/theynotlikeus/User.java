@@ -3,6 +3,11 @@ package com.example.theynotlikeus;
     User class with a username and password.
 *   Used for authentication and storing user data in Firestore.
 * */
+/**
+ * The User class represents a user with a username and password.
+ * This class is used for authentication and storing user data in Firestore.
+ * An empty constructor is provided for Firestore deserialization.
+ */
 public class User {
 
     //Field to store the user's username.
