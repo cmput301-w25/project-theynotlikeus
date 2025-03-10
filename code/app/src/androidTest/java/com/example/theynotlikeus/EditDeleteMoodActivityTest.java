@@ -131,33 +131,6 @@ public class EditDeleteMoodActivityTest {
         }
     }
 
-    /*
-    @Test
-    public void editMoodButtonUpdatesDisplayedData() {
-        if (generatedMoodId == null) {
-            Log.e("EditDeleteMood", "Generated mood ID is null. Cannot launch activity.");
-            return;
-        }
-        // Launch activity with a valid intent
-        Intent intent = new Intent(
-                ApplicationProvider.getApplicationContext(),
-                EditDeleteMoodActivity.class
-        );
-        intent.putExtra("moodId", generatedMoodId);
-        try (ActivityScenario<EditDeleteMoodActivity> scenario = ActivityScenario.launch(intent)) {
-            // Click on the existing mood
-            onView(withText("Finished a great book")).perform(click());
-
-            // Replace the trigger text and save
-            onView(withId(R.id.editText_DeleteEditMoodActivity_triggerInput))
-                    .perform(replaceText("New Trigger"));
-            onView(withId(R.id.button_DeleteEditMoodActivity_save)).perform(click());
-
-            // Check that the updated text is now shown
-            onView(withText("New Trigger")).check(matches(withText("New Trigger")));
-        }
-    }*/
-
     @Test
     public void deleteMoodButtonDeletesMoodFromList() {
         if (generatedMoodId == null) {
