@@ -50,10 +50,15 @@ import java.util.Objects;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class AddMoodEventActivityTest {
-
+    /**
+     * Scenario is in MainActivity
+     */
     @Rule
     public ActivityScenarioRule<MainActivity> scenario = new ActivityScenarioRule<>(MainActivity.class);
 
+    /**
+     * Set up Firestore locally
+     */
     @BeforeClass
     public static void setup() {
         // Specific address for emulated device to access our localhost.
@@ -63,7 +68,10 @@ public class AddMoodEventActivityTest {
     }
 
 
-    // Test: Trigger Too Long
+    /**
+     * Test: Trigger too long
+     */
+
     @Test
     public void testTriggerTooLongShows() throws InterruptedException, ArithmeticException {
         Intent intent = new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), AddMoodEventActivity.class);
@@ -88,7 +96,10 @@ public class AddMoodEventActivityTest {
     }
 
 
-    // Test: No Mood Selected
+    /**
+     *     Test: No Mood Selected
+     */
+
     @Test
     public void testNoMoodSelectedShowsInvalidMood() throws InterruptedException, IllegalArgumentException {
         Intent intent = new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), AddMoodEventActivity.class);
