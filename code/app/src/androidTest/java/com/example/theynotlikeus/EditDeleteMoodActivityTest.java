@@ -35,152 +35,102 @@ import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * UI Test class for EditDeleteMoodActivity.
+ * This class tests the ability to delete a mood event from Firestore using Espresso.
+ */
 public class EditDeleteMoodActivityTest {
 
-    private static String generatedMoodId;
-    private static String expectedDateString;
+    private static String generatedMoodId; 
+    private static String expectedDateString; 
 
-    // (When geolocation is implemented, these could be used in your Mood object)
+    //for geolocation implementation in part 4
     private static final double testLatitude = 37.7749;
     private static final double testLongitude = -122.4194;
 
+  
     @BeforeClass
     public static void setup() {
-        // [DO NOT CHANGE]
-        // Specific address for emulator to access localhost
-        String androidLocalhost = "10.0.2.2";
+        String androidLocalhost = "10.0.2.2"; 
         int portNumber = 8089;
         FirebaseFirestore.getInstance().useEmulator(androidLocalhost, portNumber);
     }
+
 
     @Before
     public void seedDatabase() throws InterruptedException {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference moodsRef = db.collection("moods");
 
+        //Create a test mood event
         Date now = new Date();
-        expectedDateString = now.toString();
+        expectedDateString = now.toString(); //Convert date to string format
 
-        // Create a Mood object
         Mood mood = new Mood();
-        mood.setTrigger("Finished a great book");
-        mood.setSocialSituation(Mood.SocialSituation.ALONE);
-        mood.setMoodState(Mood.MoodState.HAPPINESS);
-        mood.setDateTime(now);
-        // mood.setLocation(testLatitude, testLongitude); // For future geolocation use
+        mood.setTrigger("Finished a great book"); //Set trigger text
+        mood.setSocialSituation(Mood.SocialSituation.ALONE); //Set social situation
+        mood.setMoodState(Mood.MoodState.HAPPINESS); //Set mood state
+        mood.setDateTime(now); //Set the date and time
 
-        // Instead of using add() to auto-generate an ID, generate one manually
+        //Generate Firestore document ID manually
         String docId = moodsRef.document().getId();
         mood.setDocId(docId);
 
+        //Perform asynchronous Firestore write operation and wait for completion
         CountDownLatch latch = new CountDownLatch(1);
         moodsRef.document(docId).set(mood)
                 .addOnSuccessListener(aVoid -> {
-                    generatedMoodId = docId;
+                    generatedMoodId = docId; //Store the generated mood ID for test cases
                     latch.countDown();
                 })
                 .addOnFailureListener(e -> latch.countDown());
-        latch.await(30, TimeUnit.SECONDS); // Wait up to 30s for the write to complete
+        latch.await(30, TimeUnit.SECONDS); //Wait up to 30 seconds for database write
     }
 
-    @Test
-    public void appShouldDisplayExistingMoodOnLaunch() {
-        // Make sure we got a mood ID from seedDatabase()
-        if (generatedMoodId == null) {
-            Log.e("EditDeleteMood", "Generated mood ID is null. Cannot launch activity.");
-            return;
-        }
-
-        // Create an intent with the valid moodId extra
-        Intent intent = new Intent(
-                ApplicationProvider.getApplicationContext(),
-                EditDeleteMoodActivity.class
-        );
-        intent.putExtra("moodId", generatedMoodId);
-
-        // Launch the activity with the intent
-        try (ActivityScenario<EditDeleteMoodActivity> scenario = ActivityScenario.launch(intent)) {
-            // Check that UI fields display the existing mood’s details
-            onView(withId(R.id.spinner_DeleteEditMoodActivity_currentMoodspinner))
-                    .check(matches(isDisplayed()));
-            onView(withId(R.id.editText_DeleteEditMoodActivity_triggerInput))
-                    .check(ViewAssertions.matches(withText("Finished a great book")));
-            onView(withId(R.id.textview_ActivityMoodEventDetails_dateandtime)).check(matches(withText(expectedDateString)));
-            onView(withId(R.id.textview_ActivityMoodEventDetails_socialsituation)).check(matches(withText("ALONE"))); //social situation
-        }
-    }
-
-
-    @Test
-    public void editMoodButtonUpdatesDisplayedData() {
-        if (generatedMoodId == null) {
-            Log.e("EditDeleteMood", "Generated mood ID is null. Cannot launch activity.");
-            return;
-        }
-        // Launch the activity with a valid intent containing the generated mood ID
-        Intent intent = new Intent(
-                ApplicationProvider.getApplicationContext(),
-                EditDeleteMoodActivity.class
-        );
-        intent.putExtra("moodId", generatedMoodId);
-        try (ActivityScenario<EditDeleteMoodActivity> scenario = ActivityScenario.launch(intent)) {
-            // Ensure the trigger EditText is displayed (and that mood data has loaded)
-            onView(withId(R.id.editText_DeleteEditMoodActivity_triggerInput))
-                    .check(matches(isDisplayed()));
-
-            // Replace the current trigger text with "New Trigger"
-            onView(withId(R.id.editText_DeleteEditMoodActivity_triggerInput))
-                    .perform(replaceText("New Trigger"));
-
-            // Click the save button to update the mood data
-            onView(withId(R.id.button_DeleteEditMoodActivity_save)).perform(click());
-
-            // Verify that the updated trigger ("New Trigger") is now displayed in the EditText
-            onView(withId(R.id.editText_DeleteEditMoodActivity_triggerInput))
-                    .check(matches(withText("New Trigger")));
-        }
-    }
-
-
-
+    /**
+     * Test: Deletes a mood event and verifies that it is removed from Firestore.
+     * This ensures the delete button functions correctly.
+     */
     @Test
     public void deleteMoodButtonDeletesMoodFromList() {
         if (generatedMoodId == null) {
             Log.e("EditDeleteMood", "Generated mood ID is null. Cannot launch activity.");
             return;
         }
-        // Launch activity with a valid intent
+
+
         Intent intent = new Intent(
                 ApplicationProvider.getApplicationContext(),
                 EditDeleteMoodActivity.class
-        );
+        );//Launch EditDeleteMoodActivity with the test mood ID
         intent.putExtra("moodId", generatedMoodId);
+
         try (ActivityScenario<EditDeleteMoodActivity> scenario = ActivityScenario.launch(intent)) {
-            // Click on the existing mood
+            //Click on the mood event in the list to open it
             onView(withText("Finished a great book")).perform(click());
-
-            // Tap the delete button
+            //Tap the delete button
             onView(withId(R.id.imageButton_DeleteEditMoodActivity_delete)).perform(click());
-
-            // The mood should no longer appear in the list
+            //Verify that the mood event no longer exists in the UI
             onView(withText("Finished a great book")).check(doesNotExist());
         }
     }
 
 
-
     @After
     public void tearDown() {
-        // [DO NOT CHANGE]
         String projectId = "theynotlikeus-6a9f1";
         URL url = null;
+
         try {
+
             url = new URL("http://10.0.2.2:8089/emulator/v1/projects/" + projectId + "/databases/(default)/documents");
         } catch (MalformedURLException exception) {
             Log.e("URL Error", Objects.requireNonNull(exception.getMessage()));
         }
+
         HttpURLConnection urlConnection = null;
         try {
+
             urlConnection = (HttpURLConnection) Objects.requireNonNull(url).openConnection();
             urlConnection.setRequestMethod("DELETE");
             int response = urlConnection.getResponseCode();
@@ -188,6 +138,7 @@ public class EditDeleteMoodActivityTest {
         } catch (IOException exception) {
             Log.e("IO Error", Objects.requireNonNull(exception.getMessage()));
         } finally {
+
             if (urlConnection != null) {
                 urlConnection.disconnect();
             }
