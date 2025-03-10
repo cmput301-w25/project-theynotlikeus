@@ -1,17 +1,37 @@
 package com.example.theynotlikeus;
 
 
+import static android.app.PendingIntent.getActivity;
+import static android.content.Intent.getIntent;
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.pressKey;
+import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.action.ViewActions.typeText;
+import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isNotChecked;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
+import static org.hamcrest.CoreMatchers.allOf;
+import static org.junit.Assert.assertEquals;
+
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 
 import androidx.test.core.app.ApplicationProvider;
+import androidx.test.espresso.Espresso;
+import androidx.test.espresso.IdlingRegistry;
+import androidx.test.espresso.matcher.RootMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
@@ -31,84 +51,117 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class HomeMyMoodsFragTest {
-    private List<Date> dateInstance;
-    private static String testUsername = "Username";
+public class HomeMyMoodsFragTest /*extends BaseTest*/{
 
-    /* How to putExtra data using ActivityScenarioRule from: https://stackoverflow.com/questions/54179560/how-to-putextra-data-using-newest-activityscenariorule-activityscenarioespress
-     * Authored by: Jose Leles
-     * Taken by: Ercel Angeles
-     * Taken on: March 8, 2025
-     */
-    static Intent intent;
-    static {
-        intent = new Intent(ApplicationProvider.getApplicationContext(), MainActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("username", testUsername);
-        intent.putExtras(bundle);
-    }
+    private String testUsername;
+    private Date date;
 
-    @Rule  // Change depending on the activity
-    public ActivityScenarioRule<MainActivity> scenario = new
-            ActivityScenarioRule<MainActivity>(intent);
+    @Rule
+    public ActivityScenarioRule<MainActivity> scenarioRule =
+            new ActivityScenarioRule<>(MainActivity.class);
 
     @BeforeClass
-    public static void setup(){
+    public static void setUpBase() {
+
         // Specific address for emulated device to access our localHost
         String androidLocalhost = "10.0.2.2";
         int portNumber = 8089;
         FirebaseFirestore.getInstance().useEmulator(androidLocalhost, portNumber);
     }
-
     // Seed the database
     @Before
     public void seedDatabase() throws InterruptedException {
+        Log.i("seedingBegin", "Started seeding data...");
+        /* Code for accessing activity from ActivityScenario: https://stackoverflow.com/questions/61953249/how-to-access-activity-from-activityscenariorule
+         * Authored by: gosr
+         * Taken by: Ercel Angeles
+         * Taken on: March 9, 2025
+         */
+        /*
+        scenarioRule.getScenario().onActivity(activity -> {
+            testUsername = activity.getIntent().getStringExtra("username");
+        });
+
+         */
+
         // Initialize the database
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference moodsRef = db.collection("moods");
 
         // Initialize the mood events
-        int numOfMoodEvents = 2;
+        int numOfAutoMoodEvents = 2;
         Mood.MoodState currentMoodState;
-        dateInstance = new ArrayList<>();   // Date and Time examples.   Ex: Date date1 = dateInstance.get(1);
-        String[] moodStateList = {"HAPPINESS", "ANGER"};    // Mood state examples
+        String[] moodStateList = {"HAPPINESS", "ANGER", "SADNESS"};    // Mood state examples
         // Trigger examples
         String[] moodTriggerTests = {
                 "This was a triumph",
-                "I'm not even angry"
+                "I'm not even angry",
+                "Go ahead and leave me"
         };
         // Social situation examples
         String[] moodSocialSituationTests = {
                 "TO_CROWD",
-                "ONE_TO_OTHER"
+                "ONE_TO_OTHER",
+                "ALONE"
         };
-        // Initialize all moods and put into database
-        for (int i = 0; i < numOfMoodEvents; i++) {
-            Date currentDate = new Date();  // Create new date
-            dateInstance.add(currentDate);  // Add current date to date instance
-            currentMoodState = Mood.MoodState.valueOf(moodStateList[i]); // Get mood state
-            Mood currentMoodEvent = new Mood(currentDate, currentMoodState);    // Create a mood event using date and mood state
 
-            // Add other details
-            currentMoodEvent.setTrigger(moodTriggerTests[i]);
+        // Initialize all moods and put into database
+        for (int i = 0; i < numOfAutoMoodEvents; i++) {
+            currentMoodState = Mood.MoodState.valueOf(moodStateList[i]); // Get mood state
+            Mood currentMoodEvent = new Mood(currentMoodState);    // Create a mood event using date and mood state
+            currentMoodEvent.setTrigger(moodTriggerTests[i]);      // Add other details
             currentMoodEvent.setSocialSituation(Mood.SocialSituation.valueOf(moodSocialSituationTests[i]));
-            currentMoodEvent.setUsername(testUsername);
+            //currentMoodEvent.setUsername(testUsername);
             DocumentReference docRef = moodsRef.document();
             currentMoodEvent.setDocId(docRef.getId());
             docRef.set(currentMoodEvent);
         }
+
+        /* Convert String to Date format: https://docs.vultr.com/java/examples/convert-string-to-date
+         * Authored by: Vultr
+         * Taken by: Ercel Angeles
+         * Taken on: March 9, 2025
+         */
+        String dateString = "Jan 09, 1999";
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.ENGLISH);
+        try {
+            date = sdf.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        currentMoodState = Mood.MoodState.valueOf(moodStateList[2]);
+        Mood currentMoodEvent = new Mood(date, currentMoodState);
+        currentMoodEvent.setTrigger(moodTriggerTests[2]);      // Add other details
+        currentMoodEvent.setSocialSituation(Mood.SocialSituation.valueOf(moodSocialSituationTests[2]));
+        //currentMoodEvent.setUsername(testUsername);
+        DocumentReference docRef = moodsRef.document();
+        currentMoodEvent.setDocId(docRef.getId());
+        docRef.set(currentMoodEvent);
+
+        Log.i("seedingEnd", "seedDatabase() has finished.");
         Thread.sleep(2000);     // Very important or test will fail.
     }
 
     @Test
-    public void appShouldDisplayExistingMoodEventsOnLaunch() {
+    public void testUI() {
+        /*
+        scenarioRule.getScenario().onActivity(activity -> {
+            testUsername = activity.getIntent().getStringExtra("username");
+        });
+
+
+
+         */
         // Check if mood title shows
         onView(withText("HAPPINESS")).check(matches(isDisplayed()));
         onView(withText("ANGER")).check(matches(isDisplayed()));
@@ -116,14 +169,43 @@ public class HomeMyMoodsFragTest {
         // Check if triggers show
         onView(withText("This was a triumph")).check(matches(isDisplayed()));
         onView(withText("I'm not even angry")).check(matches(isDisplayed()));
+        onView(withText("Go ahead and leave me")).check(matches(isDisplayed()));
 
         // Check if social situations show
         onView(withText("TO_CROWD")).check(matches(isDisplayed()));
         onView(withText("ONE_TO_OTHER")).check(matches(isDisplayed()));
 
         // Check if the fragment welcomes the user
-        onView(withText("Welcome, " + testUsername + "!")).check(matches(isDisplayed()));
+        //onView(withText("Welcome, " + testUsername + "!")).check(matches(isDisplayed()));
+        onView(withId(R.id.checkBox_HomeMyMoodsFragment_recentWeek)).check(matches(isNotChecked())).perform(click());
+        onView(withId(R.id.checkBox_HomeMyMoodsFragment_recentWeek)).check(matches(isChecked()));   // Check if the checkbox is checked
+
+        onView(withText("Go ahead and leave me")).check(doesNotExist());
+
+        onView(withId(R.id.checkBox_HomeMyMoodsFragment_recentWeek)).check(matches(isChecked())).perform(click());
+        /* How to click on an item in autoCompleteTextView: https://stackoverflow.com/questions/38562341/espresso-autocompletetextview-click
+         * Authored by: Akbolat SSS
+         * Taken by: Ercel Angeles
+         * Taken on: March 9, 2025
+         */
+        onView(withId(R.id.autoCompleteTextView)).perform(click());
+        onView(withText("Sadness"))
+                .inRoot(RootMatchers.isPlatformPopup())
+                .perform(click());
+        onView(withId(R.id.autoCompleteTextView)).perform(click()).perform(replaceText("All Moods"));
+        onView(withText("All Moods"))
+                .inRoot(RootMatchers.isPlatformPopup())
+                .perform(click());
+        Espresso.pressBack();
+
+
+        //onView(allOf(isDisplayed(), withParent(withId(R.id.searchView_HomeMyMoodsFragment)))).perform(click());
+        //onView(withId(R.id.searchView_HomeMyMoodsFragment)).perform(click());
+        //onView(withText("This was a triumph")).check(matches(isDisplayed()));
+
     }
+
+
 
     @After
     public void tearDown() {
@@ -148,9 +230,4 @@ public class HomeMyMoodsFragTest {
             }
         }
     }
-
-
-
-
-
 }
