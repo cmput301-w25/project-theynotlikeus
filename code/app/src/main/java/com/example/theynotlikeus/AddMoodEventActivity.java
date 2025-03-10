@@ -110,4 +110,21 @@ public class AddMoodEventActivity extends AppCompatActivity {
         findViewById(R.id.button_ActivityAddMoodEvent_backbutton).setOnClickListener(v -> finish());
 
     }
+
+    // Helper Methods (Static)
+
+    // check trigger length
+    static void validateTrigger(String trigger, int limit) {
+        if (trigger.length() > limit) {
+            throw new ArithmeticException("Trigger has too many characters!");
+        }
+    }
+    // check for invalid mood selected
+    static Mood.MoodState parseMood(String moodStr) {
+        try {
+            return Mood.MoodState.valueOf(moodStr.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid mood selection.");
+        }
+    }
 }
