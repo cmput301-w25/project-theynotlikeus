@@ -61,7 +61,7 @@ import java.util.Objects;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class HomeMyMoodsFragTest /*extends BaseTest*/{
+public class HomeMyMoodsFragTest {
 
     private String testUsername;
     private Date date;
@@ -82,18 +82,6 @@ public class HomeMyMoodsFragTest /*extends BaseTest*/{
     @Before
     public void seedDatabase() throws InterruptedException {
         Log.i("seedingBegin", "Started seeding data...");
-        /* Code for accessing activity from ActivityScenario: https://stackoverflow.com/questions/61953249/how-to-access-activity-from-activityscenariorule
-         * Authored by: gosr
-         * Taken by: Ercel Angeles
-         * Taken on: March 9, 2025
-         */
-        /*
-        scenarioRule.getScenario().onActivity(activity -> {
-            testUsername = activity.getIntent().getStringExtra("username");
-        });
-
-         */
-
         // Initialize the database
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CollectionReference moodsRef = db.collection("moods");
@@ -143,7 +131,6 @@ public class HomeMyMoodsFragTest /*extends BaseTest*/{
         Mood currentMoodEvent = new Mood(date, currentMoodState);
         currentMoodEvent.setTrigger(moodTriggerTests[2]);      // Add other details
         currentMoodEvent.setSocialSituation(Mood.SocialSituation.valueOf(moodSocialSituationTests[2]));
-        //currentMoodEvent.setUsername(testUsername);
         DocumentReference docRef = moodsRef.document();
         currentMoodEvent.setDocId(docRef.getId());
         docRef.set(currentMoodEvent);
@@ -154,14 +141,7 @@ public class HomeMyMoodsFragTest /*extends BaseTest*/{
 
     @Test
     public void testUI() {
-        /*
-        scenarioRule.getScenario().onActivity(activity -> {
-            testUsername = activity.getIntent().getStringExtra("username");
-        });
 
-
-
-         */
         // Check if mood title shows
         onView(withText("HAPPINESS")).check(matches(isDisplayed()));
         onView(withText("ANGER")).check(matches(isDisplayed()));
@@ -176,7 +156,6 @@ public class HomeMyMoodsFragTest /*extends BaseTest*/{
         onView(withText("ONE_TO_OTHER")).check(matches(isDisplayed()));
 
         // Check if the fragment welcomes the user
-        //onView(withText("Welcome, " + testUsername + "!")).check(matches(isDisplayed()));
         onView(withId(R.id.checkBox_HomeMyMoodsFragment_recentWeek)).check(matches(isNotChecked())).perform(click());
         onView(withId(R.id.checkBox_HomeMyMoodsFragment_recentWeek)).check(matches(isChecked()));   // Check if the checkbox is checked
 
@@ -199,9 +178,6 @@ public class HomeMyMoodsFragTest /*extends BaseTest*/{
         Espresso.pressBack();
 
 
-        //onView(allOf(isDisplayed(), withParent(withId(R.id.searchView_HomeMyMoodsFragment)))).perform(click());
-        //onView(withId(R.id.searchView_HomeMyMoodsFragment)).perform(click());
-        //onView(withText("This was a triumph")).check(matches(isDisplayed()));
 
     }
 
