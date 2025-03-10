@@ -57,6 +57,7 @@ import java.util.Objects;
  * Then verifies a valid mood event submission
 */
 
+
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class AddMoodEventActivityTest {
