@@ -70,8 +70,9 @@ public class AddMoodEventActivityTest {
 
     /**
      * Test: Trigger too long
+     * @throws InterruptedException
+     * @throws ArithmeticException
      */
-
     @Test
     public void testTriggerTooLongShows() throws InterruptedException, ArithmeticException {
         Intent intent = new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), AddMoodEventActivity.class);
@@ -95,11 +96,11 @@ public class AddMoodEventActivityTest {
 
     }
 
-
     /**
-     *     Test: No Mood Selected
+     * Test: No Mood Selected
+     * @throws InterruptedException
+     * @throws IllegalArgumentException
      */
-
     @Test
     public void testNoMoodSelectedShowsInvalidMood() throws InterruptedException, IllegalArgumentException {
         Intent intent = new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), AddMoodEventActivity.class);
@@ -127,7 +128,11 @@ public class AddMoodEventActivityTest {
 
     }
 
-    // Test: Valid Submission
+    /**
+     * Test: Valid Submission
+     * @throws InterruptedException
+     * @throws IllegalArgumentException
+     */
     @Test
     public void testValidSubmissionFinishesActivity() throws InterruptedException, IllegalArgumentException{
         Intent intent = new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), AddMoodEventActivity.class);
@@ -153,7 +158,8 @@ public class AddMoodEventActivityTest {
     }
 
 
-    // Tear down: Clear all documents from the emulator after each test
+    /**
+     *  Tear down: Clear all documents from the emulator after each test */
     @After
     public void tearDown() {
         String projectId = "theynotlikeus-6a9f1";

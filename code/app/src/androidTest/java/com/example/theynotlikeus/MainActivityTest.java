@@ -13,13 +13,21 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+/**
+ * UI Test for MainActivity
+ */
 @RunWith(AndroidJUnit4.class)
 public class MainActivityTest {
-
+    /**
+     * Set scenario to be MainActivity
+     */
     @Rule
     public ActivityScenarioRule<MainActivity> scenario = new
             ActivityScenarioRule<MainActivity>(MainActivity.class);
 
+    /**
+     * Test: bottom navigation switches to fragment
+     */
     @Test
     public void testBottomNavigationSwitchesFragments() {
         //Checking whether the home button works by checking if the main activity loads properly
@@ -39,12 +47,18 @@ public class MainActivityTest {
         onView(withId(R.id.textView_CommunityFrag)).check(matches(isDisplayed()));
     }
 
+    /**
+     * Test: Activity launches successfully
+     */
     @Test
     public void testActivityLaunchesSuccessfully() {
         //Verifying that the main container view is displayed when activity starts
         onView(withId(R.id.main)).check(matches(isDisplayed()));
     }
 
+    /**
+     * Test: Click home navigation to add mood event
+     */
     @Test
     public void testNavigationToAddMoodEvent() {
         //Click on Home navigation item to ensure we are in the right place
