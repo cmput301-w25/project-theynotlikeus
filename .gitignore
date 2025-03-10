@@ -54,3 +54,4 @@
 # Virtual machine crash logs
 **/hs_err_pid*
 **/replay_pid*
+code/firebase-tools-instant-win.exe
