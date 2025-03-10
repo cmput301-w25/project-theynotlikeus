@@ -29,14 +29,14 @@ public class EditDeleteMoodActivityUnitTest {
 
 
     @Test
-    public void testTriggerShort_ok() {
+    public void testTriggerShort() {
         //This tests the situation when the trigger value is less than 20 characters
         String shortTrigger = "Short Trigger";
         checkTriggerLength(shortTrigger);
     }
 
     @Test
-    public void testTriggerTooLong_throwsException() {
+    public void testTriggerTooLongThrowsException() {
         //This test checks whether an exception is thrown when the trigger value has more than 20 characters
         String longTrigger = "This trigger definitely exceeds 20 characters.";
         ArithmeticException ex = assertThrows(ArithmeticException.class, () -> {
@@ -47,7 +47,7 @@ public class EditDeleteMoodActivityUnitTest {
 
 
     @Test
-    public void testParseMoodState_valid() {
+    public void testParseMoodStateValid() {
         //This tests the situation when a user successfully selected one of the mood states from the list
         Mood.MoodState state = parseMoodState("Happiness");
         assertEquals(Mood.MoodState.HAPPINESS, state);
@@ -55,7 +55,7 @@ public class EditDeleteMoodActivityUnitTest {
 
 
     @Test
-    public void testParseMoodState_invalid() {
+    public void testParseMoodStateInvalid() {
         //This tests the situation when a user unsuccessfully selected one of the mood states from the list
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
             parseMoodState("NotAMood");
