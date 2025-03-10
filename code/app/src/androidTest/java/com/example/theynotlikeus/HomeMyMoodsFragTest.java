@@ -135,8 +135,9 @@ public class HomeMyMoodsFragTest {
         currentMoodEvent.setDocId(docRef.getId());
         docRef.set(currentMoodEvent);
 
-        Log.i("seedingEnd", "seedDatabase() has finished.");
+
         Thread.sleep(2000);     // Very important or test will fail.
+        Log.i("seedingEnd", "seedDatabase() has finished.");
     }
 
     @Test
