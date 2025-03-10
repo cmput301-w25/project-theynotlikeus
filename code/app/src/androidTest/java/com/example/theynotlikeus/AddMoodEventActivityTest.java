@@ -124,9 +124,7 @@ public class AddMoodEventActivityTest {
 
         Thread.sleep(2000);
 
-
     }
-
 
     // Test: Valid Submission
     @Test
@@ -151,7 +149,6 @@ public class AddMoodEventActivityTest {
         scenario.onActivity(activity -> activity.findViewById(R.id.button_ActivityAddMoodEvent_save).performClick());
 
         Thread.sleep(2000);
-
     }
 
 
