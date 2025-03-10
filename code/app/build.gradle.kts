@@ -50,7 +50,7 @@ dependencies {
     testImplementation("org.mockito:mockito-core:5.2.0")
     androidTestImplementation("org.mockito:mockito-android:5.2.0")
     testImplementation("androidx.test:core:1.5.0")
-
+    implementation(files("${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar"))
     testImplementation("org.mockito:mockito-core:5.7.0")
     testImplementation("org.mockito:mockito-inline:5.2.0")
     implementation("net.bytebuddy:byte-buddy:1.17.1")

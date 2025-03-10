@@ -50,10 +50,15 @@ import java.util.Objects;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class AddMoodEventActivityTest {
-
+    /**
+     * Scenario is in MainActivity
+     */
     @Rule
     public ActivityScenarioRule<MainActivity> scenario = new ActivityScenarioRule<>(MainActivity.class);
 
+    /**
+     * Set up Firestore locally
+     */
     @BeforeClass
     public static void setup() {
         // Specific address for emulated device to access our localhost.
@@ -63,7 +68,11 @@ public class AddMoodEventActivityTest {
     }
 
 
-    // Test: Trigger Too Long
+    /**
+     * Test: Trigger too long
+     * @throws InterruptedException
+     * @throws ArithmeticException
+     */
     @Test
     public void testTriggerTooLongShows() throws InterruptedException, ArithmeticException {
         Intent intent = new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), AddMoodEventActivity.class);
@@ -87,8 +96,11 @@ public class AddMoodEventActivityTest {
 
     }
 
-
-    // Test: No Mood Selected
+    /**
+     * Test: No Mood Selected
+     * @throws InterruptedException
+     * @throws IllegalArgumentException
+     */
     @Test
     public void testNoMoodSelectedShowsInvalidMood() throws InterruptedException, IllegalArgumentException {
         Intent intent = new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), AddMoodEventActivity.class);
@@ -116,7 +128,11 @@ public class AddMoodEventActivityTest {
 
     }
 
-    // Test: Valid Submission
+    /**
+     * Test: Valid Submission
+     * @throws InterruptedException
+     * @throws IllegalArgumentException
+     */
     @Test
     public void testValidSubmissionFinishesActivity() throws InterruptedException, IllegalArgumentException{
         Intent intent = new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), AddMoodEventActivity.class);
@@ -142,7 +158,8 @@ public class AddMoodEventActivityTest {
     }
 
 
-    // Tear down: Clear all documents from the emulator after each test
+    /**
+     *  Tear down: Clear all documents from the emulator after each test */
     @After
     public void tearDown() {
         String projectId = "theynotlikeus-6a9f1";

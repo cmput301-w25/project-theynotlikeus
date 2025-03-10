@@ -48,15 +48,18 @@ public class EditDeleteMoodActivityTest {
     private static final double testLatitude = 37.7749;
     private static final double testLongitude = -122.4194;
 
-  
+    /**
+     * Set up Firestore */
     @BeforeClass
     public static void setup() {
         String androidLocalhost = "10.0.2.2"; 
         int portNumber = 8089;
         FirebaseFirestore.getInstance().useEmulator(androidLocalhost, portNumber);
     }
-
-
+    /**
+     * Seed the database
+     * @throws InterruptedException
+     */
     @Before
     public void seedDatabase() throws InterruptedException {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -91,6 +94,7 @@ public class EditDeleteMoodActivityTest {
      * Test: Deletes a mood event and verifies that it is removed from Firestore.
      * This ensures the delete button functions correctly.
      */
+
     @Test
     public void deleteMoodButtonDeletesMoodFromList() {
         if (generatedMoodId == null) {
@@ -115,7 +119,9 @@ public class EditDeleteMoodActivityTest {
         }
     }
 
-
+    /**
+     * Tear down database
+     */
     @After
     public void tearDown() {
         String projectId = "theynotlikeus-6a9f1";

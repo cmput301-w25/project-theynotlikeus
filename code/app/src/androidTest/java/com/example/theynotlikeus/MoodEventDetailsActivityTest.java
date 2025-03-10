@@ -44,6 +44,9 @@ import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * UI Test: MoodEventDetailsActivity
+ */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class MoodEventDetailsActivityTest {
@@ -55,6 +58,9 @@ public class MoodEventDetailsActivityTest {
     private static final double testLatitude = 37.7749;
     private static final double testLongitude = -122.4194;
 
+    /**
+     * Set up Firestore
+     */
     @BeforeClass
     public static void setup() {
         //Specific address for emulated device to access localhost
@@ -62,7 +68,9 @@ public class MoodEventDetailsActivityTest {
         int portNumber = 8089;
         FirebaseFirestore.getInstance().useEmulator(androidLocalhost, portNumber);
     }
-
+    /**
+     * Seed the database
+     */
     @Before
     public void seedDatabase() throws InterruptedException {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -85,6 +93,9 @@ public class MoodEventDetailsActivityTest {
         latch.await(30, TimeUnit.SECONDS);
     }
 
+    /**
+     * Test: display existing moods on launch
+     */
     @Test
     public void appShouldDisplayExistingMoodOnLaunch() {
         //Error handling: when the moodId wasnt generated properly
@@ -116,6 +127,9 @@ public class MoodEventDetailsActivityTest {
         }
     }
 
+    /**
+     * Tear down database
+     */
     @After
     public void tearDown() {
         String projectId = "theynotlikeus-6a9f1";
@@ -140,7 +154,9 @@ public class MoodEventDetailsActivityTest {
         }
     }
 
-
+    /**
+     * Helper function for matching drawable
+     */
     public static class DrawableMatchers {
         /**
          * Returns a matcher that checks if an ImageView is displaying a given drawable resource.

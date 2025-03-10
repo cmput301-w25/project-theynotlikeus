@@ -13,7 +13,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.example.theynotlikeus.Mood;
-import com.example.theynotlikeus.R;
 /**
  * This activity allows the user to select a mood, specify a trigger, and choose a social situation which is then
  * saved to Firestore.

@@ -20,9 +20,16 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * UI test for HomeMyMoodsFrag
+ */
+
 @RunWith(AndroidJUnit4.class)
 public class HomeMyMoodsFragTest {
 
+    /**
+     * Set up Firestore
+     */
     @BeforeClass
     public static void setup() {
         // Configure Firestore to use the local emulator.
@@ -32,6 +39,9 @@ public class HomeMyMoodsFragTest {
         FirebaseFirestore.getInstance().useEmulator(androidLocalhost, portNumber);
     }
 
+    /**
+     * Set scenario to be MainActivity
+     */
     @Rule
     public ActivityScenarioRule<MainActivity> activityScenarioRule =
             new ActivityScenarioRule<>(MainActivity.class);
@@ -73,6 +83,10 @@ public class HomeMyMoodsFragTest {
         }
     }
 
+    /**
+     * Test: moods are displayed
+     * @throws InterruptedException
+     */
     @Test
     public void testMoodsAreDisplayed() throws InterruptedException {
         // Populate the local database with 10 mood events.

@@ -27,15 +27,23 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;
 
+/**
+ * UI Test: UserSignUpFrag
+ */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class UserSignUpFragTest {
 
+    /**
+     * Set scenario to be MainActivity
+     */
     @Rule
     public ActivityScenarioRule<LoginActivity> activityScenarioRule =
             new ActivityScenarioRule<>(LoginActivity.class);
 
-    // Configure Firestore to use the local emulator.
+    /**
+     * Configure Firestore to use the local emulator.
+     */
     @BeforeClass
     public static void setup() {
         String androidLocalhost = "10.0.2.2";
@@ -43,6 +51,10 @@ public class UserSignUpFragTest {
         FirebaseFirestore.getInstance().useEmulator(androidLocalhost, portNumber);
     }
 
+    /**
+     * Test: if Sign Up is successful
+     * @throws InterruptedException
+     */
     @Test
     public void testSignUpSuccess() throws InterruptedException {
         // 1. Navigate from LoginUserSelectionFrag to UserSignUpFrag.
@@ -62,6 +74,11 @@ public class UserSignUpFragTest {
         onView(withId(R.id.button_UserSignUpFrag_createandlogin)).perform(click());
     }
 
+
+    /**
+     * Test: if sign up fails
+     * @throws InterruptedException
+     */
     @Test
     public void testSignUpFailure() throws InterruptedException {
         // 1. Navigate from LoginUserSelectionFrag to UserSignUpFrag.
@@ -81,7 +98,9 @@ public class UserSignUpFragTest {
         onView(withId(R.id.fragment_user_sign_up_layout)).check(matches(isDisplayed()));
     }
 
-    // Clear all documents from the emulator after each test.
+    /**
+     * Clear all documents from the emulator after each test.
+     */
     @After
     public void tearDown() {
         String projectId = "theynotlikeus-6a9f1";

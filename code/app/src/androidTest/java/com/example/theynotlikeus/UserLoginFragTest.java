@@ -27,7 +27,9 @@ import java.util.Map;
  */
 @RunWith(AndroidJUnit4.class)
 public class UserLoginFragTest {
-
+    /**
+     * Set up Firestore
+     */
     @BeforeClass
     public static void setup() {
         // Configure Firestore to use the local emulator.
@@ -37,6 +39,9 @@ public class UserLoginFragTest {
         FirebaseFirestore.getInstance().useEmulator(androidLocalhost, portNumber);
     }
 
+    /**
+     * Set scenario to be LoginActivity
+     */
     @Rule
     public ActivityScenarioRule<LoginActivity> activityScenarioRule =
             new ActivityScenarioRule<>(LoginActivity.class);
@@ -53,6 +58,10 @@ public class UserLoginFragTest {
         db.collection("users").document("nour").set(user);
     }
 
+    /**
+     * Test: If login is successful
+     * @throws InterruptedException
+     */
     @Test
     public void testLoginSuccess() throws InterruptedException {
         // Add user to the local database before logging in.
@@ -73,6 +82,9 @@ public class UserLoginFragTest {
         onView(withId(R.id.button_UserLogin_SignIn)).perform(click());
     }
 
+    /**
+     * Test: if login fails
+     */
     @Test
     public void testLoginFailure() {
         // 1. Navigate to the UserLoginFrag.

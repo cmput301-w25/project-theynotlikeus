@@ -19,6 +19,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
  * This activity is the main entry point of the application and it
  *  sets up and initializes bottom navigation and navigation controller for fragment navigation.
  */
+
+/**
+ * This activity allows the user to navigate between pages from the home page. (Add mood event, community, profile, etc.)
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override
