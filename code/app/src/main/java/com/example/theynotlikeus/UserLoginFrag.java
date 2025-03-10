@@ -24,6 +24,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 *   Users can log in with their credentials, navigate to sign-up, or go back to selection.
 */
 
+/**
+ * A fragment that allows the user to login to their already existing account and select sign up if they do not have an account
+ */
 public class UserLoginFrag extends Fragment {
 
     //private String mParam1;
@@ -66,23 +69,22 @@ public class UserLoginFrag extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //Initialize UI elements
-
-        MaterialToolbar backButton = view.findViewById(R.id.button_userloginfrag_back);
+        MaterialToolbar backButton = view.findViewById(R.id.button_UserLoginFrag_back);
         NavController navController = Navigation.findNavController(view);
         EditText usernameEditText = view.findViewById(R.id.editText_userLoginFrag_username);
         EditText passwordEditText = view.findViewById(R.id.editText_userLoginFrag_password);
-        Button signInButton = view.findViewById(R.id.button_UserLogIn_SignIn);
-        //Handle back button navigation
+        Button signInButton = view.findViewById(R.id.button_UserLogin_SignIn);
+        //Handle back button navigation so the user can navigate to the login/signup page when clicked
         backButton.setOnClickListener(v ->
                 navController.navigate(R.id.action_userLoginFrag_to_loginUserSelectionFrag)
         );
 
 
-        // Navigate to the sign-up screen
+        //Navigate to the sign-up screen
         view.findViewById(R.id.textButton_UserLoginFrag_signUp).setOnClickListener(v ->
                 navController.navigate(R.id.action_userLoginFrag_to_userSignUpFrag)
         );
-        // Handle sign-in process
+        //Handle sign-in process after the user clicks on the sign in button
         signInButton.setOnClickListener(v -> {
 
             String username = usernameEditText.getText().toString().trim();
@@ -94,7 +96,7 @@ public class UserLoginFrag extends Fragment {
                 return;
             }
 
-            // Authenticate user from Firestore
+            //Authenticate user from Firestore by searching for the username entered by the user in the database
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             db.collection("users")
                     .whereEqualTo("username", username)
@@ -105,13 +107,13 @@ public class UserLoginFrag extends Fragment {
                             Toast.makeText(getContext(), "Incorrect username or password", Toast.LENGTH_SHORT).show();
                         } else {
                             for (QueryDocumentSnapshot document : querySnapshot){
-                                User user = document.toObject(User.class);
+                                User user = document.toObject(User.class); //converting the user to a user class upon successful log in
 
                                 if (user.getPassword().equals(password)){
-                                    // Successful login, redirect to main activity
+                                    //Successful login, redirect to main activity
                                     Intent intent = new Intent(requireActivity(), MainActivity.class);
 
-                                    intent.putExtra("username", user.getUsername());
+                                    intent.putExtra("username", user.getUsername());//Passing the username to the next activity
                                     startActivity(intent);
                                     requireActivity().finish();
                                 } else {

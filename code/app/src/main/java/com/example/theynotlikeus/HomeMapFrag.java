@@ -9,33 +9,28 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- *  Fragment that displays a map for mood-related locations.
- *  This fragment may be used to visualize mood events on a map.
+ * Fragment that displays a map for mood-related locations.
+ *
+ * Purpose:
+ * Visualizes mood events on a map.
+ * Can be used to display geographical locations associated with mood events.
  */
 public class HomeMapFrag extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    // Parameter argument keys for potential customization.
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
+    // Parameters for fragment initialization. These can be used to pass data into the fragment.
     private String mParam1;
     private String mParam2;
 
     public HomeMapFrag() {
-        // Required empty public constructor for firebase
+        // Required empty public constructor for proper
+        // fragment instantiation and for Firebase's automatic deserialization.
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     * Creates a new instance of HomeMapFrag with parameters.
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Map.
-     */
-    // TODO: Rename and change types and number of parameters
+    //Factory method to create a new instance of HomeMapFrag using the provided parameters.
     public static HomeMapFrag newInstance(String param1, String param2) {
         HomeMapFrag fragment = new HomeMapFrag();
         Bundle args = new Bundle();
@@ -48,6 +43,7 @@ public class HomeMapFrag extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Retrieve parameters passed via the fragment's arguments.
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -57,7 +53,6 @@ public class HomeMapFrag extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_map, container, false);
+        return inflater.inflate(R.layout.fragment_home_map, container, false); //Inflate and return the layout for this fragment from fragment_home_map.xml.
     }
 }

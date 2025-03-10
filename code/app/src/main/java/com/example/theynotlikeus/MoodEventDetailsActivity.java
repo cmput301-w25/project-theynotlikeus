@@ -14,10 +14,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-/*
-*   Activity that displays the details of a mood event.
-* */
+/**
+ * Activity for displaying the details of a mood event.
+ *
+ * Retrieves mood data from Firestore and updates the UI.
+ * Displays social situation, trigger, mood state, and date.
+ * Allows navigation to edit or delete the mood entry.
+ * Provides a back button to return to the main screen.
+ */
+
 public class MoodEventDetailsActivity extends AppCompatActivity {
+
+    //Initiating UI elements
 
     TextView socialSituationTextView;
     TextView dateTextView;
@@ -28,28 +36,30 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
     ImageButton editButton;
 
     private FirebaseFirestore db;
-    private String moodId;
+    private String moodId;//Mood document ID from Firestore
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood_event_details);
-
+        //Initialize Firestore database
         db = FirebaseFirestore.getInstance();
+        //Retrieve the mood ID passed from the previous activity
         moodId = getIntent().getStringExtra("moodId");
 
-        socialSituationTextView = findViewById(R.id.textview_activitymoodeventdetails_socialsituation);
-        dateTextView = findViewById(R.id.textview_activitymoodeventdetails_date);
-        triggerTextView = findViewById(R.id.textview_activitymoodeventdetails_triggervalue);
-        usernameTextView = findViewById(R.id.textview_activitymoodeventdetails_username);
-        moodImageView = findViewById(R.id.imageview_activitymoodeventdetails_moodimage);
-        editButton = findViewById(R.id.imagebutton_activitymoodeventdetails_editbutton);
-        backButton = findViewById(R.id.imagebutton_activitymoodeventdetails_backbutton);
+        //Bind UI elements to their respective views
+        socialSituationTextView = findViewById(R.id.textview_ActivityMoodEventDetails_socialsituation);
+        dateTextView = findViewById(R.id.textview_ActivityMoodEventDetails_dateandtime);
+        triggerTextView = findViewById(R.id.textview_ActivityMoodEventDetails_triggervalue);
+        usernameTextView = findViewById(R.id.textview_ActivityMoodEventDetails_username);
+        moodImageView = findViewById(R.id.imageview_ActivityMoodEventDetails_moodimage);
+        editButton = findViewById(R.id.imagebutton_ActivityMoodEventDetails_editbutton);
+        backButton = findViewById(R.id.imagebutton_ActivityMoodEventDetails_backbutton);
 
-        // Log the moodId
+
         Log.d("MoodDetails", "onCreate: Mood ID = " + moodId);
 
-        // Set up button listeners (edit and back remain unchanged)
+        //Set up button listeners for edit and back buttons
         editButton.setOnClickListener(v -> {
             Log.d("MoodEventDetailsActivity", "Edit button clicked, moodId: " + moodId);
             Intent intent = new Intent(MoodEventDetailsActivity.this, EditDeleteMoodActivity.class);
@@ -60,22 +70,26 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
         backButton.setOnClickListener(v -> {
             // Navigate back to MainActivity (or previous screen)
             Intent intent = new Intent(MoodEventDetailsActivity.this, MainActivity.class);
-            intent.putExtra("fragmentToLoad", "homeMyMoodsFrag");
+            intent.putExtra("fragmentToLoad", "HomeMyMoodsFrag");
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
             finish();
         });
     }
 
+    /**
+     * Fetch and update the mood data every time the activity resumes
+     */
     @Override
     protected void onResume() {
         super.onResume();
-        // Fetch the latest mood data each time the activity resumes.
         Log.d("MoodDetails", "onResume called, refreshing mood data");
         loadMoodData();
     }
 
-    // Method to load mood data from Firestore and update the UI.
+    /**
+     * Loads mood data from Firestore and updates the UI.
+     */
     private void loadMoodData() {
         db.collection("moods").document(moodId)
                 .get()
@@ -85,21 +99,20 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
                         if (document.exists()) {
                             Mood mood = document.toObject(Mood.class);
                             if (mood != null) {
-                                // DEBUG: Check if the strings below are actually set
-                                // Update UI elements with the latest data
+                                //Update UI elements with the latest data
                                 socialSituationTextView.setText(mood.getSocialSituation() != null
                                         ? mood.getSocialSituation().toString() : "Unknown");
                                 triggerTextView.setText(mood.getTrigger() != null
                                         ? mood.getTrigger() : "No trigger provided");
-                                // Assuming usernameTextView displays the mood state for this example
+                                //Assuming usernameTextView displays the mood state for this example
                                 usernameTextView.setText(mood.getMoodState() != null
                                         ? mood.getMoodState().toString() : "Unknown");
 
-                                // Optionally, display the mood icon
+                                //Optionally, display the mood icon
                                 int iconRes = getMoodIcon(mood.getMoodState());
                                 moodImageView.setImageResource(iconRes);
 
-                                // If you have a date field, update it accordingly:
+                                //If you have a date field, update it accordingly:
                                 dateTextView.setText(mood.getDateTime() != null ? mood.getDateTime().toString() : "Unknown");
                             }
                         } else {
@@ -113,7 +126,12 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
                 });
     }
 
-    // Method to return the appropriate icon resource for a given mood state.
+    /**
+     * Returns the appropriate icon resource for a given mood state.
+     *
+     * @param moodState The mood state to get an icon for.
+     * @return The resource ID of the corresponding mood icon.
+     */
     private int getMoodIcon(Mood.MoodState moodState) {
         if (moodState == null) {
             return R.drawable.ic_happy_emoticon; // Default icon
@@ -135,8 +153,6 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
                 return R.drawable.ic_shame_emoticon;
             case SURPRISE:
                 return R.drawable.ic_surprised_emoticon;
-            case BOREDOM:
-                return R.drawable.ic_bored_emoticon;
             default:
                 return R.drawable.ic_happy_emoticon;
         }

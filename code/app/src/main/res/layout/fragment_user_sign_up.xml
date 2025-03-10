@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/fragment_user_sign_up_layout"
     tools:context=".UserLoginFrag">
 
     <!-- TODO: Update blank fragment layout -->
@@ -19,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/button_userSignUpFrag_back"
+            android:id="@+id/button_UserSignUpFrag_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
@@ -29,7 +30,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
-        android:id="@+id/button_userSignUpFrag_createandlogin"
+        android:id="@+id/button_UserSignUpFrag_createandlogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Create Account and Login"
@@ -47,7 +48,7 @@
         android:ems="10"
         android:hint="Username"
         android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/button_userSignUpFrag_createandlogin"
+        app:layout_constraintBottom_toTopOf="@+id/button_UserSignUpFrag_createandlogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
@@ -66,7 +67,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editText_UserSignUpFrag_username" />
 
     <EditText
-        android:id="@+id/editText_userSignUpFrag_reEnterPassword"
+        android:id="@+id/editText_UserSignUpFrag_reEnterPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Re-enter Password"
