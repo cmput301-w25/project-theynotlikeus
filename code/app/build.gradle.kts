@@ -1,8 +1,7 @@
 plugins {
-    //alias(libs.plugins.android.application) // i really don't know why removing this works but hey bug fixed eh?
+    //alias(libs.plugins.android.application) // (Commented out as before)
     id("com.android.application")
     id("com.google.gms.google-services")
-
 }
 
 android {
@@ -38,35 +37,35 @@ android {
 }
 
 dependencies {
+    // Firebase BOM ensures consistent Firebase versions
     implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
     implementation("com.google.firebase:firebase-firestore")
-    implementation(libs.espresso.core)
 
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation("androidx.fragment:fragment-testing:1.5.7")
-    androidTestImplementation("androidx.navigation:navigation-testing:2.8.8")
-    testImplementation("org.mockito:mockito-core:5.2.0")
-    androidTestImplementation("org.mockito:mockito-android:5.2.0")
-    testImplementation("androidx.test:core:1.5.0")
-    implementation(files("${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar"))
-    testImplementation("org.mockito:mockito-core:5.7.0")
-    testImplementation("org.mockito:mockito-inline:5.2.0")
-    implementation("net.bytebuddy:byte-buddy:1.17.1")
-
+    // App dependencies
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.ext.junit)
-    androidTestImplementation(libs.espresso.core)
+    implementation(libs.androidx.espresso.core)
+
+    // Testing dependencies
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.mockito:mockito-core:5.7.0")
+    testImplementation("org.mockito:mockito-inline:5.2.0")
+    testImplementation("androidx.test:core:1.5.0")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.1")
-    testImplementation("junit:junit:4.13.2")
+
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("androidx.fragment:fragment-testing:1.5.7")
+    androidTestImplementation("androidx.navigation:navigation-testing:2.8.8")
+
+    // Byte Buddy for runtime code generation (if needed)
+    implementation("net.bytebuddy:byte-buddy:1.17.1")
+
+    // Removed explicit inclusion of android.jar, which causes duplicate classes.
+    // implementation(files("${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar"))
 }
