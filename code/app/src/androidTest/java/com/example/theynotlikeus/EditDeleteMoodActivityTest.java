@@ -37,7 +37,7 @@ import java.util.concurrent.TimeUnit;
 
 public class EditDeleteMoodActivityTest {
 
-    private static String generatedMoodId; // Will store the newly created mood's ID
+    private static String generatedMoodId;
     private static String expectedDateString;
 
     // (When geolocation is implemented, these could be used in your Mood object)
@@ -105,31 +105,42 @@ public class EditDeleteMoodActivityTest {
                     .check(matches(isDisplayed()));
             onView(withId(R.id.editText_DeleteEditMoodActivity_triggerInput))
                     .check(ViewAssertions.matches(withText("Finished a great book")));
+            onView(withId(R.id.textview_ActivityMoodEventDetails_dateandtime)).check(matches(withText(expectedDateString)));
+            onView(withId(R.id.textview_ActivityMoodEventDetails_socialsituation)).check(matches(withText("ALONE"))); //social situation
         }
     }
 
+
     @Test
-    public void editMoodButtonValidatesAllInputs() {
+    public void editMoodButtonUpdatesDisplayedData() {
         if (generatedMoodId == null) {
             Log.e("EditDeleteMood", "Generated mood ID is null. Cannot launch activity.");
             return;
         }
-        // Launch activity with a valid intent
+        // Launch the activity with a valid intent containing the generated mood ID
         Intent intent = new Intent(
                 ApplicationProvider.getApplicationContext(),
                 EditDeleteMoodActivity.class
         );
         intent.putExtra("moodId", generatedMoodId);
         try (ActivityScenario<EditDeleteMoodActivity> scenario = ActivityScenario.launch(intent)) {
-            // Click on the existing mood in the list
-            onView(withText("Finished a great book")).perform(click());
+            // Ensure the trigger EditText is displayed (and that mood data has loaded)
+            onView(withId(R.id.editText_DeleteEditMoodActivity_triggerInput))
+                    .check(matches(isDisplayed()));
 
-            // Clear the trigger text, attempt to save, and check for validation error
-            onView(withId(R.id.editText_DeleteEditMoodActivity_triggerInput)).perform(clearText());
+            // Replace the current trigger text with "New Trigger"
+            onView(withId(R.id.editText_DeleteEditMoodActivity_triggerInput))
+                    .perform(replaceText("New Trigger"));
+
+            // Click the save button to update the mood data
             onView(withId(R.id.button_DeleteEditMoodActivity_save)).perform(click());
 
+            // Verify that the updated trigger ("New Trigger") is now displayed in the EditText
+            onView(withId(R.id.editText_DeleteEditMoodActivity_triggerInput))
+                    .check(matches(withText("New Trigger")));
         }
     }
+
 
     @Test
     public void deleteMoodButtonDeletesMoodFromList() {
