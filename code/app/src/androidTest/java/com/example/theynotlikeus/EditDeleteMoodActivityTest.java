@@ -142,6 +142,7 @@ public class EditDeleteMoodActivityTest {
     }
 
 
+
     @Test
     public void deleteMoodButtonDeletesMoodFromList() {
         if (generatedMoodId == null) {
@@ -165,6 +166,8 @@ public class EditDeleteMoodActivityTest {
             onView(withText("Finished a great book")).check(doesNotExist());
         }
     }
+
+
 
     @After
     public void tearDown() {
