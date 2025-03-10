@@ -1,13 +1,9 @@
 package com.example.theynotlikeus;
 
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.Matchers.allOf;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -15,7 +11,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -24,12 +19,6 @@ import org.junit.runner.RunWith;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-
-
-
-
-
 
 @RunWith(AndroidJUnit4.class)
 public class HomeMyMoodsFragTest {
@@ -46,36 +35,6 @@ public class HomeMyMoodsFragTest {
     @Rule
     public ActivityScenarioRule<MainActivity> activityScenarioRule =
             new ActivityScenarioRule<>(MainActivity.class);
-
-    @RunWith(AndroidJUnit4.class)
-    public class SearchViewTest {
-
-
-
-        @Before
-        public void setup() {
-            FirebaseFirestore.getInstance().useEmulator("10.0.2.2", 8089);
-            addMoodsToDatabase();
-        }
-
-        private void addMoodsToDatabase() {
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            String[] triggers = {"trigger1", "trigger2", "trigger3", "trigger4", "trigger5"};
-
-            for (int i = 0; i < 5; i++) {
-                Map<String, Object> mood = new HashMap<>();
-                mood.put("title", "Mood " + (i + 1));
-                mood.put("description", "Description for Mood " + (i + 1));
-                mood.put("dateTime", new Date());
-                mood.put("username", "defaultUser");
-                mood.put("moodState", "HAPPINESS");
-                mood.put("trigger", triggers[i]);
-
-                db.collection("moods").document("mood_" + (i + 1)).set(mood);
-            }
-        }
-    }
-
 
     @Test
     public void testHomeMyMoodsFragmentIsDisplayedByDefault() {
@@ -136,10 +95,4 @@ public class HomeMyMoodsFragTest {
         onView(withId(R.id.recyclerview_HomeMyMoodsFragment_userrecyclerview))
                 .check(new RecyclerViewItemCountAssertion(10));
     }
-
-
-
-
-
-
 }
