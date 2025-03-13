@@ -1,6 +1,7 @@
 package com.example.theynotlikeus;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -65,21 +66,20 @@ public class AdminLoginFrag extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_admin_login, container, false);
     }
-/*
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //Defining UI elements in order to implement them
+        // Back Button Implementation
         MaterialToolbar backButton = view.findViewById(R.id.button_AdminLoginFrag_back);
-        NavController navController = Navigation.findNavController(view);//Get the NavController to handle navigation
-
-        //Implementing a click listener on the back button to navigate back to the user selection screen.
+        NavController navController = Navigation.findNavController(view);
+        // Back button navigate back to the main login page.
         backButton.setOnClickListener(v ->
                 navController.navigate(R.id.action_adminLoginFrag_to_loginUserSelectionFrag)
         );
-
-        Button signInButton = view.findViewById(R.id.button_AdminLogIn_SignIn);
+        // Signin Button Implementation
+        Button signInButton = view.findViewById(R.id.button_adminLogin_SignIn);
         EditText usernameEditText = view.findViewById(R.id.editText_adminLoginFrag_username);
         EditText passwordEditText = view.findViewById(R.id.editText_adminLoginFrag_password);
         signInButton.setOnClickListener(v -> {
@@ -117,11 +117,10 @@ public class AdminLoginFrag extends Fragment {
                     });
 
 
-
-
-
         });
-    }
 
- */
+
+         }
+
+
 }

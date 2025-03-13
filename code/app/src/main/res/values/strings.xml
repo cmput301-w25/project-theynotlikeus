@@ -62,4 +62,6 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="storage_for_each_photographic_image_to_be_under_65536_bytes">storage for each photographic image to be under 65536 bytes</string>
+    <string name="logout">Logout</string>
 </resources>

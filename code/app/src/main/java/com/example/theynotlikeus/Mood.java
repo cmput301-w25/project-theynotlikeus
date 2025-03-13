@@ -1,6 +1,7 @@
 package com.example.theynotlikeus;
 
-import android.os.Parcelable;  // Note: Parcelable is imported but not used in this class.
+import android.content.SharedPreferences;
+
 import java.util.Date;
 
 /**
@@ -43,6 +44,8 @@ public class Mood {
 
     // Document ID for Firestore reference.
     private String docId;
+    private SharedPreferences prefs;
+    private boolean isLimitEnabled;
 
     /**
      * No-argument constructor required by Firestore for automatic deserialization.
@@ -179,6 +182,7 @@ public class Mood {
      * @throws IllegalArgumentException if the reason exceeds allowed length or word count.
      */
     public void setReason(String reason) {
+
         if (reason != null && (reason.length() > 20 || reason.split("\\s+").length > 3)) {
             throw new IllegalArgumentException("Reason must be at most 20 characters or 3 words.");
         }
@@ -220,7 +224,11 @@ public class Mood {
      * @throws IllegalArgumentException if the photo exceeds the allowed size.
      */
     public void setPhoto(byte[] photo) {
-        if (photo != null && photo.length > photoSize) {
+        boolean isLimitEnabled = true; // Default to true if prefs is null
+        if (prefs != null) {
+            isLimitEnabled = AdminActivity.isLimitEnabled(prefs);
+        }
+        if (isLimitEnabled  && photo != null && photo.length > photoSize) {
             throw new IllegalArgumentException("Photo size must be under 65536 bytes.");
         }
         this.photo = photo;
@@ -290,4 +298,5 @@ public class Mood {
                 ", location=" + (latitude != null && longitude != null ? "(" + latitude + ", " + longitude + ")" : "none") +
                 '}';
     }
+
 }
