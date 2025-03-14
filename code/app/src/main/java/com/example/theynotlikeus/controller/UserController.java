@@ -1,20 +1,22 @@
 package com.example.theynotlikeus.controller;
 
 import com.example.theynotlikeus.User;
+import com.google.firebase.Firebase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class UserController {
+public class UserController extends FirebaseController {
 
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
 
     public UserController() {
         // Initialize Firestore and Firebase Authentication
-        db = FirebaseFirestore.getInstance();
+        super();
+        this.db = super.getFirebase();
         mAuth = FirebaseAuth.getInstance();
     }
 
