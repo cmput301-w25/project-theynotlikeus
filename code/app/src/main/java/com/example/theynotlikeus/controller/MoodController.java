@@ -27,7 +27,7 @@ public class MoodController extends FirebaseController {
     }
 
     /**
-     * Adds a new mood to the firestore database.
+     * Adds a new mood to the Firestore database.
      *
      * @param mood      Mood object to be added.
      * @param onSuccess Callback for success.
@@ -40,7 +40,9 @@ public class MoodController extends FirebaseController {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        onFailure.accept(e);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            onFailure.accept(e);
+                        }
                     }
                 });
     }
@@ -67,7 +69,9 @@ public class MoodController extends FirebaseController {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        onFailure.accept(e);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            onFailure.accept(e);
+                        }
                     }
                 });
     }
@@ -86,7 +90,9 @@ public class MoodController extends FirebaseController {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        onFailure.accept(e);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            onFailure.accept(e);
+                        }
                     }
                 });
     }
@@ -123,7 +129,9 @@ public class MoodController extends FirebaseController {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        onFailure.accept(e);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            onFailure.accept(e);
+                        }
                     }
                 });
     }
@@ -153,7 +161,9 @@ public class MoodController extends FirebaseController {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        onFailure.accept(e);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            onFailure.accept(e);
+                        }
                     }
                 });
     }
