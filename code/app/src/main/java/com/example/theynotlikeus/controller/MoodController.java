@@ -3,6 +3,8 @@ package com.example.theynotlikeus.controller;
 import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.example.theynotlikeus.Mood;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -13,7 +15,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * Controller handles CRUD operations for mood objects ine the Firestore database.
+ * Controller handles CRUD operations for mood objects in the Firestore database.
  */
 public class MoodController {
     private final FirebaseFirestore db;
@@ -23,27 +25,30 @@ public class MoodController {
     }
 
     /**
-     * Adds a new mood to the firestore database
+     * Adds a new mood to the firestore database.
      *
-     * @param mood  Mood object to be added.
+     * @param mood      Mood object to be added.
      * @param onSuccess Callback for success.
-     * @param onFailure Callback for failuroe.
-     *
+     * @param onFailure Callback for failure.
      */
     public void addMood(Mood mood, Runnable onSuccess, Consumer<Exception> onFailure) {
         db.collection("moods")
                 .add(mood)
                 .addOnSuccessListener(documentReference -> onSuccess.run())
-                .addOnFailureListener((OnFailureListener) onFailure);
-
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        onFailure.accept(e);
+                    }
+                });
     }
 
     /**
-     * Updates existing moods from the database.
+     * Updates an existing mood in the database.
      *
-     * @param mood  Mood object with updated data.
+     * @param mood      Mood object with updated data.
      * @param onSuccess Callback for success.
-     * @param onFailure Callback for failure
+     * @param onFailure Callback for failure.
      */
     public void updateMood(Mood mood, Runnable onSuccess, Consumer<Exception> onFailure) {
         if (mood.getDocId() == null || mood.getDocId().isEmpty()) {
@@ -57,13 +62,18 @@ public class MoodController {
         db.collection("moods").document(mood.getDocId())
                 .set(mood)
                 .addOnSuccessListener(aVoid -> onSuccess.run())
-                .addOnFailureListener((OnFailureListener) onFailure);
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        onFailure.accept(e);
+                    }
+                });
     }
 
     /**
      * Deletes a mood from Firestore.
      *
-     * @param moodId   The ID of the mood document to delete.
+     * @param moodId    The ID of the mood document to delete.
      * @param onSuccess Callback for success.
      * @param onFailure Callback for failure.
      */
@@ -71,13 +81,18 @@ public class MoodController {
         db.collection("moods").document(moodId)
                 .delete()
                 .addOnSuccessListener(aVoid -> onSuccess.run())
-                .addOnFailureListener((OnFailureListener) onFailure);
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        onFailure.accept(e);
+                    }
+                });
     }
 
     /**
      * Fetches a single mood from Firestore.
      *
-     * @param moodId   The ID of the mood document to retrieve.
+     * @param moodId    The ID of the mood document to retrieve.
      * @param onSuccess Callback for returning the Mood object.
      * @param onFailure Callback for handling errors.
      */
@@ -103,13 +118,18 @@ public class MoodController {
                         }
                     }
                 })
-                .addOnFailureListener((OnFailureListener) onFailure);
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        onFailure.accept(e);
+                    }
+                });
     }
 
     /**
      * Fetches all moods for a specific user.
      *
-     * @param username The username to filter moods.
+     * @param username  The username to filter moods.
      * @param onSuccess Callback for returning a list of moods.
      * @param onFailure Callback for handling errors.
      */
@@ -128,6 +148,11 @@ public class MoodController {
                         onSuccess.accept(moods);
                     }
                 })
-                .addOnFailureListener((OnFailureListener) onFailure);
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        onFailure.accept(e);
+                    }
+                });
     }
 }
