@@ -27,7 +27,7 @@ public class MoodController {
      *
      * @param mood  Mood object to be added.
      * @param onSuccess Callback for success.
-     * @param onFailure Callback for failure.
+     * @param onFailure Callback for failuroe.
      *
      */
     public void addMood(Mood mood, Runnable onSuccess, Consumer<Exception> onFailure) {
