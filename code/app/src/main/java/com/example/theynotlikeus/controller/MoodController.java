@@ -17,11 +17,13 @@ import java.util.function.Consumer;
 /**
  * Controller handles CRUD operations for mood objects in the Firestore database.
  */
-public class MoodController {
+public class MoodController extends FirebaseController {
     private final FirebaseFirestore db;
 
     public MoodController() {
-        this.db = FirebaseFirestore.getInstance();
+        super();
+        this.db = super.getFirebase();
+
     }
 
     /**
