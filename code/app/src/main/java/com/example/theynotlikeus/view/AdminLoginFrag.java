@@ -1,4 +1,4 @@
-package com.example.theynotlikeus;
+package com.example.theynotlikeus.view;
 
 import android.os.Bundle;
 
@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.theynotlikeus.R;
 import com.google.android.material.appbar.MaterialToolbar;
 
 /**

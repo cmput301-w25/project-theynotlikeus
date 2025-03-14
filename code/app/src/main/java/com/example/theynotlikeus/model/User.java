@@ -1,4 +1,4 @@
-package com.example.theynotlikeus;
+package com.example.theynotlikeus.model;
 /*
     User class with a username and password.
 *   Used for authentication and storing user data in Firestore.

@@ -3,6 +3,9 @@ package com.example.theynotlikeus;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 
+import com.example.theynotlikeus.model.Mood;
+import com.example.theynotlikeus.view.AddMoodEventActivity;
+
 import org.junit.Test;
 
 public class AddMoodEventActivityUnitTest {

@@ -1,11 +1,8 @@
 package com.example.theynotlikeus.controller;
 
-import com.example.theynotlikeus.User;
-import com.google.firebase.Firebase;
+import com.example.theynotlikeus.model.User;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class UserController extends FirebaseController {

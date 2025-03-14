@@ -1,4 +1,4 @@
-package com.example.theynotlikeus;
+package com.example.theynotlikeus.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,8 +12,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.controller.MoodController;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.theynotlikeus.model.Mood;
 
 /**
  * This activity allows the user to edit and delete a mood event by providing a user interface

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/fragment_user_sign_up_layout"
-    tools:context=".UserLoginFrag">
+    tools:context=".view.UserLoginFrag">
 
     <!-- TODO: Update blank fragment layout -->
 

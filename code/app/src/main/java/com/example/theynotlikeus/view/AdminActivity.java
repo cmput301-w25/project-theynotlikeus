@@ -1,4 +1,4 @@
-package com.example.theynotlikeus;
+package com.example.theynotlikeus.view;
 
 import android.os.Bundle;
 
@@ -7,6 +7,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.theynotlikeus.R;
+
 /**
  * This activity provides the interface for admin users, implements UI experience and adjusts
  * the layout to account for system insets (such as the status bar and navigation bar) to allows admin users

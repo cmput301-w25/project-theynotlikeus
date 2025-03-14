@@ -1,8 +1,7 @@
-package com.example.theynotlikeus;
+package com.example.theynotlikeus.view;
 
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,6 +12,8 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.theynotlikeus.R;
 
 /**
  * Fragment for selecting user or admin login. It displays buttons for user and admin login.

@@ -1,6 +1,5 @@
-package com.example.theynotlikeus;
+package com.example.theynotlikeus.model;
 
-import android.os.Parcelable;  // Note: Parcelable is imported but not used in this class.
 import java.util.Date;
 
 /**

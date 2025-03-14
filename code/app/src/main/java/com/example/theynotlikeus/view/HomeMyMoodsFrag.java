@@ -1,4 +1,4 @@
-package com.example.theynotlikeus;
+package com.example.theynotlikeus.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,9 +18,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.controller.MoodController;
+import com.example.theynotlikeus.model.Mood;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.Timestamp;
 
 import java.util.ArrayList;
 import java.util.Collections;

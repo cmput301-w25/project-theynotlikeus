@@ -1,4 +1,4 @@
-package com.example.theynotlikeus;
+package com.example.theynotlikeus.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,12 +8,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.controller.MoodController;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.theynotlikeus.model.Mood;
 
 /**
  * Activity for displaying the details of a mood event.
