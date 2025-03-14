@@ -14,20 +14,20 @@
         android:theme="@style/Theme.Theynotlikeus"
         tools:targetApi="31">
         <activity
-            android:name=".MoodEventDetailsActivity"
+            android:name=".view.MoodEventDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".EditDeleteMoodActivity"
+            android:name=".view.EditDeleteMoodActivity"
             android:exported="false"
             android:theme="@style/Theme.Theynotlikeus" />
         <activity
-            android:name=".PersonalProfileDetailsActivity"
+            android:name=".view.PersonalProfileDetailsActivity"
             android:exported="false" /> <!-- Admin Activity -->
         <activity
-            android:name=".AdminActivity"
+            android:name=".view.AdminActivity"
             android:exported="false" /> <!-- Login Activity (Launcher Activity) -->
         <activity
-            android:name=".LoginActivity"
+            android:name=".view.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,10 +36,10 @@
             </intent-filter>
         </activity> <!-- Main Activity -->
         <activity
-            android:name=".MainActivity"
+            android:name=".view.MainActivity"
             android:exported="true" /> <!-- Mood Event Activity (Newly Added) -->
         <activity
-            android:name=".AddMoodEventActivity"
+            android:name=".view.AddMoodEventActivity"
             android:exported="false" />
     </application>
 

@@ -1,4 +1,4 @@
-package com.example.theynotlikeus;
+package com.example.theynotlikeus.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +15,9 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.controller.UserController;
+import com.example.theynotlikeus.model.User;
 import com.google.android.material.appbar.MaterialToolbar;
 
 public class UserLoginFrag extends Fragment {

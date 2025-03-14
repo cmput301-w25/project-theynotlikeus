@@ -13,6 +13,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
+import com.example.theynotlikeus.view.LoginActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.junit.After;
