@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.theynotlikeus.controller.MoodController;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -35,7 +36,7 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
     ImageButton backButton;
     ImageButton editButton;
 
-    private FirebaseFirestore db;
+    private MoodController moodController;
     private String moodId;//Mood document ID from Firestore
 
     @Override
@@ -43,7 +44,7 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood_event_details);
         //Initialize Firestore database
-        db = FirebaseFirestore.getInstance();
+        moodController = new MoodController();
         //Retrieve the mood ID passed from the previous activity
         moodId = getIntent().getStringExtra("moodId");
 
@@ -91,39 +92,24 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
      * Loads mood data from Firestore and updates the UI.
      */
     private void loadMoodData() {
-        db.collection("moods").document(moodId)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.getResult() != null) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            Mood mood = document.toObject(Mood.class);
-                            if (mood != null) {
-                                //Update UI elements with the latest data
-                                socialSituationTextView.setText(mood.getSocialSituation() != null
-                                        ? mood.getSocialSituation().toString() : "Unknown");
-                                triggerTextView.setText(mood.getTrigger() != null
-                                        ? mood.getTrigger() : "No trigger provided");
-                                //Assuming usernameTextView displays the mood state for this example
-                                usernameTextView.setText(mood.getMoodState() != null
-                                        ? mood.getMoodState().toString() : "Unknown");
+        moodController.getMood(moodId, mood -> {
+            // Update UI elements with the latest data
+            socialSituationTextView.setText(mood.getSocialSituation() != null
+                    ? mood.getSocialSituation().toString() : "Unknown");
+            triggerTextView.setText(mood.getTrigger() != null
+                    ? mood.getTrigger() : "No trigger provided");
+            usernameTextView.setText(mood.getMoodState() != null
+                    ? mood.getMoodState().toString() : "Unknown");
 
-                                //Optionally, display the mood icon
-                                int iconRes = getMoodIcon(mood.getMoodState());
-                                moodImageView.setImageResource(iconRes);
+            // Display the mood icon
+            int iconRes = getMoodIcon(mood.getMoodState());
+            moodImageView.setImageResource(iconRes);
 
-                                //If you have a date field, update it accordingly:
-                                dateTextView.setText(mood.getDateTime() != null ? mood.getDateTime().toString() : "Unknown");
-                            }
-                        } else {
-                            Toast.makeText(MoodEventDetailsActivity.this, "Mood not found", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Toast.makeText(MoodEventDetailsActivity.this,
-                                "Error loading mood: " + task.getException().getMessage(),
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
+            // Update date field
+            dateTextView.setText(mood.getDateTime() != null ? mood.getDateTime().toString() : "Unknown");
+        }, error -> {
+            Toast.makeText(MoodEventDetailsActivity.this, "Error loading mood: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+        });
     }
 
     /**
