@@ -111,6 +111,12 @@ public class Mood {
         this.dateTime = dateTime;
     }
 
+    public boolean isLimitEnabled() {
+        return isLimitEnabled;
+    }
+    public void setLimitEnabled(boolean limitEnabled) {
+        this.isLimitEnabled = limitEnabled;
+    }
     /**
      * Gets the mood state of the event.
      *
@@ -224,11 +230,7 @@ public class Mood {
      * @throws IllegalArgumentException if the photo exceeds the allowed size.
      */
     public void setPhoto(byte[] photo) {
-        boolean isLimitEnabled = true; // Default to true if prefs is null
-        if (prefs != null) {
-            isLimitEnabled = AdminActivity.isLimitEnabled(prefs);
-        }
-        if (isLimitEnabled  && photo != null && photo.length > photoSize) {
+        if (isLimitEnabled && photo != null && photo.length > photoSize) {
             throw new IllegalArgumentException("Photo size must be under 65536 bytes.");
         }
         this.photo = photo;

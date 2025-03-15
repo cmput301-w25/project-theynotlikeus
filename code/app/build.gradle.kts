@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
     implementation(libs.androidx.espresso.core)
+    implementation(libs.espresso.core)
 
     // Testing dependencies
     testImplementation("junit:junit:4.13.2")
