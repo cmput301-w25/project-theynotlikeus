@@ -29,6 +29,7 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
     ImageView moodImageView;
     ImageButton backButton;
     ImageButton editButton;
+    private static final int EDIT_MOOD_REQUEST = 1;
 
     // Hold the passed Mood object.
     private Mood mood;
@@ -60,11 +61,9 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
         editButton.setOnClickListener(v -> {
             Log.d("MoodEventDetailsActivity", "Edit button clicked");
             Intent intent = new Intent(MoodEventDetailsActivity.this, EditDeleteMoodActivity.class);
-            // Explicitly cast mood to Serializable
             intent.putExtra("mood", (Serializable) mood);
-            startActivity(intent);
+            startActivityForResult(intent, EDIT_MOOD_REQUEST);
         });
-
         backButton.setOnClickListener(v -> {
             Intent intent = new Intent(MoodEventDetailsActivity.this, MainActivity.class);
             intent.putExtra("fragmentToLoad", "HomeMyMoodsFrag");
@@ -127,5 +126,17 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         updateUI();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EDIT_MOOD_REQUEST && resultCode == RESULT_OK && data != null) {
+            Mood updatedMood = (Mood) data.getSerializableExtra("mood");
+            if (updatedMood != null) {
+                mood = updatedMood;
+                updateUI();
+            }
+        }
     }
 }

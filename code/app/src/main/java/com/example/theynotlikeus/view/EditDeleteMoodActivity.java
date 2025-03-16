@@ -134,7 +134,7 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                         "Mood updated successfully!", Toast.LENGTH_SHORT).show();
                 // Pass the updated mood back so the local copy can be refreshed.
                 Intent resultIntent = new Intent();
-                resultIntent.putExtra("updatedMood", (Serializable) moodToEdit);
+                resultIntent.putExtra("mood", (Serializable) moodToEdit); // or use "updatedMood" as key
                 setResult(RESULT_OK, resultIntent);
                 finish();
             }, e -> {
