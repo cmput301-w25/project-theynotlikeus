@@ -16,6 +16,8 @@ import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.controller.MoodController;
 import com.example.theynotlikeus.model.Mood;
 
+import java.io.Serializable;
+
 /**
  * This activity allows the user to edit and delete a mood event by providing a user interface
  * for modifying stored mood data including interactive buttons such as save, delete, and back.
@@ -51,8 +53,15 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
         // Initialize the MoodController.
         moodController = new MoodController();
 
-        // Retrieve moodId passed via Intent extras.
-        moodId = getIntent().getStringExtra("moodId");
+        // First, try to retrieve a full Mood object from the Intent extras.
+        Mood passedMood = (Mood) getIntent().getSerializableExtra("mood");
+        if (passedMood != null) {
+            moodToEdit = passedMood;
+            moodId = moodToEdit.getDocId();
+        } else {
+            // Otherwise, retrieve the moodId.
+            moodId = getIntent().getStringExtra("moodId");
+        }
 
         // Setup mood spinner using options from resources.
         ArrayAdapter<CharSequence> moodAdapter = ArrayAdapter.createFromResource(
@@ -68,8 +77,17 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
         socialAdapter.setDropDownViewResource(R.layout.add_mood_event_spinner);
         socialSituationSpinner.setAdapter(socialAdapter);
 
-        // Load the existing mood data from Firestore.
-        loadMoodData();
+        // If we don't already have a Mood object, load it from Firestore.
+        if (moodToEdit == null && moodId != null) {
+            loadMoodData();
+        } else if (moodToEdit != null) {
+            // Otherwise, update the UI immediately with the passed Mood.
+            moodSpinner.setSelection(getMoodStateIndex(moodToEdit.getMoodState()));
+            triggerEditText.setText(moodToEdit.getTrigger());
+            if (moodToEdit.getSocialSituation() != null) {
+                socialSituationSpinner.setSelection(getSocialSituationIndex(moodToEdit.getSocialSituation()));
+            }
+        }
 
         // Save button: Update the mood document using MoodController.
         saveButton.setOnClickListener(v -> {
@@ -90,12 +108,12 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
             // Update the trigger.
             String trigger = triggerEditText.getText().toString().trim();
             if (!trigger.isEmpty()) {
+                if (trigger.length() > trigger_length_limit) {
+                    Toast.makeText(EditDeleteMoodActivity.this,
+                            "Trigger has too many characters!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 moodToEdit.setTrigger(trigger);
-            }
-            if (trigger.length() > trigger_length_limit) {
-                Toast.makeText(EditDeleteMoodActivity.this,
-                        "Trigger has too many characters!", Toast.LENGTH_SHORT).show();
-                return;
             }
 
             // Update the social situation.
@@ -114,6 +132,10 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
             moodController.updateMood(moodToEdit, () -> {
                 Toast.makeText(EditDeleteMoodActivity.this,
                         "Mood updated successfully!", Toast.LENGTH_SHORT).show();
+                // Pass the updated mood back so the local copy can be refreshed.
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("updatedMood", (Serializable) moodToEdit);
+                setResult(RESULT_OK, resultIntent);
                 finish();
             }, e -> {
                 Toast.makeText(EditDeleteMoodActivity.this,
@@ -148,9 +170,12 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadMoodData();
+        // Reload the mood data in case of external updates.
+        if (moodToEdit == null && moodId != null) {
+            loadMoodData();
+        }
     }
-//
+
     /**
      * Loads the mood data from Firestore using MoodController and updates the UI.
      */
