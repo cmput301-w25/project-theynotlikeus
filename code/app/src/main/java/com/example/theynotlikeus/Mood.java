@@ -35,7 +35,8 @@ public class Mood {
     private String trigger;
     private SocialSituation socialSituation;
     private String reason;
-    private byte[] photo;
+    //private byte[] photo;
+    private String photoUrl;
     private int photoSize = 65536;
     private Double latitude;
     private Double longitude;
@@ -185,22 +186,30 @@ public class Mood {
         this.reason = reason;
     }
 
-    /**
-     * Gets the maximum allowed photo size.
-     *
-     * @return the photo size in bytes.
-     */
-    public int getPhotoSize() {
-        return photoSize;
+//    /**
+//     * Gets the maximum allowed photo size.
+//     *
+//     * @return the photo size in bytes.
+//     */
+//    public int getPhotoSize() {
+//        return photoSize;
+//    }
+
+//    /**
+//     * Sets the maximum allowed photo size.
+//     *
+//     * @param photoSize the photo size in bytes.
+//     */
+//    public void setPhotoSize(int photoSize) {
+//        this.photoSize = photoSize;
+//    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
     }
 
-    /**
-     * Sets the maximum allowed photo size.
-     *
-     * @param photoSize the photo size in bytes.
-     */
-    public void setPhotoSize(int photoSize) {
-        this.photoSize = photoSize;
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 
     /**
@@ -208,23 +217,23 @@ public class Mood {
      *
      * @return the photo as a byte array.
      */
-    public byte[] getPhoto() {
-        return photo;
-    }
-
-    /**
-     * Sets the photo for the mood event.
-     * Ensures that the photo size is within the allowed limit.
-     *
-     * @param photo the photo as a byte array.
-     * @throws IllegalArgumentException if the photo exceeds the allowed size.
-     */
-    public void setPhoto(byte[] photo) {
-        if (photo != null && photo.length > photoSize) {
-            throw new IllegalArgumentException("Photo size must be under 65536 bytes.");
-        }
-        this.photo = photo;
-    }
+//    public byte[] getPhoto() {
+//        return photo;
+//    }
+//
+//    /**
+//     * Sets the photo for the mood event.
+//     * Ensures that the photo size is within the allowed limit.
+//     *
+//     * @param photo the photo as a byte array.
+//     * @throws IllegalArgumentException if the photo exceeds the allowed size.
+//     */
+//    public void setPhoto(byte[] photo) {
+//        if (photo != null && photo.length > photoSize) {
+//            throw new IllegalArgumentException("Photo size must be under 65536 bytes.");
+//        }
+//        this.photo = photo;
+//    }
 
     /**
      * Gets the latitude coordinate of the mood event.
@@ -286,7 +295,7 @@ public class Mood {
                 ", trigger='" + trigger + '\'' +
                 ", socialSituation=" + socialSituation +
                 ", reason='" + reason + '\'' +
-                ", photo=" + (photo != null ? "present" : "none") +
+                ", photo=" + (photoUrl != null ? "present" : "none") +
                 ", location=" + (latitude != null && longitude != null ? "(" + latitude + ", " + longitude + ")" : "none") +
                 '}';
     }
