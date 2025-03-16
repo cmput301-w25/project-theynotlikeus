@@ -41,6 +41,7 @@ public class Mood {
     private Double latitude;
     private Double longitude;
     private String username;
+    private boolean isPublic = false;
 
     // Document ID for Firestore reference.
     private String docId;
@@ -280,6 +281,24 @@ public class Mood {
      */
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    /**
+     * Gets the visibility status of the mood event.
+     *
+     * @return true if public, false if private.
+     */
+    public boolean isPublic() {
+        return isPublic;
+    }
+
+    /**
+     * Sets the visibility status of the mood event.
+     *
+     * @param isPublic true to make public, false to make private.
+     */
+    public void setPublic(boolean isPublic) {
+        this.isPublic = isPublic;
     }
 
     /**

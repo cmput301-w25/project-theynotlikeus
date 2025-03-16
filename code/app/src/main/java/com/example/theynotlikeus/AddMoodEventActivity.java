@@ -146,6 +146,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -160,7 +161,7 @@ import com.google.firebase.storage.UploadTask;
 public class AddMoodEventActivity extends AppCompatActivity {
 
     private String username;
-    private int trigger_length_limit = 20;
+    private int trigger_length_limit = 200;
     private Uri imageUri;
     private ImageView moodImageView;
     private StorageReference storageRef;
@@ -179,6 +180,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
         Button selectImageButton = findViewById(R.id.button_select_photo);
         Button saveButton = findViewById(R.id.button_ActivityAddMoodEvent_save);
         ImageButton backButton = findViewById(R.id.button_ActivityAddMoodEvent_backbutton);
+        Switch publicButton = findViewById(R.id.switch_ActivityAddMoodEvent_privacy);
 
         storageRef = FirebaseStorage.getInstance().getReference("mood_images");
 
@@ -200,7 +202,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
             String selectedSocial = socialSituationSpinner.getSelectedItem().toString();
 
             if (trigger.length() > trigger_length_limit) {
-                Toast.makeText(this, "Trigger has too many characters!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Reason has too many characters!", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -208,6 +210,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
             mood.setTrigger(trigger);
             mood.setSocialSituation(Mood.SocialSituation.valueOf(selectedSocial.toUpperCase().replace(" ", "_")));
             mood.setUsername(username);
+            mood.setPublic(publicButton.isChecked()); // If checked, it's public; otherwise, private
 
             if (imageUri != null) {
                 uploadImageAndSaveMood(mood);
