@@ -86,8 +86,7 @@ public class MoodController extends FirebaseController {
                 onSuccess.run();
             }
         });
-
-        // Now perform the update.
+        
         docRef.set(mood)
                 .addOnFailureListener(e -> {
                     registrationHolder.remove();
