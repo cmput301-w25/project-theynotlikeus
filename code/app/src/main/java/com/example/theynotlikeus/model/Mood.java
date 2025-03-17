@@ -1,6 +1,6 @@
-package com.example.theynotlikeus;
+package com.example.theynotlikeus.model;
 
-import android.os.Parcelable;  // Note: Parcelable is imported but not used in this class.
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -13,7 +13,9 @@ import java.util.Date;
  * - Contains getters and setters for each property.
  * - Includes additional metadata such as a document ID for Firestore reference.
  */
-public class Mood {
+public class Mood implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * Enumeration for the mood state.

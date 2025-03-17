@@ -1,4 +1,4 @@
-package com.example.theynotlikeus;
+package com.example.theynotlikeus.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.theynotlikeus.R;
+
 /**
  * Manages user login and stores the logged-in username.
  *

@@ -2,6 +2,8 @@ package com.example.theynotlikeus;
 
 import static org.junit.Assert.*;
 
+import com.example.theynotlikeus.model.Mood;
+
 import org.junit.Before;
 import org.junit.Test;
 
