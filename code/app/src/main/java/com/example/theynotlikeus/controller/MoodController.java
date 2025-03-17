@@ -7,7 +7,10 @@ import androidx.annotation.NonNull;
 
 import com.example.theynotlikeus.model.Mood;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
@@ -19,6 +22,7 @@ import java.util.function.Consumer;
  */
 public class MoodController extends FirebaseController {
     private final FirebaseFirestore db;
+    private ListenerRegistration registrationHolder = null;
 
     public MoodController() {
         super();
@@ -63,16 +67,30 @@ public class MoodController extends FirebaseController {
             return;
         }
 
-        db.collection("moods").document(mood.getDocId())
-                .set(mood)
-                .addOnSuccessListener(aVoid -> onSuccess.run())
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            onFailure.accept(e);
-                        }
-                    }
+        /* Code for updating moods offline from: https://firebase.google.com/docs/firestore/manage-data/enable-offline
+         * Authored by: Google LLC
+         * Taken by: Ercel Angeles
+         * Taken on: March 16, 2025
+         */
+
+        DocumentReference docRef = db.collection("moods").document(mood.getDocId());
+        registrationHolder = docRef.addSnapshotListener(MetadataChanges.INCLUDE, (snapshot, error) -> {
+            if (error != null) {
+                registrationHolder.remove();
+                onFailure.accept(error);
+                return;
+            }
+            if (snapshot != null && snapshot.exists()) {
+                registrationHolder.remove();
+                onSuccess.run();
+            }
+        });
+
+        // Now perform the update.
+        docRef.set(mood)
+                .addOnFailureListener(e -> {
+                    registrationHolder.remove();
+                    onFailure.accept(e);
                 });
     }
 
