@@ -39,19 +39,46 @@ public class MoodController extends FirebaseController {
      * @param onFailure Callback for failure.
      */
     public void addMood(Mood mood, Runnable onSuccess, Consumer<Exception> onFailure) {
-        db.collection("moods")
-                .add(mood)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        onSuccess.run();
-                    } else {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && task.getException() != null) {
-                            onFailure.accept(task.getException());
-                        }
-                    }
-                });
-    }
+        // 1) Create a new DocumentReference for your new Mood (no ID passed in).
+        docRef = db.collection("moods").document();
 
+        // 2) Attach a snapshot listener that includes metadata changes so that
+        //    it fires even when offline commits occur in the local cache.
+        registrationHolder = docRef.addSnapshotListener(
+                MetadataChanges.INCLUDE,
+                (snapshot, error) -> {
+                    if (error != null) {
+                        // Some error happened with the listener; remove it and fail.
+                        if (registrationHolder != null) {
+                            registrationHolder.remove();
+                        }
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            onFailure.accept(error);
+                        }
+                        return;
+                    }
+                    // If the doc now exists in the local DB, we consider it "success."
+                    if (snapshot != null && snapshot.exists()) {
+                        if (registrationHolder != null) {
+                            registrationHolder.remove();
+                        }
+                        onSuccess.run();
+                    }
+                }
+        );
+
+        //    so that docRef points to the new doc ID.
+        docRef.set(mood).addOnFailureListener(e -> {
+            // If set() fails for some reason (e.g., disk full),
+            // remove the listener and pass the error back.
+            if (registrationHolder != null) {
+                registrationHolder.remove();
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                onFailure.accept(e);
+            }
+        });
+    }
     /**
      * Updates an existing mood in the database.
      *
