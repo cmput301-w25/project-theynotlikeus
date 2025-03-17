@@ -37,7 +37,8 @@ public class Mood implements Serializable {
     private String trigger;
     private SocialSituation socialSituation;
     private String reason;
-    private byte[] photo;
+    //private byte[] photo;
+    private String photoUrl;
     private int photoSize = 65536;
     private Double latitude;
     private Double longitude;
@@ -45,6 +46,7 @@ public class Mood implements Serializable {
 
     // Document ID for Firestore reference.
     private String docId;
+    private boolean isPublic = false;
 
     /**
      * No-argument constructor required by Firestore for automatic deserialization.
@@ -204,28 +206,36 @@ public class Mood implements Serializable {
     public void setPhotoSize(int photoSize) {
         this.photoSize = photoSize;
     }
+//
+//    /**
+//     * Gets the photo associated with the mood event.
+//     *
+//     * @return the photo as a byte array.
+//     */
+//    public byte[] getPhoto() {
+//        return photo;
+//    }
+//
+//    /**
+//     * Sets the photo for the mood event.
+//     * Ensures that the photo size is within the allowed limit.
+//     *
+//     * @param photo the photo as a byte array.
+//     * @throws IllegalArgumentException if the photo exceeds the allowed size.
+//     */
+//    public void setPhoto(byte[] photo) {
+//        if (photo != null && photo.length > photoSize) {
+//            throw new IllegalArgumentException("Photo size must be under 65536 bytes.");
+//        }
+//        this.photo = photo;
+//    }
 
-    /**
-     * Gets the photo associated with the mood event.
-     *
-     * @return the photo as a byte array.
-     */
-    public byte[] getPhoto() {
-        return photo;
+    public String getPhotoUrl() {
+        return photoUrl;
     }
 
-    /**
-     * Sets the photo for the mood event.
-     * Ensures that the photo size is within the allowed limit.
-     *
-     * @param photo the photo as a byte array.
-     * @throws IllegalArgumentException if the photo exceeds the allowed size.
-     */
-    public void setPhoto(byte[] photo) {
-        if (photo != null && photo.length > photoSize) {
-            throw new IllegalArgumentException("Photo size must be under 65536 bytes.");
-        }
-        this.photo = photo;
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 
     /**
@@ -276,6 +286,24 @@ public class Mood implements Serializable {
     }
 
     /**
+     * Gets the visibility status of the mood event.
+     *
+     * @return true if public, false if private.
+     */
+    public boolean isPublic() {
+        return isPublic;
+    }
+
+    /**
+     * Sets the visibility status of the mood event.
+     *
+     * @param isPublic true to make public, false to make private.
+     */
+    public void setPublic(boolean isPublic) {
+        this.isPublic = isPublic;
+    }
+
+    /**
      * Returns a string representation of the Mood object.
      *
      * @return a formatted string containing mood details.
@@ -288,7 +316,7 @@ public class Mood implements Serializable {
                 ", trigger='" + trigger + '\'' +
                 ", socialSituation=" + socialSituation +
                 ", reason='" + reason + '\'' +
-                ", photo=" + (photo != null ? "present" : "none") +
+                ", photo=" + (photoUrl != null ? "present" : "none") +
                 ", location=" + (latitude != null && longitude != null ? "(" + latitude + ", " + longitude + ")" : "none") +
                 '}';
     }

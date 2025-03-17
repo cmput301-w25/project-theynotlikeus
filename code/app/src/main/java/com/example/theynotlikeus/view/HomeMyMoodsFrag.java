@@ -76,7 +76,7 @@ public class HomeMyMoodsFrag extends Fragment {
         });
 
         AutoCompleteTextView autoCompleteTextView = view.findViewById(R.id.autoCompleteTextView);
-        String[] filterOptions = {"All Moods", "Happiness", "Sadness", "Anger", "Surprise", "Fear", "Disgust", "Shame"};
+        String[] filterOptions = {"All Moods", "Happiness", "Sadness", "Anger", "Surprise", "Fear", "Disgust", "Shame", "Confusion"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, filterOptions);
         autoCompleteTextView.setAdapter(adapter);
         autoCompleteTextView.setOnItemClickListener((parent, view1, position, id) -> {
