@@ -13,7 +13,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.theynotlikeus.R;
-
+/**
+ * This activity provides the interface for admin users, implements UI experience and adjusts
+ * the layout to account for system insets (such as the status bar and navigation bar) to allows admin users
+ */
 public class AdminActivity extends AppCompatActivity {
     private static final String PREFS_NAME = "AdminPrefs";
     private static final String LIMIT_ON = "limit_on";
