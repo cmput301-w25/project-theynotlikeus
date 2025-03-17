@@ -28,7 +28,7 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
     private MoodController moodController; // Use the MoodController for CRUD operations.
     private String moodId; // Stores the ID of the mood document to edit/delete.
     private Mood moodToEdit; // Mood object to be edited.
-    private final int trigger_length_limit = 20;
+    private final int trigger_length_limit = 200;
 
     // UI elements.
     Spinner moodSpinner;

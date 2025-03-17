@@ -86,7 +86,7 @@ public class MoodController extends FirebaseController {
                 onSuccess.run();
             }
         });
-        
+
         docRef.set(mood)
                 .addOnFailureListener(e -> {
                     registrationHolder.remove();
@@ -102,8 +102,20 @@ public class MoodController extends FirebaseController {
      * @param onFailure Callback for failure.
      */
     public void deleteMood(String moodId, Runnable onSuccess, Consumer<Exception> onFailure) {
-        db.collection("moods").document(moodId)
-                .delete()
+        docRef = db.collection("moods").document(moodId);
+        registrationHolder = docRef.addSnapshotListener(MetadataChanges.INCLUDE, (snapshot, error) -> {
+            if (error != null) {
+                registrationHolder.remove();
+                onFailure.accept(error);
+                return;
+            }
+            if (snapshot != null && snapshot.exists()) {
+                registrationHolder.remove();
+                onSuccess.run();
+            }
+        });
+
+        docRef.delete()
                 .addOnSuccessListener(aVoid -> onSuccess.run())
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -113,6 +125,8 @@ public class MoodController extends FirebaseController {
                         }
                     }
                 });
+
+
     }
 
     /**

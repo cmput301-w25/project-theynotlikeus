@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.theynotlikeus.R;
+import com.example.theynotlikeus.adapters.UserRecyclerViewAdapter;
 import com.example.theynotlikeus.controller.MoodController;
 import com.example.theynotlikeus.model.Mood;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
