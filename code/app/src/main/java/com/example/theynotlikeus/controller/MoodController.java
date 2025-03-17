@@ -7,7 +7,10 @@ import androidx.annotation.NonNull;
 
 import com.example.theynotlikeus.model.Mood;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
@@ -19,6 +22,8 @@ import java.util.function.Consumer;
  */
 public class MoodController extends FirebaseController {
     private final FirebaseFirestore db;
+    private ListenerRegistration registrationHolder = null;
+    private DocumentReference docRef;
 
     public MoodController() {
         super();
@@ -34,19 +39,46 @@ public class MoodController extends FirebaseController {
      * @param onFailure Callback for failure.
      */
     public void addMood(Mood mood, Runnable onSuccess, Consumer<Exception> onFailure) {
-        db.collection("moods")
-                .add(mood)
-                .addOnSuccessListener(documentReference -> onSuccess.run())
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            onFailure.accept(e);
-                        }
-                    }
-                });
-    }
+        // 1) Create a new DocumentReference for your new Mood (no ID passed in).
+        docRef = db.collection("moods").document();
 
+        // 2) Attach a snapshot listener that includes metadata changes so that
+        //    it fires even when offline commits occur in the local cache.
+        registrationHolder = docRef.addSnapshotListener(
+                MetadataChanges.INCLUDE,
+                (snapshot, error) -> {
+                    if (error != null) {
+                        // Some error happened with the listener; remove it and fail.
+                        if (registrationHolder != null) {
+                            registrationHolder.remove();
+                        }
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            onFailure.accept(error);
+                        }
+                        return;
+                    }
+                    // If the doc now exists in the local DB, we consider it "success."
+                    if (snapshot != null && snapshot.exists()) {
+                        if (registrationHolder != null) {
+                            registrationHolder.remove();
+                        }
+                        onSuccess.run();
+                    }
+                }
+        );
+
+        //    so that docRef points to the new doc ID.
+        docRef.set(mood).addOnFailureListener(e -> {
+            // If set() fails for some reason (e.g., disk full),
+            // remove the listener and pass the error back.
+            if (registrationHolder != null) {
+                registrationHolder.remove();
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                onFailure.accept(e);
+            }
+        });
+    }
     /**
      * Updates an existing mood in the database.
      *
@@ -63,16 +95,29 @@ public class MoodController extends FirebaseController {
             return;
         }
 
-        db.collection("moods").document(mood.getDocId())
-                .set(mood)
-                .addOnSuccessListener(aVoid -> onSuccess.run())
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            onFailure.accept(e);
-                        }
-                    }
+        /* Code for updating moods offline from: https://firebase.google.com/docs/firestore/manage-data/enable-offline
+         * Authored by: Google LLC
+         * Taken by: Ercel Angeles
+         * Taken on: March 16, 2025
+         */
+
+        docRef = db.collection("moods").document(mood.getDocId());
+        registrationHolder = docRef.addSnapshotListener(MetadataChanges.INCLUDE, (snapshot, error) -> {
+            if (error != null) {
+                registrationHolder.remove();
+                onFailure.accept(error);
+                return;
+            }
+            if (snapshot != null && snapshot.exists()) {
+                registrationHolder.remove();
+                onSuccess.run();
+            }
+        });
+
+        docRef.set(mood)
+                .addOnFailureListener(e -> {
+                    registrationHolder.remove();
+                    onFailure.accept(e);
                 });
     }
 
@@ -84,8 +129,20 @@ public class MoodController extends FirebaseController {
      * @param onFailure Callback for failure.
      */
     public void deleteMood(String moodId, Runnable onSuccess, Consumer<Exception> onFailure) {
-        db.collection("moods").document(moodId)
-                .delete()
+        docRef = db.collection("moods").document(moodId);
+        registrationHolder = docRef.addSnapshotListener(MetadataChanges.INCLUDE, (snapshot, error) -> {
+            if (error != null) {
+                registrationHolder.remove();
+                onFailure.accept(error);
+                return;
+            }
+            if (snapshot != null && snapshot.exists()) {
+                registrationHolder.remove();
+                onSuccess.run();
+            }
+        });
+
+        docRef.delete()
                 .addOnSuccessListener(aVoid -> onSuccess.run())
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -95,6 +152,8 @@ public class MoodController extends FirebaseController {
                         }
                     }
                 });
+
+
     }
 
     /**
