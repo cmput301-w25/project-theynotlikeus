@@ -23,11 +23,13 @@ public class MoodController extends FirebaseController {
     public MoodController() {
         super();
         this.db = super.getFirebase();
-
     }
 
     /**
      * Adds a new mood to the Firestore database.
+     *
+     * Using addOnCompleteListener ensures that when offline,
+     * the local write is committed and the callback is fired immediately.
      *
      * @param mood      Mood object to be added.
      * @param onSuccess Callback for success.
@@ -36,12 +38,12 @@ public class MoodController extends FirebaseController {
     public void addMood(Mood mood, Runnable onSuccess, Consumer<Exception> onFailure) {
         db.collection("moods")
                 .add(mood)
-                .addOnSuccessListener(documentReference -> onSuccess.run())
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            onFailure.accept(e);
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        onSuccess.run();
+                    } else {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && task.getException() != null) {
+                            onFailure.accept(task.getException());
                         }
                     }
                 });
@@ -65,12 +67,12 @@ public class MoodController extends FirebaseController {
 
         db.collection("moods").document(mood.getDocId())
                 .set(mood)
-                .addOnSuccessListener(aVoid -> onSuccess.run())
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            onFailure.accept(e);
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        onSuccess.run();
+                    } else {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && task.getException() != null) {
+                            onFailure.accept(task.getException());
                         }
                     }
                 });
@@ -86,12 +88,12 @@ public class MoodController extends FirebaseController {
     public void deleteMood(String moodId, Runnable onSuccess, Consumer<Exception> onFailure) {
         db.collection("moods").document(moodId)
                 .delete()
-                .addOnSuccessListener(aVoid -> onSuccess.run())
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            onFailure.accept(e);
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        onSuccess.run();
+                    } else {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && task.getException() != null) {
+                            onFailure.accept(task.getException());
                         }
                     }
                 });
@@ -112,32 +114,51 @@ public class MoodController extends FirebaseController {
                         Mood mood = documentSnapshot.toObject(Mood.class);
                         if (mood != null) {
                             mood.setDocId(documentSnapshot.getId());
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                onSuccess.accept(mood);
-                            }
+                            onSuccess.accept(mood);
                         } else {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                onFailure.accept(new Exception("Mood data is null"));
-                            }
+                            onFailure.accept(new Exception("Mood data is null"));
                         }
                     } else {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            onFailure.accept(new Exception("Mood not found"));
-                        }
+                        onFailure.accept(new Exception("Mood not found"));
                     }
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            onFailure.accept(e);
-                        }
+                .addOnFailureListener(e -> {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        onFailure.accept(e);
                     }
                 });
     }
 
     /**
-     * Fetches all moods for a specific user.
+     * Attaches a realtime listener to fetch all moods for a specific user.
+     * This listener returns cached data immediately (if available) and updates when the network changes.
+     *
+     * @param username  The username to filter moods.
+     * @param onUpdate  Callback that receives the list of Mood objects.
+     * @param onFailure Callback for handling errors.
+     */
+    public void listenMoodsByUser(String username, Consumer<List<Mood>> onUpdate, Consumer<Exception> onFailure) {
+        db.collection("moods")
+                .whereEqualTo("username", username)
+                .addSnapshotListener((querySnapshot, error) -> {
+                    if (error != null) {
+                        onFailure.accept(error);
+                        return;
+                    }
+                    if (querySnapshot != null) {
+                        List<Mood> moods = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : querySnapshot) {
+                            Mood mood = document.toObject(Mood.class);
+                            mood.setDocId(document.getId());
+                            moods.add(mood);
+                        }
+                        onUpdate.accept(moods);
+                    }
+                });
+    }
+
+    /**
+     * Fetches all moods for a specific user using a one-time get (not realtime).
      *
      * @param username  The username to filter moods.
      * @param onSuccess Callback for returning a list of moods.
@@ -154,16 +175,11 @@ public class MoodController extends FirebaseController {
                         mood.setDocId(document.getId());
                         moods.add(mood);
                     }
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        onSuccess.accept(moods);
-                    }
+                    onSuccess.accept(moods);
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            onFailure.accept(e);
-                        }
+                .addOnFailureListener(e -> {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        onFailure.accept(e);
                     }
                 });
     }
