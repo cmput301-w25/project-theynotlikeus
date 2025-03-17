@@ -23,6 +23,7 @@ import java.util.function.Consumer;
 public class MoodController extends FirebaseController {
     private final FirebaseFirestore db;
     private ListenerRegistration registrationHolder = null;
+    private DocumentReference docRef;
 
     public MoodController() {
         super();
@@ -73,7 +74,7 @@ public class MoodController extends FirebaseController {
          * Taken on: March 16, 2025
          */
 
-        DocumentReference docRef = db.collection("moods").document(mood.getDocId());
+        docRef = db.collection("moods").document(mood.getDocId());
         registrationHolder = docRef.addSnapshotListener(MetadataChanges.INCLUDE, (snapshot, error) -> {
             if (error != null) {
                 registrationHolder.remove();
