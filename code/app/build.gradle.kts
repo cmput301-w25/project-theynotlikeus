@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.androidx.espresso.core)
     implementation(libs.firebase.auth)
     implementation("com.google.firebase:firebase-storage:20.2.1")
+    implementation(libs.play.services.location)
 
     // Testing dependencies
     testImplementation("junit:junit:4.13.2")

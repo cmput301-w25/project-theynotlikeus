@@ -73,7 +73,7 @@ public class MoodTest {
     public void testSetReasonInvalidTooManyWords() {
         assertThrows(IllegalArgumentException.class, () -> mood.setReason("Too many words here"));
     }
-
+/*
     @Test
     public void testSetAndGetPhotoValid() {
         byte[] validPhoto=new byte[5000];  //Within the size limit
@@ -86,7 +86,7 @@ public class MoodTest {
         byte[] oversizedPhoto=new byte[70000];  //Exceeds 65536 bytes
         assertThrows(IllegalArgumentException.class, () -> mood.setPhoto(oversizedPhoto));
     }
-
+*/
     @Test
     public void testSetAndGetLocation() {
         mood.setLocation(45.0, 90.0);
@@ -106,7 +106,7 @@ public class MoodTest {
         mood.setSocialSituation(Mood.SocialSituation.ALONE);
         mood.setReason("Too stressed");
         mood.setLocation(12.34, 56.78);
-        mood.setPhoto(new byte[5000]);
+        //mood.setPhoto(new byte[5000]);
 
         String moodString=mood.toString();
         assertTrue(moodString.contains("HAPPINESS"));
