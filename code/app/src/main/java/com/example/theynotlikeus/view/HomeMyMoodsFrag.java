@@ -132,15 +132,14 @@ public class HomeMyMoodsFrag extends Fragment {
     }
 
     /**
-     * Retrieves and filters the user's moods using a realtime snapshot listener.
-     * Because offline persistence is enabled in Firestore, the local cached data will be returned immediately,
-     * and when connectivity returns, the listener is updated.
+     * Retrieves and filters the user's moods using MoodController.
      */
     private void loadMoodsFromFirebase() {
-        Log.d("HomeMyMoodsFrag", "Listening for moods for username: '" + username + "'");
-        moodController.listenMoodsByUser(username,
+        Log.d("HomeMyMoodsFrag", "Loading moods for username: '" + username + "'");
+        moodController.getMoodsByUser(username,
                 moods -> {
                     List<Mood> filteredMoods = new ArrayList<>();
+
                     for (Mood mood : moods) {
                         boolean includeMood = true;
 
@@ -173,7 +172,6 @@ public class HomeMyMoodsFrag extends Fragment {
                         }
                     }
 
-                    // Sort moods in reverse chronological order.
                     Collections.sort(filteredMoods, (m1, m2) -> m2.getDateTime().compareTo(m1.getDateTime()));
 
                     userMoodList.clear();

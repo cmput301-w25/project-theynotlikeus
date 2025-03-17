@@ -41,12 +41,12 @@ public class MoodController extends FirebaseController {
     public void addMood(Mood mood, Runnable onSuccess, Consumer<Exception> onFailure) {
         db.collection("moods")
                 .add(mood)
-                .addOnSuccessListener(documentReference -> onSuccess.run())
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            onFailure.accept(e);
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        onSuccess.run();
+                    } else {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && task.getException() != null) {
+                            onFailure.accept(task.getException());
                         }
                     }
                 });
