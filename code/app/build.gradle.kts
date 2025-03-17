@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.navigation.ui)
     implementation(libs.androidx.espresso.core)
     implementation(libs.firebase.auth)
+    implementation("com.google.firebase:firebase-storage:20.2.1")
 
     // Testing dependencies
     testImplementation("junit:junit:4.13.2")

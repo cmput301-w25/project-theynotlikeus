@@ -148,6 +148,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -167,7 +168,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST = 1;
     private String username;
-    private final int trigger_length_limit = 20;
+    private final int trigger_length_limit = 200;
     private MoodController moodController;
 
     private Button addImageButton;
@@ -191,9 +192,10 @@ public class AddMoodEventActivity extends AppCompatActivity {
         Spinner moodSpinner = findViewById(R.id.spinner_ActivityAddMoodEvent_currentmood);
         EditText triggerEditText = findViewById(R.id.edittext_ActivityAddMoodEvent_trigger);
         Spinner socialSituationSpinner = findViewById(R.id.spinner_ActivityAddMoodEvent_socialsituation);
-        addImageButton = findViewById(R.id.button_add_image);
-        imagePreview = findViewById(R.id.image_preview);
+        addImageButton = findViewById(R.id.button_select_photo);
+        imagePreview = findViewById(R.id.imageview_mood_photo);
         Button saveButton = findViewById(R.id.button_ActivityAddMoodEvent_save);
+        Switch publicButton = findViewById(R.id.switch_ActivityAddMoodEvent_privacy);
 
         // Mood Spinner
         ArrayAdapter<CharSequence> moodAdapter = ArrayAdapter.createFromResource(
@@ -247,6 +249,8 @@ public class AddMoodEventActivity extends AppCompatActivity {
 
             mood.setUsername(username);
 
+            mood.setPublic(publicButton.isChecked()); // If checked, it's public; otherwise, private
+
             if (imageUri != null) {
                 uploadImage(mood);
             } else {
@@ -288,7 +292,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
     // Save Mood to Firestore
     private void saveMoodToDatabase(Mood mood, String imageUrl) {
         if (imageUrl != null) {
-            mood.setImageUrl(imageUrl);
+            mood.setPhotoUrl(imageUrl);
         }
 
         moodController.addMood(mood, () -> runOnUiThread(() -> {
