@@ -1,4 +1,4 @@
-package com.example.theynotlikeus;
+package com.example.theynotlikeus.view;
 
 
 import android.content.Intent;
@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.theynotlikeus.R;
 
 public class AdminActivity extends AppCompatActivity {
     private static final String PREFS_NAME = "AdminPrefs";

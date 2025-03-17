@@ -9,6 +9,8 @@ import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.example.theynotlikeus.view.MainActivity;
+import com.example.theynotlikeus.view.RecyclerViewItemCountAssertion;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.junit.BeforeClass;

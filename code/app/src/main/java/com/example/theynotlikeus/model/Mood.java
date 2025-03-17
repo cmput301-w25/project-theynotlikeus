@@ -1,7 +1,7 @@
-package com.example.theynotlikeus;
+package com.example.theynotlikeus.model;
 
 import android.content.SharedPreferences;
-
+import com.example.theynotlikeus.view.AdminActivity;
 import java.util.Date;
 
 /**
@@ -299,4 +299,7 @@ public class Mood {
                 '}';
     }
 
+    public static class Admin extends User{
+        public Admin(){};
+    }
 }

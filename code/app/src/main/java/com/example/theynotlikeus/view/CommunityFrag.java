@@ -1,4 +1,4 @@
-package com.example.theynotlikeus;
+package com.example.theynotlikeus.view;
 
 import android.os.Bundle;
 
@@ -8,28 +8,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.theynotlikeus.R;
 
 /**
- * This fragment displays and manages incoming and outgoing follow requests and provides a UI layout where users can review follow request.
- *
+ * This fragment provides a user interface for the community area where users can interact with each other
+ * and displays content related to community interactions and discussions for the community section of the app.
  */
-public class FollowerRequestFrag extends Fragment {
+public class CommunityFrag extends Fragment {
 
-    //Parameter keys for potential customization.
+    //Parameter keys for customization.
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    //Variables to hold the initialization parameters.
+    //Variables to hold initialization parameters.
     private String mParam1;
     private String mParam2;
 
-    public FollowerRequestFrag() {
+    public CommunityFrag() {
         // Required empty public constructor
     }
 
-    //Factory method to create a new instance of FriendRequestFrag using the provided parameters.
-    public static FollowerRequestFrag newInstance(String param1, String param2) {
-        FollowerRequestFrag fragment = new FollowerRequestFrag();
+    //Factory method to create a new instance of CommunityFrag using the provided parameters.
+    public static CommunityFrag newInstance(String param1, String param2) {
+        CommunityFrag fragment = new CommunityFrag();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -40,6 +41,7 @@ public class FollowerRequestFrag extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Retrieving initialization parameters from the arguments Bundle.
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -49,6 +51,6 @@ public class FollowerRequestFrag extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_follower_request, container, false);//Inflate and return the layout for this fragment.
+        return inflater.inflate(R.layout.fragment_community, container, false);//Inflate and return the layout for this fragment from fragment_community.xm
     }
 }

@@ -7,31 +7,31 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.theynotlikeus.HomeMyMoodsFrag"
+        android:name="com.example.theynotlikeus.view.HomeMyMoodsFrag"
         android:label="fragment_home_my_moods"
         tools:layout="@layout/fragment_home_my_moods" />
 
     <fragment
         android:id="@+id/nav_profile"
-        android:name="com.example.theynotlikeus.FollowerRequestFrag"
+        android:name="com.example.theynotlikeus.view.FollowerRequestFrag"
         android:label="fragment_friend_request"
         tools:layout="@layout/fragment_follower_request" />
 
     <fragment
         android:id="@+id/nav_map"
-        android:name="com.example.theynotlikeus.HomeMapFrag"
+        android:name="com.example.theynotlikeus.view.HomeMapFrag"
         android:label="fragment_map"
         tools:layout="@layout/fragment_home_map" />
 
     <fragment
         android:id="@+id/nav_community"
-        android:name="com.example.theynotlikeus.CommunityFrag"
+        android:name="com.example.theynotlikeus.view.CommunityFrag"
         android:label="fragment_community"
         tools:layout="@layout/fragment_community" />
 
     <fragment
         android:id="@+id/nav_mood_event"
-        android:name="com.example.theynotlikeus.AddMoodEventActivity"
+        android:name="com.example.theynotlikeus.view.AddMoodEventActivity"
         android:label="mood_event"
         tools:layout="@layout/activity_add_mood_event"/>
 
