@@ -58,7 +58,7 @@ public class ViewUserProfileActivity extends AppCompatActivity {
 
     private void sendFollowRequest() {
         Map<String, Object> requestData = new HashMap<>();
-        requestData.put("followed", viewedUser);
+        requestData.put("followee", viewedUser);
         requestData.put("follower", currentUser);
         //requestData.put("deci", "pending");
 
