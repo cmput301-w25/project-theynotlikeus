@@ -13,8 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.adapters.FollowerRecyclerViewAdapter;
 import com.example.theynotlikeus.model.User;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
@@ -22,7 +20,6 @@ import java.util.List;
 
 public class FollowerRequestFrag extends Fragment {
 
-    private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private RecyclerView recyclerView;
     private List<User> userList;
@@ -35,7 +32,7 @@ public class FollowerRequestFrag extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAuth = FirebaseAuth.getInstance();
+        // Only initialize Firestore since we are not using FirebaseAuth here.
         db = FirebaseFirestore.getInstance();
     }
 
@@ -60,25 +57,18 @@ public class FollowerRequestFrag extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        // First try to get the user from FirebaseAuth
-        FirebaseUser firebaseUser = mAuth.getCurrentUser();
-        if (firebaseUser != null) {
-            // Use the UID from FirebaseAuth
-            loadFollowRequests(firebaseUser.getUid());
+        // Retrieve the username passed via the Intent from MainActivity.
+        String username = requireActivity().getIntent().getStringExtra("username");
+        if (username != null && !username.isEmpty()) {
+            loadFollowRequests(username);
         } else {
-            // Fallback: get the username passed from MainActivity
-            String username = requireActivity().getIntent().getStringExtra("username");
-            if (username != null && !username.isEmpty()) {
-                loadFollowRequests(username);
-            } else {
-                Toast.makeText(getContext(), "User not authenticated. Please login.", Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(getContext(), "User not authenticated. Please login.", Toast.LENGTH_SHORT).show();
         }
     }
 
     /**
      * Query Firestore for follow requests where the current user is the followee.
-     * @param currentUserId The UID or username of the current user.
+     * @param currentUserId The username of the current user.
      */
     private void loadFollowRequests(String currentUserId) {
         db.collection("request")
@@ -89,7 +79,7 @@ public class FollowerRequestFrag extends Fragment {
                     if (queryDocumentSnapshots.isEmpty()) {
                         Toast.makeText(getContext(), "No follow requests found", Toast.LENGTH_SHORT).show();
                     } else {
-                        // For each request, extract the follower's username and add to the list.
+                        // For each request, extract the follower's username and add it to the list.
                         for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                             String followerUsername = doc.getString("follower");
                             if (followerUsername != null) {
