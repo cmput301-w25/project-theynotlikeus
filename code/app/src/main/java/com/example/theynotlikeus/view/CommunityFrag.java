@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.adapters.CommunityRecyclerViewAdapter;
+import com.example.theynotlikeus.controller.MoodController;
 import com.example.theynotlikeus.model.Mood;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -59,15 +60,13 @@ public class CommunityFrag extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view,
-                              @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         // 1) Find views
         communityRecyclerView = view.findViewById(R.id.recyclerview_CommunityFrag_users);
         recentWeekCheckBox = view.findViewById(R.id.checkBox_CommunityFrag_recentWeek);
         searchViewCommunity = view.findViewById(R.id.searchView_CommunityFrag);
-
         TextInputLayout dropdownLayout = view.findViewById(R.id.community_dropdown_menu_layout);
         communityAutoCompleteTextView = view.findViewById(R.id.community_autoCompleteTextView);
 
@@ -80,8 +79,6 @@ public class CommunityFrag extends Fragment {
         String[] filterOptions = {
                 "All Moods", "HAPPINESS", "SADNESS", "ANGER", "SURPRISE", "FEAR", "DISGUST", "SHAME"
         };
-        // Simple ArrayAdapter for the dropdown
-        // (If you want a nicer style, use a custom layout.)
         android.widget.ArrayAdapter<String> moodStatesAdapter =
                 new android.widget.ArrayAdapter<>(
                         requireContext(),
@@ -116,11 +113,19 @@ public class CommunityFrag extends Fragment {
             applyFilters();
         });
 
-        // 6) (Optional) Load dummy data for testing
-        //loadDummyData();
-
-        // 7) Apply filters once at the end
-        applyFilters();
+        // 6) Load all moods from Firestore using the controller
+        MoodController moodController = new MoodController();
+        moodController.getAllMoods(
+                moods -> {
+                    // Clear any existing data, add new moods, and refresh the view
+                    allCommunityMoods.clear();
+                    allCommunityMoods.addAll(moods);
+                    applyFilters();
+                },
+                e -> {
+                    Log.e(TAG, "Error fetching moods: " + e.getMessage());
+                }
+        );
     }
 
     /**
