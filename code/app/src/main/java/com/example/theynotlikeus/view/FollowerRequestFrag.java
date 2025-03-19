@@ -22,13 +22,7 @@ import java.util.List;
 
 public class FollowerRequestFrag extends Fragment {
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    private String mParam1;
-    private String mParam2;
-
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseFirestore db;
     private RecyclerView recyclerView;
     private List<User> userList;
@@ -38,36 +32,11 @@ public class FollowerRequestFrag extends Fragment {
         // Required empty public constructor
     }
 
-    public static FollowerRequestFrag newInstance(String param1, String param2) {
-        FollowerRequestFrag fragment = new FollowerRequestFrag();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-
-        authStateListener = firebaseAuth -> {
-            FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-            if (currentUser != null) {
-                // User is signed in, now load follow requests.
-                loadFollowRequests(currentUser.getUid());
-            } else {
-                // This branch might not be reached if you are certain the user is signed in.
-                Toast.makeText(getContext(), "User not authenticated. Please login.", Toast.LENGTH_SHORT).show();
-            }
-        };
     }
 
     @Override
@@ -80,7 +49,6 @@ public class FollowerRequestFrag extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         // Set up RecyclerView
         recyclerView = view.findViewById(R.id.recyclerview_FollowerRequestFrag_followerrecyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -92,20 +60,25 @@ public class FollowerRequestFrag extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        mAuth.addAuthStateListener(authStateListener);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuth != null && authStateListener != null) {
-            mAuth.removeAuthStateListener(authStateListener);
+        // First try to get the user from FirebaseAuth
+        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+        if (firebaseUser != null) {
+            // Use the UID from FirebaseAuth
+            loadFollowRequests(firebaseUser.getUid());
+        } else {
+            // Fallback: get the username passed from MainActivity
+            String username = requireActivity().getIntent().getStringExtra("username");
+            if (username != null && !username.isEmpty()) {
+                loadFollowRequests(username);
+            } else {
+                Toast.makeText(getContext(), "User not authenticated. Please login.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
     /**
      * Query Firestore for follow requests where the current user is the followee.
-     * @param currentUserId The UID of the current user.
+     * @param currentUserId The UID or username of the current user.
      */
     private void loadFollowRequests(String currentUserId) {
         db.collection("request")
