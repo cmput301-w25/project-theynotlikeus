@@ -1,5 +1,6 @@
 package com.example.theynotlikeus.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,18 +67,10 @@ public class FollowerRequestFrag extends Fragment {
         FloatingActionButton fabAddFollow = view.findViewById(R.id.floatingActionButton_FollowerRequestFrag_addfollow);
         fabAddFollow.setOnClickListener(v -> {
             if (username != null && !username.isEmpty()) {
-                // Create a new instance of SearchUserFrag and pass the username via Bundle
-                SearchUserFrag searchUserFrag = new SearchUserFrag();
-                Bundle bundle = new Bundle();
-                bundle.putString("username", username);
-                searchUserFrag.setArguments(bundle);
-
-                // Replace the current fragment with SearchUserFrag.
-                // Replace R.id.fragment_container with the actual container ID in your activity layout.
-                requireActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainerView_MainActivity, searchUserFrag)
-                        .addToBackStack(null)
-                        .commit();
+                // Start SearchUserActivity instead of treating it like a Fragment
+                Intent intent = new Intent(getActivity(), SearchUserActivity.class);
+                intent.putExtra("username", username);
+                startActivity(intent);
             } else {
                 Toast.makeText(getContext(), "User not authenticated. Please login.", Toast.LENGTH_SHORT).show();
             }

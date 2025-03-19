@@ -49,6 +49,11 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.My
         return userList.size();
     }
 
+    public void updateList(List<User> newList) {
+        this.userList = newList;
+        notifyDataSetChanged();
+    }
+
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView textViewUsername;
 
