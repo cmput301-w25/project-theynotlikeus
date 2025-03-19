@@ -1,5 +1,7 @@
 package com.example.theynotlikeus.model;
 
+import android.content.SharedPreferences;
+import com.example.theynotlikeus.view.AdminActivity;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -39,6 +41,7 @@ public class Mood implements Serializable {
     private String reason;
     //private byte[] photo;
     private String photoUrl;
+    private byte[] photo;
     private int photoSize = 65536;
     private Double latitude;
     private Double longitude;
@@ -47,6 +50,8 @@ public class Mood implements Serializable {
     // Document ID for Firestore reference.
     private String docId;
     private boolean isPublic = false;
+    private SharedPreferences prefs;
+    private boolean isLimitEnabled;
 
     /**
      * No-argument constructor required by Firestore for automatic deserialization.
@@ -229,11 +234,22 @@ public class Mood implements Serializable {
 //        }
 //        this.photo = photo;
 //    }
-
+    public byte[] getPhoto() {
+        return photo;
+    }
     public String getPhotoUrl() {
         return photoUrl;
     }
-
+    public void setPhoto(byte[] photo) {
+        boolean isLimitEnabled = true; // Default to true if prefs is null
+        if (prefs != null) {
+            isLimitEnabled = AdminActivity.isLimitEnabled(prefs);
+        }
+        if (isLimitEnabled  && photo != null && photo.length > photoSize) {
+            throw new IllegalArgumentException("Photo size must be under 65536 bytes.");
+        }
+        this.photo = photo;
+    }
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
     }
