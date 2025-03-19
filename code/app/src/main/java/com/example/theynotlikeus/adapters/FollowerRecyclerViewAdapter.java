@@ -6,82 +6,63 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.theynotlikeus.R;
-import com.example.theynotlikeus.model.User;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-
-import java.util.HashMap;
+import com.example.theynotlikeus.controller.FollowRequestController;
+import com.example.theynotlikeus.model.Request;
 import java.util.List;
-import java.util.Map;
 
-/**
- * RecyclerView Adapter for displaying a list of users requesting to follow.
- */
-public class FollowerRecyclerViewAdapter extends RecyclerView.Adapter<FollowerRecyclerViewAdapter.MyViewHolder>{
-    private List<User> userList;
+public class FollowerRecyclerViewAdapter extends RecyclerView.Adapter<FollowerRecyclerViewAdapter.MyViewHolder> {
+    private List<Request> requestList;
     private Context context;
-    private FirebaseFirestore db;
-    public FollowerRecyclerViewAdapter(Context context, List<User> userList) {
-        this.userList = userList;
+    private FollowRequestController followRequestController;
+
+    public FollowerRecyclerViewAdapter(Context context, List<Request> requestList, FollowRequestController followRequestController) {
+        this.requestList = requestList;
         this.context = context;
+        this.followRequestController = followRequestController;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_follower_layout, parent, false);
-        return new FollowerRecyclerViewAdapter.MyViewHolder(view);
+        return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        User user = userList.get(position);
-        holder.textViewUsername.setText(user.getUsername());
-        holder.buttonAcceptRequest.setOnClickListener(v -> acceptRequest(user));
-        holder.buttonDeclineRequest.setOnClickListener(v -> declineRequest(user));
+        Request request = requestList.get(position);
+        holder.textViewUsername.setText(request.getFollower());
 
-    }
+        holder.buttonAcceptRequest.setOnClickListener(v -> {
+            followRequestController.acceptRequest(request, () -> {
+                Toast.makeText(context, "Follow request accepted", Toast.LENGTH_SHORT).show();
+                int pos = holder.getAdapterPosition();
+                requestList.remove(pos);
+                notifyItemRemoved(pos);
+            }, e -> {
+                Toast.makeText(context, "Error accepting follow request", Toast.LENGTH_SHORT).show();
+            });
+        });
 
-    private void acceptRequest(User user) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String requestId = user.getUsername(); // Assume username is unique for now
-
-        // Move request to 'follow' collection and remove from 'request' collection
-        Map<String, Object> followData = new HashMap<>();
-        followData.put("followed", FirebaseAuth.getInstance().getCurrentUser().getUid());
-        followData.put("follower", user.getUsername());
-
-        db.collection("follow").add(followData)
-                .addOnSuccessListener(documentReference -> {
-                    db.collection("request").whereEqualTo("follower", user.getUsername())
-                            .get().addOnSuccessListener(queryDocumentSnapshots -> {
-                                for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                                    db.collection("request").document(doc.getId()).delete();
-                                }
-                            });
-                });
-    }
-
-    private void declineRequest(User user) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        db.collection("request").whereEqualTo("follower", user.getUsername())
-                .get().addOnSuccessListener(queryDocumentSnapshots -> {
-                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                        db.collection("request").document(doc.getId()).delete();
-                    }
-                });
+        holder.buttonDeclineRequest.setOnClickListener(v -> {
+            followRequestController.declineRequest(request, () -> {
+                Toast.makeText(context, "Follow request declined", Toast.LENGTH_SHORT).show();
+                int pos = holder.getAdapterPosition();
+                requestList.remove(pos);
+                notifyItemRemoved(pos);
+            }, e -> {
+                Toast.makeText(context, "Error declining follow request", Toast.LENGTH_SHORT).show();
+            });
+        });
     }
 
     @Override
     public int getItemCount() {
-        return userList.size();
+        return requestList.size();
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -89,11 +70,6 @@ public class FollowerRecyclerViewAdapter extends RecyclerView.Adapter<FollowerRe
         Button buttonAcceptRequest;
         Button buttonDeclineRequest;
 
-        /**
-         * Constructor for initializing UI elements in the ViewHolder.
-         *
-         * @param itemView The view representing a single user.
-         */
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewUsername = itemView.findViewById(R.id.textview_FragmentFollowerLayout_username);

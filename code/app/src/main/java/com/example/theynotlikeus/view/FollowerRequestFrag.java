@@ -12,7 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.adapters.FollowerRecyclerViewAdapter;
-import com.example.theynotlikeus.model.User;
+import com.example.theynotlikeus.controller.FollowRequestController;
+import com.example.theynotlikeus.model.Request;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
@@ -22,8 +23,9 @@ public class FollowerRequestFrag extends Fragment {
 
     private FirebaseFirestore db;
     private RecyclerView recyclerView;
-    private List<User> userList;
+    private List<Request> requestList;
     private FollowerRecyclerViewAdapter adapter;
+    private FollowRequestController followRequestController;
 
     public FollowerRequestFrag() {
         // Required empty public constructor
@@ -32,8 +34,8 @@ public class FollowerRequestFrag extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Only initialize Firestore since we are not using FirebaseAuth here.
         db = FirebaseFirestore.getInstance();
+        followRequestController = new FollowRequestController();
     }
 
     @Override
@@ -49,8 +51,9 @@ public class FollowerRequestFrag extends Fragment {
         // Set up RecyclerView
         recyclerView = view.findViewById(R.id.recyclerview_FollowerRequestFrag_followerrecyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        userList = new ArrayList<>();
-        adapter = new FollowerRecyclerViewAdapter(getContext(), userList);
+        requestList = new ArrayList<>();
+        // Pass the controller to the adapter
+        adapter = new FollowerRecyclerViewAdapter(getContext(), requestList, followRequestController);
         recyclerView.setAdapter(adapter);
     }
 
@@ -75,17 +78,20 @@ public class FollowerRequestFrag extends Fragment {
                 .whereEqualTo("followee", currentUserId)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    userList.clear();
+                    requestList.clear();
                     if (queryDocumentSnapshots.isEmpty()) {
                         Toast.makeText(getContext(), "No follow requests found", Toast.LENGTH_SHORT).show();
                     } else {
-                        // For each request, extract the follower's username and add it to the list.
+                        // For each document, create a Request object with its id, follower, and followee.
                         for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                             String followerUsername = doc.getString("follower");
+                            String followee = doc.getString("followee");
                             if (followerUsername != null) {
-                                User user = new User();
-                                user.setUsername(followerUsername);
-                                userList.add(user);
+                                Request request = new Request();
+                                request.setId(doc.getId());
+                                request.setFollower(followerUsername);
+                                request.setFollowee(followee);
+                                requestList.add(request);
                             }
                         }
                     }
