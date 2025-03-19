@@ -87,6 +87,7 @@ public class SearchUserActivity extends AppCompatActivity {
     private void openUserProfile(User user) {
         Intent intent = new Intent(this, ViewUserProfileActivity.class);
         intent.putExtra("username", user.getUsername());
+        intent.putExtra("loggedInUser", getIntent().getStringExtra("username")); // Pass the logged-in user's username
         startActivity(intent);
     }
 }

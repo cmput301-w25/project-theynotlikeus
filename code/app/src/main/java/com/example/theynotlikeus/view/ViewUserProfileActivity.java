@@ -29,7 +29,7 @@ public class ViewUserProfileActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         viewedUser = getIntent().getStringExtra("username");
-        currentUser = "loggedInUser"; // Replace with actual current username
+        currentUser = getIntent().getStringExtra("loggedInUser");
         usernameTextView.setText(viewedUser);
 
         checkFollowRequestStatus();
@@ -60,7 +60,7 @@ public class ViewUserProfileActivity extends AppCompatActivity {
         Map<String, Object> requestData = new HashMap<>();
         requestData.put("followed", viewedUser);
         requestData.put("follower", currentUser);
-        requestData.put("decision", "pending");
+        //requestData.put("deci", "pending");
 
         db.collection("request").add(requestData)
                 .addOnSuccessListener(documentReference -> {
