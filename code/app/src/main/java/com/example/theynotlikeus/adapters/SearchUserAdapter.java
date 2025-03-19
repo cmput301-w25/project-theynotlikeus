@@ -32,7 +32,7 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.My
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_search_user_layout, parent, false);
         return new MyViewHolder(view);
     }
 
@@ -54,7 +54,7 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.My
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            textViewUsername = itemView.findViewById(R.id.textview_itemUser_username);
+            textViewUsername = itemView.findViewById(R.id.textview_FragmentFollowerLayout_username);
         }
     }
 }
