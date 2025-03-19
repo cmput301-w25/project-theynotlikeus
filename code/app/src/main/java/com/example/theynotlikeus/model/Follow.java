@@ -12,32 +12,62 @@ public class Follow {
 
     public Follow() {} // Empty constructor required for Firestore
 
+    /**
+     * Construct the id of a follow along with whether the user is followed or a follower
+     * @param id
+     * @param followed
+     * @param follower
+     */
     public Follow(String id, String followed, String follower) {
         this.id = id;
         this.followed = followed;
         this.follower = follower;
     }
 
+    /**
+     * This will get the id of the follow
+     * @return the id
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * Sets the id of the follow.
+     * @param id
+     */
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     * Returns a string of who is followed
+     * @return followed
+     */
     public String getFollowed() {
         return followed;
     }
 
+    /**
+     * Sets the followed
+     * @param followed
+     */
     public void setFollowed(String followed) {
         this.followed = followed;
     }
 
+    /**
+     * Gets the follower
+     * @return follower
+     */
     public String getFollower() {
         return follower;
     }
 
+    /**
+     * Sets the follower.
+     * @param follower
+     */
     public void setFollower(String follower) {
         this.follower = follower;
     }
