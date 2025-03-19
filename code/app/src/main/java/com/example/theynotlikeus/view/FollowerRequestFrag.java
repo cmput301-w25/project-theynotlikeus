@@ -5,11 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.adapters.FollowerRecyclerViewAdapter;
 import com.example.theynotlikeus.controller.FollowRequestController;
@@ -17,6 +19,7 @@ import com.example.theynotlikeus.model.Request;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,13 +56,32 @@ public class FollowerRequestFrag extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerview_FollowerRequestFrag_followerrecyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         requestList = new ArrayList<>();
-        // Pass the controller to the adapter
         adapter = new FollowerRecyclerViewAdapter(getContext(), requestList, followRequestController);
         recyclerView.setAdapter(adapter);
 
-        // Click listener that goes to search fragment to request a follow
+        // Retrieve username from the activity's intent
+        String username = requireActivity().getIntent().getStringExtra("username");
+
+        // Set up the Floating Action Button to launch SearchUserFrag as a fragment
         FloatingActionButton fabAddFollow = view.findViewById(R.id.floatingActionButton_FollowerRequestFrag_addfollow);
-        fabAddFollow.setOnClickListener(v -> new SearchUserFrag());
+        fabAddFollow.setOnClickListener(v -> {
+            if (username != null && !username.isEmpty()) {
+                // Create a new instance of SearchUserFrag and pass the username via Bundle
+                SearchUserFrag searchUserFrag = new SearchUserFrag();
+                Bundle bundle = new Bundle();
+                bundle.putString("username", username);
+                searchUserFrag.setArguments(bundle);
+
+                // Replace the current fragment with SearchUserFrag.
+                // Replace R.id.fragment_container with the actual container ID in your activity layout.
+                requireActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainerView_MainActivity, searchUserFrag)
+                        .addToBackStack(null)
+                        .commit();
+            } else {
+                Toast.makeText(getContext(), "User not authenticated. Please login.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -87,7 +109,6 @@ public class FollowerRequestFrag extends Fragment {
                     if (queryDocumentSnapshots.isEmpty()) {
                         Toast.makeText(getContext(), "No follow requests found", Toast.LENGTH_SHORT).show();
                     } else {
-                        // For each document, create a Request object with its id, follower, and followee.
                         for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                             String followerUsername = doc.getString("follower");
                             String followee = doc.getString("followee");
