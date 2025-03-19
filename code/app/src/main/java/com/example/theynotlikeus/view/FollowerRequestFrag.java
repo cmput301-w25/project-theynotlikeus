@@ -14,6 +14,7 @@ import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.adapters.FollowerRecyclerViewAdapter;
 import com.example.theynotlikeus.controller.FollowRequestController;
 import com.example.theynotlikeus.model.Request;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
@@ -55,6 +56,10 @@ public class FollowerRequestFrag extends Fragment {
         // Pass the controller to the adapter
         adapter = new FollowerRecyclerViewAdapter(getContext(), requestList, followRequestController);
         recyclerView.setAdapter(adapter);
+
+        // Click listener that goes to search fragment to request a follow
+        FloatingActionButton fabAddFollow = view.findViewById(R.id.floatingActionButton_FollowerRequestFrag_addfollow);
+        fabAddFollow.setOnClickListener(v -> new SearchUserFrag());
     }
 
     @Override
