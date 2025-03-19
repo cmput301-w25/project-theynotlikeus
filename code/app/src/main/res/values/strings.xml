@@ -10,6 +10,8 @@
     <string name="select_mood_drop_down">Select Mood</string>
     <string name="filter_your_moods_by">Filter your moods by:</string>
     <string name="search_keyword">Search keyword</string>
+    <string name="comment_author_example">LeBron James</string>
+    <string name="comment_text_example">Don\'t be afraid of failure. This is the way ot succeed.</string>
     <string-array name="moods">
         <item>Anger</item>
         <item>Confusion</item>
