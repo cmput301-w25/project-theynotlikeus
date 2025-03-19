@@ -85,7 +85,7 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
         socialSituationTextView.setText(mood.getSocialSituation() != null
                 ? mood.getSocialSituation().toString() : "Unknown");
         triggerTextView.setText(mood.getTrigger() != null
-                ? mood.getTrigger() : "No trigger provided");
+                ? mood.getTrigger() : "No reason provided");
         usernameTextView.setText(mood.getMoodState() != null
                 ? mood.getMoodState().toString() : "Unknown");
 

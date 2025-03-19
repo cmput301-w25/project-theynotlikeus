@@ -4,7 +4,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="welcome_username">Welcome Username!</string>
     <string name="feb_01_2025">Feb,01,2025</string>
-    <string name="trigger_i_hit_chest_today">Trigger <q></q>: I hit chest today!</string>
+    <string name="reason_i_hit_chest_today">Trigger <q></q>: I hit chest today!</string>
     <string name="happy">Happy</string>
     <string name="select_date_drop_down">Select Date</string>
     <string name="select_mood_drop_down">Select Mood</string>
@@ -64,4 +64,20 @@
     </string>
     <string name="storage_for_each_photographic_image_to_be_under_65536_bytes">storage for each photographic image to be under 65536 bytes</string>
     <string name="logout">Logout</string>
+    <string name="reason">Reason:</string>
+    <string name="location">Location</string>
+    <string name="reason_value">reason value</string>
+    <string name="date_and_time">Date and Time</string>
+    <string name="social_situation">Social situation</string>
+    <string name="username">Username</string>
+    <string name="your_mood_details">Your Mood Details</string>
+    <string name="go_back">Go back</string>
+    <string name="select_image_for_mood_event">Select image for mood event</string>
+    <string name="mood_event">Mood Event</string>
+    <string name="mood_image">Mood Image</string>
+    <string name="select_photo">Select Photo</string>
+    <string name="select_image_optional">Select Image (Optional)</string>
+    <string name="reason_optional">Reason (Optional)</string>
+    <string name="save">Save</string>
+    <string name="select_social_situation">Select Social Situation:</string>
 </resources>

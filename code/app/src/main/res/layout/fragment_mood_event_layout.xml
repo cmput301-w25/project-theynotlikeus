@@ -40,7 +40,7 @@
         android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:minHeight="30dp"
-        android:text="@string/trigger_i_hit_chest_today"
+        android:text="@string/reason_i_hit_chest_today"
         app:layout_constraintStart_toEndOf="@+id/imageview_fragmentmoodeventlayout_moodicon"
         app:layout_constraintTop_toBottomOf="@+id/textview_fragmentmoodeventlayout_moodtitle"
         app:layout_constraintBottom_toTopOf="@id/textview_fragmentmoodeventlayout_socialsituation"/>

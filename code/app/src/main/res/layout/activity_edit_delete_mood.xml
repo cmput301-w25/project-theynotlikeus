@@ -7,6 +7,19 @@
     android:layout_height="match_parent"
     android:background="@color/black_background">
 
+    <Switch
+        android:id="@+id/switch_ActivityEditDeleteMood_privacy"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="15dp"
+        android:text="Public Mood Entry"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/button_DeleteEditMoodActivity_save"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/switch_DeleteEditMoodActivity_geoSwitch"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_DeleteEditMoodActivity_socialsituation" />
+
     <ImageButton
         android:id="@+id/imageButton_DeleteEditMoodActivity_back"
         android:layout_width="48dp"
