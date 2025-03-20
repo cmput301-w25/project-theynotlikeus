@@ -155,4 +155,18 @@
         app:layout_constraintStart_toStartOf="@+id/textview_ActivityMoodEventDetails_dateandtime"
         app:layout_constraintTop_toBottomOf="@+id/textview_ActivityMoodEventDetails_dateandtime" />
 
+    <Button
+        android:id="@+id/commentButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="167dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="154dp"
+        android:layout_marginBottom="343dp"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_ActivityMoodEventDetails_moodeventcontainer" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

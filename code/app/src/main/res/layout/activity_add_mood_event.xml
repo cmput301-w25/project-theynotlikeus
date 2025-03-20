@@ -19,7 +19,7 @@
 
 
     <ImageButton
-        android:id="@+id/button_ActivityAddMoodEvent_backbutton"
+        android:id="@+id/imagebutton_ActivityViewComments_backbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/black_background"

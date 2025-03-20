@@ -12,7 +12,7 @@
 
 
     <TextView
-        android:id="@+id/activity_ViewCommentsCommentLayout_commentAuthor"
+        android:id="@+id/textview_ViewCommentsActivityCommentLayout_commentAuthor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/comment_author_example"
@@ -23,16 +23,16 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/activity_ViewCommentsCommentLayout_commentText"
+        android:id="@+id/textview_ViewCommentsActivityCommentLayout_commentText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/comment_text_example"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_ViewCommentsCommentLayout_commentAuthor" />
+        app:layout_constraintTop_toBottomOf="@+id/textview_ViewCommentsActivityCommentLayout_commentAuthor" />
 
     <TextView
-        android:id="@+id/activity_ViewCommentsCommentLayout_dateTime"
+        android:id="@+id/textview_ViewCommentsActivityCommentLayout_dateTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/feb_01_2025"

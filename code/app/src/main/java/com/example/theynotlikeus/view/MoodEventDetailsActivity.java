@@ -3,6 +3,7 @@ package com.example.theynotlikeus.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -12,8 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.model.Mood;
-
-import java.io.Serializable;
 
 /**
  * Activity for displaying the details of a mood event.
@@ -29,6 +28,7 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
     ImageView moodImageView;
     ImageButton backButton;
     ImageButton editButton;
+    Button commentButton;
     private static final int EDIT_MOOD_REQUEST = 1;
 
     // Hold the passed Mood object.
@@ -46,6 +46,7 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
         moodImageView = findViewById(R.id.imageview_ActivityMoodEventDetails_moodimage);
         editButton = findViewById(R.id.imagebutton_ActivityMoodEventDetails_editbutton);
         backButton = findViewById(R.id.imagebutton_ActivityMoodEventDetails_backbutton);
+        commentButton = findViewById(R.id.commentButton);
 
         // Retrieve the full Mood object from the Intent extras.
         mood = (Mood) getIntent().getSerializableExtra("mood");
@@ -75,6 +76,13 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
             finish();
+        });
+
+        commentButton.setOnClickListener(v -> {
+            Log.d("MoodEventDetailsActivity", "Comment button clicked");
+            Intent intent = new Intent(MoodEventDetailsActivity.this, ViewCommentsActivity.class);
+            intent.putExtra("mood", mood);
+            startActivity(intent);
         });
     }
 

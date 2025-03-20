@@ -59,9 +59,9 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<CommentsRe
 
         public CommentsViewHolder(@NonNull View itemView) {
             super(itemView);
-            commentAuthor = itemView.findViewById(R.id.activity_ViewCommentsCommentLayout_commentAuthor);
-            commentText = itemView.findViewById(R.id.activity_ViewCommentsCommentLayout_commentText);
-            commentDateTime = itemView.findViewById(R.id.activity_ViewCommentsCommentLayout_dateTime);
+            commentAuthor = itemView.findViewById(R.id.textview_ViewCommentsActivityCommentLayout_commentAuthor);
+            commentText = itemView.findViewById(R.id.textview_ViewCommentsActivityCommentLayout_commentText);
+            commentDateTime = itemView.findViewById(R.id.textview_ViewCommentsActivityCommentLayout_dateTime);
         }
     }
 

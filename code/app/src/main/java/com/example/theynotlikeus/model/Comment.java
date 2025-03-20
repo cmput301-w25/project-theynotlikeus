@@ -17,6 +17,14 @@ public class Comment implements Serializable {
         // Empty instance to satisfy Firestore requirement.
     }
 
+    /**
+     *
+     * @param commentText
+     */
+    public Comment(String commentText, Date date) {
+        this.commentText = commentText;
+    }
+
     // Getters and setters
     public String getAssociatedMoodID() {
         return associatedMoodID;

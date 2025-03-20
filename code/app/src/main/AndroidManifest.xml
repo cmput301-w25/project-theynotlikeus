@@ -25,6 +25,9 @@
             android:name=".view.MoodEventDetailsActivity"
             android:exported="false" />
         <activity
+            android:name=".view.ViewCommentsActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.EditDeleteMoodActivity"
             android:exported="false"
             android:theme="@style/Theme.Theynotlikeus" />
