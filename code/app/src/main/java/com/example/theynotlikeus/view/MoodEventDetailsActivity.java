@@ -93,6 +93,18 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
         moodImageView.setImageResource(iconRes);
 
         dateTextView.setText(mood.getDateTime() != null ? mood.getDateTime().toString() : "Unknown");
+        // Update location TextView
+
+        TextView locationTextView = findViewById(R.id.textview_ActivityMoodEventDetails_location);
+        Double latitude = mood.getLatitude();
+        Double longitude = mood.getLongitude();
+
+        // show latitude and longitude, display unknown if null value
+        if (latitude != null && longitude != null) {
+            locationTextView.setText("Location: " + latitude + ", " + longitude);
+        } else {
+            locationTextView.setText("Location: Unknown");
+        }
     }
 
     /**
