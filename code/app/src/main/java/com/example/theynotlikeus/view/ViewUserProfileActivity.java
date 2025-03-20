@@ -40,20 +40,37 @@ public class ViewUserProfileActivity extends AppCompatActivity {
     }
 
     private void checkFollowRequestStatus() {
-        db.collection("request")
-                .whereEqualTo("followed", viewedUser)
+        // Check if user is already followed
+        db.collection("follow")
+                .whereEqualTo("followee", viewedUser)
                 .whereEqualTo("follower", currentUser)
                 .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    if (!queryDocumentSnapshots.isEmpty()) {
-                        followButton.setText("Requested");
-                        followButton.setEnabled(false); // Disable button to prevent duplicate requests
+                .addOnSuccessListener(followSnapshot -> {
+                    if (!followSnapshot.isEmpty()) {
+                        // User is already followed, disable follow request
+                        followButton.setText("Following");
+                        followButton.setEnabled(false);
                     } else {
-                        followButton.setText("Request Follow");
-                        followButton.setEnabled(true);
+                        // If not followed, check if a request is pending
+                        db.collection("request")
+                                .whereEqualTo("followee", viewedUser)
+                                .whereEqualTo("follower", currentUser)
+                                .get()
+                                .addOnSuccessListener(requestSnapshot -> {
+                                    if (!requestSnapshot.isEmpty()) {
+                                        // Request already sent
+                                        followButton.setText("Requested");
+                                        followButton.setEnabled(false);
+                                    } else {
+                                        // Allow sending request
+                                        followButton.setText("Request Follow");
+                                        followButton.setEnabled(true);
+                                    }
+                                })
+                                .addOnFailureListener(e -> Toast.makeText(this, "Error checking request status", Toast.LENGTH_SHORT).show());
                     }
                 })
-                .addOnFailureListener(e -> Toast.makeText(this, "Error checking request status", Toast.LENGTH_SHORT).show());
+                .addOnFailureListener(e -> Toast.makeText(this, "Error checking follow status", Toast.LENGTH_SHORT).show());
     }
 
     private void sendFollowRequest() {

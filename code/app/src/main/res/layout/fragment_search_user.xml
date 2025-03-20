@@ -10,11 +10,10 @@
         android:id="@+id/button_SearchUserFrag_backbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="61dp"
         android:background="@color/black_background"
         android:contentDescription="Go back to follower request page"
         android:src="@drawable/ic_white_back_button"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerview_SearchUserFrag"
+        android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
