@@ -47,7 +47,7 @@ public class CommunityRecyclerViewAdapter
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView moodIconImageView;
-        TextView usernameTextView, moodStateTextView, triggerTextView, dateTextView;
+        TextView usernameTextView, moodStateTextView, triggerTextView, dateTextView, socialSituation;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -57,6 +57,7 @@ public class CommunityRecyclerViewAdapter
             moodStateTextView = itemView.findViewById(R.id.textView_itemCommunity_moodtitle);
             triggerTextView   = itemView.findViewById(R.id.textView_itemCommunity_trigger);
             dateTextView      = itemView.findViewById(R.id.textView_itemCommunity_date);
+            socialSituation = itemView.findViewById(R.id.textView_itemCommunity_socialsituation);
         }
 
         void bind(Mood mood) {
@@ -65,6 +66,9 @@ public class CommunityRecyclerViewAdapter
 
             // Set mood state title
             moodStateTextView.setText(mood.getMoodState().name());
+
+            // set social situation
+            socialSituation.setText(mood.getSocialSituation().toString());
 
             // Set trigger text, if available
             triggerTextView.setText(mood.getTrigger() != null ? mood.getTrigger() : "");
