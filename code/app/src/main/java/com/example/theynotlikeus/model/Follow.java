@@ -6,7 +6,6 @@ package com.example.theynotlikeus.model;
  * An empty constructor is provided for Firestore deserialization.
  */
 public class Follow {
-    private String id;
     private String followed;
     private String follower;
 
@@ -14,30 +13,12 @@ public class Follow {
 
     /**
      * Construct the id of a follow along with whether the user is followed or a follower
-     * @param id
      * @param followed
      * @param follower
      */
-    public Follow(String id, String followed, String follower) {
-        this.id = id;
+    public Follow(String followed, String follower) {
         this.followed = followed;
         this.follower = follower;
-    }
-
-    /**
-     * This will get the id of the follow
-     * @return the id
-     */
-    public String getId() {
-        return id;
-    }
-
-    /**
-     * Sets the id of the follow.
-     * @param id
-     */
-    public void setId(String id) {
-        this.id = id;
     }
 
     /**
