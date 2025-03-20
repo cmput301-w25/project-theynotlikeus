@@ -35,6 +35,7 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
     EditText triggerEditText;
     Spinner socialSituationSpinner;
     Switch geolocationSwitch;
+    Switch privacySwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +50,7 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
         ImageButton deleteButton = findViewById(R.id.imageButton_DeleteEditMoodActivity_delete);
         ImageButton backButton = findViewById(R.id.imageButton_DeleteEditMoodActivity_back);
         Button saveButton = findViewById(R.id.button_DeleteEditMoodActivity_save);
-
+        privacySwitch = findViewById(R.id.switch_ActivityEditDeleteMood_privacy);
         // Initialize the MoodController.
         moodController = new MoodController();
 
@@ -162,7 +163,15 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                         "Error deleting mood: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             });
         });
-
+        //private button: make the mood private
+        if (moodToEdit != null) {
+            privacySwitch.setChecked(moodToEdit.isPublic());
+        }
+        privacySwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (moodToEdit != null) {
+                moodToEdit.setPublic(isChecked);
+            }
+        });
         // Back button: Simply finish the activity.
         backButton.setOnClickListener(v -> finish());
     }
