@@ -49,6 +49,8 @@
         <activity
             android:name=".view.AddMoodEventActivity"
             android:exported="false" />
+        <activity android:name=".view.SearchUserActivity"/>
+        <activity android:name=".view.ViewUserProfileActivity"/>
     </application>
 
 </manifest>
