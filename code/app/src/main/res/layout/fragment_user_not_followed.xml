@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black_background"
+    tools:context=".view.HomeMyMoodsFrag">
+
+    <!-- Back Button -->
+    <ImageButton
+        android:id="@+id/button_UserProfileDetailsFrag_notFollowed_backbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/black_background"
+        android:contentDescription="Select image for mood event"
+        android:src="@drawable/ic_white_back_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Username at the top, centered and larger -->
+    <TextView
+        android:id="@+id/textView_UserProfileDetailsFrag_notFollowed_Username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Username"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button_UserProfileDetailsFrag_notFollowed__followButton"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="Follow"
+        android:layout_marginTop="150dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView_UserProfileDetailsFrag_notFollowed_Username"
+        tools:layout_editor_absoluteX="155dp"
+        tools:ignore="MissingConstraints" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
