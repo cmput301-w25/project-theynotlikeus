@@ -1,5 +1,6 @@
 package com.example.theynotlikeus.adapters;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.model.Mood;
+import com.example.theynotlikeus.view.FriendMoodEventDetailsActivity;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
@@ -57,7 +59,7 @@ public class CommunityRecyclerViewAdapter
             moodStateTextView = itemView.findViewById(R.id.textView_itemCommunity_moodtitle);
             triggerTextView   = itemView.findViewById(R.id.textView_itemCommunity_trigger);
             dateTextView      = itemView.findViewById(R.id.textView_itemCommunity_date);
-            socialSituation = itemView.findViewById(R.id.textView_itemCommunity_socialsituation);
+            socialSituation   = itemView.findViewById(R.id.textView_itemCommunity_socialsituation);
         }
 
         void bind(Mood mood) {
@@ -65,10 +67,12 @@ public class CommunityRecyclerViewAdapter
             usernameTextView.setText(mood.getUsername() != null ? mood.getUsername() : "Unknown");
 
             // Set mood state title
-            moodStateTextView.setText(mood.getMoodState().name());
+            moodStateTextView.setText(mood.getMoodState() != null ? mood.getMoodState().name() : "Unknown");
 
-            // set social situation
-            socialSituation.setText(mood.getSocialSituation().toString());
+            // Set social situation with a null check
+            socialSituation.setText(mood.getSocialSituation() != null
+                    ? mood.getSocialSituation().toString()
+                    : "Unknown");
 
             // Set trigger text, if available
             triggerTextView.setText(mood.getTrigger() != null ? mood.getTrigger() : "");
@@ -83,6 +87,13 @@ public class CommunityRecyclerViewAdapter
             // Set mood icon based on mood state
             int moodIconRes = getMoodIcon(mood.getMoodState());
             moodIconImageView.setImageResource(moodIconRes);
+
+            // Set click listener on the entire item view to launch FriendMoodEventDetailsActivity.
+            itemView.setOnClickListener(v -> {
+                Intent intent = new Intent(v.getContext(), FriendMoodEventDetailsActivity.class);
+                intent.putExtra("mood", mood); // Ensure Mood implements Serializable or Parcelable.
+                v.getContext().startActivity(intent);
+            });
         }
 
         /**

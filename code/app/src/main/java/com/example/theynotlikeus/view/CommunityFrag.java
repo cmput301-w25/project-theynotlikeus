@@ -21,10 +21,12 @@ import com.example.theynotlikeus.adapters.CommunityRecyclerViewAdapter;
 import com.example.theynotlikeus.controller.MoodController;
 import com.example.theynotlikeus.model.Mood;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 public class CommunityFrag extends Fragment {
@@ -38,24 +40,27 @@ public class CommunityFrag extends Fragment {
     private SearchView searchViewCommunity;
 
     // Data
-    private List<Mood> allCommunityMoods = new ArrayList<>();  // All data
-    private List<Mood> filteredMoods = new ArrayList<>();      // Filtered data
+    private List<Mood> allCommunityMoods = new ArrayList<>();  // Moods from friends only.
+    private List<Mood> filteredMoods = new ArrayList<>();        // Filtered list for the adapter.
     private CommunityRecyclerViewAdapter communityAdapter;
 
-    // Current filter states
+    // Current filter states.
     private boolean filterRecentWeek = false;
     private String filterEmotionalState = "All Moods";
     private String filterTriggerText = "";
 
+    // Firestore instance.
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
     public CommunityFrag() {
-        // Required empty constructor
+        // Required empty constructor.
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate layout
+        // Inflate layout.
         return inflater.inflate(R.layout.fragment_community, container, false);
     }
 
@@ -63,21 +68,21 @@ public class CommunityFrag extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // 1) Find views
+        // 1) Find views.
         communityRecyclerView = view.findViewById(R.id.recyclerview_CommunityFrag_users);
         recentWeekCheckBox = view.findViewById(R.id.checkBox_CommunityFrag_recentWeek);
         searchViewCommunity = view.findViewById(R.id.searchView_CommunityFrag);
         TextInputLayout dropdownLayout = view.findViewById(R.id.community_dropdown_menu_layout);
         communityAutoCompleteTextView = view.findViewById(R.id.community_autoCompleteTextView);
 
-        // 2) Setup RecyclerView + adapter
+        // 2) Setup RecyclerView + adapter.
         communityRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         communityAdapter = new CommunityRecyclerViewAdapter(filteredMoods);
         communityRecyclerView.setAdapter(communityAdapter);
 
-        // 3) Setup autoCompleteTextView (emotional states)
+        // 3) Setup autoCompleteTextView (emotional states).
         String[] filterOptions = {
-                "All Moods", "HAPPINESS", "SADNESS", "ANGER", "SURPRISE", "FEAR", "DISGUST", "SHAME"
+                "All Moods", "HAPPINESS", "SADNESS", "ANGER", "SURPRISE", "FEAR", "DISGUST", "SHAME", "CONFUSION"
         };
         android.widget.ArrayAdapter<String> moodStatesAdapter =
                 new android.widget.ArrayAdapter<>(
@@ -91,7 +96,7 @@ public class CommunityFrag extends Fragment {
             applyFilters();
         });
 
-        // 4) Setup SearchView for triggers
+        // 4) Setup SearchView for triggers.
         searchViewCommunity.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -107,36 +112,54 @@ public class CommunityFrag extends Fragment {
             }
         });
 
-        // 5) Setup checkBox for "recent week"
+        // 5) Setup checkBox for "recent week".
         recentWeekCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             filterRecentWeek = isChecked;
             applyFilters();
         });
 
-        // 6) Load all moods from Firestore using the controller
-        MoodController moodController = new MoodController();
-        moodController.getAllMoods(
-                moods -> {
-                    // Clear any existing data, add new moods, and refresh the view
-                    allCommunityMoods.clear();
-                    allCommunityMoods.addAll(moods);
-                    applyFilters();
-                },
-                e -> {
-                    Log.e(TAG, "Error fetching moods: " + e.getMessage());
-                }
-        );
+        // 6) Load moods from friends only.
+        loadFriendsMoods();
     }
 
     /**
-     * In a real app, you might load "public moods of followed users" from Firestore:
-     * e.g. `communityController.getPublicMoodsOfFollowedUsers(...)`
-     * For now, we add some random dummy data:
+     * Loads the current user's friend list from Firestore and, for each friend,
+     * retrieves their mood events using the MoodController.
      */
+    private void loadFriendsMoods() {
 
+        String currentUser = requireActivity().getIntent().getStringExtra("username");
+
+        // Query the "follow" collection for documents where the current user is the follower.
+        db.collection("follow")
+                .whereEqualTo("follower", currentUser)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    List<String> friendList = new ArrayList<>();
+                    for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                        String friend = doc.getString("followee");
+                        if (friend != null && !friend.isEmpty()) {
+                            friendList.add(friend);
+                        }
+                    }
+                    Log.d(TAG, "Found friends: " + friendList.toString());
+                    // For each friend, fetch their moods.
+                    MoodController moodController = new MoodController();
+                    for (String friend : friendList) {
+                        moodController.getMoodsByUser(friend,
+                                moods -> {
+                                    allCommunityMoods.addAll(moods);
+                                    applyFilters();
+                                },
+                                e -> Log.e(TAG, "Error fetching moods for friend " + friend + ": " + e.getMessage())
+                        );
+                    }
+                })
+                .addOnFailureListener(e -> Log.e(TAG, "Error fetching friend list: " + e.getMessage()));
+    }
 
     /**
-     * Filter + sort the list, then refresh the adapter.
+     * Filters and sorts the mood list from friends, then refreshes the adapter.
      */
     private void applyFilters() {
         Log.d(TAG, "Applying filters: recentWeek=" + filterRecentWeek
@@ -145,21 +168,19 @@ public class CommunityFrag extends Fragment {
 
         filteredMoods.clear();
 
-        // Filter logic
+        // Filter logic.
         long oneWeekAgoMillis = System.currentTimeMillis() - (7L * 24 * 60 * 60 * 1000);
-
         for (Mood mood : allCommunityMoods) {
             boolean include = true;
 
-            // Filter by "recent week" if checkbox is checked
+            // Filter by "recent week" if checkbox is checked.
             if (filterRecentWeek) {
-                if (mood.getDateTime() == null ||
-                        mood.getDateTime().getTime() < oneWeekAgoMillis) {
+                if (mood.getDateTime() == null || mood.getDateTime().getTime() < oneWeekAgoMillis) {
                     include = false;
                 }
             }
 
-            // Filter by emotional state
+            // Filter by emotional state.
             if (!TextUtils.isEmpty(filterEmotionalState) &&
                     !"All Moods".equalsIgnoreCase(filterEmotionalState)) {
                 if (!mood.getMoodState().name().equalsIgnoreCase(filterEmotionalState)) {
@@ -167,7 +188,7 @@ public class CommunityFrag extends Fragment {
                 }
             }
 
-            // Filter by trigger text
+            // Filter by trigger text.
             if (!TextUtils.isEmpty(filterTriggerText)) {
                 if (mood.getTrigger() == null ||
                         !mood.getTrigger().toLowerCase().contains(filterTriggerText.toLowerCase())) {
@@ -180,11 +201,11 @@ public class CommunityFrag extends Fragment {
             }
         }
 
-        // Sort in reverse chronological order (most recent first)
+        // Sort in reverse chronological order (most recent first).
         Collections.sort(filteredMoods, (m1, m2) ->
                 m2.getDateTime().compareTo(m1.getDateTime()));
 
-        // Update adapter
+        // Update adapter.
         communityAdapter.notifyDataSetChanged();
     }
 }

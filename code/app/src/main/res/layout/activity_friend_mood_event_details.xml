@@ -27,44 +27,28 @@
         android:scaleType="fitXY"
         android:src="@drawable/ic_white_back_button"
         android:translationY="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textview_ActivityMoodEventDetails_title"
-        app:layout_constraintEnd_toStartOf="@+id/textview_ActivityMoodEventDetails_title"
+        app:layout_constraintBottom_toBottomOf="@+id/textview_ActivityFriendMoodEventDetails_title"
+        app:layout_constraintEnd_toStartOf="@+id/textview_ActivityFriendMoodEventDetails_title"
         app:layout_constraintHorizontal_bias="0.595"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textview_ActivityMoodEventDetails_title" />
+        app:layout_constraintTop_toTopOf="@+id/textview_ActivityFriendMoodEventDetails_title" />
 
-    <ImageButton
-        android:id="@+id/imagebutton_ActivityMoodEventDetails_editbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:background="@android:color/transparent"
-        android:maxWidth="40dp"
-        android:maxHeight="40dp"
-        android:scaleType="fitXY"
-        android:translationY="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textview_ActivityMoodEventDetails_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.627"
-        app:layout_constraintStart_toEndOf="@+id/textview_ActivityMoodEventDetails_title"
-        app:layout_constraintTop_toTopOf="@+id/textview_ActivityMoodEventDetails_title"
-        app:srcCompat="@drawable/ic_edit_button" />
 
     <TextView
-        android:id="@+id/textview_ActivityMoodEventDetails_title"
+        android:id="@+id/textview_ActivityFriendMoodEventDetails_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="monospace"
-        android:text="Your Mood Details"
+        android:text="Friend Mood Details"
         android:textColor="@color/white"
         android:textSize="24sp"
-        app:layout_constraintEnd_toStartOf="@id/imagebutton_ActivityMoodEventDetails_editbutton"
         app:layout_constraintStart_toEndOf="@id/imagebutton_ActivityFriendMoodEventDetails_backbutton"
         app:layout_constraintTop_toTopOf="parent" />
 
     <View
-        android:id="@+id/view_ActivityMoodEventDetails_moodeventcontainer"
+        android:id="@+id/view_ActivityFriendMoodEventDetails_moodeventcontainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="12dp"
@@ -72,15 +56,15 @@
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="-16dp"
         android:background="#282727"
-        app:layout_constraintBottom_toBottomOf="@id/textview_ActivityMoodEventDetails_location"
+        app:layout_constraintBottom_toBottomOf="@id/textview_ActivityFriendMoodEventDetails_location"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview_ActivityMoodEventDetails_title"
+        app:layout_constraintTop_toBottomOf="@+id/textview_ActivityFriendMoodEventDetails_title"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/textview_ActivityMoodEventDetails_username"
+        android:id="@+id/textview_ActivityFriendMoodEventDetails_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -88,11 +72,11 @@
         android:textColor="#FFFFFF"
         android:textColorHint="#898888"
         android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/imageview_ActivityMoodEventDetails_moodimage"
-        app:layout_constraintTop_toTopOf="@+id/imageview_ActivityMoodEventDetails_moodimage" />
+        app:layout_constraintStart_toEndOf="@+id/imageview_ActivityFriendMoodEventDetails_moodimage"
+        app:layout_constraintTop_toTopOf="@+id/imageview_ActivityFriendMoodEventDetails_moodimage" />
 
     <ImageView
-        android:id="@+id/imageview_ActivityMoodEventDetails_moodimage"
+        android:id="@+id/imageview_ActivityFriendMoodEventDetails_moodimage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -101,58 +85,58 @@
         android:maxWidth="50dp"
         android:maxHeight="50dp"
         android:scaleType="fitXY"
-        app:layout_constraintStart_toStartOf="@+id/view_ActivityMoodEventDetails_moodeventcontainer"
-        app:layout_constraintTop_toTopOf="@+id/view_ActivityMoodEventDetails_moodeventcontainer"
+        app:layout_constraintStart_toStartOf="@+id/view_ActivityFriendMoodEventDetails_moodeventcontainer"
+        app:layout_constraintTop_toTopOf="@+id/view_ActivityFriendMoodEventDetails_moodeventcontainer"
         app:srcCompat="@drawable/ic_happy_emoticon" />
 
     <TextView
-        android:id="@+id/textview_ActivityMoodEventDetails_socialsituation"
+        android:id="@+id/textview_ActivityFriendMoodEventDetails_socialsituation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:hint="Social situation"
         android:textColorHint="#898888"
-        app:layout_constraintStart_toStartOf="@+id/imageview_ActivityMoodEventDetails_moodimage"
-        app:layout_constraintTop_toBottomOf="@+id/imageview_ActivityMoodEventDetails_moodimage" />
+        app:layout_constraintStart_toStartOf="@+id/imageview_ActivityFriendMoodEventDetails_moodimage"
+        app:layout_constraintTop_toBottomOf="@+id/imageview_ActivityFriendMoodEventDetails_moodimage" />
 
     <TextView
-        android:id="@+id/textview_ActivityMoodEventDetails_dateandtime"
+        android:id="@+id/textview_ActivityFriendMoodEventDetails_dateandtime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:hint="Date and Time"
         android:textColorHint="#898888"
-        app:layout_constraintStart_toStartOf="@+id/textview_ActivityMoodEventDetails_trigger"
-        app:layout_constraintTop_toBottomOf="@+id/textview_ActivityMoodEventDetails_trigger" />
+        app:layout_constraintStart_toStartOf="@+id/textview_ActivityFriendMoodEventDetails_trigger"
+        app:layout_constraintTop_toBottomOf="@+id/textview_ActivityFriendMoodEventDetails_trigger" />
 
     <TextView
-        android:id="@+id/textview_ActivityMoodEventDetails_triggervalue"
+        android:id="@+id/textview_ActivityFriendMoodEventDetails_triggervalue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:hint="trigger value"
         android:textColorHint="#898888"
-        app:layout_constraintStart_toEndOf="@+id/textview_ActivityMoodEventDetails_trigger"
-        app:layout_constraintTop_toTopOf="@+id/textview_ActivityMoodEventDetails_trigger" />
+        app:layout_constraintStart_toEndOf="@+id/textview_ActivityFriendMoodEventDetails_trigger"
+        app:layout_constraintTop_toTopOf="@+id/textview_ActivityFriendMoodEventDetails_trigger" />
 
     <TextView
-        android:id="@+id/textview_ActivityMoodEventDetails_trigger"
+        android:id="@+id/textview_ActivityFriendMoodEventDetails_trigger"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Trigger:"
         android:textColor="#FFFFFF"
-        app:layout_constraintStart_toStartOf="@+id/textview_ActivityMoodEventDetails_socialsituation"
-        app:layout_constraintTop_toBottomOf="@+id/textview_ActivityMoodEventDetails_socialsituation" />
+        app:layout_constraintStart_toStartOf="@+id/textview_ActivityFriendMoodEventDetails_socialsituation"
+        app:layout_constraintTop_toBottomOf="@+id/textview_ActivityFriendMoodEventDetails_socialsituation" />
 
     <TextView
-        android:id="@+id/textview_ActivityMoodEventDetails_location"
+        android:id="@+id/textview_ActivityFriendMoodEventDetails_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:hint="Location"
         android:textColorHint="#898888"
-        app:layout_constraintStart_toStartOf="@+id/textview_ActivityMoodEventDetails_dateandtime"
-        app:layout_constraintTop_toBottomOf="@+id/textview_ActivityMoodEventDetails_dateandtime" />
+        app:layout_constraintStart_toStartOf="@+id/textview_ActivityFriendMoodEventDetails_dateandtime"
+        app:layout_constraintTop_toBottomOf="@+id/textview_ActivityFriendMoodEventDetails_dateandtime" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

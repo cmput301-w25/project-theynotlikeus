@@ -21,6 +21,8 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
+        <activity android:name=".view.FriendMoodEventDetailsActivity" />
+
         <activity
             android:name=".view.MoodEventDetailsActivity"
             android:exported="false" />

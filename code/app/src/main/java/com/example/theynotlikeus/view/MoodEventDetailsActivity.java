@@ -13,8 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.model.Mood;
 
-import java.io.Serializable;
-
 /**
  * Activity for displaying the details of a mood event.
  *
@@ -45,7 +43,7 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
         usernameTextView = findViewById(R.id.textview_ActivityMoodEventDetails_username);
         moodImageView = findViewById(R.id.imageview_ActivityMoodEventDetails_moodimage);
         editButton = findViewById(R.id.imagebutton_ActivityMoodEventDetails_editbutton);
-        backButton = findViewById(R.id.imagebutton_ActivityMoodEventDetails_backbutton);
+        backButton = findViewById(R.id.imagebutton_ActivityFriendMoodEventDetails_backbutton);
 
         // Retrieve the full Mood object from the Intent extras.
         mood = (Mood) getIntent().getSerializableExtra("mood");
