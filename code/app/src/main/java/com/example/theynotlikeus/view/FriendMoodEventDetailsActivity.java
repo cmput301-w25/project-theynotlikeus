@@ -23,6 +23,8 @@ public class FriendMoodEventDetailsActivity extends AppCompatActivity {
     private TextView dateTextView;
     private TextView triggerTextView;
     private TextView usernameTextView;
+    private TextView moodTypeTextView;
+    private TextView locationTextView; // New view to display location details.
     private ImageView moodImageView;
     private ImageButton backButton;
 
@@ -38,6 +40,8 @@ public class FriendMoodEventDetailsActivity extends AppCompatActivity {
         dateTextView = findViewById(R.id.textview_ActivityFriendMoodEventDetails_dateandtime);
         triggerTextView = findViewById(R.id.textview_ActivityFriendMoodEventDetails_triggervalue);
         usernameTextView = findViewById(R.id.textview_ActivityFriendMoodEventDetails_username);
+        moodTypeTextView = findViewById(R.id.textview_ActivityFriendMoodEventDetails_moodtype);
+        locationTextView = findViewById(R.id.textview_ActivityFriendMoodEventDetails_location); // Location TextView
         moodImageView = findViewById(R.id.imageview_ActivityFriendMoodEventDetails_moodimage);
         backButton = findViewById(R.id.imagebutton_ActivityFriendMoodEventDetails_backbutton);
 
@@ -66,14 +70,25 @@ public class FriendMoodEventDetailsActivity extends AppCompatActivity {
                 ? mood.getTrigger() : "No trigger provided");
         usernameTextView.setText(mood.getUsername() != null
                 ? mood.getUsername() : "Unknown");
+        // Set mood type from mood state.
+        moodTypeTextView.setText(mood.getMoodState() != null
+                ? mood.getMoodState().name() : "Unknown");
 
-        // Set an appropriate mood icon.
+        // Set mood icon.
         int iconRes = getMoodIcon(mood.getMoodState());
         moodImageView.setImageResource(iconRes);
 
         // Update date and time.
         dateTextView.setText(mood.getDateTime() != null
                 ? mood.getDateTime().toString() : "Unknown");
+
+        // Display location details if available.
+        if (mood.getLatitude() != null && mood.getLongitude() != null) {
+            String locationText = "Location: (" + mood.getLatitude() + ", " + mood.getLongitude() + ")";
+            locationTextView.setText(locationText);
+        } else {
+            locationTextView.setText("Location not available");
+        }
     }
 
     /**

@@ -49,8 +49,8 @@
 
     <View
         android:id="@+id/view_ActivityFriendMoodEventDetails_moodeventcontainer"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="388dp"
+        android:layout_height="263dp"
         android:layout_marginStart="12dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="12dp"
@@ -74,6 +74,19 @@
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/imageview_ActivityFriendMoodEventDetails_moodimage"
         app:layout_constraintTop_toTopOf="@+id/imageview_ActivityFriendMoodEventDetails_moodimage" />
+
+
+    <TextView
+        android:id="@+id/textview_ActivityFriendMoodEventDetails_moodtype"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="60dp"
+        android:text="Mood Type:"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/textview_ActivityFriendMoodEventDetails_title"
+        app:layout_constraintTop_toBottomOf="@+id/textview_ActivityFriendMoodEventDetails_title" />
 
     <ImageView
         android:id="@+id/imageview_ActivityFriendMoodEventDetails_moodimage"
@@ -138,5 +151,26 @@
         android:textColorHint="#898888"
         app:layout_constraintStart_toStartOf="@+id/textview_ActivityFriendMoodEventDetails_dateandtime"
         app:layout_constraintTop_toBottomOf="@+id/textview_ActivityFriendMoodEventDetails_dateandtime" />
+
+    <FrameLayout
+        android:id="@+id/frameLayout_ActivityFriendMoodEventDetails_imageContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="#282727"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview_ActivityFriendMoodEventDetails_location">
+
+        <TextView
+            android:id="@+id/textView_imageContainerText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Additional Images or Gallery"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
