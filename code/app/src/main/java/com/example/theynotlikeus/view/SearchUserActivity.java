@@ -79,7 +79,15 @@ public class SearchUserActivity extends AppCompatActivity {
     }
 
     private void filterUsers(String query) {
+        String loggedInUsername = getIntent().getStringExtra("username");
         List<User> filteredList = new ArrayList<>();
+
+
+        if (query.equalsIgnoreCase(loggedInUsername)) {
+            adapter.updateList(filteredList);
+            return;
+        }
+
         for (User user : userList) {
             if (user.getUsername().toLowerCase().contains(query.toLowerCase())) {
                 filteredList.add(user);
