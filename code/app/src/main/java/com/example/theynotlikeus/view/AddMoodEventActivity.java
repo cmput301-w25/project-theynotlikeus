@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -187,7 +186,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.button_ActivityAddMoodEvent_backbutton).setOnClickListener(v -> finish());
+        findViewById(R.id.imagebutton_ActivityViewComments_backbutton).setOnClickListener(v -> finish());
     }
 
     // Helper method: Continue saving mood (with image upload if needed)

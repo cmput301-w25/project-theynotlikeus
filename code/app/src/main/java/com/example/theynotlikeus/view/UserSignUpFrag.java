@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.example.theynotlikeus.singleton.MyApp;
 import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.controller.UserController;
 import com.example.theynotlikeus.model.User;
@@ -94,6 +95,10 @@ public class UserSignUpFrag extends Fragment {
             userController.signUpUser(username, password, new UserController.SignUpCallback() {
                 @Override
                 public void onSuccess(User user) {
+                    // Update the global singleton with the logged-in username
+                    MyApp app = (MyApp) requireActivity().getApplicationContext();
+                    app.setUsername(user.getUsername());
+
                     Toast.makeText(requireContext(), "Account created successfully!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(requireActivity(), MainActivity.class);
                     intent.putExtra("username", user.getUsername()); // Pass username to the next activity

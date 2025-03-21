@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraintlayout_activitymoodeventdetails_level1"
@@ -156,5 +155,18 @@
         android:textColorHint="#898888"
         app:layout_constraintStart_toStartOf="@+id/textview_ActivityMoodEventDetails_dateandtime"
         app:layout_constraintTop_toBottomOf="@+id/textview_ActivityMoodEventDetails_dateandtime" />
+
+    <Button
+        android:id="@+id/commentButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="136dp"
+        android:background="#22238B"
+
+        android:text="Comments"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_ActivityMoodEventDetails_moodeventcontainer" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

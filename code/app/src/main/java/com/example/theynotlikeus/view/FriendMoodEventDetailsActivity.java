@@ -2,7 +2,7 @@ package com.example.theynotlikeus.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.theynotlikeus.singleton.MyApp;
 import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.model.Mood;
 
@@ -24,12 +25,14 @@ public class FriendMoodEventDetailsActivity extends AppCompatActivity {
     private TextView triggerTextView;
     private TextView usernameTextView;
     private TextView moodTypeTextView;
-    private TextView locationTextView; // New view to display location details.
+    private TextView locationTextView;
     private ImageView moodImageView;
     private ImageButton backButton;
+    private Button commentsButton; // Comments button
 
-    // Hold the passed Mood object.
+    // Hold the passed Mood object and the logged-in user's username.
     private Mood mood;
+    private String loggedInUsername; // This is the current user's username from the singleton
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +44,16 @@ public class FriendMoodEventDetailsActivity extends AppCompatActivity {
         triggerTextView = findViewById(R.id.textview_ActivityFriendMoodEventDetails_triggervalue);
         usernameTextView = findViewById(R.id.textview_ActivityFriendMoodEventDetails_username);
         moodTypeTextView = findViewById(R.id.textview_ActivityFriendMoodEventDetails_moodtype);
-        locationTextView = findViewById(R.id.textview_ActivityFriendMoodEventDetails_location); // Location TextView
+        locationTextView = findViewById(R.id.textview_ActivityFriendMoodEventDetails_location);
         moodImageView = findViewById(R.id.imageview_ActivityFriendMoodEventDetails_moodimage);
         backButton = findViewById(R.id.imagebutton_ActivityFriendMoodEventDetails_backbutton);
+        commentsButton = findViewById(R.id.button4);  // Ensure your XML has a Button with id "button4" for Comments
 
         // Retrieve the full Mood object from the Intent extras.
         mood = (Mood) getIntent().getSerializableExtra("mood");
+        // Retrieve the logged-in username from the singleton (MyApp)
+        loggedInUsername = ((MyApp) getApplicationContext()).getUsername();
+
         if (mood == null) {
             Toast.makeText(this, "Mood details unavailable", Toast.LENGTH_SHORT).show();
             finish();
@@ -55,22 +62,32 @@ public class FriendMoodEventDetailsActivity extends AppCompatActivity {
 
         updateUI();
 
-        // Simply finish the activity when the back button is clicked.
+        // Back button simply finishes the activity.
         backButton.setOnClickListener(v -> finish());
+
+        // Comments button navigates to ViewCommentsActivity.
+        // We pass the Mood object and the logged-in user's username.
+        commentsButton.setOnClickListener(v -> {
+            Intent intent = new Intent(FriendMoodEventDetailsActivity.this, ViewCommentsActivity.class);
+            intent.putExtra("mood", mood);
+            intent.putExtra("username", loggedInUsername);
+            Toast.makeText(FriendMoodEventDetailsActivity.this, "Logged in as: " + loggedInUsername, Toast.LENGTH_SHORT).show();
+            startActivity(intent);
+        });
     }
 
     /**
      * Updates the UI elements based on the passed Mood object.
      */
     private void updateUI() {
-        // Update text fields.
+        // Display the mood owner's details.
         socialSituationTextView.setText(mood.getSocialSituation() != null
                 ? mood.getSocialSituation().toString() : "Unknown");
         triggerTextView.setText(mood.getTrigger() != null
                 ? mood.getTrigger() : "No trigger provided");
+        // This shows the owner of the post (e.g., "Abhi").
         usernameTextView.setText(mood.getUsername() != null
                 ? mood.getUsername() : "Unknown");
-        // Set mood type from mood state.
         moodTypeTextView.setText(mood.getMoodState() != null
                 ? mood.getMoodState().name() : "Unknown");
 
