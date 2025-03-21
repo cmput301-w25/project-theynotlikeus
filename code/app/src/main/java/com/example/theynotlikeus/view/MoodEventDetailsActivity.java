@@ -52,7 +52,7 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
         mood = (Mood) getIntent().getSerializableExtra("mood");
 
         if (mood == null) {
-            Toast.makeText(this, "Mood details unavailable", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Mood details unavailable", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
