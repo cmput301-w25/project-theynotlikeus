@@ -5,7 +5,7 @@
     android:id="@+id/fragment_user_login_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserLoginFrag">
+    tools:context=".view.UserLoginFrag">
 
 
 
@@ -14,7 +14,7 @@
         android:id="@+id/textView_UserLoginInFrag_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="User Login"
+        android:text="@string/user_login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -44,7 +44,7 @@
         android:id="@+id/button_UserLogin_SignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sign In"
+        android:text="@string/sign_in_user"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -61,7 +61,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
-        android:text="Sign Up"
+        android:text="@string/sign_up_user"
         android:clickable="true"
         android:focusable="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -73,7 +73,7 @@
         android:id="@+id/textView_UserLoginFrag_question"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Don't Have an account ? "
+        android:text="@string/don_t_have_an_account"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -85,7 +85,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:ems="10"
-        android:hint="username"
+        android:hint="@string/username_user_login"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
@@ -98,7 +98,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:ems="10"
-        android:hint="password"
+        android:hint="@string/password_user_login"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"

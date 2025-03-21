@@ -2,6 +2,8 @@ package com.example.theynotlikeus;
 
 import static org.junit.Assert.assertEquals;
 
+import com.example.theynotlikeus.model.User;
+
 import org.junit.Before;
 import org.junit.Test;
 

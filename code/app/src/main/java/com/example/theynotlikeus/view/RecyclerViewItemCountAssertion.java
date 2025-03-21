@@ -1,4 +1,4 @@
-package com.example.theynotlikeus;
+package com.example.theynotlikeus.view;
 
 import android.view.View;
 import androidx.recyclerview.widget.RecyclerView;

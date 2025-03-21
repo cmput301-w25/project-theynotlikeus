@@ -1,6 +1,8 @@
-package com.example.theynotlikeus;
+package com.example.theynotlikeus.model;
 
-import android.os.Parcelable;  // Note: Parcelable is imported but not used in this class.
+import android.content.SharedPreferences;
+import com.example.theynotlikeus.view.AdminActivity;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -13,7 +15,9 @@ import java.util.Date;
  * - Contains getters and setters for each property.
  * - Includes additional metadata such as a document ID for Firestore reference.
  */
-public class Mood {
+public class Mood implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * Enumeration for the mood state.
@@ -35,6 +39,8 @@ public class Mood {
     private String trigger;
     private SocialSituation socialSituation;
     private String reason;
+    //private byte[] photo;
+    private String photoUrl;
     private byte[] photo;
     private int photoSize = 65536;
     private Double latitude;
@@ -43,6 +49,9 @@ public class Mood {
 
     // Document ID for Firestore reference.
     private String docId;
+    private boolean isPublic = false;
+    private SharedPreferences prefs;
+    private boolean isLimitEnabled;
 
     /**
      * No-argument constructor required by Firestore for automatic deserialization.
@@ -202,28 +211,47 @@ public class Mood {
     public void setPhotoSize(int photoSize) {
         this.photoSize = photoSize;
     }
-
-    /**
-     * Gets the photo associated with the mood event.
-     *
-     * @return the photo as a byte array.
-     */
+    //
+//    /**
+//     * Gets the photo associated with the mood event.
+//     *
+//     * @return the photo as a byte array.
+//     */
+//    public byte[] getPhoto() {
+//        return photo;
+//    }
+//
+//    /**
+//     * Sets the photo for the mood event.
+//     * Ensures that the photo size is within the allowed limit.
+//     *
+//     * @param photo the photo as a byte array.
+//     * @throws IllegalArgumentException if the photo exceeds the allowed size.
+//     */
+//    public void setPhoto(byte[] photo) {
+//        if (photo != null && photo.length > photoSize) {
+//            throw new IllegalArgumentException("Photo size must be under 65536 bytes.");
+//        }
+//        this.photo = photo;
+//    }
     public byte[] getPhoto() {
         return photo;
     }
-
-    /**
-     * Sets the photo for the mood event.
-     * Ensures that the photo size is within the allowed limit.
-     *
-     * @param photo the photo as a byte array.
-     * @throws IllegalArgumentException if the photo exceeds the allowed size.
-     */
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
     public void setPhoto(byte[] photo) {
-        if (photo != null && photo.length > photoSize) {
+        boolean isLimitEnabled = true; // Default to true if prefs is null
+        if (prefs != null) {
+            isLimitEnabled = AdminActivity.isLimitEnabled(prefs);
+        }
+        if (isLimitEnabled  && photo != null && photo.length > photoSize) {
             throw new IllegalArgumentException("Photo size must be under 65536 bytes.");
         }
         this.photo = photo;
+    }
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 
     /**
@@ -274,6 +302,24 @@ public class Mood {
     }
 
     /**
+     * Gets the visibility status of the mood event.
+     *
+     * @return true if public, false if private.
+     */
+    public boolean isPublic() {
+        return isPublic;
+    }
+
+    /**
+     * Sets the visibility status of the mood event.
+     *
+     * @param isPublic true to make public, false to make private.
+     */
+    public void setPublic(boolean isPublic) {
+        this.isPublic = isPublic;
+    }
+
+    /**
      * Returns a string representation of the Mood object.
      *
      * @return a formatted string containing mood details.
@@ -286,7 +332,7 @@ public class Mood {
                 ", trigger='" + trigger + '\'' +
                 ", socialSituation=" + socialSituation +
                 ", reason='" + reason + '\'' +
-                ", photo=" + (photo != null ? "present" : "none") +
+                ", photo=" + (photoUrl != null ? "present" : "none") +
                 ", location=" + (latitude != null && longitude != null ? "(" + latitude + ", " + longitude + ")" : "none") +
                 '}';
     }

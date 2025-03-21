@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:background="@android:color/transparent"
-        android:contentDescription="Go back"
+        android:contentDescription="@string/go_back"
         android:maxWidth="40dp"
         android:maxHeight="40dp"
         android:scaleType="fitXY"
@@ -29,9 +29,10 @@
         android:translationY="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/textview_ActivityMoodEventDetails_title"
         app:layout_constraintEnd_toStartOf="@+id/textview_ActivityMoodEventDetails_title"
-        app:layout_constraintHorizontal_bias="0.595"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textview_ActivityMoodEventDetails_title" />
+        app:layout_constraintTop_toTopOf="@+id/textview_ActivityMoodEventDetails_title"
+        app:layout_constraintVertical_bias="1.0" />
 
     <ImageButton
         android:id="@+id/imagebutton_ActivityMoodEventDetails_editbutton"
@@ -48,6 +49,7 @@
         app:layout_constraintHorizontal_bias="0.627"
         app:layout_constraintStart_toEndOf="@+id/textview_ActivityMoodEventDetails_title"
         app:layout_constraintTop_toTopOf="@+id/textview_ActivityMoodEventDetails_title"
+        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/ic_edit_button" />
 
     <TextView
@@ -56,7 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:fontFamily="monospace"
-        android:text="Your Mood Details"
+        android:text="@string/your_mood_details"
         android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_constraintEnd_toStartOf="@id/imagebutton_ActivityMoodEventDetails_editbutton"
@@ -84,7 +86,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:hint="Username"
+        android:hint="@string/username"
         android:textColor="#FFFFFF"
         android:textColorHint="#898888"
         android:textSize="20sp"
@@ -110,7 +112,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:hint="Social situation"
+        android:hint="@string/social_situation"
         android:textColorHint="#898888"
         app:layout_constraintStart_toStartOf="@+id/imageview_ActivityMoodEventDetails_moodimage"
         app:layout_constraintTop_toBottomOf="@+id/imageview_ActivityMoodEventDetails_moodimage" />
@@ -120,7 +122,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:hint="Date and Time"
+        android:hint="@string/date_and_time"
         android:textColorHint="#898888"
         app:layout_constraintStart_toStartOf="@+id/textview_ActivityMoodEventDetails_trigger"
         app:layout_constraintTop_toBottomOf="@+id/textview_ActivityMoodEventDetails_trigger" />
@@ -130,7 +132,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:hint="trigger value"
+        android:hint="@string/reason_value"
         android:textColorHint="#898888"
         app:layout_constraintStart_toEndOf="@+id/textview_ActivityMoodEventDetails_trigger"
         app:layout_constraintTop_toTopOf="@+id/textview_ActivityMoodEventDetails_trigger" />
@@ -140,7 +142,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Trigger:"
+        android:text="@string/reason"
         android:textColor="#FFFFFF"
         app:layout_constraintStart_toStartOf="@+id/textview_ActivityMoodEventDetails_socialsituation"
         app:layout_constraintTop_toBottomOf="@+id/textview_ActivityMoodEventDetails_socialsituation" />
@@ -150,7 +152,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:hint="Location"
+        android:text="@string/location_unknown"
         android:textColorHint="#898888"
         app:layout_constraintStart_toStartOf="@+id/textview_ActivityMoodEventDetails_dateandtime"
         app:layout_constraintTop_toBottomOf="@+id/textview_ActivityMoodEventDetails_dateandtime" />

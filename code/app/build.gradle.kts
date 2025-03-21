@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.theynotlikeus"
-        minSdk = 21
+        minSdk = 24
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -49,6 +49,9 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
     implementation(libs.androidx.espresso.core)
+    implementation(libs.firebase.auth)
+    implementation("com.google.firebase:firebase-storage:20.2.1")
+    implementation(libs.play.services.location)
 
     // Testing dependencies
     testImplementation("junit:junit:4.13.2")
