@@ -176,6 +176,7 @@
         android:layout_marginTop="20dp"
         android:background="@android:color/darker_gray"
         android:scaleType="centerCrop"
+        android:backgroundTint="@color/black_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view_ActivityMoodEventDetails_moodeventcontainer" />
