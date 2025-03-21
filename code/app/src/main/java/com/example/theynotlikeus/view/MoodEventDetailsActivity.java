@@ -13,8 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.model.Mood;
 
-import java.io.Serializable;
-
 /**
  * Activity for displaying the details of a mood event.
  *

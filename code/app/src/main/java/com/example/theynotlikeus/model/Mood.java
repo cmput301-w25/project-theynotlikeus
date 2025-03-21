@@ -211,7 +211,7 @@ public class Mood implements Serializable {
     public void setPhotoSize(int photoSize) {
         this.photoSize = photoSize;
     }
-//
+    //
 //    /**
 //     * Gets the photo associated with the mood event.
 //     *

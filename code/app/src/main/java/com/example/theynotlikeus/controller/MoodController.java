@@ -226,4 +226,34 @@ public class MoodController extends FirebaseController {
                     }
                 });
     }
+
+
+    /**
+     * Fetches all moods from the Firestore "moods" collection for testing purposes
+     *
+     * @param onSuccess Callback that returns a list of Mood objects.
+     * @param onFailure Callback for handling errors.
+     */
+
+    public void getAllMoods(Consumer<List<Mood>> onSuccess, Consumer<Exception> onFailure) {
+        db.collection("moods")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    List<Mood> moods = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        Mood mood = document.toObject(Mood.class);
+                        mood.setDocId(document.getId());
+                        moods.add(mood);
+                    }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        onSuccess.accept(moods);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        onFailure.accept(e);
+                    }
+                });
+    }
+
 }

@@ -29,9 +29,10 @@
         android:translationY="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/textview_ActivityMoodEventDetails_title"
         app:layout_constraintEnd_toStartOf="@+id/textview_ActivityMoodEventDetails_title"
-        app:layout_constraintHorizontal_bias="0.595"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textview_ActivityMoodEventDetails_title" />
+        app:layout_constraintTop_toTopOf="@+id/textview_ActivityMoodEventDetails_title"
+        app:layout_constraintVertical_bias="1.0" />
 
     <ImageButton
         android:id="@+id/imagebutton_ActivityMoodEventDetails_editbutton"
@@ -48,6 +49,7 @@
         app:layout_constraintHorizontal_bias="0.627"
         app:layout_constraintStart_toEndOf="@+id/textview_ActivityMoodEventDetails_title"
         app:layout_constraintTop_toTopOf="@+id/textview_ActivityMoodEventDetails_title"
+        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/ic_edit_button" />
 
     <TextView
