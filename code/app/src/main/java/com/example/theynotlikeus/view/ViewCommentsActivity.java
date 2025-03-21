@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 public class ViewCommentsActivity extends AppCompatActivity implements AddCommentDialogFrag.AddCommentDialogListener {
@@ -37,14 +36,18 @@ public class ViewCommentsActivity extends AppCompatActivity implements AddCommen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_comments);
+
+        // Retrieve the mood and username from the intent extras
         passedMood = (Mood) getIntent().getSerializableExtra("mood");
+        String passedUsername = getIntent().getStringExtra("username");
 
         if (passedMood != null) {
             moodId = passedMood.getDocId();
-            username = passedMood.getUsername();
+            // Prefer the username passed from the login intent if available; otherwise, use the mood's username.
+            username = (passedUsername != null && !passedUsername.isEmpty()) ? passedUsername : passedMood.getUsername();
         } else {
             moodId = getIntent().getStringExtra("moodId");
-            username = passedMood.getUsername();
+            username = passedUsername;
         }
 
         commentsRecyclerView = findViewById(R.id.recyclerview_ViewCommentsActivity_commentsRecyclerView);
@@ -64,8 +67,8 @@ public class ViewCommentsActivity extends AppCompatActivity implements AddCommen
         });
 
         addCommentButton.setOnClickListener(v -> {
-        AddCommentDialogFrag addCommentDialogFrag = new AddCommentDialogFrag();
-        addCommentDialogFrag.show(getSupportFragmentManager(), "Add comment");
+            AddCommentDialogFrag addCommentDialogFrag = new AddCommentDialogFrag();
+            addCommentDialogFrag.show(getSupportFragmentManager(), "Add comment");
         });
     }
 
@@ -88,18 +91,17 @@ public class ViewCommentsActivity extends AppCompatActivity implements AddCommen
         }));
     }
 
-
     private void loadCommentsFromFirebase() {
         Log.d("viewcomments", "you have entered");
         commentController.getCommentsByMoodID(moodId, comments -> {
-            commentsList.clear();
-            Collections.sort(comments, (m1, m2) -> m2.getCommentDateTime().compareTo(m1.getCommentDateTime()));
-            commentsList.addAll(comments);
-            commentsRecyclerViewAdapter.notifyDataSetChanged();
-            Log.i("ViewCommentsActivity", "Total comments fetched: " + commentsList.size());
-        },
+                    commentsList.clear();
+                    Collections.sort(comments, (m1, m2) -> m2.getCommentDateTime().compareTo(m1.getCommentDateTime()));
+                    commentsList.addAll(comments);
+                    commentsRecyclerViewAdapter.notifyDataSetChanged();
+                    Log.i("ViewCommentsActivity", "Total comments fetched: " + commentsList.size());
+                },
                 exception -> {
-            Log.e("ViewCommentsActivity", "Error fetching comments", exception);
-        });
+                    Log.e("ViewCommentsActivity", "Error fetching comments", exception);
+                });
     }
 }
