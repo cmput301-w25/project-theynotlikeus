@@ -119,7 +119,7 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
         if (mood.getPhotoUrl() != null && !mood.getPhotoUrl().isEmpty()) {
             Glide.with(this)
                     .load(mood.getPhotoUrl())
-                    .placeholder(R.drawable.ic_placeholder) // Optional placeholder
+                    .placeholder(R.drawable.ic_placeholder)
                     .into((ImageView) findViewById(R.id.imageview_ActivityMoodEventDetails_uploadedphoto));
         }
     }

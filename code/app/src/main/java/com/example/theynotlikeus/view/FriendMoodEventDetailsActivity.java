@@ -113,7 +113,7 @@ public class FriendMoodEventDetailsActivity extends AppCompatActivity {
         if (mood.getPhotoUrl() != null && !mood.getPhotoUrl().isEmpty()) {
             Glide.with(this)
                     .load(mood.getPhotoUrl())
-                    .placeholder(R.drawable.ic_placeholder) // Optional: your placeholder drawable
+                    .placeholder(R.drawable.ic_placeholder)
                     .into(placeholderImageView);
         } else {
             // Optionally, set the default placeholder image if no photo exists.
