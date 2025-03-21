@@ -43,7 +43,7 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
         usernameTextView = findViewById(R.id.textview_ActivityMoodEventDetails_username);
         moodImageView = findViewById(R.id.imageview_ActivityMoodEventDetails_moodimage);
         editButton = findViewById(R.id.imagebutton_ActivityMoodEventDetails_editbutton);
-        backButton = findViewById(R.id.imagebutton_ActivityFriendMoodEventDetails_backbutton);
+        backButton = findViewById(R.id.imagebutton_ActivityMoodEventDetails_backbutton);
 
         // Retrieve the full Mood object from the Intent extras.
         mood = (Mood) getIntent().getSerializableExtra("mood");
