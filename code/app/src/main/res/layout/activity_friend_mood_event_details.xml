@@ -43,7 +43,7 @@
         android:maxHeight="40dp"
         android:scaleType="fitXY"
         android:translationY="8dp"
-
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/textview_ActivityFriendMoodEventDetails_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/textview_ActivityFriendMoodEventDetails_title"
