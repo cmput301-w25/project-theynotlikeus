@@ -85,7 +85,7 @@ public class ViewCommentsActivity extends AppCompatActivity implements AddCommen
         comment.setCommentAuthor(username);
         commentController.addComment(comment, () -> runOnUiThread(() -> {
             Toast.makeText(this, "Comment saved successfully!", Toast.LENGTH_SHORT).show();
-            finish();
+            loadCommentsFromFirebase();
         }), e -> runOnUiThread(() -> {
             Toast.makeText(this, "Error saving comment: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }));
