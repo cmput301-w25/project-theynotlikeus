@@ -21,54 +21,46 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class HomeMapFrag extends Fragment implements OnMapReadyCallback {
 
     private static final String TAG = "HomeMapFrag";
     private GoogleMap mMap;
     private MoodController moodController;
-
-    // Optional parameters
-    private String mParam1;
-    private String mParam2;
+    // Replace this with your actual current user's identifier.
+    private String currentUser = "currentUserID";
 
     public HomeMapFrag() {
         // Required empty public constructor.
     }
 
-    public static HomeMapFrag newInstance(String param1, String param2) {
-        HomeMapFrag fragment = new HomeMapFrag();
-        Bundle args = new Bundle();
-        args.putString("param1", param1);
-        args.putString("param2", param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Retrieve any passed parameters.
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString("param1");
-            mParam2 = getArguments().getString("param2");
-        }
-        // Initialize the MoodController for fetching mood events.
         moodController = new MoodController();
+        // Optionally, retrieve the current user ID from the hosting Activity's intent.
+        String userFromIntent = requireActivity().getIntent().getStringExtra("username");
+        if (userFromIntent != null && !userFromIntent.isEmpty()) {
+            currentUser = userFromIntent;
+        } else {
+            Log.e(TAG, "Username extra is missing; using default currentUserID.");
+        }
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment (fragment_home_map.xml)
+        // Inflate the layout for this fragment.
         return inflater.inflate(R.layout.fragment_home_map, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // Get the SupportMapFragment and request notification when the map is ready.
+        // Get the SupportMapFragment and request the map asynchronously.
         SupportMapFragment mapFragment = (SupportMapFragment)
                 getChildFragmentManager().findFragmentById(R.id.mapUserFragment);
         if (mapFragment != null) {
@@ -77,56 +69,65 @@ public class HomeMapFrag extends Fragment implements OnMapReadyCallback {
     }
 
     /**
-     * Callback when the map is ready to be used.
+     * Called when the map is ready.
      */
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
-        // Optionally, enable zoom controls.
         mMap.getUiSettings().setZoomControlsEnabled(true);
-
-        // Load mood events that have geolocation enabled.
-        loadMoodMarkers();
+        // Load and display the current user's mood markers.
+        loadUserMoodMarkers();
     }
 
     /**
-     * Fetch mood events, filter those with valid geolocation data, and add markers on the map.
+     * Fetches the current user's mood events (with geolocation) and adds them as markers on the map.
+     * If multiple moods share the same location, subsequent markers are offset slightly.
      */
-    private void loadMoodMarkers() {
-        moodController.getAllMoods(moods -> {
+    private void loadUserMoodMarkers() {
+        moodController.getMoodsByUser(currentUser, moods -> {
             if (moods == null || moods.isEmpty()) {
-                Log.d(TAG, "No mood events found.");
+                Log.d(TAG, "No mood events found for user: " + currentUser);
                 return;
             }
-
             LatLng firstLocation = null;
+            // Use a Map to track how many markers share the same location.
+            Map<String, Integer> locationCount = new HashMap<>();
             for (Mood mood : moods) {
                 if (mood.getLatitude() != null && mood.getLongitude() != null) {
-                    LatLng location = new LatLng(mood.getLatitude(), mood.getLongitude());
-                    // Save the first valid location to center the camera later.
+                    double lat = mood.getLatitude();
+                    double lng = mood.getLongitude();
+                    // Create a key for this coordinate (you may round the values if necessary).
+                    String key = lat + "," + lng;
+                    int count = locationCount.containsKey(key) ? locationCount.get(key) : 0;
+                    locationCount.put(key, count + 1);
+                    // If this location already has one or more markers, offset the coordinates slightly.
+                    if (count > 0) {
+                        // Adjust by a small amount (e.g., 0.00005 degrees per duplicate).
+                        // so you can see moods at the same location
+                        lat += count * 0.00005;
+                        lng += count * 0.00005;
+                    }
+                    LatLng location = new LatLng(lat, lng);
                     if (firstLocation == null) {
                         firstLocation = location;
                     }
                     String title = (mood.getUsername() != null)
                             ? mood.getUsername() + "'s Mood"
-                            : "User Mood";
+                            : "My Mood";
                     String snippet = (mood.getMoodState() != null)
                             ? mood.getMoodState().name()
                             : "Unknown";
-
                     MarkerOptions markerOptions = new MarkerOptions()
                             .position(location)
                             .title(title)
                             .snippet(snippet)
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-
                     mMap.addMarker(markerOptions);
                 }
             }
-            // If we found at least one mood with location, move the camera to it.
             if (firstLocation != null) {
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLocation, 12f));
             }
-        }, error -> Log.e(TAG, "Error fetching moods: " + error.getMessage()));
+        }, error -> Log.e(TAG, "Error fetching moods for user " + currentUser + ": " + error.getMessage()));
     }
 }
