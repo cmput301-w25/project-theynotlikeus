@@ -51,6 +51,7 @@
         app:layout_constraintStart_toEndOf="@+id/imagebutton_ActivityViewComments_backbutton"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_ViewCommentsActivity_commentsRecyclerView"
         android:layout_width="0dp"
