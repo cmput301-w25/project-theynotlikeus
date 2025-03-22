@@ -202,9 +202,12 @@ public class MoodController extends FirebaseController {
      * @param onSuccess Callback for returning a list of moods.
      * @param onFailure Callback for handling errors.
      */
-    public void getMoodsByUser(String username, Consumer<List<Mood>> onSuccess, Consumer<Exception> onFailure) {
+    public void getMoodsByUser(String username,
+                               Consumer<List<Mood>> onSuccess,
+                               Consumer<Exception> onFailure) {
         db.collection("moods")
                 .whereEqualTo("username", username)
+                .whereEqualTo("public", true)  // Add this line
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     List<Mood> moods = new ArrayList<>();
@@ -217,15 +220,13 @@ public class MoodController extends FirebaseController {
                         onSuccess.accept(moods);
                     }
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            onFailure.accept(e);
-                        }
+                .addOnFailureListener(e -> {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        onFailure.accept(e);
                     }
                 });
     }
+
 
 
     /**
