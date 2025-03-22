@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.model.Mood;
 
@@ -112,6 +113,14 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
             locationTextView.setText("Location: " + latitude + ", " + longitude);
         } else {
             locationTextView.setText("Location: Unknown");
+        }
+
+        // Load the mood image using Glide
+        if (mood.getPhotoUrl() != null && !mood.getPhotoUrl().isEmpty()) {
+            Glide.with(this)
+                    .load(mood.getPhotoUrl())
+                    .placeholder(R.drawable.ic_placeholder)
+                    .into((ImageView) findViewById(R.id.imageview_ActivityMoodEventDetails_uploadedphoto));
         }
     }
 

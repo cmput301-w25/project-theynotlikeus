@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.theynotlikeus.singleton.MyApp;
 import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.model.Mood;
@@ -85,7 +86,7 @@ public class FriendMoodEventDetailsActivity extends AppCompatActivity {
                 ? mood.getSocialSituation().toString() : "Unknown");
         triggerTextView.setText(mood.getTrigger() != null
                 ? mood.getTrigger() : "No trigger provided");
-        // This shows the owner of the post (e.g., "Abhi").
+        // This shows the owner of the post.
         usernameTextView.setText(mood.getUsername() != null
                 ? mood.getUsername() : "Unknown");
         moodTypeTextView.setText(mood.getMoodState() != null
@@ -105,6 +106,18 @@ public class FriendMoodEventDetailsActivity extends AppCompatActivity {
             locationTextView.setText(locationText);
         } else {
             locationTextView.setText("Location not available");
+        }
+
+        // Load the mood photo using Glide into the placeholder ImageView if a photo URL exists.
+        ImageView placeholderImageView = findViewById(R.id.imageview_placeholder);
+        if (mood.getPhotoUrl() != null && !mood.getPhotoUrl().isEmpty()) {
+            Glide.with(this)
+                    .load(mood.getPhotoUrl())
+                    .placeholder(R.drawable.ic_placeholder)
+                    .into(placeholderImageView);
+        } else {
+            // Optionally, set the default placeholder image if no photo exists.
+            placeholderImageView.setImageResource(R.drawable.ic_placeholder);
         }
     }
 

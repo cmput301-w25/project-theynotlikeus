@@ -124,10 +124,9 @@ public class CommunityFrag extends Fragment {
 
     /**
      * Loads the current user's friend list from Firestore and, for each friend,
-     * retrieves their mood events using the MoodController.
+     * retrieves their **public** mood events using the MoodController.
      */
     private void loadFriendsMoods() {
-
         String currentUser = requireActivity().getIntent().getStringExtra("username");
 
         // Query the "follow" collection for documents where the current user is the follower.
@@ -143,10 +142,10 @@ public class CommunityFrag extends Fragment {
                         }
                     }
                     Log.d(TAG, "Found friends: " + friendList.toString());
-                    // For each friend, fetch their moods.
+                    // For each friend, fetch their **public** moods.
                     MoodController moodController = new MoodController();
                     for (String friend : friendList) {
-                        moodController.getMoodsByUser(friend,
+                        moodController.getPublicMoodsByUser(friend,
                                 moods -> {
                                     allCommunityMoods.addAll(moods);
                                     applyFilters();
@@ -157,6 +156,7 @@ public class CommunityFrag extends Fragment {
                 })
                 .addOnFailureListener(e -> Log.e(TAG, "Error fetching friend list: " + e.getMessage()));
     }
+
 
     /**
      * Filters and sorts the mood list from friends, then refreshes the adapter.

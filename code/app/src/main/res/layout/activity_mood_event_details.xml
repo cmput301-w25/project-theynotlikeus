@@ -160,13 +160,26 @@
         android:id="@+id/commentButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="136dp"
-        android:background="#22238B"
+        android:backgroundTint="#22238B"
 
         android:text="Comments"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageview_ActivityMoodEventDetails_uploadedphoto" />
+
+    <ImageView
+        android:id="@+id/imageview_ActivityMoodEventDetails_uploadedphoto"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="20dp"
+        android:background="@android:color/darker_gray"
+        android:scaleType="centerCrop"
+        android:backgroundTint="@color/black_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view_ActivityMoodEventDetails_moodeventcontainer" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
