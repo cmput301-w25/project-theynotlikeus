@@ -19,38 +19,36 @@
         android:textColor="@android:color/white"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.438"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <ImageButton
         android:id="@+id/button_toCommunityMap"
         android:layout_width="60dp"
         android:layout_height="65dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
         android:adjustViewBounds="true"
         android:contentDescription="Go to Community Map"
         android:maxWidth="100dp"
         android:maxHeight="100dp"
         android:scaleType="fitXY"
-
         android:src="@drawable/ic_community_map"
         android:translationY="10dp"
         app:backgroundTint="@android:color/transparent"
-        app:layout_constraintBottom_toTopOf="@+id/mapUserFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <fragment
         android:id="@+id/mapUserFragment"
         android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="409dp"
-        android:layout_height="657dp"
+        android:layout_width="436dp"
+        android:layout_height="652dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.518"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView_MapUserFrag_title"
+        app:layout_constraintTop_toBottomOf="@+id/button_toCommunityMap"
         app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
