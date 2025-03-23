@@ -14,7 +14,6 @@ import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -29,6 +28,7 @@ public class MoodController extends FirebaseController {
     public MoodController() {
         super();
         this.db = super.getFirebase();
+
     }
 
     /**
@@ -39,12 +39,16 @@ public class MoodController extends FirebaseController {
      * @param onFailure Callback for failure.
      */
     public void addMood(Mood mood, Runnable onSuccess, Consumer<Exception> onFailure) {
+        // 1) Create a new DocumentReference for your new Mood (no ID passed in).
         docRef = db.collection("moods").document();
 
+        // 2) Attach a snapshot listener that includes metadata changes so that
+        //    it fires even when offline commits occur in the local cache.
         registrationHolder = docRef.addSnapshotListener(
                 MetadataChanges.INCLUDE,
                 (snapshot, error) -> {
                     if (error != null) {
+                        // Some error happened with the listener; remove it and fail.
                         if (registrationHolder != null) {
                             registrationHolder.remove();
                         }
@@ -53,6 +57,7 @@ public class MoodController extends FirebaseController {
                         }
                         return;
                     }
+                    // If the doc now exists in the local DB, we consider it "success."
                     if (snapshot != null && snapshot.exists()) {
                         if (registrationHolder != null) {
                             registrationHolder.remove();
@@ -62,7 +67,10 @@ public class MoodController extends FirebaseController {
                 }
         );
 
+        //    so that docRef points to the new doc ID.
         docRef.set(mood).addOnFailureListener(e -> {
+            // If set() fails for some reason (e.g., disk full),
+            // remove the listener and pass the error back.
             if (registrationHolder != null) {
                 registrationHolder.remove();
             }
@@ -71,7 +79,6 @@ public class MoodController extends FirebaseController {
             }
         });
     }
-
     /**
      * Updates an existing mood in the database.
      *
@@ -87,6 +94,12 @@ public class MoodController extends FirebaseController {
             }
             return;
         }
+
+        /* Code for updating moods offline from: https://firebase.google.com/docs/firestore/manage-data/enable-offline
+         * Authored by: Google LLC
+         * Taken by: Ercel Angeles
+         * Taken on: March 16, 2025
+         */
 
         docRef = db.collection("moods").document(mood.getDocId());
         registrationHolder = docRef.addSnapshotListener(MetadataChanges.INCLUDE, (snapshot, error) -> {
@@ -139,6 +152,8 @@ public class MoodController extends FirebaseController {
                         }
                     }
                 });
+
+
     }
 
     /**
@@ -181,52 +196,13 @@ public class MoodController extends FirebaseController {
     }
 
     /**
-     * Fetches all public moods for a specific user, then processes them on the device
-     * to return only the top 3 most recent moods.
-     *
-     * @param username  The username to filter moods.
-     * @param onSuccess Callback for returning a list of top 3 public moods.
-     * @param onFailure Callback for handling errors.
-     */
-    public void getPublicMoodsByUser(String username,
-                                     Consumer<List<Mood>> onSuccess,
-                                     Consumer<Exception> onFailure) {
-        db.collection("moods")
-                .whereEqualTo("username", username)
-                .whereEqualTo("public", true)  // Only public moods
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    List<Mood> moods = new ArrayList<>();
-                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                        Mood mood = document.toObject(Mood.class);
-                        mood.setDocId(document.getId());
-                        moods.add(mood);
-                    }
-                    // Process moods on device: sort in descending order (most recent first)
-                    // and limit to the top 3.
-                    Collections.sort(moods, (m1, m2) -> m2.getDateTime().compareTo(m1.getDateTime()));
-                    List<Mood> topMoods = moods.size() > 3 ? moods.subList(0, 3) : moods;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        onSuccess.accept(topMoods);
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        onFailure.accept(e);
-                    }
-                });
-    }
-
-    /**
      * Fetches all moods for a specific user.
      *
      * @param username  The username to filter moods.
      * @param onSuccess Callback for returning a list of moods.
      * @param onFailure Callback for handling errors.
      */
-    public void getMoodsByUser(String username,
-                               Consumer<List<Mood>> onSuccess,
-                               Consumer<Exception> onFailure) {
+    public void getMoodsByUser(String username, Consumer<List<Mood>> onSuccess, Consumer<Exception> onFailure) {
         db.collection("moods")
                 .whereEqualTo("username", username)
                 .get()
@@ -241,19 +217,24 @@ public class MoodController extends FirebaseController {
                         onSuccess.accept(moods);
                     }
                 })
-                .addOnFailureListener(e -> {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        onFailure.accept(e);
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            onFailure.accept(e);
+                        }
                     }
                 });
     }
 
+
     /**
-     * Fetches all moods from the Firestore "moods" collection for testing purposes.
+     * Fetches all moods from the Firestore "moods" collection for testing purposes
      *
      * @param onSuccess Callback that returns a list of Mood objects.
      * @param onFailure Callback for handling errors.
      */
+
     public void getAllMoods(Consumer<List<Mood>> onSuccess, Consumer<Exception> onFailure) {
         db.collection("moods")
                 .get()
@@ -274,4 +255,30 @@ public class MoodController extends FirebaseController {
                     }
                 });
     }
+
+    public void getPublicMoodsByUser(String username, Consumer<List<Mood>> onSuccess, Consumer<Exception> onFailure) {
+        db.collection("moods")
+                .whereEqualTo("username", username)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    List<Mood> moods = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        Mood mood = document.toObject(Mood.class);
+                        mood.setDocId(document.getId());
+                        // Only add mood if it has valid geolocation.
+                        if (mood.getLatitude() != null && mood.getLongitude() != null) {
+                            moods.add(mood);
+                        }
+                    }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        onSuccess.accept(moods);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        onFailure.accept(e);
+                    }
+                });
+    }
+
 }
