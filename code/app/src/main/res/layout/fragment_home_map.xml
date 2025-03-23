@@ -9,30 +9,48 @@
     android:layout_height="match_parent"
     tools:context=".view.HomeMapFrag">
 
-    <!-- Title or toolbar area (optional) -->
+
     <TextView
         android:id="@+id/textView_MapUserFrag_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:layout_marginTop="16dp"
         android:text="My Locations"
         android:textColor="@android:color/white"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/mapUserFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Google Map fragment filling the rest of the screen -->
+
+    <ImageButton
+        android:id="@+id/button_toCommunityMap"
+        android:layout_width="60dp"
+        android:layout_height="65dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="Go to Community Map"
+        android:maxWidth="100dp"
+        android:maxHeight="100dp"
+        android:scaleType="fitXY"
+
+        android:src="@drawable/ic_community_map"
+        android:translationY="10dp"
+        app:backgroundTint="@android:color/transparent"
+        app:layout_constraintBottom_toTopOf="@+id/mapUserFragment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <fragment
         android:id="@+id/mapUserFragment"
         android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/textView_MapUserFrag_title"
+        android:layout_width="409dp"
+        android:layout_height="657dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/textView_MapUserFrag_title"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

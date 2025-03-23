@@ -28,6 +28,8 @@
 
         <activity android:name=".view.FriendMoodEventDetailsActivity" />
 
+        <activity android:name=".view.CommunityMapActivity" />
+
         <activity
             android:name=".view.MoodEventDetailsActivity"
             android:exported="false" />

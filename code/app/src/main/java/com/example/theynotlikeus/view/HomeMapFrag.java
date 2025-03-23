@@ -1,10 +1,13 @@
 package com.example.theynotlikeus.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,21 +20,17 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 public class HomeMapFrag extends Fragment implements OnMapReadyCallback {
 
-    private static final String TAG = "HomeMapFrag";
+    private static final String TAG = "MyMoodsMapFrag";
     private GoogleMap mMap;
     private MoodController moodController;
-    // Replace this with your actual current user's identifier.
-    private String currentUser = "currentUserID";
+    private String currentUser;
+    // We'll store a representative location (e.g., the first marker) as the current location.
+    private LatLng currentLocation;
 
     public HomeMapFrag() {
         // Required empty public constructor.
@@ -41,47 +40,53 @@ public class HomeMapFrag extends Fragment implements OnMapReadyCallback {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         moodController = new MoodController();
-        // Optionally, retrieve the current user ID from the hosting Activity's intent.
-        String userFromIntent = requireActivity().getIntent().getStringExtra("username");
-        if (userFromIntent != null && !userFromIntent.isEmpty()) {
-            currentUser = userFromIntent;
-        } else {
-            Log.e(TAG, "Username extra is missing; using default currentUserID.");
+        // Retrieve current user's identifier from the hosting Activity.
+        currentUser = requireActivity().getIntent().getStringExtra("username");
+        if (currentUser == null || currentUser.isEmpty()) {
+            Log.e(TAG, "Username extra is missing! Using defaultUser.");
+            currentUser = "defaultUser";
         }
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment.
+        // Inflate our layout.
         return inflater.inflate(R.layout.fragment_home_map, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        // Get the SupportMapFragment and request the map asynchronously.
+        // Setup the map fragment.
         SupportMapFragment mapFragment = (SupportMapFragment)
                 getChildFragmentManager().findFragmentById(R.id.mapUserFragment);
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
+        // Setup the button that takes the user to the community map.
+        ImageButton btnCommunity = view.findViewById(R.id.button_toCommunityMap);
+        btnCommunity.setOnClickListener(v -> {
+            if (currentLocation != null) {
+                // Pass current location to CommunityMapActivity.
+                Intent intent = new Intent(getActivity(), CommunityMapActivity.class);
+                intent.putExtra("latitude", currentLocation.latitude);
+                intent.putExtra("longitude", currentLocation.longitude);
+                startActivity(intent);
+            } else {
+                Toast.makeText(getContext(), "Current location not available.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    /**
-     * Called when the map is ready.
-     */
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
         mMap.getUiSettings().setZoomControlsEnabled(true);
-        // Load and display the current user's mood markers.
         loadUserMoodMarkers();
     }
 
     /**
-     * Fetches the current user's mood events (with geolocation) and adds them as markers on the map.
-     * If multiple moods share the same location, subsequent markers are offset slightly.
+     * Loads the current user's mood events from the database and adds markers.
      */
     private void loadUserMoodMarkers() {
         moodController.getMoodsByUser(currentUser, moods -> {
@@ -90,44 +95,21 @@ public class HomeMapFrag extends Fragment implements OnMapReadyCallback {
                 return;
             }
             LatLng firstLocation = null;
-            // Use a Map to track how many markers share the same location.
-            Map<String, Integer> locationCount = new HashMap<>();
             for (Mood mood : moods) {
                 if (mood.getLatitude() != null && mood.getLongitude() != null) {
-                    double lat = mood.getLatitude();
-                    double lng = mood.getLongitude();
-                    // Create a key for this coordinate (you may round the values if necessary).
-                    String key = lat + "," + lng;
-                    int count = locationCount.containsKey(key) ? locationCount.get(key) : 0;
-                    locationCount.put(key, count + 1);
-                    // If this location already has one or more markers, offset the coordinates slightly.
-                    if (count > 0) {
-                        // Adjust by a small amount (e.g., 0.00005 degrees per duplicate).
-                        // so you can see moods at the same location
-                        lat += count * 0.00005;
-                        lng += count * 0.00005;
-                    }
-                    LatLng location = new LatLng(lat, lng);
+                    LatLng loc = new LatLng(mood.getLatitude(), mood.getLongitude());
                     if (firstLocation == null) {
-                        firstLocation = location;
+                        firstLocation = loc;
                     }
-                    String title = (mood.getUsername() != null)
-                            ? mood.getUsername() + "'s Mood"
-                            : "My Mood";
-                    String snippet = (mood.getMoodState() != null)
-                            ? mood.getMoodState().name()
-                            : "Unknown";
-                    MarkerOptions markerOptions = new MarkerOptions()
-                            .position(location)
-                            .title(title)
-                            .snippet(snippet)
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-                    mMap.addMarker(markerOptions);
+                    mMap.addMarker(new MarkerOptions()
+                            .position(loc)
+                            .title(mood.getMoodState() != null ? mood.getMoodState().name() : "My Mood"));
                 }
             }
             if (firstLocation != null) {
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLocation, 12f));
+                currentLocation = firstLocation;
             }
-        }, error -> Log.e(TAG, "Error fetching moods for user " + currentUser + ": " + error.getMessage()));
+        }, error -> Log.e(TAG, "Error fetching moods: " + error.getMessage()));
     }
 }
