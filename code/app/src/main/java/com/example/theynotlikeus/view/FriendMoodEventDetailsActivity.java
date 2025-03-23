@@ -48,7 +48,7 @@ public class FriendMoodEventDetailsActivity extends AppCompatActivity {
         locationTextView = findViewById(R.id.textview_ActivityFriendMoodEventDetails_location);
         moodImageView = findViewById(R.id.imageview_ActivityFriendMoodEventDetails_moodimage);
         backButton = findViewById(R.id.imagebutton_ActivityFriendMoodEventDetails_backbutton);
-        commentsButton = findViewById(R.id.button4);  // Ensure your XML has a Button with id "button4" for Comments
+        commentsButton = findViewById(R.id.button_ActivityFriendMoodEventDetails_commentButton);  // Ensure your XML has a Button with id "button4" for Comments
 
         // Retrieve the full Mood object from the Intent extras.
         mood = (Mood) getIntent().getSerializableExtra("mood");

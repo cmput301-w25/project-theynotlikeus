@@ -22,7 +22,14 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyB3dZO776_vZmbmkulua7mMLg8-vJFsskM"/>
+
+
         <activity android:name=".view.FriendMoodEventDetailsActivity" />
+
+        <activity android:name=".view.CommunityMapActivity" />
 
         <activity
             android:name=".view.MoodEventDetailsActivity"
