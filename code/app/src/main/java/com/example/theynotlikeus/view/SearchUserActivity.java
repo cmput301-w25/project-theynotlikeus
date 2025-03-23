@@ -42,6 +42,8 @@ public class SearchUserActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         loadUsers();
 
+        searchView.setOnClickListener(v -> searchView.setIconified(false));
+
         findViewById(R.id.button_SearchUserFrag_backbutton).setOnClickListener(v -> finish());
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
