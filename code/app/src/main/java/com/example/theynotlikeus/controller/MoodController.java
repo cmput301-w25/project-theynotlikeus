@@ -266,14 +266,16 @@ public class MoodController extends FirebaseController {
     public void getPublicMoodsByUser(String username, Consumer<List<Mood>> onSuccess, Consumer<Exception> onFailure) {
         db.collection("moods")
                 .whereEqualTo("username", username)
-                .whereEqualTo("isPublic", true)  // Only public moods.
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     List<Mood> moods = new ArrayList<>();
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                         Mood mood = document.toObject(Mood.class);
                         mood.setDocId(document.getId());
-                        moods.add(mood);
+                        // Only add mood if it has valid geolocation.
+                        if (mood.getLatitude() != null && mood.getLongitude() != null) {
+                            moods.add(mood);
+                        }
                     }
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         onSuccess.accept(moods);
