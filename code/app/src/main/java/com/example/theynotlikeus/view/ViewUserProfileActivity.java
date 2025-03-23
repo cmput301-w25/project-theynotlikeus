@@ -7,7 +7,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.theynotlikeus.R;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +33,7 @@ public class ViewUserProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_user_followed);
+        setContentView(R.layout.activity_user_followed);
 
         //Initialize UI components and Firestore
         usernameTextView=findViewById(R.id.textView_UserProfileDetailsFrag_Followed_Username);
