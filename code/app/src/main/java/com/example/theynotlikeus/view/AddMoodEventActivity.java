@@ -36,28 +36,39 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 
+/**
+ *
+ * This activity allows users to create a new Mood event. Users can:
+ * Select a mood from a dropdown, enter an optional trigger text, choose a social situation
+ * attach a photo from their device, toggle privacy and geolocation settings
+ *
+ * It also handles image uploads to Firebase Storage and saves the mood
+ * data using the MoodController.
+ */
+
 public class AddMoodEventActivity extends AppCompatActivity {
 
-    private static final int PICK_IMAGE_REQUEST = 1;
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1001;
+    private static final int PICK_IMAGE_REQUEST=1;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE=1001;
+
     private String username;
-    private final int trigger_length_limit = 200;
+    private final int trigger_length_limit=200;
     private MoodController moodController;
 
     private Button addImageButton;
     private ImageView imagePreview;
-    private Uri imageUri; // Stores the selected image URI
+    private Uri imageUri; //Stores the selected image URI
 
-    private StorageReference storageRef; // Firebase Storage reference
+    private StorageReference storageRef; //Firebase Storage reference
 
-    // FusedLocationProviderClient and location objects
+    //Location client and configuration for high-accuracy location updates
     private FusedLocationProviderClient fusedLocationClient;
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
-    private boolean requestingLocationUpdates = false;
-    private android.location.Location currentLocation; // Updated location
+    private boolean requestingLocationUpdates=false;
+    private android.location.Location currentLocation;
 
-    // ToggleButtons (using ToggleButton to mimic the built-in sample)
+    //Toggles for privacy and geolocation
     private Switch togglePublic;
     private Switch toggleGeolocation;
 
@@ -66,82 +77,75 @@ public class AddMoodEventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_mood_event);
 
-        username = getIntent().getStringExtra("username");
-        moodController = new MoodController();
+        username=getIntent().getStringExtra("username");
+        moodController=new MoodController();
 
-        // Initialize Firebase Storage reference
-        storageRef = FirebaseStorage.getInstance().getReference("mood_images");
+        //Initialize Firebase Storage reference
+        storageRef=FirebaseStorage.getInstance().getReference("mood_images");
 
-        // Initialize FusedLocationProviderClient
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-        // Create a LocationRequest with high accuracy and set update intervals.
-        locationRequest = LocationRequest.create();
+        //Setup location request parameters
+        fusedLocationClient=LocationServices.getFusedLocationProviderClient(this);
+        locationRequest=LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(5000);         // Every 5 seconds
-        locationRequest.setFastestInterval(2000);    // At most every 2 seconds
+        locationRequest.setInterval(5000);         //Every 5 seconds
+        locationRequest.setFastestInterval(2000);  //At most every 2 seconds
 
-        // Define the LocationCallback that receives location updates.
-        locationCallback = new LocationCallback() {
+        //Callback triggered with location updates
+        locationCallback=new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
-                if (locationResult == null) {
-                    return;
-                }
-                // Process all received location updates.
+                if (locationResult == null) return;
                 for (android.location.Location location : locationResult.getLocations()) {
-                    // Use the location if it meets your accuracy criteria (e.g., within 50 meters)
                     if (location != null && location.getAccuracy() < 50) {
-                        currentLocation = location;
-                        // Once a sufficiently accurate location is received, stop updates.
+                        currentLocation=location;
                         fusedLocationClient.removeLocationUpdates(locationCallback);
-                        requestingLocationUpdates = false;
+                        requestingLocationUpdates=false;
                         break;
                     }
                 }
             }
         };
 
-        // UI Elements setup
-        Spinner moodSpinner = findViewById(R.id.spinner_ActivityAddMoodEvent_currentmood);
-        EditText triggerEditText = findViewById(R.id.edittext_ActivityAddMoodEvent_trigger);
-        Spinner socialSituationSpinner = findViewById(R.id.spinner_ActivityAddMoodEvent_socialsituation);
-        addImageButton = findViewById(R.id.button_select_photo);
-        imagePreview = findViewById(R.id.imageview_mood_photo);
-        Button saveButton = findViewById(R.id.button_ActivityAddMoodEvent_save);
-        togglePublic = findViewById(R.id.switch_ActivityAddMoodEvent_privacy);
-        toggleGeolocation = findViewById(R.id.switch_ActivityAddMoodEvent_geolocation);
+        //UI Element bindings
+        Spinner moodSpinner=findViewById(R.id.spinner_ActivityAddMoodEvent_currentmood);
+        EditText triggerEditText=findViewById(R.id.edittext_ActivityAddMoodEvent_trigger);
+        Spinner socialSituationSpinner=findViewById(R.id.spinner_ActivityAddMoodEvent_socialsituation);
+        addImageButton=findViewById(R.id.button_select_photo);
+        imagePreview=findViewById(R.id.imageview_mood_photo);
+        Button saveButton=findViewById(R.id.button_ActivityAddMoodEvent_save);
+        togglePublic=findViewById(R.id.switch_ActivityAddMoodEvent_privacy);
+        toggleGeolocation=findViewById(R.id.switch_ActivityAddMoodEvent_geolocation);
 
-        // Populate mood spinner
-        ArrayAdapter<CharSequence> moodAdapter = ArrayAdapter.createFromResource(
+        //Populate mood spinner with options
+        ArrayAdapter<CharSequence> moodAdapter=ArrayAdapter.createFromResource(
                 this, R.array.moods, R.layout.add_mood_event_spinner);
         moodAdapter.setDropDownViewResource(R.layout.add_mood_event_spinner);
         moodSpinner.setAdapter(moodAdapter);
 
-        // Populate social situation spinner
-        ArrayAdapter<CharSequence> socialAdapter = ArrayAdapter.createFromResource(
+        //Populate social situation spinner with options
+        ArrayAdapter<CharSequence> socialAdapter=ArrayAdapter.createFromResource(
                 this, R.array.social_situations, R.layout.add_mood_event_spinner);
         socialAdapter.setDropDownViewResource(R.layout.add_mood_event_spinner);
         socialSituationSpinner.setAdapter(socialAdapter);
 
-        // Set up image selection button.
+        //Launch image picker when photo button is clicked
         addImageButton.setOnClickListener(v -> openImagePicker());
 
-        // Save Button: Create the Mood object, request location updates if enabled, then save.
+        //Handle save button click
         saveButton.setOnClickListener(v -> {
-            // Create mood from selected spinner option
-            String selectedMood = moodSpinner.getSelectedItem().toString();
+            String selectedMood=moodSpinner.getSelectedItem().toString();
             Mood.MoodState moodState;
             try {
-                moodState = Mood.MoodState.valueOf(selectedMood.toUpperCase());
+                moodState=Mood.MoodState.valueOf(selectedMood.toUpperCase());
             } catch (IllegalArgumentException e) {
                 Toast.makeText(this, "Invalid mood selection.", Toast.LENGTH_SHORT).show();
                 return;
             }
-            Mood mood = new Mood(moodState);
 
-            // Validate and set trigger text if provided.
-            String trigger = triggerEditText.getText().toString().trim();
+            Mood mood=new Mood(moodState);
+
+            //Get and validate trigger text
+            String trigger=triggerEditText.getText().toString().trim();
             if (!trigger.isEmpty()) {
                 try {
                     validateTrigger(trigger, trigger_length_limit);
@@ -152,25 +156,26 @@ public class AddMoodEventActivity extends AppCompatActivity {
                 }
             }
 
-            // Set social situation.
-            String selectedSocial = socialSituationSpinner.getSelectedItem().toString();
+            //Set selected social situation
+            String selectedSocial=socialSituationSpinner.getSelectedItem().toString();
             try {
-                Mood.SocialSituation socialSituation = Mood.SocialSituation.valueOf(
+                Mood.SocialSituation socialSituation=Mood.SocialSituation.valueOf(
                         selectedSocial.toUpperCase().replace(" ", "_"));
                 mood.setSocialSituation(socialSituation);
             } catch (IllegalArgumentException e) {
-                // Optionally handle invalid social situation.
+                //Handle unrecognized social input
             }
 
             mood.setUsername(username);
             mood.setPublic(togglePublic.isChecked());
 
-            // If geolocation is enabled, start location updates.
+            //Handle geolocation-enabled mood saving
             if (toggleGeolocation.isChecked()) {
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                         != PackageManager.PERMISSION_GRANTED &&
                         ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
                                 != PackageManager.PERMISSION_GRANTED) {
+                    //Request location permission
                     ActivityCompat.requestPermissions(this,
                             new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
                             LOCATION_PERMISSION_REQUEST_CODE);
@@ -178,7 +183,6 @@ public class AddMoodEventActivity extends AppCompatActivity {
                     return;
                 }
                 startLocationUpdates();
-                // If we already have an updated location, use it.
                 if (currentLocation != null) {
                     mood.setLocation(currentLocation.getLatitude(), currentLocation.getLongitude());
                     processMoodSaving(mood);
@@ -186,15 +190,17 @@ public class AddMoodEventActivity extends AppCompatActivity {
                     Toast.makeText(this, "Acquiring location, please try again in a few seconds.", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                // If geolocation is off, proceed normally.
                 processMoodSaving(mood);
             }
         });
 
+        //Back button
         findViewById(R.id.imagebutton_ActivityViewComments_backbutton).setOnClickListener(v -> finish());
     }
 
-    // Helper method: Continue saving mood (with image upload if needed)
+    /**
+     * Handles mood saving and image upload, if an image is selected.
+     */
     private void processMoodSaving(Mood mood) {
         if (imageUri != null) {
             uploadImage(mood);
@@ -203,63 +209,67 @@ public class AddMoodEventActivity extends AppCompatActivity {
         }
     }
 
-    // Start requesting location updates.
+    /**
+     * Starts requesting location updates.
+     */
     private void startLocationUpdates() {
         if (!requestingLocationUpdates) {
-            requestingLocationUpdates = true;
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
+            requestingLocationUpdates=true;
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
             fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
         }
     }
 
-    // Stop location updates.
+    /**
+     * Stops location updates if they're active.
+     */
     private void stopLocationUpdates() {
         if (requestingLocationUpdates) {
             fusedLocationClient.removeLocationUpdates(locationCallback);
-            requestingLocationUpdates = false;
+            requestingLocationUpdates=false;
         }
     }
 
-    // Open image picker for selecting an image.
+    /**
+     * Launches an intent to let user pick an image from device.
+     */
     private void openImagePicker() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent intent=new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
 
+    /**
+     * Receives the result from image picker and displays the selected image.
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            imageUri = data.getData();
+            imageUri=data.getData();
             imagePreview.setImageURI(imageUri);
         }
     }
 
-    // Upload image to Firebase Storage and then save mood with the image URL.
+    /**
+     * Uploads image to Firebase Storage, then saves mood with image URL.
+     */
     private void uploadImage(Mood mood) {
-        String fileName = System.currentTimeMillis() + ".jpg";
-        StorageReference fileRef = storageRef.child(fileName);
+        String fileName=System.currentTimeMillis() + ".jpg";
+        StorageReference fileRef=storageRef.child(fileName);
 
-        Cursor returnCursor = getContentResolver().query(imageUri, null, null, null, null);
-        int sizeIndex = returnCursor.getColumnIndex(OpenableColumns.SIZE);
+        Cursor returnCursor=getContentResolver().query(imageUri, null, null, null, null);
+        int sizeIndex=returnCursor.getColumnIndex(OpenableColumns.SIZE);
         returnCursor.moveToFirst();
-        long fileSizeInBytes = returnCursor.getLong(sizeIndex);
+        long fileSizeInBytes=returnCursor.getLong(sizeIndex);
         returnCursor.close();
 
-        // Check the admin preference
-        SharedPreferences prefs = getSharedPreferences("AdminPrefs", MODE_PRIVATE);
-        boolean isLimitOn = AdminActivity.isLimitEnabled(prefs);
+        //Check if admin file size limit is enabled
+        SharedPreferences prefs=getSharedPreferences("AdminPrefs", MODE_PRIVATE);
+        boolean isLimitOn=AdminActivity.isLimitEnabled(prefs);
 
-        // Enforce limit
         if (isLimitOn && fileSizeInBytes > 65536) {
             Toast.makeText(this, "Image too large. Must be under 65536 bytes.", Toast.LENGTH_SHORT).show();
             return;
@@ -267,17 +277,16 @@ public class AddMoodEventActivity extends AppCompatActivity {
 
         fileRef.putFile(imageUri)
                 .addOnSuccessListener(taskSnapshot -> fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                    String imageUrl = uri.toString();
+                    String imageUrl=uri.toString();
                     saveMoodToDatabase(mood, imageUrl);
                 }))
                 .addOnFailureListener(e ->
                         Toast.makeText(this, "Image upload failed.", Toast.LENGTH_SHORT).show());
-
-
-
     }
 
-    // Save the mood to the database using MoodController.
+    /**
+     * Saves the mood to Firestore through MoodController.
+     */
     private void saveMoodToDatabase(Mood mood, String imageUrl) {
         if (imageUrl != null) {
             mood.setPhotoUrl(imageUrl);
@@ -285,12 +294,13 @@ public class AddMoodEventActivity extends AppCompatActivity {
         moodController.addMood(mood, () -> runOnUiThread(() -> {
             Toast.makeText(AddMoodEventActivity.this, "Mood saved successfully!", Toast.LENGTH_SHORT).show();
             finish();
-        }), e -> runOnUiThread(() -> {
-            Toast.makeText(AddMoodEventActivity.this, "Error saving mood: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }));
+        }), e -> runOnUiThread(() ->
+                Toast.makeText(AddMoodEventActivity.this, "Error saving mood: " + e.getMessage(), Toast.LENGTH_SHORT).show()));
     }
 
-    // Validate trigger length.
+    /**
+     * Validates that the trigger text does not exceed the character limit.
+     */
     public static void validateTrigger(String trigger, int limit) {
         if (trigger.length() > limit) {
             throw new ArithmeticException("Trigger has too many characters!");
@@ -311,7 +321,9 @@ public class AddMoodEventActivity extends AppCompatActivity {
         stopLocationUpdates();
     }
 
-    // Handle runtime permission result for location access.
+    /**
+     * Handles location permission result from user interaction.
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -326,4 +338,3 @@ public class AddMoodEventActivity extends AppCompatActivity {
         }
     }
 }
-

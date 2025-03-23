@@ -11,7 +11,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.theynotlikeus.R;
 
-/*
+/**
  * Activity that displays the user's personal profile details.
  *
  * It also:
@@ -26,7 +26,7 @@ public class PersonalProfileDetailsActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_personal_profile_details);
 
-        ////Applying system insets to the main view so that UI elements do not overlap system bars.
+        //Applying system insets to the main view so that UI elements do not overlap system bars.
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
