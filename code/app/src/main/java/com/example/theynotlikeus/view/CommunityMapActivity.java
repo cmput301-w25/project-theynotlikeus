@@ -3,6 +3,7 @@ package com.example.theynotlikeus.view;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,6 +52,10 @@ public class CommunityMapActivity extends AppCompatActivity implements OnMapRead
         }
 
         moodController = new MoodController();
+
+        // Set up back button to finish this activity (return to HomeMapFrag).
+        ImageButton backButton = findViewById(R.id.imageButton_CommunityMapActivity_back);
+        backButton.setOnClickListener(v -> finish());
 
         SupportMapFragment mapFragment = (SupportMapFragment)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_CommunityMapActivity_map);
