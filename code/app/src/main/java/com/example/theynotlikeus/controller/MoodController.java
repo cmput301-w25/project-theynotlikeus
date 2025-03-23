@@ -256,37 +256,4 @@ public class MoodController extends FirebaseController {
                 });
     }
 
-    /**
-     * Fetches all public moods for a specific user.
-     *
-     * @param username  The username to filter moods.
-     * @param onSuccess Callback for returning a list of moods.
-     * @param onFailure Callback for handling errors.
-     */
-    public void getPublicMoodsByUser(String username, Consumer<List<Mood>> onSuccess, Consumer<Exception> onFailure) {
-        db.collection("moods")
-                .whereEqualTo("username", username)
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    List<Mood> moods = new ArrayList<>();
-                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                        Mood mood = document.toObject(Mood.class);
-                        mood.setDocId(document.getId());
-                        // Only add mood if it has valid geolocation.
-                        if (mood.getLatitude() != null && mood.getLongitude() != null) {
-                            moods.add(mood);
-                        }
-                    }
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        onSuccess.accept(moods);
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        onFailure.accept(e);
-                    }
-                });
-    }
-
-
 }

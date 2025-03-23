@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black_background">
+
+    <ImageButton
+        android:id="@+id/imagebutton_ActivityViewComments_backbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:background="@color/black_background"
+        android:contentDescription="Select image for mood event"
+        android:src="@drawable/ic_white_back_button"
+        app:layout_constraintBottom_toBottomOf="@+id/textview_ActivityViewComments_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textview_ActivityViewComments_title" />
+
+    <!-- This is a non-functional button that adjusts position of the title-->
+
+    <ImageButton
+        android:id="@+id/imagebutton_ActivityViewComments_addcommentsbutton"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="16dp"
+        android:adjustViewBounds="true"
+        android:background="@android:color/transparent"
+        android:contentDescription="Select image for mood event"
+        android:maxWidth="60dp"
+        android:maxHeight="60dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_add"
+        android:translationY="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textview_ActivityViewComments_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textview_ActivityViewComments_title"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/textview_ActivityViewComments_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="monospace"
+        android:text="Comments"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@+id/imagebutton_ActivityViewComments_addcommentsbutton"
+        app:layout_constraintStart_toEndOf="@+id/imagebutton_ActivityViewComments_backbutton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview_ViewCommentsActivity_commentsRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview_ActivityViewComments_title" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -41,9 +41,6 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
     implementation("com.google.firebase:firebase-firestore")
 
-    // Google map
-    implementation ("com.google.android.gms:play-services-maps:18.1.0")
-    
     // App dependencies
     implementation(libs.appcompat)
     implementation(libs.material)

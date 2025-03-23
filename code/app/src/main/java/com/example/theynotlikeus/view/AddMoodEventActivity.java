@@ -2,11 +2,14 @@ package com.example.theynotlikeus.view;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,6 +33,8 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import java.io.File;
 
 public class AddMoodEventActivity extends AppCompatActivity {
 
@@ -187,7 +191,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.button_ActivityAddMoodEvent_backbutton).setOnClickListener(v -> finish());
+        findViewById(R.id.imagebutton_ActivityViewComments_backbutton).setOnClickListener(v -> finish());
     }
 
     // Helper method: Continue saving mood (with image upload if needed)
@@ -245,6 +249,22 @@ public class AddMoodEventActivity extends AppCompatActivity {
         String fileName = System.currentTimeMillis() + ".jpg";
         StorageReference fileRef = storageRef.child(fileName);
 
+        Cursor returnCursor = getContentResolver().query(imageUri, null, null, null, null);
+        int sizeIndex = returnCursor.getColumnIndex(OpenableColumns.SIZE);
+        returnCursor.moveToFirst();
+        long fileSizeInBytes = returnCursor.getLong(sizeIndex);
+        returnCursor.close();
+
+        // Check the admin preference
+        SharedPreferences prefs = getSharedPreferences("AdminPrefs", MODE_PRIVATE);
+        boolean isLimitOn = AdminActivity.isLimitEnabled(prefs);
+
+        // Enforce limit
+        if (isLimitOn && fileSizeInBytes > 65536) {
+            Toast.makeText(this, "Image too large. Must be under 65536 bytes.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         fileRef.putFile(imageUri)
                 .addOnSuccessListener(taskSnapshot -> fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
                     String imageUrl = uri.toString();
@@ -252,6 +272,9 @@ public class AddMoodEventActivity extends AppCompatActivity {
                 }))
                 .addOnFailureListener(e ->
                         Toast.makeText(this, "Image upload failed.", Toast.LENGTH_SHORT).show());
+
+
+
     }
 
     // Save the mood to the database using MoodController.

@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
+        android:name=".singleton.MyApp"
         android:networkSecurityConfig="@xml/network_security_config"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -32,6 +33,9 @@
 
         <activity
             android:name=".view.MoodEventDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.ViewCommentsActivity"
             android:exported="false" />
         <activity
             android:name=".view.EditDeleteMoodActivity"

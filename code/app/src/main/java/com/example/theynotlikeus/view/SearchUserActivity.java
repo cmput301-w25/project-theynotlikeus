@@ -1,5 +1,6 @@
 package com.example.theynotlikeus.view;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -64,18 +65,29 @@ public class SearchUserActivity extends AppCompatActivity {
 
 
     private void loadUsers() {
+        String loggedInUsername = getIntent().getStringExtra("username");
         db.collection("users").get().addOnSuccessListener(queryDocumentSnapshots -> {
             userList.clear();
             for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                 User user = doc.toObject(User.class);
-                userList.add(user);
+                if (!user.getUsername().equals(loggedInUsername)) {
+                    userList.add(user);
+                }
             }
             adapter.notifyDataSetChanged();
         }).addOnFailureListener(e -> Toast.makeText(this, "Failed to load users", Toast.LENGTH_SHORT).show());
     }
 
     private void filterUsers(String query) {
+        String loggedInUsername = getIntent().getStringExtra("username");
         List<User> filteredList = new ArrayList<>();
+
+
+        if (query.equalsIgnoreCase(loggedInUsername)) {
+            adapter.updateList(filteredList);
+            return;
+        }
+
         for (User user : userList) {
             if (user.getUsername().toLowerCase().contains(query.toLowerCase())) {
                 filteredList.add(user);

@@ -99,19 +99,15 @@ public class FollowerRequestFrag extends Fragment {
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     requestList.clear();
-                    if (queryDocumentSnapshots.isEmpty()) {
-                        Toast.makeText(getContext(), "No follow requests found", Toast.LENGTH_SHORT).show();
-                    } else {
-                        for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                            String followerUsername = doc.getString("follower");
-                            String followee = doc.getString("followee");
-                            if (followerUsername != null) {
-                                Request request = new Request();
-                                request.setId(doc.getId());
-                                request.setFollower(followerUsername);
-                                request.setFollowee(followee);
-                                requestList.add(request);
-                            }
+                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                        String followerUsername = doc.getString("follower");
+                        String followee = doc.getString("followee");
+                        if (followerUsername != null) {
+                            Request request = new Request();
+                            request.setId(doc.getId());
+                            request.setFollower(followerUsername);
+                            request.setFollowee(followee);
+                            requestList.add(request);
                         }
                     }
                     adapter.notifyDataSetChanged();

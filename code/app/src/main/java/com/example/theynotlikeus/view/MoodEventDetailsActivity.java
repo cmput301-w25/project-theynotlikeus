@@ -3,6 +3,7 @@ package com.example.theynotlikeus.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.model.Mood;
 
@@ -27,6 +29,7 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
     ImageView moodImageView;
     ImageButton backButton;
     ImageButton editButton;
+    Button commentButton;
     private static final int EDIT_MOOD_REQUEST = 1;
 
     // Hold the passed Mood object.
@@ -44,12 +47,13 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
         moodImageView = findViewById(R.id.imageview_ActivityMoodEventDetails_moodimage);
         editButton = findViewById(R.id.imagebutton_ActivityMoodEventDetails_editbutton);
         backButton = findViewById(R.id.imagebutton_ActivityMoodEventDetails_backbutton);
+        commentButton = findViewById(R.id.commentButton);
 
         // Retrieve the full Mood object from the Intent extras.
         mood = (Mood) getIntent().getSerializableExtra("mood");
 
         if (mood == null) {
-            Toast.makeText(this, "Mood details unavailable", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Mood details unavailable", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
@@ -73,6 +77,13 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
             finish();
+        });
+
+        commentButton.setOnClickListener(v -> {
+            Log.d("MoodEventDetailsActivity", "Comment button clicked");
+            Intent intent = new Intent(MoodEventDetailsActivity.this, ViewCommentsActivity.class);
+            intent.putExtra("mood", mood);
+            startActivity(intent);
         });
     }
 
@@ -102,6 +113,14 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
             locationTextView.setText("Location: " + latitude + ", " + longitude);
         } else {
             locationTextView.setText("Location: Unknown");
+        }
+
+        // Load the mood image using Glide
+        if (mood.getPhotoUrl() != null && !mood.getPhotoUrl().isEmpty()) {
+            Glide.with(this)
+                    .load(mood.getPhotoUrl())
+                    .placeholder(R.drawable.ic_placeholder)
+                    .into((ImageView) findViewById(R.id.imageview_ActivityMoodEventDetails_uploadedphoto));
         }
     }
 

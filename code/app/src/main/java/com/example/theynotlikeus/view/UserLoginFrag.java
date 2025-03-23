@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.example.theynotlikeus.singleton.MyApp;
 import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.controller.UserController;
 import com.example.theynotlikeus.model.User;
@@ -25,7 +26,7 @@ public class UserLoginFrag extends Fragment {
     private UserController controller;
 
     public UserLoginFrag() {
-        //Required empty public constructor
+        // Required empty public constructor
     }
 
     public static UserLoginFrag newInstance(String param1, String param2) {
@@ -40,7 +41,7 @@ public class UserLoginFrag extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        controller = new UserController();  //Initialize the controller for this fragment - UserController
+        controller = new UserController();  // Initialize the controller for this fragment
     }
 
     @Override
@@ -52,22 +53,22 @@ public class UserLoginFrag extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //Initialize UI elements
+        // Initialize UI elements
         MaterialToolbar backButton = view.findViewById(R.id.button_UserLoginFrag_back);
         NavController navController = Navigation.findNavController(view);
         EditText usernameEditText = view.findViewById(R.id.editText_userLoginFrag_username);
         EditText passwordEditText = view.findViewById(R.id.editText_userLoginFrag_password);
         Button signInButton = view.findViewById(R.id.button_UserLogin_SignIn);
 
-        //Handle back button navigation
+        // Handle back button navigation
         backButton.setOnClickListener(v -> navController.navigate(R.id.action_userLoginFrag_to_loginUserSelectionFrag));
 
-        //Navigate to the sign-up screen
+        // Navigate to the sign-up screen
         view.findViewById(R.id.textButton_UserLoginFrag_signUp).setOnClickListener(v ->
                 navController.navigate(R.id.action_userLoginFrag_to_userSignUpFrag)
         );
 
-        //Handle sign-in process after the user clicks the sign-in button
+        // Handle sign-in process after the user clicks the sign-in button
         signInButton.setOnClickListener(v -> {
             String username = usernameEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
@@ -77,19 +78,23 @@ public class UserLoginFrag extends Fragment {
                 return;
             }
 
-
-            controller.loginUser(username, password, new UserController.LoginCallback() { //Call the UserController to handle login
+            controller.loginUser(username, password, new UserController.LoginCallback() {
                 @Override
-                public void onSuccess(User user) {//Redirect to the main activity
+                public void onSuccess(User user) {
+                    // Store the logged-in username in the global singleton (MyApp)
+                    MyApp app = (MyApp) requireActivity().getApplicationContext();
+                    app.setUsername(user.getUsername());
+
+                    // Redirect to the MainActivity and pass the username along (current logic remains)
                     Intent intent = new Intent(requireActivity(), MainActivity.class);
-                    intent.putExtra("username", user.getUsername()); //Passing the username to the next activity
+                    intent.putExtra("username", user.getUsername());
                     startActivity(intent);
                     requireActivity().finish();
                 }
 
                 @Override
                 public void onError(String error) {
-                    Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show(); //Prints an error message
+                    Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
                 }
             });
         });
