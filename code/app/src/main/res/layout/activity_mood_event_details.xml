@@ -67,13 +67,13 @@
     <View
         android:id="@+id/view_ActivityMoodEventDetails_moodeventcontainer"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="500dp"
         android:layout_marginStart="12dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="12dp"
-        android:layout_marginBottom="-16dp"
+        android:layout_marginBottom="-20dp"
         android:background="#282727"
-        app:layout_constraintBottom_toBottomOf="@id/textview_ActivityMoodEventDetails_location"
+        app:layout_constraintBottom_toBottomOf="@id/commentButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -123,26 +123,16 @@
         android:layout_marginTop="8dp"
         android:hint="@string/date_and_time"
         android:textColorHint="#898888"
-        app:layout_constraintStart_toStartOf="@+id/textview_ActivityMoodEventDetails_trigger"
-        app:layout_constraintTop_toBottomOf="@+id/textview_ActivityMoodEventDetails_trigger" />
+        app:layout_constraintStart_toStartOf="@+id/textview_ActivityMoodEventDetails_triggervalue"
+        app:layout_constraintTop_toBottomOf="@+id/textview_ActivityMoodEventDetails_triggervalue" />
 
     <TextView
         android:id="@+id/textview_ActivityMoodEventDetails_triggervalue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:hint="@string/reason_value"
         android:textColorHint="#898888"
-        app:layout_constraintStart_toEndOf="@+id/textview_ActivityMoodEventDetails_trigger"
-        app:layout_constraintTop_toTopOf="@+id/textview_ActivityMoodEventDetails_trigger" />
-
-    <TextView
-        android:id="@+id/textview_ActivityMoodEventDetails_trigger"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/reason"
-        android:textColor="#FFFFFF"
         app:layout_constraintStart_toStartOf="@+id/textview_ActivityMoodEventDetails_socialsituation"
         app:layout_constraintTop_toBottomOf="@+id/textview_ActivityMoodEventDetails_socialsituation" />
 
@@ -163,23 +153,22 @@
         android:backgroundTint="#22238B"
 
         android:text="Comments"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/view_ActivityMoodEventDetails_moodeventcontainer"
+        app:layout_constraintEnd_toEndOf="@+id/view_ActivityMoodEventDetails_moodeventcontainer"
+        app:layout_constraintStart_toStartOf="@+id/view_ActivityMoodEventDetails_moodeventcontainer"
         app:layout_constraintTop_toBottomOf="@+id/imageview_ActivityMoodEventDetails_uploadedphoto" />
 
     <ImageView
         android:id="@+id/imageview_ActivityMoodEventDetails_uploadedphoto"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         android:background="@android:color/darker_gray"
-        android:scaleType="centerCrop"
         android:backgroundTint="@color/black_background"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view_ActivityMoodEventDetails_moodeventcontainer" />
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="@+id/view_ActivityMoodEventDetails_moodeventcontainer"
+        app:layout_constraintStart_toStartOf="@+id/view_ActivityMoodEventDetails_moodeventcontainer"
+        app:layout_constraintTop_toBottomOf="@+id/textview_ActivityMoodEventDetails_location" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
