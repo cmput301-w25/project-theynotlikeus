@@ -35,9 +35,6 @@ public class CommunityMapActivity extends AppCompatActivity implements OnMapRead
     private MoodController moodController;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    // Current user's location (from latest mood with geolocation enabled)
-    private double currentLat;
-    private double currentLng;
     // Current user's identifier (needed for fetching friend list)
     private String currentUser;
     // Latest location derived from current user's mood events.
@@ -87,9 +84,6 @@ public class CommunityMapActivity extends AppCompatActivity implements OnMapRead
                 geoMoods.sort((m1, m2) -> m2.getDateTime().compareTo(m1.getDateTime()));
                 Mood latestMood = geoMoods.get(0);
                 currentLocation = new LatLng(latestMood.getLatitude(), latestMood.getLongitude());
-                // Also update currentLat/currentLng for completeness.
-                currentLat = latestMood.getLatitude();
-                currentLng = latestMood.getLongitude();
             }
             // Now initialize the map.
             initMap();
@@ -124,16 +118,10 @@ public class CommunityMapActivity extends AppCompatActivity implements OnMapRead
 
     /**
      * Loads the friend list from the "follow" collection.
-     * For each friend, fetches their public mood events.
-     * Only mood events with geolocation enabled are considered.
-     * If an event is within 5 km of the current user's latest location, adds a marker.
-     */
-    /**
-     * Loads the friend list from the "follow" collection.
-     * For each friend, fetches their public mood events.
-     * Only mood events with geolocation enabled are considered.
-     * If an event is within 5 km of the current user's latest location, adds a marker.
-     * If multiple moods share the same coordinates, offsets subsequent markers slightly.
+     * For each friend, fetches their mood events using the MoodController.
+     * For each friend, all mood events are processed (not limited), and only those that are public are added.
+     * If an event is within 5 km of the current user's latest location, a marker is added.
+     * If multiple moods share the same coordinates, subsequent markers are offset slightly.
      */
     private void loadFriendsMoodMarkers(final LatLng currentLocation) {
         db.collection("follow")
@@ -149,7 +137,6 @@ public class CommunityMapActivity extends AppCompatActivity implements OnMapRead
                     }
                     Log.d(TAG, "Found friends: " + friendList.toString());
 
-                    // If no friends are found, display a toast immediately.
                     if (friendList.isEmpty()) {
                         Toast.makeText(CommunityMapActivity.this, "No friends found.", Toast.LENGTH_SHORT).show();
                         return;
@@ -159,56 +146,61 @@ public class CommunityMapActivity extends AppCompatActivity implements OnMapRead
                     final java.util.concurrent.atomic.AtomicInteger markerCount = new java.util.concurrent.atomic.AtomicInteger(0);
                     final java.util.concurrent.atomic.AtomicInteger queriesProcessed = new java.util.concurrent.atomic.AtomicInteger(0);
 
-                    // For each friend, fetch their public mood events.
+                    // For each friend, fetch their moods.
                     for (String friend : friendList) {
-                        moodController.getPublicMoodsByUser(friend,
+                        moodController.getMoodsByUser(friend,
                                 moods -> {
                                     if (moods == null || moods.isEmpty()) {
-                                        Log.d(TAG, "No public moods for friend: " + friend);
+                                        Log.d(TAG, "No moods for friend: " + friend);
                                     } else {
+                                        // Process all moods for this friend.
                                         // Create a local map to track markers at the same coordinate.
                                         Map<String, Integer> locationCount = new HashMap<>();
                                         Log.d(TAG, "Friend " + friend + " has " + moods.size() + " mood(s).");
                                         for (Mood mood : moods) {
-                                            // Ensure that the mood event has geolocation enabled.
-                                            if (mood.getLatitude() != null && mood.getLongitude() != null) {
-                                                double lat = mood.getLatitude();
-                                                double lng = mood.getLongitude();
-                                                String key = lat + "," + lng;
-                                                int count = locationCount.containsKey(key) ? locationCount.get(key) : 0;
-                                                locationCount.put(key, count + 1);
-                                                // If more than one mood is at this location, offset subsequent markers.
-                                                if (count > 0) {
-                                                    lat += count * 0.00005;
-                                                    lng += count * 0.00005;
-                                                }
-                                                LatLng moodLocation = new LatLng(lat, lng);
-                                                // Calculate the distance (in meters) between currentLocation and moodLocation.
-                                                float[] results = new float[1];
-                                                Location.distanceBetween(
-                                                        currentLocation.latitude, currentLocation.longitude,
-                                                        moodLocation.latitude, moodLocation.longitude, results);
-                                                Log.d(TAG, "Distance for mood from friend " + friend + ": " + results[0] + " meters.");
-                                                if (results[0] <= 5000) { // within 5 km
-                                                    String title = (mood.getUsername() != null)
-                                                            ? mood.getUsername() + "'s Mood"
-                                                            : "Friend Mood";
-                                                    String snippet = (mood.getMoodState() != null)
-                                                            ? mood.getMoodState().name()
-                                                            : "Unknown";
-                                                    MarkerOptions markerOptions = new MarkerOptions()
-                                                            .position(moodLocation)
-                                                            .title(title)
-                                                            .snippet(snippet)
-                                                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                                                    mMap.addMarker(markerOptions);
-                                                    markerCount.incrementAndGet();
-                                                    Log.d(TAG, "Added marker for friend " + friend + " at " + moodLocation);
+                                            // Only process the mood if it is public.
+                                            if (mood.isPublic()) {
+                                                if (mood.getLatitude() != null && mood.getLongitude() != null) {
+                                                    double lat = mood.getLatitude();
+                                                    double lng = mood.getLongitude();
+                                                    String key = lat + "," + lng;
+                                                    int count = locationCount.containsKey(key) ? locationCount.get(key) : 0;
+                                                    locationCount.put(key, count + 1);
+                                                    // Offset subsequent markers if they share the same coordinate.
+                                                    if (count > 0) {
+                                                        lat += count * 0.00005;
+                                                        lng += count * 0.00005;
+                                                    }
+                                                    LatLng moodLocation = new LatLng(lat, lng);
+                                                    // Calculate the distance (in meters) between currentLocation and moodLocation.
+                                                    float[] results = new float[1];
+                                                    Location.distanceBetween(
+                                                            currentLocation.latitude, currentLocation.longitude,
+                                                            moodLocation.latitude, moodLocation.longitude, results);
+                                                    Log.d(TAG, "Distance for mood from friend " + friend + ": " + results[0] + " meters.");
+                                                    if (results[0] <= 5000) { // within 5 km
+                                                        String title = (mood.getUsername() != null)
+                                                                ? mood.getUsername() + "'s Mood"
+                                                                : "Friend Mood";
+                                                        String snippet = (mood.getMoodState() != null)
+                                                                ? mood.getMoodState().name()
+                                                                : "Unknown";
+                                                        MarkerOptions markerOptions = new MarkerOptions()
+                                                                .position(moodLocation)
+                                                                .title(title)
+                                                                .snippet(snippet)
+                                                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                                                        mMap.addMarker(markerOptions);
+                                                        markerCount.incrementAndGet();
+                                                        Log.d(TAG, "Added marker for friend " + friend + " at " + moodLocation);
+                                                    } else {
+                                                        Log.d(TAG, "Mood event for friend " + friend + " is outside 5 km.");
+                                                    }
                                                 } else {
-                                                    Log.d(TAG, "Mood event for friend " + friend + " is outside 5 km.");
+                                                    Log.d(TAG, "Mood for friend " + friend + " does not have valid geo data.");
                                                 }
                                             } else {
-                                                Log.d(TAG, "Mood for friend " + friend + " does not have valid geo data.");
+                                                Log.d(TAG, "Skipping mood for friend " + friend + " because it's not public.");
                                             }
                                         }
                                     }
@@ -229,62 +221,5 @@ public class CommunityMapActivity extends AppCompatActivity implements OnMapRead
                     }
                 })
                 .addOnFailureListener(e -> Log.e(TAG, "Error fetching friend list: " + e.getMessage()));
-    }
-
-
-    /**
-     * Loads and logs a friend's public mood events.
-     * For each mood with valid geolocation, calculates the distance from the given currentLocation.
-     * If within 5 km, adds a marker on the map and logs the details.
-     *
-     * @param friend          The friend's identifier.
-     * @param currentLocation The current user's location to use for distance calculations.
-     */
-    private void loadFriendMoods(String friend, LatLng currentLocation) {
-        moodController.getPublicMoodsByUser(friend,
-                moods -> {
-                    if (moods == null || moods.isEmpty()) {
-                        Log.d(TAG, "No public moods for friend: " + friend);
-                        return;
-                    }
-                    Log.d(TAG, "Friend " + friend + " has " + moods.size() + " mood(s).");
-                    for (Mood mood : moods) {
-                        if (mood.getLatitude() != null && mood.getLongitude() != null) {
-                            LatLng moodLocation = new LatLng(mood.getLatitude(), mood.getLongitude());
-
-                            // Calculate distance (in meters) between currentLocation and moodLocation.
-                            float[] results = new float[1];
-                            Location.distanceBetween(
-                                    currentLocation.latitude, currentLocation.longitude,
-                                    moodLocation.latitude, moodLocation.longitude, results);
-
-                            Log.d(TAG, "Distance for mood from friend " + friend + ": " + results[0] + " meters.");
-
-                            if (results[0] <= 5000) { // Check if within 5 km
-                                String title = (mood.getUsername() != null)
-                                        ? mood.getUsername() + "'s Mood"
-                                        : "Friend Mood";
-                                String snippet = (mood.getMoodState() != null)
-                                        ? mood.getMoodState().name()
-                                        : "Unknown";
-
-                                MarkerOptions markerOptions = new MarkerOptions()
-                                        .position(moodLocation)
-                                        .title(title)
-                                        .snippet(snippet)
-                                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-
-                                mMap.addMarker(markerOptions);
-                                Log.d(TAG, "Added marker for friend " + friend + " at " + moodLocation);
-                            } else {
-                                Log.d(TAG, "Mood event for friend " + friend + " is outside 5 km.");
-                            }
-                        } else {
-                            Log.d(TAG, "Mood for friend " + friend + " does not have valid geo data.");
-                        }
-                    }
-                },
-                error -> Log.e(TAG, "Error fetching moods for friend " + friend + ": " + error.getMessage())
-        );
     }
 }
