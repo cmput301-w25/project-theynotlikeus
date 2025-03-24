@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -53,7 +54,7 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
     private Spinner socialSituationSpinner;
     private Switch geolocationSwitch;
     private Switch privacySwitch;
-    private ImageButton selectImageButton;
+    private Button selectImageButton;
     private ImageButton deleteButton;
     private ImageButton backButton;
     private Button saveButton;
@@ -61,6 +62,8 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
     // Image handling.
     private Uri imageUri;
     private StorageReference storageRef;
+
+    private ImageView setImage;
 
     // Geolocation fields.
     private FusedLocationProviderClient fusedLocationClient;
@@ -86,7 +89,8 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
         deleteButton = findViewById(R.id.imageButton_DeleteEditMoodActivity_delete);
         backButton = findViewById(R.id.imageButton_DeleteEditMoodActivity_back);
         saveButton = findViewById(R.id.button_DeleteEditMoodActivity_save);
-        selectImageButton = findViewById(R.id.imageButton_DeleteEditMoodActivity_selectImage);
+        selectImageButton = findViewById(R.id.button_DeleteEditMoodActivity_selectImage);
+        setImage = findViewById(R.id.imageview_DeleteEditMoodActivity_photo);
 
         // Initialize the MoodController.
         moodController = new MoodController();
@@ -147,7 +151,7 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
             if (moodToEdit.getPhotoUrl() != null && !moodToEdit.getPhotoUrl().isEmpty()) {
                 Glide.with(this)
                         .load(moodToEdit.getPhotoUrl())
-                        .into(selectImageButton);
+                        .into(setImage);
             }
             // Set privacy switch accordingly.
             privacySwitch.setChecked(moodToEdit.isPublic());
@@ -265,7 +269,7 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             imageUri = data.getData();
             // Update the image button to preview the selected image.
-            selectImageButton.setImageURI(imageUri);
+            setImage.setImageURI(imageUri);
         }
     }
 
@@ -329,7 +333,7 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                 if (moodToEdit.getPhotoUrl() != null && !moodToEdit.getPhotoUrl().isEmpty()) {
                     Glide.with(EditDeleteMoodActivity.this)
                             .load(moodToEdit.getPhotoUrl())
-                            .into(selectImageButton);
+                            .into(setImage);
                 }
                 privacySwitch.setChecked(moodToEdit.isPublic());
             }
