@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="12dp"
+    android:layout_margin="10dp"
+    android:backgroundTint="@color/primary_blue"
     android:background="@color/black_background">
 
     <!-- Container for text content -->
