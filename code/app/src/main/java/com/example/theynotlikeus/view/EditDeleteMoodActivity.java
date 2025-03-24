@@ -1,10 +1,13 @@
 package com.example.theynotlikeus.view;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.widget.ArrayAdapter;
@@ -15,13 +18,20 @@ import android.widget.Switch;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.bumptech.glide.Glide;
 import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.controller.MoodController;
 import com.example.theynotlikeus.model.Mood;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -30,6 +40,7 @@ import java.io.Serializable;
 public class EditDeleteMoodActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST = 1;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1001;
 
     private MoodController moodController;
     private String moodId;
@@ -50,6 +61,13 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
     // Image handling.
     private Uri imageUri;
     private StorageReference storageRef;
+
+    // Geolocation fields.
+    private FusedLocationProviderClient fusedLocationClient;
+    private LocationRequest locationRequest;
+    private LocationCallback locationCallback;
+    private boolean requestingLocationUpdates = false;
+    private android.location.Location currentLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +90,28 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
 
         // Initialize the MoodController.
         moodController = new MoodController();
+
+        // Initialize geolocation components.
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(5000);         // 5 seconds
+        locationRequest.setFastestInterval(2000);    // 2 seconds
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) return;
+                for (android.location.Location location : locationResult.getLocations()) {
+                    if (location != null && location.getAccuracy() < 50) {
+                        currentLocation = location;
+                        // Once a good location is found, stop updates.
+                        fusedLocationClient.removeLocationUpdates(locationCallback);
+                        requestingLocationUpdates = false;
+                        break;
+                    }
+                }
+            }
+        };
 
         // Retrieve the Mood object (if passed) or moodId.
         Mood passedMood = (Mood) getIntent().getSerializableExtra("mood");
@@ -161,7 +201,27 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
             // Update privacy.
             moodToEdit.setPublic(privacySwitch.isChecked());
 
-            // If an image was selected, upload it; otherwise, update mood directly.
+            // Update location if geolocation toggle is enabled.
+            if (geolocationSwitch.isChecked()) {
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                                != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+                            LOCATION_PERMISSION_REQUEST_CODE);
+                    Toast.makeText(this, "Location permission required. Please try saving again.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                startLocationUpdates();
+                if (currentLocation != null) {
+                    moodToEdit.setLocation(currentLocation.getLatitude(), currentLocation.getLongitude());
+                } else {
+                    Toast.makeText(this, "Acquiring location, please try again in a few seconds.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+            // If a new image was selected, upload it; otherwise, update mood directly.
             if (imageUri != null) {
                 uploadImageAndSaveMood(moodToEdit);
             } else {
@@ -277,6 +337,58 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
             Toast.makeText(EditDeleteMoodActivity.this,
                     "Error loading mood: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         });
+    }
+
+    // Starts location updates.
+    private void startLocationUpdates() {
+        if (!requestingLocationUpdates) {
+            requestingLocationUpdates = true;
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                            != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
+        }
+    }
+
+    // Stops location updates.
+    private void stopLocationUpdates() {
+        if (requestingLocationUpdates) {
+            fusedLocationClient.removeLocationUpdates(locationCallback);
+            requestingLocationUpdates = false;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // If geolocation is enabled, start location updates.
+        if (geolocationSwitch.isChecked()) {
+            startLocationUpdates();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopLocationUpdates();
+    }
+
+    // Handle location permission results.
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Location permission granted. Please save the mood again.", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Location permission denied.", Toast.LENGTH_SHORT).show();
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     // Returns the spinner index for a given social situation.
