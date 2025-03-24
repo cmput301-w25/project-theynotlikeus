@@ -95,7 +95,7 @@ public class HomeMapFrag extends Fragment implements OnMapReadyCallback {
         }
 
         // Setup the community map button.
-        ImageButton btnCommunity = view.findViewById(R.id.button_toCommunityMap);
+        ImageButton btnCommunity = view.findViewById(R.id.button_MapUserFrag_toCommunityMap);
         btnCommunity.setOnClickListener(v -> {
             if (currentLocation != null) {
                 Intent intent = new Intent(getActivity(), CommunityMapActivity.class);
