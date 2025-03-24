@@ -10,14 +10,14 @@ import java.util.Date;
  *
  * Purpose:
  * - Encapsulates details of a user's mood entry, including mood state, trigger, social situation,
- *   reason, photo, location, and username.
+ *   photo, location, and username.
  * - Provides a no-argument constructor for Firestore deserialization.
  * - Contains getters and setters for each property.
  * - Includes additional metadata such as a document ID for Firestore reference.
  */
 public class Mood implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+
 
     /**
      * Enumeration for the mood state.
@@ -38,7 +38,7 @@ public class Mood implements Serializable {
     private MoodState moodState;
     private String trigger;
     private SocialSituation socialSituation;
-    private String reason;
+
     //private byte[] photo;
     private String photoUrl;
     private byte[] photo;
@@ -282,7 +282,6 @@ public class Mood implements Serializable {
                 ", moodState=" + moodState +
                 ", trigger='" + trigger + '\'' +
                 ", socialSituation=" + socialSituation +
-                ", reason='" + reason + '\'' +
                 ", photo=" + (photoUrl != null ? "present" : "none") +
                 ", location=" + (latitude != null && longitude != null ? "(" + latitude + ", " + longitude + ")" : "none") +
                 '}';
