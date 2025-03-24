@@ -34,6 +34,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A fragment that displays a map showing mood markers based on the current user's mood events.
+ * The user’s location is retrieved, and the map is updated with markers representing their mood events.
+ * The fragment allows the user to navigate to a community map by clicking a button.
+ *
+ */
 public class HomeMapFrag extends Fragment implements OnMapReadyCallback {
 
     private static final String TAG = "HomeMapFrag";

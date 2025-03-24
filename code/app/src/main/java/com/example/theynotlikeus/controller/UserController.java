@@ -5,6 +5,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.auth.FirebaseAuth;
 
+/**
+ * Controller handles CRUD operations for user objects in the Firestore database.
+ */
 public class UserController extends FirebaseController {
 
     private FirebaseFirestore db;
