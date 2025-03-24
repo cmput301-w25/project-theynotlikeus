@@ -2,6 +2,7 @@ package com.example.theynotlikeus.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +11,13 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.SearchView.OnQueryTextListener;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,11 +33,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-/**
- * A fragment that displays the logged-in user's mood events.
- *
- * This fragment loads mood events from Firebase Firestore and allows the user to filter them.
- */
 public class HomeMyMoodsFrag extends Fragment {
 
     private String username;
@@ -85,7 +84,7 @@ public class HomeMyMoodsFrag extends Fragment {
         });
 
         SearchView searchView = view.findViewById(R.id.searchView_HomeMyMoodsFragment);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchView.setOnQueryTextListener(new OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 filterTrigger = query;
@@ -107,10 +106,10 @@ public class HomeMyMoodsFrag extends Fragment {
         userRecyclerViewAdapter = new UserRecyclerViewAdapter(getContext(), userMoodList);
         userRecyclerView.setAdapter(userRecyclerViewAdapter);
 
-        // Updated: Pass the entire Mood object instead of just its ID
+        // Pass the entire Mood object when clicking an item.
         userRecyclerViewAdapter.setOnItemClickListener(mood -> {
             Intent intent = new Intent(getActivity(), MoodEventDetailsActivity.class);
-            intent.putExtra("mood", mood);  // mood must be Serializable
+            intent.putExtra("mood", mood);  // mood must implement Serializable
             startActivity(intent);
         });
 
@@ -134,6 +133,7 @@ public class HomeMyMoodsFrag extends Fragment {
 
     /**
      * Retrieves and filters the user's moods using MoodController.
+     * This method excludes moods that are pending admin review.
      */
     private void loadMoodsFromFirebase() {
         Log.d("HomeMyMoodsFrag", "Loading moods for username: '" + username + "'");
@@ -142,6 +142,11 @@ public class HomeMyMoodsFrag extends Fragment {
                     List<Mood> filteredMoods = new ArrayList<>();
 
                     for (Mood mood : moods) {
+                        // Exclude moods that are pending review.
+                        if (mood.isPendingReview()) {
+                            continue;
+                        }
+
                         boolean includeMood = true;
 
                         if (filterRecentweek) {

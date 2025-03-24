@@ -9,7 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.model.Mood;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class ApproveMoodAdapter extends RecyclerView.Adapter<ApproveMoodAdapter.MoodViewHolder> {
 
@@ -21,6 +23,8 @@ public class ApproveMoodAdapter extends RecyclerView.Adapter<ApproveMoodAdapter.
 
     private List<Mood> moodList;
     private OnMoodActionListener actionListener;
+    // Date formatter to format the mood event date/time.
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm a", Locale.getDefault());
 
     public ApproveMoodAdapter(List<Mood> moodList, OnMoodActionListener actionListener) {
         this.moodList = moodList;
@@ -52,6 +56,14 @@ public class ApproveMoodAdapter extends RecyclerView.Adapter<ApproveMoodAdapter.
         }
         holder.moodTextView.setText(moodDescription);
 
+        // Format and set the date/time if available.
+        if (mood.getDateTime() != null) {
+            String formattedDate = dateFormat.format(mood.getDateTime());
+            holder.dateTimeTextView.setText(formattedDate);
+        } else {
+            holder.dateTimeTextView.setText("Unknown date");
+        }
+
         // Set click listeners for the buttons.
         holder.approveButton.setOnClickListener(v -> {
             if (actionListener != null) {
@@ -80,6 +92,7 @@ public class ApproveMoodAdapter extends RecyclerView.Adapter<ApproveMoodAdapter.
     static class MoodViewHolder extends RecyclerView.ViewHolder {
         TextView usernameTextView;
         TextView moodTextView;
+        TextView dateTimeTextView;
         Button approveButton;
         Button deleteButton;
 
@@ -87,6 +100,7 @@ public class ApproveMoodAdapter extends RecyclerView.Adapter<ApproveMoodAdapter.
             super(itemView);
             usernameTextView = itemView.findViewById(R.id.textView_username);
             moodTextView = itemView.findViewById(R.id.textView_moodText);
+            dateTimeTextView = itemView.findViewById(R.id.textView_dateTime); // Make sure this ID exists in your layout.
             approveButton = itemView.findViewById(R.id.button_approve);
             deleteButton = itemView.findViewById(R.id.button_delete);
         }

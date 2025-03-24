@@ -38,6 +38,16 @@
             android:textColor="@color/white"
             android:textSize="14sp"
             android:layout_marginTop="4dp" />
+
+        <TextView
+            android:id="@+id/textView_dateTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Date and Time"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:layout_marginTop="4dp" />
+
     </LinearLayout>
 
     <!-- Container for Approve and Delete buttons -->

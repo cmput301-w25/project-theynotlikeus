@@ -6,17 +6,21 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Switch;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.adapter.ApproveMoodAdapter;
 import com.example.theynotlikeus.controller.MoodController;
 import com.example.theynotlikeus.model.Mood;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class AdminActivity extends AppCompatActivity {
@@ -60,7 +64,6 @@ public class AdminActivity extends AppCompatActivity {
             dialogFragment.show(getSupportFragmentManager(), "TriggerWordsDialog");
         });
 
-
         // Adjust layout for system insets.
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -97,9 +100,17 @@ public class AdminActivity extends AppCompatActivity {
         moodsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         moodsRecyclerView.setAdapter(adapter);
 
-        // Load all moods from Firestore.
+        // Load all moods from Firestore, filter for pending review, and sort most recent first.
         moodController.getAllMoods(moods -> {
-            runOnUiThread(() -> adapter.updateMoodList(moods));
+            List<Mood> pendingMoods = new ArrayList<>();
+            for (Mood mood : moods) {
+                if (mood.isPendingReview()) {
+                    pendingMoods.add(mood);
+                }
+            }
+            // Sort pending moods in descending order (most recent first).
+            Collections.sort(pendingMoods, (m1, m2) -> m2.getDateTime().compareTo(m1.getDateTime()));
+            runOnUiThread(() -> adapter.updateMoodList(pendingMoods));
         }, exception -> {
             runOnUiThread(() -> Toast.makeText(AdminActivity.this,
                     "Error loading moods: " + exception.getMessage(), Toast.LENGTH_SHORT).show());
