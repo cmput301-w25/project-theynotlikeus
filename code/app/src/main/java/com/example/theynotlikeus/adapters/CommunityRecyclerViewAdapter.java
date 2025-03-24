@@ -85,12 +85,12 @@ public class CommunityRecyclerViewAdapter
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             //instantiating the items in the xml file
-            moodIconImageView = itemView.findViewById(R.id.imageView_itemCommunity_moodicon);
-            usernameTextView = itemView.findViewById(R.id.textView_itemCommunity_username);
-            moodStateTextView = itemView.findViewById(R.id.textView_itemCommunity_moodtitle);
-            triggerTextView   = itemView.findViewById(R.id.textView_itemCommunity_trigger);
-            dateTextView      = itemView.findViewById(R.id.textView_itemCommunity_date);
-            socialSituation   = itemView.findViewById(R.id.textView_itemCommunity_socialsituation);
+            moodIconImageView = itemView.findViewById(R.id.imageView_fragmentItemCommunity_moodicon);
+            usernameTextView = itemView.findViewById(R.id.textView_fragmentItemCommunity_username);
+            moodStateTextView = itemView.findViewById(R.id.textView_fragmentItemCommunity_moodtitle);
+            triggerTextView   = itemView.findViewById(R.id.textView_fragmentItemCommunity_trigger);
+            dateTextView      = itemView.findViewById(R.id.textView_fragmentItemCommunity_date);
+            socialSituation   = itemView.findViewById(R.id.textView_fragmentItemCommunity_socialsituation);
         }
 
         /**

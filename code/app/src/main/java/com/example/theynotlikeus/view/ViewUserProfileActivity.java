@@ -36,8 +36,8 @@ public class ViewUserProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_followed);
 
         //Initialize UI components and Firestore
-        usernameTextView=findViewById(R.id.textView_UserProfileDetailsFrag_Followed_Username);
-        followButton=findViewById(R.id.button_user_followed_follow);
+        usernameTextView=findViewById(R.id.textView_fragmentUserFollowed_Username);
+        followButton=findViewById(R.id.button_fragmentUserFollowed_follow);
         db=FirebaseFirestore.getInstance();
 
         //Retrieve usernames passed through intent
@@ -51,7 +51,7 @@ public class ViewUserProfileActivity extends AppCompatActivity {
         checkFollowRequestStatus();
 
         //Back button returns to previous activity
-        findViewById(R.id.button_UserProfileDetailsFrag_Followed_backbutton).setOnClickListener(v -> finish());
+        findViewById(R.id.button_fragmentUserFollowed_backbutton).setOnClickListener(v -> finish());
 
         //Follow button click sends a follow request
         followButton.setOnClickListener(v -> sendFollowRequest());

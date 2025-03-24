@@ -8,9 +8,9 @@
     android:background="@color/black_background"
     tools:context=".view.HomeMyMoodsFrag">
 
-    <!-- Back Button -->
+
     <ImageButton
-        android:id="@+id/button_UserProfileDetailsFrag_Followed_backbutton"
+        android:id="@+id/button_fragmentUserFollowed_backbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/black_background"
@@ -20,17 +20,17 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button_user_followed_follow"
+        android:id="@+id/button_fragmentUserFollowed_follow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/primary_blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_UserProfileDetailsFrag_Followed_Username" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_fragmentUserFollowed_Username" />
 
-    <!-- Username at the top, centered and larger -->
+
     <TextView
-        android:id="@+id/textView_UserProfileDetailsFrag_Followed_Username"
+        android:id="@+id/textView_fragmentUserFollowed_Username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
@@ -42,14 +42,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- RecyclerView for User Moods -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview_UserProfileDetailsFrag_Followed_usermoodsrecyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_user_followed_follow" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

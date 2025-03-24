@@ -111,7 +111,7 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.My
          */
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            textViewUsername = itemView.findViewById(R.id.textview_FragmentFollowerLayout_username);
+            textViewUsername = itemView.findViewById(R.id.textview_FragmentSearchUserLayout_username);
         }
     }
 }
