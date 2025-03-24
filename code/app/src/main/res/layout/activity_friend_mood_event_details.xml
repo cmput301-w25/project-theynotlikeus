@@ -168,7 +168,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/view_ActivityFriendMoodEventDetails_moodeventcontainer"
         app:layout_constraintEnd_toEndOf="@+id/view_ActivityFriendMoodEventDetails_moodeventcontainer"
         app:layout_constraintStart_toStartOf="@+id/view_ActivityFriendMoodEventDetails_moodeventcontainer"
-        app:layout_constraintTop_toBottomOf="@+id/imageview_placeholder" />
+    />
 
     <ImageView
         android:id="@+id/imageview_ActivityFriendMoodEventDetails_uploadedphoto"
@@ -178,22 +178,10 @@
         android:background="@android:color/darker_gray"
         android:backgroundTint="@color/black_background"
         android:scaleType="centerCrop"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/button_ActivityFriendMoodEventDetails_commentButton"
         app:layout_constraintEnd_toEndOf="@+id/view_ActivityFriendMoodEventDetails_moodeventcontainer"
         app:layout_constraintStart_toStartOf="@+id/view_ActivityFriendMoodEventDetails_moodeventcontainer"
         app:layout_constraintTop_toBottomOf="@+id/textview_ActivityFriendMoodEventDetails_location" />
 
-    <ImageView
-        android:id="@+id/imageview_placeholder"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="@color/black_background"
-        android:contentDescription="Image placeholder"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_placeholder"
-        app:layout_constraintEnd_toEndOf="@+id/view_ActivityFriendMoodEventDetails_moodeventcontainer"
-        app:layout_constraintStart_toStartOf="@+id/view_ActivityFriendMoodEventDetails_moodeventcontainer"
-        app:layout_constraintTop_toBottomOf="@+id/textview_ActivityFriendMoodEventDetails_location"
-        app:layout_constraintBottom_toTopOf="@id/button_ActivityFriendMoodEventDetails_commentButton"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
