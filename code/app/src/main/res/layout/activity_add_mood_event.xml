@@ -41,18 +41,18 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageview_mood_photo"
+        android:id="@+id/imageview_ActivityAddMoodEvent_photo"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:contentDescription="@string/mood_image"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@id/button_select_photo"
+        app:layout_constraintBottom_toTopOf="@id/button_ActivityAddMoodEvent_selectPhoto"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textview_ActivityAddMoodEvent_title" />
 
     <Button
-        android:id="@+id/button_select_photo"
+        android:id="@+id/button_ActivityAddMoodEvent_selectPhoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/select_photo"
@@ -60,7 +60,7 @@
         app:layout_constraintBottom_toTopOf="@id/textview_ActivityAddMoodEvent_selectimagetext"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageview_mood_photo" />
+        app:layout_constraintTop_toBottomOf="@id/imageview_ActivityAddMoodEvent_photo" />
 
     <TextView
         android:id="@+id/textview_ActivityAddMoodEvent_selectimagetext"
@@ -70,7 +70,7 @@
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_select_photo" />
+        app:layout_constraintTop_toBottomOf="@+id/button_ActivityAddMoodEvent_selectPhoto" />
 
     <Spinner
 
