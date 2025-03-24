@@ -110,8 +110,8 @@ public class AddMoodEventActivity extends AppCompatActivity {
         Spinner moodSpinner=findViewById(R.id.spinner_ActivityAddMoodEvent_currentmood);
         EditText triggerEditText=findViewById(R.id.edittext_ActivityAddMoodEvent_trigger);
         Spinner socialSituationSpinner=findViewById(R.id.spinner_ActivityAddMoodEvent_socialsituation);
-        addImageButton=findViewById(R.id.button_select_photo);
-        imagePreview=findViewById(R.id.imageview_mood_photo);
+        addImageButton=findViewById(R.id.button_ActivityAddMoodEvent_selectPhoto);
+        imagePreview=findViewById(R.id.imageview_ActivityAddMoodEvent_photo);
         Button saveButton=findViewById(R.id.button_ActivityAddMoodEvent_save);
         togglePublic=findViewById(R.id.switch_ActivityAddMoodEvent_privacy);
         toggleGeolocation=findViewById(R.id.switch_ActivityAddMoodEvent_geolocation);
