@@ -87,20 +87,43 @@ public class AdminActivity extends AppCompatActivity {
         adapter = new ApproveMoodAdapter(moodList, new ApproveMoodAdapter.OnMoodActionListener() {
             @Override
             public void onApprove(Mood mood) {
-                // Add your approval logic here.
-                Toast.makeText(AdminActivity.this, "Approved mood from " + mood.getUsername(), Toast.LENGTH_SHORT).show();
+                // Set pendingReview to false (approve the mood).
+                mood.setPendingReview(false);
+                moodController.updateMood(mood, () -> {
+                    runOnUiThread(() -> {
+                        Toast.makeText(AdminActivity.this, "Approved mood from " + mood.getUsername(), Toast.LENGTH_SHORT).show();
+                        // Reload the pending moods.
+                        loadPendingMoods();
+                    });
+                }, e -> runOnUiThread(() ->
+                        Toast.makeText(AdminActivity.this, "Error approving mood: " + e.getMessage(), Toast.LENGTH_SHORT).show()));
             }
 
             @Override
             public void onDelete(Mood mood) {
-                // Add your deletion logic here.
-                Toast.makeText(AdminActivity.this, "Deleted mood from " + mood.getUsername(), Toast.LENGTH_SHORT).show();
+                // Delete the mood.
+                moodController.deleteMood(mood.getDocId(), () -> {
+                    runOnUiThread(() -> {
+                        Toast.makeText(AdminActivity.this, "Deleted mood from " + mood.getUsername(), Toast.LENGTH_SHORT).show();
+                        // Reload the pending moods.
+                        loadPendingMoods();
+                    });
+                }, e -> runOnUiThread(() ->
+                        Toast.makeText(AdminActivity.this, "Error deleting mood: " + e.getMessage(), Toast.LENGTH_SHORT).show()));
             }
         });
         moodsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         moodsRecyclerView.setAdapter(adapter);
 
-        // Load all moods from Firestore, filter for pending review, and sort most recent first.
+        // Load pending moods.
+        loadPendingMoods();
+    }
+
+    /**
+     * Loads moods from Firestore that are pending review (pendingReview == true)
+     * and sorts them in descending order (most recent first).
+     */
+    private void loadPendingMoods() {
         moodController.getAllMoods(moods -> {
             List<Mood> pendingMoods = new ArrayList<>();
             for (Mood mood : moods) {
@@ -108,13 +131,11 @@ public class AdminActivity extends AppCompatActivity {
                     pendingMoods.add(mood);
                 }
             }
-            // Sort pending moods in descending order (most recent first).
+            // Sort moods in descending order by date.
             Collections.sort(pendingMoods, (m1, m2) -> m2.getDateTime().compareTo(m1.getDateTime()));
             runOnUiThread(() -> adapter.updateMoodList(pendingMoods));
-        }, exception -> {
-            runOnUiThread(() -> Toast.makeText(AdminActivity.this,
-                    "Error loading moods: " + exception.getMessage(), Toast.LENGTH_SHORT).show());
-        });
+        }, exception -> runOnUiThread(() -> Toast.makeText(AdminActivity.this,
+                "Error loading moods: " + exception.getMessage(), Toast.LENGTH_SHORT).show()));
     }
 
     // Public method for other classes to check if the limit is enabled.

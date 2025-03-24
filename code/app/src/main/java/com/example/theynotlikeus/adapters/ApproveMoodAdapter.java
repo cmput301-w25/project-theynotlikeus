@@ -23,7 +23,6 @@ public class ApproveMoodAdapter extends RecyclerView.Adapter<ApproveMoodAdapter.
 
     private List<Mood> moodList;
     private OnMoodActionListener actionListener;
-    // Date formatter to format the mood event date/time.
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm a", Locale.getDefault());
 
     public ApproveMoodAdapter(List<Mood> moodList, OnMoodActionListener actionListener) {
@@ -56,7 +55,6 @@ public class ApproveMoodAdapter extends RecyclerView.Adapter<ApproveMoodAdapter.
         }
         holder.moodTextView.setText(moodDescription);
 
-        // Format and set the date/time if available.
         if (mood.getDateTime() != null) {
             String formattedDate = dateFormat.format(mood.getDateTime());
             holder.dateTimeTextView.setText(formattedDate);
