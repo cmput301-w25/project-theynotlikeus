@@ -5,6 +5,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+/**
+ * A controller that handles CRUD operations of request objects in the Firestore.
+ */
 public class FollowRequestController extends FirebaseController {
 
     private final FirebaseFirestore db;

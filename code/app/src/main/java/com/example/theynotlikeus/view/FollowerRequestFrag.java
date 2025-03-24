@@ -24,6 +24,11 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Fragment to display a list of follow requests where the current user is the followee.
+ * The fragment allows the user to view incoming follow requests and navigate to the
+ * "SearchUserActivity" to search for other users to follow.
+ */
 public class FollowerRequestFrag extends Fragment {
 
     private FirebaseFirestore db;

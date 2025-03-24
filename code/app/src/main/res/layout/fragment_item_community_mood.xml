@@ -10,73 +10,70 @@
     android:elevation="4dp"
     android:padding="12dp">
 
-    <!-- Mood icon -->
+
     <ImageView
-        android:id="@+id/imageView_itemCommunity_moodicon"
+        android:id="@+id/imageView_fragmentItemCommunity_moodicon"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginStart="4dp"
-        android:layout_marginEnd="10dp"
         android:src="@drawable/ic_happy_emoticon"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.275" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Username (new addition) -->
+
     <TextView
-        android:id="@+id/textView_itemCommunity_username"
+        android:id="@+id/textView_fragmentItemCommunity_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Username"
         android:textColor="@android:color/white"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/imageView_itemCommunity_moodicon"
-        app:layout_constraintTop_toTopOf="@id/imageView_itemCommunity_moodicon"
+        app:layout_constraintStart_toEndOf="@id/imageView_fragmentItemCommunity_moodicon"
+        app:layout_constraintTop_toTopOf="@id/imageView_fragmentItemCommunity_moodicon"
         android:layout_marginStart="8dp" />
 
-    <!-- Mood title -->
+
     <TextView
-        android:id="@+id/textView_itemCommunity_moodtitle"
+        android:id="@+id/textView_fragmentItemCommunity_moodtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Mood Title"
         android:textColor="@android:color/white"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/imageView_itemCommunity_moodicon"
-        app:layout_constraintTop_toBottomOf="@id/textView_itemCommunity_username"
+        app:layout_constraintStart_toEndOf="@id/imageView_fragmentItemCommunity_moodicon"
+        app:layout_constraintTop_toBottomOf="@id/textView_fragmentItemCommunity_username"
         android:layout_marginStart="8dp" />
 
-    <!-- Trigger (short description) -->
+
     <TextView
-        android:id="@+id/textView_itemCommunity_trigger"
+        android:id="@+id/textView_fragmentItemCommunity_trigger"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Trigger description"
         android:textColor="@android:color/white"
-        app:layout_constraintStart_toEndOf="@id/imageView_itemCommunity_moodicon"
-        app:layout_constraintTop_toBottomOf="@id/textView_itemCommunity_moodtitle"
+        app:layout_constraintStart_toEndOf="@id/imageView_fragmentItemCommunity_moodicon"
+        app:layout_constraintTop_toBottomOf="@id/textView_fragmentItemCommunity_moodtitle"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp" />
 
-    <!-- Social situation -->
+
     <TextView
-        android:id="@+id/textView_itemCommunity_socialsituation"
+        android:id="@+id/textView_fragmentItemCommunity_socialsituation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Social Situation"
         android:textColor="@android:color/white"
         android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@id/imageView_itemCommunity_moodicon"
-        app:layout_constraintTop_toBottomOf="@id/textView_itemCommunity_trigger"
+        app:layout_constraintStart_toEndOf="@id/imageView_fragmentItemCommunity_moodicon"
+        app:layout_constraintTop_toBottomOf="@id/textView_fragmentItemCommunity_trigger"
         android:layout_marginStart="8dp" />
 
-    <!-- Date/time -->
+
     <TextView
-        android:id="@+id/textView_itemCommunity_date"
+        android:id="@+id/textView_fragmentItemCommunity_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Feb 01, 2025"

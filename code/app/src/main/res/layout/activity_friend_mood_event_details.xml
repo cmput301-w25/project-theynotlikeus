@@ -65,135 +65,138 @@
         app:layout_constraintStart_toEndOf="@id/imagebutton_ActivityFriendMoodEventDetails_backbutton"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <View
-        android:id="@+id/view_ActivityFriendMoodEventDetails_moodeventcontainer"
-        android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="12dp"
-        android:background="#282727"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview_ActivityFriendMoodEventDetails_title" />
-
-    <TextView
-        android:id="@+id/textview_ActivityFriendMoodEventDetails_username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:hint="@string/username"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#898888"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/imageview_ActivityFriendMoodEventDetails_moodimage"
-        app:layout_constraintTop_toTopOf="@+id/imageview_ActivityFriendMoodEventDetails_moodimage" />
+        app:layout_constraintTop_toBottomOf="@+id/textview_ActivityFriendMoodEventDetails_title">
 
 
-    <TextView
-        android:id="@+id/textview_ActivityFriendMoodEventDetails_moodtype"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="32dp"
-        android:hint="@string/happy"
-        android:textColor="#D1D1D1"
-        android:textColorHint="#898888"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/imageview_ActivityFriendMoodEventDetails_moodimage"
-        app:layout_constraintTop_toTopOf="@+id/imageview_ActivityFriendMoodEventDetails_moodimage" />
+        <View
+            android:id="@+id/view_ActivityFriendMoodEventDetails_moodeventcontainer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="-16dp"
+            android:background="#282727"
+            app:layout_constraintBottom_toBottomOf="@+id/button_ActivityFriendMoodEventDetails_commentButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
-    <ImageView
-        android:id="@+id/imageview_ActivityFriendMoodEventDetails_moodimage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:adjustViewBounds="true"
-        android:maxWidth="50dp"
-        android:maxHeight="50dp"
-        android:scaleType="fitXY"
-        app:layout_constraintStart_toStartOf="@+id/view_ActivityFriendMoodEventDetails_moodeventcontainer"
-        app:layout_constraintTop_toTopOf="@+id/view_ActivityFriendMoodEventDetails_moodeventcontainer"
-        app:srcCompat="@drawable/ic_happy_emoticon" />
+        <TextView
+            android:id="@+id/textview_ActivityFriendMoodEventDetails_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:hint="@string/username"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#898888"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/imageview_ActivityFriendMoodEventDetails_moodimage"
+            app:layout_constraintTop_toTopOf="@+id/imageview_ActivityFriendMoodEventDetails_moodimage" />
 
-    <TextView
-        android:id="@+id/textview_ActivityFriendMoodEventDetails_socialsituation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:hint="@string/social_situation"
-        android:textColorHint="#898888"
-        app:layout_constraintStart_toStartOf="@+id/imageview_ActivityFriendMoodEventDetails_moodimage"
-        app:layout_constraintTop_toBottomOf="@+id/imageview_ActivityFriendMoodEventDetails_moodimage" />
 
-    <TextView
-        android:id="@+id/textview_ActivityFriendMoodEventDetails_dateandtime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="@string/date_and_time"
-        android:textColorHint="#898888"
-        app:layout_constraintStart_toStartOf="@+id/textview_ActivityFriendMoodEventDetails_triggervalue"
-        app:layout_constraintTop_toBottomOf="@+id/textview_ActivityFriendMoodEventDetails_triggervalue" />
+        <TextView
+            android:id="@+id/textview_ActivityFriendMoodEventDetails_moodtype"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="32dp"
+            android:hint="@string/happy"
+            android:textColor="#D1D1D1"
+            android:textColorHint="#898888"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/imageview_ActivityFriendMoodEventDetails_moodimage"
+            app:layout_constraintTop_toTopOf="@+id/imageview_ActivityFriendMoodEventDetails_moodimage" />
 
-    <TextView
-        android:id="@+id/textview_ActivityFriendMoodEventDetails_triggervalue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="@string/reason_value"
-        android:textColorHint="#898888"
-        app:layout_constraintStart_toStartOf="@+id/textview_ActivityFriendMoodEventDetails_socialsituation"
-        app:layout_constraintTop_toBottomOf="@+id/textview_ActivityFriendMoodEventDetails_socialsituation" />
+        <ImageView
+            android:id="@+id/imageview_ActivityFriendMoodEventDetails_moodimage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:adjustViewBounds="true"
+            android:maxWidth="50dp"
+            android:maxHeight="50dp"
+            android:scaleType="fitXY"
+            app:layout_constraintStart_toStartOf="@+id/view_ActivityFriendMoodEventDetails_moodeventcontainer"
+            app:layout_constraintTop_toTopOf="@+id/view_ActivityFriendMoodEventDetails_moodeventcontainer"
+            app:srcCompat="@drawable/ic_happy_emoticon" />
 
-    <TextView
-        android:id="@+id/textview_ActivityFriendMoodEventDetails_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="@string/location_unknown"
-        android:textColorHint="#898888"
-        app:layout_constraintStart_toStartOf="@+id/textview_ActivityFriendMoodEventDetails_dateandtime"
-        app:layout_constraintTop_toBottomOf="@+id/textview_ActivityFriendMoodEventDetails_dateandtime" />
+        <TextView
+            android:id="@+id/textview_ActivityFriendMoodEventDetails_socialsituation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="@string/social_situation"
+            android:textColorHint="#898888"
+            app:layout_constraintStart_toStartOf="@+id/imageview_ActivityFriendMoodEventDetails_moodimage"
+            app:layout_constraintTop_toBottomOf="@+id/imageview_ActivityFriendMoodEventDetails_moodimage" />
 
-    <Button
-        android:id="@+id/button_ActivityFriendMoodEventDetails_commentButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#22238B"
+        <TextView
+            android:id="@+id/textview_ActivityFriendMoodEventDetails_dateandtime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="@string/date_and_time"
+            android:textColorHint="#898888"
+            app:layout_constraintStart_toStartOf="@+id/textview_ActivityFriendMoodEventDetails_triggervalue"
+            app:layout_constraintTop_toBottomOf="@+id/textview_ActivityFriendMoodEventDetails_triggervalue" />
 
-        android:text="Comments"
-        app:layout_constraintBottom_toBottomOf="@+id/view_ActivityFriendMoodEventDetails_moodeventcontainer"
-        app:layout_constraintEnd_toEndOf="@+id/view_ActivityFriendMoodEventDetails_moodeventcontainer"
-        app:layout_constraintStart_toStartOf="@+id/view_ActivityFriendMoodEventDetails_moodeventcontainer"
-        app:layout_constraintTop_toBottomOf="@+id/imageview_placeholder" />
+        <TextView
+            android:id="@+id/textview_ActivityFriendMoodEventDetails_triggervalue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:hint="@string/reason_value"
+            android:textColorHint="#898888"
+            app:layout_constraintEnd_toEndOf="@+id/view_ActivityFriendMoodEventDetails_moodeventcontainer"
+            app:layout_constraintStart_toStartOf="@+id/textview_ActivityFriendMoodEventDetails_socialsituation"
+            app:layout_constraintTop_toBottomOf="@+id/textview_ActivityFriendMoodEventDetails_socialsituation" />
 
-    <ImageView
-        android:id="@+id/imageview_ActivityFriendMoodEventDetails_uploadedphoto"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="16dp"
-        android:background="@android:color/darker_gray"
-        android:backgroundTint="@color/black_background"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@+id/button_ActivityFriendMoodEventDetails_commentButton"
-        app:layout_constraintEnd_toEndOf="@+id/view_ActivityFriendMoodEventDetails_moodeventcontainer"
-        app:layout_constraintStart_toStartOf="@+id/view_ActivityFriendMoodEventDetails_moodeventcontainer"
-        app:layout_constraintTop_toBottomOf="@+id/textview_ActivityFriendMoodEventDetails_location" />
+        <TextView
+            android:id="@+id/textview_ActivityFriendMoodEventDetails_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/location_unknown"
+            android:textColorHint="#898888"
+            app:layout_constraintStart_toStartOf="@+id/textview_ActivityFriendMoodEventDetails_dateandtime"
+            app:layout_constraintTop_toBottomOf="@+id/textview_ActivityFriendMoodEventDetails_dateandtime" />
 
-    <ImageView
-        android:id="@+id/imageview_placeholder"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="@color/black_background"
-        android:contentDescription="Image placeholder"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_placeholder"
-        app:layout_constraintEnd_toEndOf="@+id/view_ActivityFriendMoodEventDetails_moodeventcontainer"
-        app:layout_constraintStart_toStartOf="@+id/view_ActivityFriendMoodEventDetails_moodeventcontainer"
-        app:layout_constraintTop_toBottomOf="@+id/textview_ActivityFriendMoodEventDetails_location"
-        app:layout_constraintBottom_toTopOf="@id/button_ActivityFriendMoodEventDetails_commentButton"/>
+        <Button
+            android:id="@+id/button_ActivityFriendMoodEventDetails_commentButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#22238B"
+            android:text="Comments"
+            app:layout_constraintEnd_toEndOf="@+id/view_ActivityFriendMoodEventDetails_moodeventcontainer"
+            app:layout_constraintStart_toStartOf="@+id/view_ActivityFriendMoodEventDetails_moodeventcontainer"
+            app:layout_constraintTop_toBottomOf="@id/imageview_ActivityFriendMoodEventDetails_uploadedphoto" />
+
+        <ImageView
+            android:id="@+id/imageview_ActivityFriendMoodEventDetails_uploadedphoto"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/darker_gray"
+            android:backgroundTint="@color/black_background"
+            android:scaleType="centerCrop"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@+id/button_ActivityFriendMoodEventDetails_commentButton"
+            app:layout_constraintEnd_toEndOf="@+id/view_ActivityFriendMoodEventDetails_moodeventcontainer"
+            app:layout_constraintStart_toStartOf="@+id/view_ActivityFriendMoodEventDetails_moodeventcontainer"
+            app:layout_constraintTop_toBottomOf="@+id/textview_ActivityFriendMoodEventDetails_location" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

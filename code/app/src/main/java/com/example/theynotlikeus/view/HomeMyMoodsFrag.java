@@ -85,6 +85,7 @@ public class HomeMyMoodsFrag extends Fragment {
         });
 
         SearchView searchView = view.findViewById(R.id.searchView_HomeMyMoodsFragment);
+        searchView.setOnClickListener(v -> searchView.setIconified(false));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

@@ -45,6 +45,8 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 
+
+
     // App dependencies
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -56,7 +58,6 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation("com.google.firebase:firebase-storage:20.2.1")
     implementation(libs.play.services.location)
-    implementation("com.google.android.material:material:1.12.0")
 
     // Google map
     implementation ("com.google.android.gms:play-services-maps:18.1.0")
