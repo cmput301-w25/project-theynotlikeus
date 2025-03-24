@@ -12,10 +12,10 @@ import android.widget.CheckBox;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.SearchView.OnQueryTextListener;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.adapters.CommunityRecyclerViewAdapter;
 import com.example.theynotlikeus.controller.MoodController;
@@ -24,7 +24,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -97,8 +96,7 @@ public class CommunityFrag extends Fragment {
         });
 
         // 4) Setup SearchView for triggers.
-        searchViewCommunity.setOnClickListener(v -> searchViewCommunity.setIconified(false));
-        searchViewCommunity.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchViewCommunity.setOnQueryTextListener(new OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 filterTriggerText = query;
@@ -125,7 +123,9 @@ public class CommunityFrag extends Fragment {
 
     /**
      * Loads the current user's friend list from Firestore and, for each friend,
-     * retrieves their **public** mood events using the MoodController.
+     * retrieves their public mood events using the MoodController.
+     * For each friend, only the top 3 most recent mood events are kept.
+     * Here we only check if the mood event is public.
      */
     private void loadFriendsMoods() {
         String currentUser = requireActivity().getIntent().getStringExtra("username");
@@ -134,7 +134,7 @@ public class CommunityFrag extends Fragment {
         db.collection("follow")
                 .whereEqualTo("follower", currentUser)
                 .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
+                .addOnSuccessListener((QuerySnapshot queryDocumentSnapshots) -> {
                     List<String> friendList = new ArrayList<>();
                     for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
                         String friend = doc.getString("followee");
@@ -143,12 +143,27 @@ public class CommunityFrag extends Fragment {
                         }
                     }
                     Log.d(TAG, "Found friends: " + friendList.toString());
-                    // For each friend, fetch their **public** moods.
+                    // For each friend, fetch their public mood events.
                     MoodController moodController = new MoodController();
                     for (String friend : friendList) {
-                        moodController.getPublicMoodsByUser(friend,
+                        moodController.getMoodsByUser(friend,
                                 moods -> {
-                                    allCommunityMoods.addAll(moods);
+                                    if (moods == null || moods.isEmpty()) {
+                                        Log.d(TAG, "No public moods for friend: " + friend);
+                                        return;
+                                    }
+                                    // Sort moods in descending order by date.
+                                    Collections.sort(moods, (m1, m2) -> m2.getDateTime().compareTo(m1.getDateTime()));
+                                    // Take only the top 3 most recent moods.
+                                    List<Mood> topMoods = moods.size() > 3 ? moods.subList(0, 3) : moods;
+                                    for (Mood mood : topMoods) {
+                                        // Check that the mood is public.
+                                        if (mood.isPublic()) {
+                                            allCommunityMoods.add(mood);
+                                        } else {
+                                            Log.d(TAG, "Skipping mood for friend " + friend + " because it's not public.");
+                                        }
+                                    }
                                     applyFilters();
                                 },
                                 e -> Log.e(TAG, "Error fetching moods for friend " + friend + ": " + e.getMessage())
@@ -157,7 +172,6 @@ public class CommunityFrag extends Fragment {
                 })
                 .addOnFailureListener(e -> Log.e(TAG, "Error fetching friend list: " + e.getMessage()));
     }
-
 
     /**
      * Filters and sorts the mood list from friends, then refreshes the adapter.
