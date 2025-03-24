@@ -2,6 +2,7 @@ package com.example.theynotlikeus.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ImageButton;
@@ -30,7 +31,7 @@ public class FriendMoodEventDetailsActivity extends AppCompatActivity {
     private ImageView moodImageView;
     private ImageButton backButton;
     private Button commentsButton; // Comments button
-
+    private ImageView uploadedImage;
     // Hold the passed Mood object and the logged-in user's username.
     private Mood mood;
     private String loggedInUsername; // This is the current user's username from the singleton
@@ -49,6 +50,7 @@ public class FriendMoodEventDetailsActivity extends AppCompatActivity {
         moodImageView = findViewById(R.id.imageview_ActivityFriendMoodEventDetails_moodimage);
         backButton = findViewById(R.id.imagebutton_ActivityFriendMoodEventDetails_backbutton);
         commentsButton = findViewById(R.id.button_ActivityFriendMoodEventDetails_commentButton);  // Ensure your XML has a Button with id "button4" for Comments
+        uploadedImage = findViewById(R.id.imageview_ActivityFriendMoodEventDetails_uploadedphoto);
 
         // Retrieve the full Mood object from the Intent extras.
         mood = (Mood) getIntent().getSerializableExtra("mood");
@@ -108,16 +110,14 @@ public class FriendMoodEventDetailsActivity extends AppCompatActivity {
             locationTextView.setText("Location not available");
         }
 
-        // Load the mood photo using Glide into the placeholder ImageView if a photo URL exists.
-        ImageView placeholderImageView = findViewById(R.id.imageview_placeholder);
+        // Load the mood image using Glide
         if (mood.getPhotoUrl() != null && !mood.getPhotoUrl().isEmpty()) {
             Glide.with(this)
                     .load(mood.getPhotoUrl())
                     .placeholder(R.drawable.ic_placeholder)
-                    .into(placeholderImageView);
+                    .into(uploadedImage);
         } else {
-            // Optionally, set the default placeholder image if no photo exists.
-            placeholderImageView.setImageResource(R.drawable.ic_placeholder);
+            uploadedImage.setVisibility(View.GONE);
         }
     }
 
