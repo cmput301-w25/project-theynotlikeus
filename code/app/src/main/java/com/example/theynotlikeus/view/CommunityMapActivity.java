@@ -154,6 +154,7 @@ public class CommunityMapActivity extends AppCompatActivity implements OnMapRead
                                         Log.d(TAG, "No moods for friend: " + friend);
                                     } else {
                                         // Process all moods for this friend.
+
                                         // Create a local map to track markers at the same coordinate.
                                         Map<String, Integer> locationCount = new HashMap<>();
                                         Log.d(TAG, "Friend " + friend + " has " + moods.size() + " mood(s).");
