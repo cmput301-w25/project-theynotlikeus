@@ -7,7 +7,7 @@
 
     <!-- Back Button -->
     <ImageButton
-        android:id="@+id/button_SearchUserFrag_backbutton"
+        android:id="@+id/button_SearchUserActivity_backbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/black_background"
@@ -18,24 +18,27 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.SearchView
-        android:id="@+id/searchView_SearchUserFrag"
+        android:id="@+id/searchView_SearchUserActivtiy"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_margin="16dp"
         android:layout_marginTop="36dp"
         android:background="@color/light_grey"
+        android:focusable="true"
+        android:clickable="true"
+        android:iconifiedByDefault="false"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button_SearchUserFrag_backbutton"
+        app:layout_constraintStart_toEndOf="@+id/button_SearchUserActivity_backbutton"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview_SearchUserFrag"
+        android:id="@+id/recyclerview_SearchUserActivity"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchView_SearchUserFrag" />
+        app:layout_constraintTop_toBottomOf="@id/searchView_SearchUserActivtiy" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

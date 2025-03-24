@@ -96,6 +96,8 @@ public class CommunityFrag extends Fragment {
         });
 
         // 4) Setup SearchView for triggers.
+        searchViewCommunity.setOnClickListener(v -> searchViewCommunity.setIconified(false));
+
         searchViewCommunity.setOnQueryTextListener(new OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
