@@ -6,10 +6,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,13 +77,23 @@ public class HomeMyMoodsFrag extends Fragment {
             startActivity(intent);
         });
 
-        AutoCompleteTextView autoCompleteTextView = view.findViewById(R.id.autoCompleteTextView);
+        // Mood spinner filter
+        Spinner moodSpinner = view.findViewById(R.id.moodSpinner);
         String[] filterOptions = {"All Moods", "Happiness", "Sadness", "Anger", "Surprise", "Fear", "Disgust", "Shame", "Confusion"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, filterOptions);
-        autoCompleteTextView.setAdapter(adapter);
-        autoCompleteTextView.setOnItemClickListener((parent, view1, position, id) -> {
-            filterEmotionalstate = parent.getItemAtPosition(position).toString();
-            loadMoodsFromFirebase();
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, filterOptions);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        moodSpinner.setAdapter(adapter);
+        moodSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                filterEmotionalstate = parent.getItemAtPosition(position).toString();
+                loadMoodsFromFirebase();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Optionally handle case where nothing is selected
+            }
         });
 
         SearchView searchView = view.findViewById(R.id.searchView_HomeMyMoodsFragment);

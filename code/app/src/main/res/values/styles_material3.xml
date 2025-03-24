@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Widget.Material3.TextField.OutlinedBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundMode">outline</item>
+        <item name="boxCornerRadiusTopStart">12dp</item>
+        <item name="boxCornerRadiusTopEnd">12dp</item>
+        <item name="boxCornerRadiusBottomStart">12dp</item>
+        <item name="boxCornerRadiusBottomEnd">12dp</item>
+        <item name="boxStrokeColor">?attr/colorOnSurfaceVariant</item>
+        <item name="android:textColorHint">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <!-- Custom style for a Spinner to approximate Material 3 look -->
+    <style name="Widget.Material3.Spinner" parent="Widget.AppCompat.Spinner">
+        <!-- Use a surface variant background for the dropdown popup -->
+        <item name="android:popupBackground">@color/white</item>
+        <!-- Optional: Customize text appearance -->
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+</resources>

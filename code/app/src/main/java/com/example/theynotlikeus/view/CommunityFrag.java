@@ -6,8 +6,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -71,8 +74,7 @@ public class CommunityFrag extends Fragment {
         communityRecyclerView = view.findViewById(R.id.recyclerview_CommunityFrag_users);
         recentWeekCheckBox = view.findViewById(R.id.checkBox_CommunityFrag_recentWeek);
         searchViewCommunity = view.findViewById(R.id.searchView_CommunityFrag);
-        TextInputLayout dropdownLayout = view.findViewById(R.id.community_dropdown_menu_layout);
-        communityAutoCompleteTextView = view.findViewById(R.id.community_autoCompleteTextView);
+
 
         // 2) Setup RecyclerView + adapter.
         communityRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -80,20 +82,24 @@ public class CommunityFrag extends Fragment {
         communityRecyclerView.setAdapter(communityAdapter);
 
         // 3) Setup autoCompleteTextView (emotional states).
-        String[] filterOptions = {
-                "All Moods", "HAPPINESS", "SADNESS", "ANGER", "SURPRISE", "FEAR", "DISGUST", "SHAME", "CONFUSION"
-        };
-        android.widget.ArrayAdapter<String> moodStatesAdapter =
-                new android.widget.ArrayAdapter<>(
-                        requireContext(),
-                        android.R.layout.simple_dropdown_item_1line,
-                        filterOptions
-                );
-        communityAutoCompleteTextView.setAdapter(moodStatesAdapter);
-        communityAutoCompleteTextView.setOnItemClickListener((parent, view1, position, id) -> {
-            filterEmotionalState = (String) parent.getItemAtPosition(position);
-            applyFilters();
+        Spinner moodSpinner = view.findViewById(R.id.community_moodSpinner);
+        String[] filterOptions = {"All Moods", "Happiness", "Sadness", "Anger", "Surprise", "Fear", "Disgust", "Shame", "Confusion"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, filterOptions);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        moodSpinner.setAdapter(adapter);
+        moodSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                filterEmotionalState = parent.getItemAtPosition(position).toString();
+                applyFilters();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Optionally handle case where nothing is selected
+            }
         });
+
 
         // 4) Setup SearchView for triggers.
         searchViewCommunity.setOnClickListener(v -> searchViewCommunity.setIconified(false));
