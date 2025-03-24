@@ -3,6 +3,7 @@ package com.example.theynotlikeus.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ImageButton;
@@ -29,6 +30,7 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
     ImageView moodImageView;
     ImageButton backButton;
     ImageButton editButton;
+    ImageView uploadedImage;
     Button commentButton;
     private static final int EDIT_MOOD_REQUEST = 1;
 
@@ -48,6 +50,7 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
         editButton = findViewById(R.id.imagebutton_ActivityMoodEventDetails_editbutton);
         backButton = findViewById(R.id.imagebutton_ActivityMoodEventDetails_backbutton);
         commentButton = findViewById(R.id.commentButton);
+        uploadedImage = findViewById(R.id.imageview_ActivityMoodEventDetails_uploadedphoto);
 
         // Retrieve the full Mood object from the Intent extras.
         mood = (Mood) getIntent().getSerializableExtra("mood");
@@ -120,7 +123,9 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
             Glide.with(this)
                     .load(mood.getPhotoUrl())
                     .placeholder(R.drawable.ic_placeholder)
-                    .into((ImageView) findViewById(R.id.imageview_ActivityMoodEventDetails_uploadedphoto));
+                    .into(uploadedImage);
+        } else {
+            uploadedImage.setVisibility(View.GONE);
         }
     }
 
