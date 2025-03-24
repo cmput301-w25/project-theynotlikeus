@@ -46,6 +46,7 @@ dependencies {
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 
 
+
     // App dependencies
     implementation(libs.appcompat)
     implementation(libs.material)
