@@ -3,10 +3,10 @@ package com.example.theynotlikeus.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
+
 import androidx.appcompat.widget.SearchView;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,11 +36,11 @@ public class SearchUserActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_search_user);
+        setContentView(R.layout.activity_search_user);
 
         //Initialize UI components
-        recyclerView = findViewById(R.id.recyclerview_SearchUserFrag);
-        searchView = findViewById(R.id.searchView_SearchUserFrag);
+        recyclerView = findViewById(R.id.recyclerview_SearchUserActivity);
+        searchView = findViewById(R.id.searchView_SearchUserActivtiy);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //Initialize data structures and adapter
@@ -58,7 +58,7 @@ public class SearchUserActivity extends AppCompatActivity {
         searchView.setOnClickListener(v -> searchView.setIconified(false));
 
         //Handle back button
-        findViewById(R.id.button_SearchUserFrag_backbutton).setOnClickListener(v -> finish());
+        findViewById(R.id.button_SearchUserActivity_backbutton).setOnClickListener(v -> finish());
 
         //Handle text input for filtering
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
