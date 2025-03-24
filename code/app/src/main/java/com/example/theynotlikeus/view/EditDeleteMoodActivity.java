@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -37,6 +38,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class EditDeleteMoodActivity extends AppCompatActivity {
 
@@ -55,10 +57,11 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
     private Spinner socialSituationSpinner;
     private Switch geolocationSwitch;
     private Switch privacySwitch;
-    private ImageButton selectImageButton;
-    private ImageButton deleteButton;
     private ImageButton backButton;
+    private ImageButton deleteButton;
     private Button saveButton;
+    private Button selectImageButton;
+    private ImageView setImage;
 
     // Image handling.
     private Uri imageUri;
@@ -76,6 +79,7 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_delete_mood);
 
+        // Initialize Firebase Storage reference.
         storageRef = FirebaseStorage.getInstance().getReference("mood_images");
 
         // Bind UI elements.
@@ -87,7 +91,8 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
         deleteButton = findViewById(R.id.imageButton_DeleteEditMoodActivity_delete);
         backButton = findViewById(R.id.imageButton_DeleteEditMoodActivity_back);
         saveButton = findViewById(R.id.button_DeleteEditMoodActivity_save);
-        selectImageButton = findViewById(R.id.imageButton_DeleteEditMoodActivity_selectImage);
+        selectImageButton = findViewById(R.id.button_DeleteEditMoodActivity_selectImage);
+        setImage = findViewById(R.id.imageview_DeleteEditMoodActivity_photo);
 
         // Initialize controllers.
         moodController = new MoodController();
@@ -97,8 +102,8 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(5000);
-        locationRequest.setFastestInterval(2000);
+        locationRequest.setInterval(5000);         // 5 seconds
+        locationRequest.setFastestInterval(2000);    // 2 seconds
         locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
@@ -142,11 +147,10 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
             if (moodToEdit.getSocialSituation() != null) {
                 socialSituationSpinner.setSelection(getSocialSituationIndex(moodToEdit.getSocialSituation()));
             }
-            // Load previous image if available.
             if (moodToEdit.getPhotoUrl() != null && !moodToEdit.getPhotoUrl().isEmpty()) {
                 Glide.with(this)
                         .load(moodToEdit.getPhotoUrl())
-                        .into(selectImageButton);
+                        .into(setImage);
             }
             privacySwitch.setChecked(moodToEdit.isPublic());
         } else if (moodId != null) {
@@ -261,7 +265,8 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             imageUri = data.getData();
-            selectImageButton.setImageURI(imageUri);
+            // Update the preview ImageView.
+            setImage.setImageURI(imageUri);
         }
     }
 
@@ -276,6 +281,10 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
             return;
         }
         triggerWordsController.getAllTriggerWords(words -> {
+            if (words == null || words.isEmpty()) {
+                updateMoodInDatabase(mood);
+                return;
+            }
             boolean containsBanned = false;
             for (String bannedWord : words) {
                 if (trigger.toLowerCase().contains(bannedWord.toLowerCase())) {
@@ -306,12 +315,10 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
 
         SharedPreferences prefs = getSharedPreferences("AdminPrefs", MODE_PRIVATE);
         boolean isLimitOn = AdminActivity.isLimitEnabled(prefs);
-
         if (isLimitOn && fileSizeInBytes > 65536) {
             Toast.makeText(this, "Image too large. Must be under 65536 bytes.", Toast.LENGTH_SHORT).show();
             return;
         }
-
         fileRef.putFile(imageUri)
                 .addOnSuccessListener(taskSnapshot ->
                         fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
@@ -325,25 +332,28 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
 
     // Updates the mood record in the database.
     private void updateMoodInDatabase(Mood mood) {
+        // Force an update by setting the current time.
+        //mood.setDateTime(new Date());
         moodController.updateMood(mood, () -> {
             runOnUiThread(() -> {
-                // If mood is pending review, navigate to HomeMyMoodsFrag.
                 if (mood.isPendingReview()) {
                     Toast.makeText(EditDeleteMoodActivity.this, "Mood pending admin review", Toast.LENGTH_SHORT).show();
+                    // Navigate to HomeMyMoodsFrag.
                     Intent intent = new Intent(EditDeleteMoodActivity.this, MainActivity.class);
                     intent.putExtra("fragmentToLoad", "HomeMyMoodsFrag");
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent);
                 } else {
                     Toast.makeText(EditDeleteMoodActivity.this, "Mood updated successfully!", Toast.LENGTH_SHORT).show();
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra("mood", (Serializable) mood);
+                    setResult(RESULT_OK, resultIntent);
                 }
                 finish();
             });
         }, e -> {
-            runOnUiThread(() -> {
-                Toast.makeText(EditDeleteMoodActivity.this,
-                        "Error updating mood: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            });
+            runOnUiThread(() -> Toast.makeText(EditDeleteMoodActivity.this,
+                    "Error updating mood: " + e.getMessage(), Toast.LENGTH_SHORT).show());
         });
     }
 
@@ -360,7 +370,7 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                 if (moodToEdit.getPhotoUrl() != null && !moodToEdit.getPhotoUrl().isEmpty()) {
                     Glide.with(EditDeleteMoodActivity.this)
                             .load(moodToEdit.getPhotoUrl())
-                            .into(selectImageButton);
+                            .into(setImage);
                 }
                 privacySwitch.setChecked(moodToEdit.isPublic());
             }

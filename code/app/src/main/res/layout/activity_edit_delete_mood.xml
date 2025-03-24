@@ -71,18 +71,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:id="@+id/imageButton_DeleteEditMoodActivity_selectImage"
-        android:layout_width="240dp"
-        android:layout_height="240dp"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/round_button"
-        android:contentDescription="Go back"
-        android:src="@drawable/ic_add"
+    <ImageView
+        android:id="@+id/imageview_DeleteEditMoodActivity_photo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:contentDescription="@string/mood_image"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toTopOf="@id/button_DeleteEditMoodActivity_selectImage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_DeleteEditMoodActivity_title" />
+        app:layout_constraintTop_toBottomOf="@id/textView_DeleteEditMoodActivity_title" />
+
+    <Button
+        android:id="@+id/button_DeleteEditMoodActivity_selectImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/select_photo"
+        android:backgroundTint="@color/primary_blue"
+        app:layout_constraintBottom_toTopOf="@id/textView_DeleteEditMoodActivity_selectImagetext"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageview_DeleteEditMoodActivity_photo" />
 
     <TextView
         android:id="@+id/textView_DeleteEditMoodActivity_selectImagetext"
@@ -93,7 +102,7 @@
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton_DeleteEditMoodActivity_selectImage" />
+        app:layout_constraintTop_toBottomOf="@+id/button_DeleteEditMoodActivity_selectImage" />
 
     <TextView
         android:id="@+id/textView_DeleteEditMoodActivity_triggerLabel"
