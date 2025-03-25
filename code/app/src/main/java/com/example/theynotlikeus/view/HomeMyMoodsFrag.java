@@ -1,11 +1,19 @@
 package com.example.theynotlikeus.view;
 
+import static com.google.android.material.internal.ViewUtils.hideKeyboard;
+
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
@@ -23,6 +31,8 @@ import com.example.theynotlikeus.adapters.UserRecyclerViewAdapter;
 import com.example.theynotlikeus.controller.MoodController;
 import com.example.theynotlikeus.model.Mood;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -75,7 +85,7 @@ public class HomeMyMoodsFrag extends Fragment {
             startActivity(intent);
         });
 
-        AutoCompleteTextView autoCompleteTextView = view.findViewById(R.id.autoCompleteTextView);
+        MaterialAutoCompleteTextView autoCompleteTextView = view.findViewById(R.id.autoCompleteTextView);
         String[] filterOptions = {"All Moods", "Happiness", "Sadness", "Anger", "Surprise", "Fear", "Disgust", "Shame", "Confusion"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, filterOptions);
         autoCompleteTextView.setAdapter(adapter);
@@ -84,21 +94,30 @@ public class HomeMyMoodsFrag extends Fragment {
             loadMoodsFromFirebase();
         });
 
-        SearchView searchView = view.findViewById(R.id.searchView_HomeMyMoodsFragment);
-        searchView.setOnClickListener(v -> searchView.setIconified(false));
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                filterTrigger = query;
+        TextInputEditText searchEditText = view.findViewById(R.id.search_edit_text);
+
+        searchEditText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                filterTrigger = searchEditText.getText().toString().trim();
                 loadMoodsFromFirebase();
+                hideKeyboard(v);
                 return true;
             }
+            return false;
+        });
+
+        searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onQueryTextChange(String newText) {
-                filterTrigger = newText;
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterTrigger = s.toString().trim();
                 loadMoodsFromFirebase();
-                return true;
             }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
         });
 
         userRecyclerView = view.findViewById(R.id.recyclerview_HomeMyMoodsFragment_userrecyclerview);
@@ -108,10 +127,9 @@ public class HomeMyMoodsFrag extends Fragment {
         userRecyclerViewAdapter = new UserRecyclerViewAdapter(getContext(), userMoodList);
         userRecyclerView.setAdapter(userRecyclerViewAdapter);
 
-        // Updated: Pass the entire Mood object instead of just its ID
         userRecyclerViewAdapter.setOnItemClickListener(mood -> {
             Intent intent = new Intent(getActivity(), MoodEventDetailsActivity.class);
-            intent.putExtra("mood", mood);  // mood must be Serializable
+            intent.putExtra("mood", mood);
             startActivity(intent);
         });
 
@@ -125,6 +143,13 @@ public class HomeMyMoodsFrag extends Fragment {
         });
 
         return view;
+    }
+
+    private void hideKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     @Override

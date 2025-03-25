@@ -94,4 +94,6 @@
     <string name="don_t_have_an_account">Don\'t Have an account ?</string>
     <string name="username_user_login">username</string>
     <string name="password_user_login">password</string>
+    <string name="recent_week">Recent Week</string>
+    <string name="welcome_username_home_moods">Welcome Username</string>
 </resources>
