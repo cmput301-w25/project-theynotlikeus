@@ -58,11 +58,14 @@ public class AdminActivity extends AppCompatActivity {
                     "Image size limit disabled", Toast.LENGTH_SHORT).show();
         });
 
-        Button triggerWordsButton = findViewById(R.id.button_adminPage_setTriggerWords);
-        triggerWordsButton.setOnClickListener(v -> {
-            TriggerWordsDialogFragment dialogFragment = new TriggerWordsDialogFragment();
-            dialogFragment.show(getSupportFragmentManager(), "TriggerWordsDialog");
+        Button setTriggerWordsButton = findViewById(R.id.button_adminPage_setTriggerWords);
+        setTriggerWordsButton.setOnClickListener(v -> {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new TriggerWordsFrag())
+                    .addToBackStack(null)
+                    .commit();
         });
+
 
         // Adjust layout for system insets.
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {

@@ -181,16 +181,16 @@ public class AddMoodEventActivity extends AppCompatActivity {
             saveMoodNormally(mood);
             return;
         }
-        triggerWordsController.getAllTriggerWords(words -> {
+        triggerWordsController.getAllTriggerWords(triggerWordList -> {
             boolean containsBanned = false;
-            for (String bannedWord : words) {
-                if (trigger.toLowerCase().contains(bannedWord.toLowerCase())) {
+            for (com.example.theynotlikeus.model.TriggerWord bannedWord : triggerWordList) {
+                // Use getWord() on each TriggerWord for comparison.
+                if (trigger.toLowerCase().contains(bannedWord.getWord().toLowerCase())) {
                     containsBanned = true;
                     break;
                 }
             }
             if (containsBanned) {
-                // Mark mood as pending review.
                 mood.setPendingReview(true);
             }
             saveMoodNormally(mood);

@@ -280,20 +280,17 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
             updateMoodInDatabase(mood);
             return;
         }
-        triggerWordsController.getAllTriggerWords(words -> {
-            if (words == null || words.isEmpty()) {
-                updateMoodInDatabase(mood);
-                return;
-            }
+        triggerWordsController.getAllTriggerWords(triggerWordList -> {
             boolean containsBanned = false;
-            for (String bannedWord : words) {
-                if (trigger.toLowerCase().contains(bannedWord.toLowerCase())) {
+            for (com.example.theynotlikeus.model.TriggerWord bannedWord : triggerWordList) {
+                if (trigger.toLowerCase().contains(bannedWord.getWord().toLowerCase())) {
                     containsBanned = true;
                     break;
                 }
             }
             if (containsBanned) {
                 mood.setPendingReview(true);
+                //Toast.makeText(EditDeleteMoodActivity.this, "Mood pending admin review", Toast.LENGTH_SHORT).show();
             }
             updateMoodInDatabase(mood);
         }, error -> Toast.makeText(EditDeleteMoodActivity.this,

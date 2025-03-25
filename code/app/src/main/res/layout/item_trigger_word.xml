@@ -1,9 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/textview_trigger_word"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp"
-    android:text="Sample Trigger Word"
-    android:textColor="@color/white"
-    android:textSize="16sp"/>
+    android:background="@color/black_background"
+    android:padding="8dp">
+
+    <!-- TextView for the banned word -->
+    <TextView
+        android:id="@+id/textview_trigger_word"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Banned Word"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button_TriggerWordsFrag_delete" />
+
+    <!-- Delete button for this banned word -->
+    <Button
+        android:id="@+id/button_TriggerWordsFrag_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

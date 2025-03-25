@@ -11,21 +11,19 @@ public class TriggerWordsController {
     private final FirebaseFirestore db;
 
     public TriggerWordsController() {
-        // Assumes FirebaseFirestore is configured once in your Application class.
         this.db = FirebaseFirestore.getInstance();
     }
 
-    // Fetch all trigger words as a list of Strings.
-    public void getAllTriggerWords(Consumer<List<String>> onSuccess, Consumer<Exception> onFailure) {
+    // Fetch all trigger words as a list of TriggerWord objects.
+    public void getAllTriggerWords(Consumer<List<TriggerWord>> onSuccess, Consumer<Exception> onFailure) {
         db.collection("triggerWords")
                 .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    List<String> words = new ArrayList<>();
-                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                        String word = document.getString("word");
-                        if (word != null) {
-                            words.add(word);
-                        }
+                .addOnSuccessListener(querySnapshot -> {
+                    List<TriggerWord> words = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : querySnapshot) {
+                        TriggerWord triggerWord = document.toObject(TriggerWord.class);
+                        triggerWord.setId(document.getId());
+                        words.add(triggerWord);
                     }
                     onSuccess.accept(words);
                 })
@@ -41,6 +39,15 @@ public class TriggerWordsController {
         db.collection("triggerWords")
                 .add(new TriggerWord(word))
                 .addOnSuccessListener(documentReference -> onSuccess.run())
+                .addOnFailureListener(onFailure::accept);
+    }
+
+    // Delete a trigger word by document ID.
+    public void deleteTriggerWord(String documentId, Runnable onSuccess, Consumer<Exception> onFailure) {
+        db.collection("triggerWords")
+                .document(documentId)
+                .delete()
+                .addOnSuccessListener(aVoid -> onSuccess.run())
                 .addOnFailureListener(onFailure::accept);
     }
 }
