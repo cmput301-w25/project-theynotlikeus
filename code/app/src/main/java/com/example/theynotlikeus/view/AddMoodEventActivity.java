@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
+import com.google.android.material.materialswitch.MaterialSwitch;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -107,8 +108,8 @@ public class AddMoodEventActivity extends AppCompatActivity {
         };
 
         //UI Element bindings
-        Spinner moodSpinner=findViewById(R.id.spinner_ActivityAddMoodEvent_currentmood);
-        EditText triggerEditText=findViewById(R.id.edittext_ActivityAddMoodEvent_trigger);
+        Spinner moodSpinner=findViewById(R.id.spinner_ActivityAddMoodEvent_currentMoodspinner);
+        EditText triggerEditText=findViewById(R.id.editText_ActivityAddMoodEvent_triggerInput);
         Spinner socialSituationSpinner=findViewById(R.id.spinner_ActivityAddMoodEvent_socialsituation);
         addImageButton=findViewById(R.id.button_ActivityAddMoodEvent_selectPhoto);
         imagePreview=findViewById(R.id.imageview_ActivityAddMoodEvent_photo);
@@ -195,7 +196,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
         });
 
         //Back button
-        findViewById(R.id.imagebutton_ActivityViewComments_backbutton).setOnClickListener(v -> finish());
+        findViewById(R.id.imageButton_ActivityAddMoodEvent_backbutton).setOnClickListener(v -> finish());
     }
 
     /**
