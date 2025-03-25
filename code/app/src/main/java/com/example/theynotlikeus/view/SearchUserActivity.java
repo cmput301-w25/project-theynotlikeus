@@ -4,15 +4,24 @@ package com.example.theynotlikeus.view;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.SearchView;
+
+import android.view.Gravity;
+import android.view.MenuItem;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.adapters.SearchUserAdapter;
 import com.example.theynotlikeus.model.User;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.search.SearchBar;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
@@ -31,16 +40,57 @@ public class SearchUserActivity extends AppCompatActivity {
     private SearchUserAdapter adapter;
     private List<User> userList;
     private FirebaseFirestore db;
-    private SearchView searchView;
+    private com.google.android.material.search.SearchView searchView;
+    private SearchBar searchBar;
+    private MaterialToolbar actionBar;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_user);
 
+        /* Adding back button to appbar from: https://www.geeksforgeeks.org/how-to-add-and-customize-back-button-of-action-bar-in-android/
+         * Author: GeeksForGeeks
+         * Taken by: Ercel Angeles
+         * Taken on: March 25, 2025
+         */
+        // Get the MaterialToolbar from the layout.
+        MaterialToolbar toolbar = findViewById(R.id.topAppBar);
+        setSupportActionBar(toolbar);
+
+        // Enable the back button
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
+        // Set a click listener for the back button.
+        toolbar.setNavigationOnClickListener(v -> finish());
+
+        // Modify position of back button
+        for (int i = 0; i < toolbar.getChildCount(); i++) {
+            if (toolbar.getChildAt(i) instanceof android.widget.ImageButton) {
+                android.widget.ImageButton navButton = (android.widget.ImageButton) toolbar.getChildAt(i);
+                MaterialToolbar.LayoutParams params = (MaterialToolbar.LayoutParams) navButton.getLayoutParams();
+                params.gravity = Gravity.CENTER_VERTICAL | Gravity.START;
+                navButton.setLayoutParams(params);
+                break;
+            }
+        }
+
+        // Change the back button color to white.
+        if (toolbar.getNavigationIcon() != null) {
+            toolbar.getNavigationIcon().setTint(
+                    ContextCompat.getColor(this, R.color.white)
+            );
+        }
+
         //Initialize UI components
         recyclerView = findViewById(R.id.recyclerview_SearchUserActivity);
-        searchView = findViewById(R.id.searchView_SearchUserActivtiy);
+        searchView = findViewById(R.id.searchView_SearchUserActivity_searchView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //Initialize data structures and adapter
@@ -54,26 +104,22 @@ public class SearchUserActivity extends AppCompatActivity {
         // Load user list from Firestore
         loadUsers();
 
-        //Ensure SearchView expands on click
-        searchView.setOnClickListener(v -> searchView.setIconified(false));
-
-        //Handle back button
-        findViewById(R.id.button_SearchUserActivity_backbutton).setOnClickListener(v -> finish());
-
-        //Handle text input for filtering
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                filterUsers(query);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                filterUsers(newText);
-                return true;
-            }
-        });
+        /* Code for search material UI from: https://github.com/material-components/material-components-android/blob/master/docs/components/Search.md#search-view
+         * Author: imhappi, paulfthomas
+         * Taken by: Ercel Angeles
+         * Taken on: March 25, 2025
+         */
+        searchBar = findViewById(R.id.searchBar_SearchUserActivity_searchBar);
+        searchView = findViewById(R.id.searchView_SearchUserActivity_searchView);
+        searchView
+                .getEditText()
+                .setOnEditorActionListener(
+                        (v , actionId, event) -> {
+                            searchBar.setText(searchView.getText());
+                            filterUsers(String.valueOf(searchView.getText()));
+                            searchView.hide();
+                            return false;
+                        });
     }
 
     /**
