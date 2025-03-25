@@ -9,5 +9,9 @@
     <color name="grey_button">#2F2F2F</color>
     <color name="text_box_background">#282727</color>
     <color name="light_grey">#B6B6B6</color>
-
+    <color name="custom_primary_blue">#3F51B5</color>
+    <color name="custom_light_grey">#FAFAFA</color>
+    <color name="custom_text_primary">#212121</color>
+    <color name="custom_white">#FFFFFF</color>
+    <color name="custom_background_color">#F5F5F5</color>
 </resources>
