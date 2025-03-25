@@ -4,17 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.model.Mood;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.imageview.ShapeableImageView;
+import com.google.android.material.textview.MaterialTextView;
 
 /**
  * Activity for displaying the details of a mood event.
@@ -23,15 +21,16 @@ import com.example.theynotlikeus.model.Mood;
  */
 public class MoodEventDetailsActivity extends AppCompatActivity {
 
-    TextView socialSituationTextView;
-    TextView dateTextView;
-    TextView triggerTextView;
-    TextView usernameTextView;
-    ImageView moodImageView;
-    ImageButton backButton;
-    ImageButton editButton;
-    ImageView uploadedImage;
-    Button commentButton;
+    MaterialTextView socialSituationTextView;
+    MaterialTextView dateTextView;
+    MaterialTextView triggerTextView;
+    MaterialTextView usernameTextView;
+    MaterialTextView locationTextView;
+    ShapeableImageView moodImageView;
+    MaterialButton backButton;
+    MaterialButton editButton;
+    ShapeableImageView uploadedImage;
+    MaterialButton commentButton;
     private static final int EDIT_MOOD_REQUEST = 1;
 
     // Hold the passed Mood object.
@@ -42,31 +41,32 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood_event_details);
 
-        socialSituationTextView = findViewById(R.id.textview_ActivityMoodEventDetails_socialsituation);
-        dateTextView = findViewById(R.id.textview_ActivityMoodEventDetails_dateandtime);
-        triggerTextView = findViewById(R.id.textview_ActivityMoodEventDetails_triggervalue);
-        usernameTextView = findViewById(R.id.textview_ActivityMoodEventDetails_username);
-        moodImageView = findViewById(R.id.imageview_ActivityMoodEventDetails_moodimage);
-        editButton = findViewById(R.id.imagebutton_ActivityMoodEventDetails_editbutton);
-        backButton = findViewById(R.id.imagebutton_ActivityMoodEventDetails_backbutton);
-        commentButton = findViewById(R.id.commentButton);
-        uploadedImage = findViewById(R.id.imageview_ActivityMoodEventDetails_uploadedphoto);
+        // Updated to use Material Component IDs from the revised layout.
+        socialSituationTextView = findViewById(R.id.material_text_socialsituation);
+        dateTextView = findViewById(R.id.material_text_dateandtime);
+        triggerTextView = findViewById(R.id.material_text_triggervalue);
+        usernameTextView = findViewById(R.id.material_text_username);
+        locationTextView = findViewById(R.id.material_text_location);
+        moodImageView = findViewById(R.id.shapeable_imageview_mood);
+        editButton = findViewById(R.id.material_button_edit);
+        backButton = findViewById(R.id.material_button_back);
+        commentButton = findViewById(R.id.material_button_comment);
+        uploadedImage = findViewById(R.id.shapeable_imageview_uploadedphoto);
 
         // Retrieve the full Mood object from the Intent extras.
         mood = (Mood) getIntent().getSerializableExtra("mood");
 
         if (mood == null) {
-            //Toast.makeText(this, "Mood details unavailable", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
 
         updateUI();
-        
-        /* Code for startActivityForResult to update the edited moods from: https://stackoverflow.com/questions/37768604/how-to-use-startactivityforresult
+
+        /* Code for startActivityForResult to update the edited moods from:
+         * https://stackoverflow.com/questions/37768604/how-to-use-startactivityforresult
          * Authored by: Farbod Salamat-Zadeh
-         * Taken by: Ercel Angeles
-         * Taken from: March 15, 2025
+         * Taken by: Ercel Angeles on March 15, 2025
          */
         editButton.setOnClickListener(v -> {
             Log.d("MoodEventDetailsActivity", "Edit button clicked");
@@ -105,20 +105,17 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
         moodImageView.setImageResource(iconRes);
 
         dateTextView.setText(mood.getDateTime() != null ? mood.getDateTime().toString() : "Unknown");
-        // Update location TextView
 
-        TextView locationTextView = findViewById(R.id.textview_ActivityMoodEventDetails_location);
+        // Update location text: display latitude and longitude if available.
         Double latitude = mood.getLatitude();
         Double longitude = mood.getLongitude();
-
-        // show latitude and longitude, display unknown if null value
         if (latitude != null && longitude != null) {
             locationTextView.setText("Location: " + latitude + ", " + longitude);
         } else {
             locationTextView.setText("Location: Unknown");
         }
 
-        // Load the mood image using Glide
+        // Load the mood image using Glide.
         if (mood.getPhotoUrl() != null && !mood.getPhotoUrl().isEmpty()) {
             Glide.with(this)
                     .load(mood.getPhotoUrl())
