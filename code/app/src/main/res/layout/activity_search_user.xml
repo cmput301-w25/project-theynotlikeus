@@ -5,40 +5,54 @@
     android:layout_height="match_parent"
     android:background="@color/black_background">
 
-    <!-- Back Button -->
-    <ImageButton
-        android:id="@+id/button_SearchUserActivity_backbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/black_background"
-        android:contentDescription="Go back to follower request page"
-        android:src="@drawable/ic_white_back_button"
-        android:layout_marginTop="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <!-- CoordinatorLayout that holds the search components and RecyclerView -->
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/searchView_SearchUserActivtiy"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_margin="16dp"
-        android:layout_marginTop="36dp"
-        android:background="@color/light_grey"
-        android:focusable="true"
-        android:clickable="true"
-        android:iconifiedByDefault="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button_SearchUserActivity_backbutton"
-        app:layout_constraintTop_toTopOf="parent" />
+        <!-- Scrolling container -->
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/searchbar_scrolling_view_behavior"
+            android:backgroundTint="@color/black_background"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview_SearchUserActivity"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="40dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchView_SearchUserActivtiy" />
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBar"
+                app:title="Search Users"
+                app:titleCentered="true"
+                app:titleTextAppearance="@style/ToolbarTitleText"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@color/primary_blue"
+                android:minHeight="?attr/actionBarSize" />
+
+            <!-- The anchored SearchBar; tapping it will expand the SearchView -->
+            <com.google.android.material.search.SearchBar
+                android:id="@+id/searchBar_SearchUserActivity_searchBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/black_background"
+                android:outlineSpotShadowColor="@color/white"
+                android:outlineAmbientShadowColor="@color/white"/>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <!-- The Material SearchView overlays the content when expanded -->
+        <com.google.android.material.search.SearchView
+            android:id="@+id/searchView_SearchUserActivity_searchView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_anchor="@id/searchBar_SearchUserActivity_searchBar" />
+
+        <!-- RecyclerView to show filtered results -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_SearchUserActivity"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
