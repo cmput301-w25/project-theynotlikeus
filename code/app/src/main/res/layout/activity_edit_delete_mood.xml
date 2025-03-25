@@ -23,37 +23,40 @@
         app:layout_constraintVertical_bias="0.0" />
 
 
-    <ImageButton
-        android:layout_marginTop="32dp"
-        android:layout_marginLeft="5dp"
+
+
+    <!-- Material Icon Button for Back -->
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/imageButton_DeleteEditMoodActivity_back"
+        style="@style/Widget.Material3.Button.Icon"
         android:layout_width="48dp"
         android:layout_height="52dp"
-        android:background="@color/black_background"
-        android:contentDescription="Back_button"
-        android:src="@drawable/ic_white_back_button"
-
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="87dp"
+        android:backgroundTint="@color/black_background"
+        android:icon="@drawable/ic_white_back_button"
+        android:contentDescription="Back button"
+        android:translationY="15dp"
+        app:iconTint="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/textView_DeleteEditMoodActivity_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="32dp"
         android:id="@+id/imageButton_DeleteEditMoodActivity_delete"
         android:layout_width="63dp"
         android:layout_height="57dp"
         android:layout_marginStart="76dp"
-
+        android:layout_marginTop="15dp"
         android:adjustViewBounds="true"
         android:contentDescription="delete_button"
         android:maxWidth="100dp"
         android:maxHeight="100dp"
         android:scaleType="fitXY"
         android:src="@drawable/ic_delete_button"
-
+        android:translationY="10dp"
         app:backgroundTint="@color/black_background"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toEndOf="@+id/textView_DeleteEditMoodActivity_title"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -61,13 +64,12 @@
         android:id="@+id/textView_DeleteEditMoodActivity_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:layout_marginBottom="5dp"
-        app:layout_goneMarginBottom="7dp"
+        android:layout_marginStart="132dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="monospace"
         android:text="Mood Event"
         android:textColor="@color/white"
         android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -76,7 +78,6 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:contentDescription="@string/mood_image"
-        android:layout_marginTop="5dp"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@id/button_DeleteEditMoodActivity_selectImage"
         app:layout_constraintEnd_toEndOf="parent"
@@ -87,9 +88,8 @@
         android:id="@+id/button_DeleteEditMoodActivity_selectImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:backgroundTint="@color/primary_blue"
         android:text="@string/select_photo"
+        android:backgroundTint="@color/primary_blue"
         app:layout_constraintBottom_toTopOf="@id/textView_DeleteEditMoodActivity_selectImagetext"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -178,10 +178,10 @@
         android:id="@+id/spinner_DeleteEditMoodActivity_socialsituation"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
         android:entries="@array/social_situations"
         android:popupBackground="@color/black_background"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -204,10 +204,11 @@
         android:id="@+id/button_DeleteEditMoodActivity_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="@color/primary_blue"
         android:text="Save"
-        android:layout_marginTop="5dp"
-        app:layout_constraintEnd_toEndOf="@+id/switch_ActivityEditDeleteMood_privacy"
-        app:layout_constraintTop_toBottomOf="@+id/switch_DeleteEditMoodActivity_geoSwitch" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/switch_DeleteEditMoodActivity_geoSwitch" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

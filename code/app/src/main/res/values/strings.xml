@@ -64,7 +64,7 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
-    <string name="storage_for_each_photographic_image_to_be_under_65536_bytes">storage for each photographic image to be under 65536 bytes</string>
+    <string name="storage_for_each_photographic_image_to_be_under_65536_bytes">Storage for each photographic image to be under 65536 bytes</string>
     <string name="logout">Logout</string>
     <string name="reason">Reason:</string>
     <string name="location">Location</string>
@@ -96,4 +96,6 @@
     <string name="password_user_login">password</string>
     <string name="recent_week">Recent Week</string>
     <string name="welcome_username_home_moods">Welcome Username</string>
+    <string name="filter_by_mood">Filter by Mood</string>
+    <string name="search_moods">Search moods</string>
 </resources>
