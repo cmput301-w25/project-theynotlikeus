@@ -24,7 +24,7 @@
 
 
     <ImageButton
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="32dp"
         android:layout_marginLeft="5dp"
         android:id="@+id/imageButton_DeleteEditMoodActivity_back"
         android:layout_width="48dp"
@@ -38,7 +38,7 @@
 
     <ImageButton
         android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="32dp"
         android:id="@+id/imageButton_DeleteEditMoodActivity_delete"
         android:layout_width="63dp"
         android:layout_height="57dp"

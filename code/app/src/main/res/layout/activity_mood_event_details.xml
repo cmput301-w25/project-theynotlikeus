@@ -5,155 +5,188 @@
     android:id="@+id/constraintlayout_activitymoodeventdetails_level1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black_background"
-    tools:context=".view.MoodEventDetailsActivity">
+    android:background="@color/black_background">
 
-    <!-- Back Button using MaterialButton with an icon -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/material_button_back"
+    <!--
+    Code for adjusting image size of image button taken from: https://stackoverflow.com/questions/23461391/android-imagebutton-crops-on-resize/23461524
+    Authored by: Jack
+    Taken by: Ercel Angeles
+    Taken on: February 18, 2025
+    -->
+
+    <ImageButton
+        android:id="@+id/imagebutton_ActivityMoodEventDetails_backbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:backgroundTint="@android:color/transparent"
-        app:icon="@drawable/ic_white_back_button"
-        app:iconSize="40dp"
-        app:iconTint="@color/white"
+        android:adjustViewBounds="true"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/go_back"
+        android:maxWidth="40dp"
+        android:maxHeight="40dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_white_back_button"
+        android:translationY="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textview_ActivityMoodEventDetails_title"
+        app:layout_constraintEnd_toStartOf="@+id/textview_ActivityMoodEventDetails_title"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/textview_ActivityMoodEventDetails_title"
+        app:layout_constraintVertical_bias="1.0" />
 
-    <!-- Title -->
-
-    <!-- Edit Button using MaterialButton with an icon -->
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/material_text_title"
+    <ImageButton
+        android:id="@+id/imagebutton_ActivityMoodEventDetails_editbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:background="@android:color/transparent"
+        android:maxWidth="40dp"
+        android:maxHeight="40dp"
+        android:scaleType="fitXY"
+        android:translationY="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textview_ActivityMoodEventDetails_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.627"
+        app:layout_constraintStart_toEndOf="@+id/textview_ActivityMoodEventDetails_title"
+        app:layout_constraintTop_toTopOf="@+id/textview_ActivityMoodEventDetails_title"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/ic_edit_button" />
+
+    <TextView
+        android:id="@+id/textview_ActivityMoodEventDetails_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="monospace"
         android:text="@string/your_mood_details"
-        android:layout_margin="0dp"
         android:textColor="@color/white"
         android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/material_button_back" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/material_button_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:backgroundTint="@android:color/transparent"
-        app:icon="@drawable/ic_edit_button"
-        app:iconSize="40dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/imagebutton_ActivityMoodEventDetails_editbutton"
+        app:layout_constraintStart_toEndOf="@id/imagebutton_ActivityMoodEventDetails_backbutton"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- MaterialCardView container for mood event details -->
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_margin="30dp"
-        android:layout_width="match_parent"
-        android:layout_height="468dp"
-        android:padding="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/material_text_title">
+        app:layout_constraintTop_toBottomOf="@+id/textview_ActivityMoodEventDetails_title">
 
-        <!-- Mood Image using ShapeableImageView -->
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/shapeable_imageview_mood"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:adjustViewBounds="true"
-            android:scaleType="fitXY"
+        <View
+            android:id="@+id/view_ActivityMoodEventDetails_moodeventcontainer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="-16dp"
+            android:background="#282727"
+            app:layout_constraintBottom_toBottomOf="@id/commentButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_happy_emoticon" />
+            app:layout_constraintVertical_bias="0.0" />
 
-        <!-- Username -->
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/material_text_username"
+        <TextView
+            android:id="@+id/textview_ActivityMoodEventDetails_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="@string/username"
-            android:textColor="@color/white"
+            android:layout_marginStart="20dp"
+            android:hint="@string/username"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#898888"
             android:textSize="20sp"
-            app:layout_constraintStart_toEndOf="@id/shapeable_imageview_mood"
-            app:layout_constraintTop_toTopOf="@id/shapeable_imageview_mood" />
+            app:layout_constraintStart_toEndOf="@+id/imageview_ActivityMoodEventDetails_moodimage"
+            app:layout_constraintTop_toTopOf="@+id/imageview_ActivityMoodEventDetails_moodimage" />
 
-        <!-- Social Situation -->
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/material_text_socialsituation"
+        <ImageView
+            android:id="@+id/imageview_ActivityMoodEventDetails_moodimage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:adjustViewBounds="true"
+            android:maxWidth="50dp"
+            android:maxHeight="50dp"
+            android:scaleType="fitXY"
+            app:layout_constraintStart_toStartOf="@+id/view_ActivityMoodEventDetails_moodeventcontainer"
+            app:layout_constraintTop_toTopOf="@+id/view_ActivityMoodEventDetails_moodeventcontainer"
+            app:srcCompat="@drawable/ic_happy_emoticon" />
+
+        <TextView
+            android:id="@+id/textview_ActivityMoodEventDetails_socialsituation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:hint="@string/social_situation"
+            android:textColorHint="#898888"
+            app:layout_constraintStart_toStartOf="@+id/imageview_ActivityMoodEventDetails_moodimage"
+            app:layout_constraintTop_toBottomOf="@+id/imageview_ActivityMoodEventDetails_moodimage" />
+
+        <TextView
+            android:id="@+id/textview_ActivityMoodEventDetails_dateandtime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="@string/social_situation"
+            android:hint="@string/date_and_time"
             android:textColorHint="#898888"
-            app:layout_constraintStart_toStartOf="@id/shapeable_imageview_mood"
-            app:layout_constraintTop_toBottomOf="@id/shapeable_imageview_mood" />
+            app:layout_constraintStart_toStartOf="@+id/textview_ActivityMoodEventDetails_socialsituation"
+            app:layout_constraintTop_toBottomOf="@+id/textview_ActivityMoodEventDetails_triggervalue" />
 
-        <!-- Trigger Value -->
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/material_text_triggervalue"
+        <TextView
+            android:id="@+id/textview_ActivityMoodEventDetails_triggervalue"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:hint="@string/reason_value"
             android:textColorHint="#898888"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/material_text_socialsituation"
-            app:layout_constraintTop_toBottomOf="@id/material_text_socialsituation" />
+            app:layout_constraintEnd_toEndOf="@+id/view_ActivityMoodEventDetails_moodeventcontainer"
+            app:layout_constraintStart_toStartOf="@+id/textview_ActivityMoodEventDetails_socialsituation"
+            app:layout_constraintTop_toBottomOf="@+id/textview_ActivityMoodEventDetails_socialsituation" />
 
-        <!-- Date and Time -->
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/material_text_dateandtime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:hint="@string/date_and_time"
-            android:textColorHint="#898888"
-            app:layout_constraintStart_toStartOf="@id/material_text_triggervalue"
-            app:layout_constraintTop_toBottomOf="@id/material_text_triggervalue" />
-
-        <!-- Location -->
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/material_text_location"
+        <TextView
+            android:id="@+id/textview_ActivityMoodEventDetails_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/location_unknown"
             android:textColorHint="#898888"
-            app:layout_constraintStart_toStartOf="@id/material_text_dateandtime"
-            app:layout_constraintTop_toBottomOf="@id/material_text_dateandtime" />
+            app:layout_constraintStart_toStartOf="@+id/textview_ActivityMoodEventDetails_dateandtime"
+            app:layout_constraintTop_toBottomOf="@+id/textview_ActivityMoodEventDetails_dateandtime" />
 
-        <!-- Uploaded Photo using ShapeableImageView -->
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/shapeable_imageview_uploadedphoto"
+        <Button
+            android:id="@+id/commentButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#22238B"
+            android:text="Comments"
+            app:layout_constraintEnd_toEndOf="@+id/imageview_ActivityMoodEventDetails_uploadedphoto"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="@+id/imageview_ActivityMoodEventDetails_uploadedphoto"
+            app:layout_constraintTop_toBottomOf="@+id/imageview_ActivityMoodEventDetails_uploadedphoto" />
+
+        <ImageView
+            android:id="@+id/imageview_ActivityMoodEventDetails_uploadedphoto"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_marginTop="16dp"
             android:background="@android:color/darker_gray"
             android:backgroundTint="@color/black_background"
             android:scaleType="centerCrop"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/material_text_location" />
-
-        <!-- Comment Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/material_button_comment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Comments"
-            app:backgroundTint="#22238B"
-            app:layout_constraintEnd_toEndOf="@id/shapeable_imageview_uploadedphoto"
-            app:layout_constraintStart_toStartOf="@id/shapeable_imageview_uploadedphoto"
-            app:layout_constraintTop_toBottomOf="@id/shapeable_imageview_uploadedphoto" />
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@id/commentButton"
+            app:layout_constraintEnd_toEndOf="@+id/view_ActivityMoodEventDetails_moodeventcontainer"
+            app:layout_constraintStart_toStartOf="@+id/view_ActivityMoodEventDetails_moodeventcontainer"
+            app:layout_constraintTop_toBottomOf="@+id/textview_ActivityMoodEventDetails_location" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
