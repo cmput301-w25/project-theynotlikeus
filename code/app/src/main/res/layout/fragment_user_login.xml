@@ -29,12 +29,12 @@
         android:id="@+id/textView_UserLoginInFrag_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/user_login"
         android:layout_marginTop="150dp"
+        android:text="@string/user_login"
         android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textField_userLoginFrag_username"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textField_userLoginFrag_username"
         app:layout_constraintTop_toBottomOf="@+id/textView_UserLoginFrag_apptitle" />
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/primary_blue"
         android:text="@string/sign_in_user"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -122,7 +122,7 @@
         app:boxStrokeColor="@color/selector"
         app:hintTextColor="@color/selector"
         app:cursorColor="@color/selector"
-        
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textField_userLoginFrag_username"
