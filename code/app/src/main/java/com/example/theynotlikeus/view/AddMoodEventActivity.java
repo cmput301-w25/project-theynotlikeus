@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
+import com.google.android.material.materialswitch.MaterialSwitch;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -69,8 +70,8 @@ public class AddMoodEventActivity extends AppCompatActivity {
     private android.location.Location currentLocation;
 
     //Toggles for privacy and geolocation
-    private Switch togglePublic;
-    private Switch toggleGeolocation;
+    private MaterialSwitch togglePublic;
+    private MaterialSwitch toggleGeolocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
