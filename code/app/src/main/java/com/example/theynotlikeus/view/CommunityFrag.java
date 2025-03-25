@@ -1,11 +1,16 @@
 package com.example.theynotlikeus.view;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -23,6 +28,8 @@ import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.adapters.CommunityRecyclerViewAdapter;
 import com.example.theynotlikeus.controller.MoodController;
 import com.example.theynotlikeus.model.Mood;
+import com.google.android.material.textfield.MaterialAutoCompleteTextView;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -73,7 +80,7 @@ public class CommunityFrag extends Fragment {
         // 1) Find views.
         communityRecyclerView = view.findViewById(R.id.recyclerview_CommunityFrag_users);
         recentWeekCheckBox = view.findViewById(R.id.checkBox_CommunityFrag_recentWeek);
-        searchViewCommunity = view.findViewById(R.id.searchView_CommunityFrag);
+//        searchViewCommunity = view.findViewById(R.id.searchView_CommunityFrag);
 
 
         // 2) Setup RecyclerView + adapter.
@@ -82,41 +89,41 @@ public class CommunityFrag extends Fragment {
         communityRecyclerView.setAdapter(communityAdapter);
 
         // 3) Setup autoCompleteTextView (emotional states).
-        Spinner moodSpinner = view.findViewById(R.id.community_moodSpinner);
+        MaterialAutoCompleteTextView autoCompleteTextView = view.findViewById(R.id.community_autoCompleteTextView);
         String[] filterOptions = {"All Moods", "Happiness", "Sadness", "Anger", "Surprise", "Fear", "Disgust", "Shame", "Confusion"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, filterOptions);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        moodSpinner.setAdapter(adapter);
-        moodSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                filterEmotionalState = parent.getItemAtPosition(position).toString();
-                applyFilters();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Optionally handle case where nothing is selected
-            }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, filterOptions);
+        autoCompleteTextView.setAdapter(adapter);
+        autoCompleteTextView.setOnItemClickListener((parent, view1, position, id) -> {
+            filterEmotionalState = parent.getItemAtPosition(position).toString();
+            applyFilters();
         });
 
 
-        // 4) Setup SearchView for triggers.
-        searchViewCommunity.setOnClickListener(v -> searchViewCommunity.setIconified(false));
 
-        searchViewCommunity.setOnQueryTextListener(new OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                filterTriggerText = query;
+        // 4) Setup SearchView for triggers.
+        TextInputEditText searchEditText = view.findViewById(R.id.community_search_edit_text);
+        searchEditText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                filterTriggerText = searchEditText.getText().toString().trim();
                 applyFilters();
+                hideKeyboard(v);
                 return true;
             }
+            return false;
+        });
+
+        searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onQueryTextChange(String newText) {
-                filterTriggerText = newText;
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterTriggerText = s.toString().trim();
                 applyFilters();
-                return true;
             }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
         });
 
         // 5) Setup checkBox for "recent week".
@@ -128,7 +135,12 @@ public class CommunityFrag extends Fragment {
         // 6) Load moods from friends only.
         loadFriendsMoods();
     }
-
+    private void hideKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
     /**
      * Loads the current user's friend list from Firestore and, for each friend,
      * retrieves their public mood events using the MoodController.
