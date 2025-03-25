@@ -10,11 +10,15 @@
         <item name="android:textColorHint">?attr/colorOnSurfaceVariant</item>
     </style>
 
-    <!-- Custom style for a Spinner to approximate Material 3 look -->
     <style name="Widget.Material3.Spinner" parent="Widget.AppCompat.Spinner">
-        <!-- Use a surface variant background for the dropdown popup -->
         <item name="android:popupBackground">@color/white</item>
-        <!-- Optional: Customize text appearance -->
         <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
+
+    <style name="Widget.Material3.MaterialSwitch" parent="Widget.MaterialComponents.CompoundButton.Switch">
+        <item name="trackColorActive">@color/white</item>
+        <item name="thumbTint">@color/primary_blue</item>
+        <item name="trackColorInactive">@color/black</item>
+    </style>
+
 </resources>
