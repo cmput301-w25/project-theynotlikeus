@@ -1,85 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/item_community_mood_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="6dp"
-    android:background="#282727"
-    android:elevation="4dp"
-    android:padding="12dp">
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="true"
+    app:cardBackgroundColor="#282727">
 
-
-    <ImageView
-        android:id="@+id/imageView_fragmentItemCommunity_moodicon"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="4dp"
-        android:src="@drawable/ic_happy_emoticon"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <TextView
-        android:id="@+id/textView_fragmentItemCommunity_username"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Username"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/imageView_fragmentItemCommunity_moodicon"
-        app:layout_constraintTop_toTopOf="@id/imageView_fragmentItemCommunity_moodicon"
-        android:layout_marginStart="8dp" />
+        android:padding="16dp">
 
+        <ImageView
+            android:id="@+id/imageView_fragmentItemCommunity_moodicon"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/ic_happy_emoticon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView_fragmentItemCommunity_moodtitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Mood Title"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/imageView_fragmentItemCommunity_moodicon"
-        app:layout_constraintTop_toBottomOf="@id/textView_fragmentItemCommunity_username"
-        android:layout_marginStart="8dp" />
+        <TextView
+            android:id="@+id/textView_fragmentItemCommunity_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Username"
+            android:textColor="@android:color/white"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/imageView_fragmentItemCommunity_moodicon"
+            app:layout_constraintTop_toTopOf="@id/imageView_fragmentItemCommunity_moodicon"
+            android:layout_marginStart="16dp" />
 
+        <TextView
+            android:id="@+id/textView_fragmentItemCommunity_moodtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mood Title"
+            android:textColor="@android:color/white"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/imageView_fragmentItemCommunity_moodicon"
+            app:layout_constraintTop_toBottomOf="@id/textView_fragmentItemCommunity_username"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp" />
 
-    <TextView
-        android:id="@+id/textView_fragmentItemCommunity_trigger"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Trigger description"
-        android:textColor="@android:color/white"
-        app:layout_constraintStart_toEndOf="@id/imageView_fragmentItemCommunity_moodicon"
-        app:layout_constraintTop_toBottomOf="@id/textView_fragmentItemCommunity_moodtitle"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+        <TextView
+            android:id="@+id/textView_fragmentItemCommunity_trigger"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Trigger description"
+            android:textColor="@android:color/white"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+            app:layout_constraintStart_toEndOf="@id/imageView_fragmentItemCommunity_moodicon"
+            app:layout_constraintTop_toBottomOf="@id/textView_fragmentItemCommunity_moodtitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="4dp" />
 
+        <TextView
+            android:id="@+id/textView_fragmentItemCommunity_socialsituation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Social Situation"
+            android:textColor="@android:color/white"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+            app:layout_constraintStart_toEndOf="@id/imageView_fragmentItemCommunity_moodicon"
+            app:layout_constraintTop_toBottomOf="@id/textView_fragmentItemCommunity_trigger"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp" />
 
-    <TextView
-        android:id="@+id/textView_fragmentItemCommunity_socialsituation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Social Situation"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@id/imageView_fragmentItemCommunity_moodicon"
-        app:layout_constraintTop_toBottomOf="@id/textView_fragmentItemCommunity_trigger"
-        android:layout_marginStart="8dp" />
+        <TextView
+            android:id="@+id/textView_fragmentItemCommunity_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Feb 01, 2025"
+            android:textColor="@android:color/white"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="8dp" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/textView_fragmentItemCommunity_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Feb 01, 2025"
-        android:textColor="@android:color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginEnd="4dp" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
