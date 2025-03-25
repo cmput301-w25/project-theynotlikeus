@@ -1,83 +1,92 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="12dp"
     android:layout_margin="10dp"
-    android:backgroundTint="@color/primary_blue"
-    android:background="@color/black_background">
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="true"
+    app:cardBackgroundColor="@color/black_background">
 
-    <!-- Container for text content -->
-    <LinearLayout
-        android:id="@+id/linearLayout_text"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:padding="12dp">
 
-        <!-- Username TextView -->
-        <TextView
-            android:id="@+id/textView_username"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Username"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
 
-        <!-- Mood Text TextView -->
-        <TextView
-            android:id="@+id/textView_moodText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Mood text goes here. This is a longer description that should wrap nicely."
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            android:layout_marginTop="4dp" />
-
-        <TextView
-            android:id="@+id/textView_dateTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Date and Time"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            android:layout_marginTop="4dp" />
-
-    </LinearLayout>
-
-    <!-- Container for Approve and Delete buttons -->
-    <LinearLayout
-        android:id="@+id/linearLayout_buttons"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="12dp"
-        app:layout_constraintTop_toBottomOf="@id/linearLayout_text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <Button
-            android:id="@+id/button_approve"
+        <LinearLayout
+            android:id="@+id/linearLayout_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:backgroundTint="#2B572B"
-            android:text="Approve"
-            android:layout_marginEnd="4dp" />
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
-        <Button
-            android:id="@+id/button_delete"
+
+            <TextView
+                android:id="@+id/textView_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Username"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:id="@+id/textView_moodText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Mood text goes here. This is a longer description that should wrap nicely."
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:layout_marginTop="4dp" />
+
+
+            <TextView
+                android:id="@+id/textView_dateTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Date and Time"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linearLayout_buttons"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:backgroundTint="#831400"
-            android:text="Delete"
-            android:layout_marginStart="4dp" />
-    </LinearLayout>
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp"
+            app:layout_constraintTop_toBottomOf="@id/linearLayout_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <Button
+                android:id="@+id/button_approve"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/primary_blue"
+                android:text="Approve"
+                android:layout_marginEnd="4dp" />
+
+            <Button
+                android:id="@+id/button_delete"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/white"
+                android:textColor="@color/black"
+                android:text="Delete"
+                android:layout_marginStart="4dp" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
