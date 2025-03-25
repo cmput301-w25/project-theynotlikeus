@@ -81,7 +81,7 @@
     <string name="select_image_optional">Select Image (Optional)</string>
     <string name="reason_optional">Reason (Optional)</string>
     <string name="save">Save</string>
-    <string name="select_social_situation">Select Social Situation:</string>
+    <string name="select_social_situation">Social Situation:</string>
     <string name="location_unknown">Location: Unknown</string>
     <string name="welcome_administrator">Welcome Administrator</string>
     <string name="create_account_and_login">Create Account and Login</string>

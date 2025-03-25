@@ -6,132 +6,186 @@
     android:layout_height="match_parent"
     android:background="@color/black_background">
 
-    <!-- Back Button -->
+
     <ImageButton
-        android:id="@+id/imagebutton_ActivityViewComments_backbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/imageButton_ActivityAddMoodEvent_backbutton"
+        android:layout_width="48dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="87dp"
         android:background="@color/black_background"
-        android:contentDescription="@string/select_image_for_mood_event"
+        android:contentDescription="Back_button"
         android:src="@drawable/ic_white_back_button"
+        android:translationY="15dp"
+        app:layout_constraintEnd_toStartOf="@+id/textview_ActivityAddMoodEvent_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Title -->
-    <com.google.android.material.textview.MaterialTextView
+    <TextView
         android:id="@+id/textview_ActivityAddMoodEvent_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="monospace"
         android:text="@string/mood_event"
-        android:textAppearance="?attr/textAppearanceHeadline5"
         android:textColor="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="24sp"
+        android:layout_marginTop="25dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Image View -->
-    <com.google.android.material.imageview.ShapeableImageView
+    <ImageView
         android:id="@+id/imageview_ActivityAddMoodEvent_photo"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:contentDescription="@string/mood_image"
         android:scaleType="centerCrop"
-        app:strokeColor="@color/white"
-        app:strokeWidth="2dp"
-        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.MediumComponent"
-        app:layout_constraintTop_toBottomOf="@id/textview_ActivityAddMoodEvent_title"
+        app:layout_constraintBottom_toTopOf="@id/button_ActivityAddMoodEvent_selectPhoto"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/textview_ActivityAddMoodEvent_title" />
 
-    <!-- Select Photo Button -->
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/button_ActivityAddMoodEvent_selectPhoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/select_photo"
         android:backgroundTint="@color/primary_blue"
-        app:layout_constraintTop_toBottomOf="@id/imageview_ActivityAddMoodEvent_photo"
+        app:layout_constraintBottom_toTopOf="@id/textview_ActivityAddMoodEvent_selectimagetext"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/imageview_ActivityAddMoodEvent_photo" />
 
-    <!-- Select Image Text -->
-    <com.google.android.material.textview.MaterialTextView
+    <TextView
         android:id="@+id/textview_ActivityAddMoodEvent_selectimagetext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/select_image_optional"
-        android:textAppearance="?attr/textAppearanceBody2"
         android:textColor="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/button_ActivityAddMoodEvent_selectPhoto"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- Mood Dropdown -->
-    <Spinner
-
-        android:id="@+id/spinner_ActivityAddMoodEvent_currentmood"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:entries="@array/moods"
-        android:popupBackground="@color/black_background"
+        android:layout_marginTop="3dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_ActivityAddMoodEvent_selectPhoto" />
+
+    <TextView
+        android:id="@+id/textView_ActivityAddMoodEvent_moodLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="4dp"
+        android:text="Mood"
+        android:textColor="@color/white"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textview_ActivityAddMoodEvent_selectimagetext" />
 
-    <!-- Social Situation Dropdown -->
+    <Spinner
+        android:id="@+id/spinner_ActivityAddMoodEvent_currentMoodspinner"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="#282727"
+        android:backgroundTintMode="screen"
+        android:entries="@array/moods"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_ActivityAddMoodEvent_moodLabel" />
+
+    <TextView
+        android:id="@+id/textView_ActivityAddMoodEvent_triggerLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="Trigger"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/editText_ActivityAddMoodEvent_triggerInput"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_ActivityAddMoodEvent_currentMoodspinner" />
+
+    <EditText
+        android:id="@+id/editText_ActivityAddMoodEvent_triggerInput"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="32dp"
+        android:background="@color/text_box_background"
+        android:backgroundTint="#282727"
+        android:backgroundTintMode="src_over"
+        android:hint="Trigger"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spinner_ActivityAddMoodEvent_currentMoodspinner" />
+
+    <TextView
+        android:id="@+id/textView_ActivityAddMoodEvent_socialSituationLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:text="Social Situation"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/spinner_ActivityAddMoodEvent_socialsituation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editText_ActivityAddMoodEvent_triggerInput" />
+
     <Spinner
         android:id="@+id/spinner_ActivityAddMoodEvent_socialsituation"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:entries="@array/social_situations"
         android:popupBackground="@color/black_background"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edittext_ActivityAddMoodEvent_trigger" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_ActivityAddMoodEvent_socialSituationLabel" />
 
-    <!-- Reason Input -->
-    <EditText
-        android:id="@+id/edittext_ActivityAddMoodEvent_trigger"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:hint="@string/reason_optional"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/spinner_ActivityAddMoodEvent_currentmood" />
 
-    <!-- Geolocation Switch -->
-    <com.google.android.material.materialswitch.MaterialSwitch
+    <Switch
         android:id="@+id/switch_ActivityAddMoodEvent_geolocation"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
         android:text="Geolocation (Optional)"
         android:textColor="@color/white"
-        app:trackTint="@color/primary_blue"
-        app:layout_constraintTop_toBottomOf="@id/spinner_ActivityAddMoodEvent_socialsituation"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_ActivityAddMoodEvent_socialsituation" />
 
-    <!-- Privacy Switch -->
-    <com.google.android.material.materialswitch.MaterialSwitch
+    <Switch
         android:id="@+id/switch_ActivityAddMoodEvent_privacy"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="15dp"
         android:text="Public Mood Entry"
         android:textColor="@color/white"
-        app:trackTint="@color/primary_blue"
-        app:layout_constraintTop_toBottomOf="@id/spinner_ActivityAddMoodEvent_socialsituation"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintBottom_toTopOf="@+id/button_ActivityAddMoodEvent_save"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/switch_ActivityAddMoodEvent_geolocation"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_ActivityAddMoodEvent_socialsituation"
+        app:layout_constraintVertical_bias="0.0" />
 
-    <!-- Save Button -->
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/button_ActivityAddMoodEvent_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/save"
+        android:layout_marginTop="36dp"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="@color/primary_blue"
+        android:text="@string/save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/switch_ActivityAddMoodEvent_geolocation"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintVertical_bias="0.18" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
