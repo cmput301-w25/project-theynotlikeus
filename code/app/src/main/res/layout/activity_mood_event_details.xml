@@ -164,7 +164,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:backgroundTint="#22238B"
-            android:text="Comments"
+            android:text="@string/comments_mood_details"
             app:layout_constraintEnd_toEndOf="@+id/imageview_ActivityMoodEventDetails_uploadedphoto"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="@+id/imageview_ActivityMoodEventDetails_uploadedphoto"
