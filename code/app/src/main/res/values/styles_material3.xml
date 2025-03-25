@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="Widget.Material3.TextField.OutlinedBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxBackgroundMode">outline</item>
         <item name="boxCornerRadiusTopStart">12dp</item>
@@ -20,5 +21,7 @@
         <item name="thumbTint">@color/primary_blue</item>
         <item name="trackColorInactive">@color/black</item>
     </style>
+
+
 
 </resources>

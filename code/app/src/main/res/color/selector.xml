@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Box stroke color from: https://stackoverflow.com/questions/67020226/boxstrokecolor-with-com-google-android-material-textfield-textinputlayout-is-not-->
+<!-- Author: Gabriele Mariotti -->
+<!-- Taken by: Ercel Angeles -->
+<!-- Taken on: March 24, 2025 -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/primary_blue" android:state_focused="true"/>
+    <item android:color="@color/grey"/>
+</selector>

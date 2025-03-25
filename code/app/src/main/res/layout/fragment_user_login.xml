@@ -90,6 +90,11 @@
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:hint="@string/username_user_login"
+
+        app:boxStrokeColor="@color/selector"
+        app:hintTextColor="@color/selector"
+        app:cursorColor="@color/selector"
+
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -113,6 +118,11 @@
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:hint="@string/password_user_login"
+
+        app:boxStrokeColor="@color/selector"
+        app:hintTextColor="@color/selector"
+        app:cursorColor="@color/selector"
+        
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textField_userLoginFrag_username"

@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.AdminLoginFrag"
-    android:background="@color/black_background">
+    android:background="@color/black_background"
+    tools:context=".view.AdminLoginFrag">
 
 
     <com.google.android.material.textview.MaterialTextView
@@ -49,10 +49,14 @@
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:hint="@string/password_user_login"
+
+        app:boxStrokeColor="@color/selector"
+        app:hintTextColor="@color/selector"
+        app:cursorColor="@color/selector"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textField_adminLoginFrag_username"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/textField_adminLoginFrag_username">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editText_adminLoginFrag_password"
@@ -60,7 +64,8 @@
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:textColor="@color/white"
-            />
+            android:textColorHint="#FFFFFF"
+            android:textColorLink="@color/primary_blue" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Input username -->
@@ -68,12 +73,16 @@
         android:id="@+id/textField_adminLoginFrag_username"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:hint="@string/username_user_login"
         android:layout_marginTop="10dp"
+        android:hint="@string/username_user_login"
+
+        app:boxStrokeColor="@color/selector"
+        app:hintTextColor="@color/selector"
+        app:cursorColor="@color/selector"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_AdminLoginFrag_title"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/textView_AdminLoginFrag_title">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editText_adminLoginFrag_username"
@@ -82,17 +91,16 @@
             android:layout_marginTop="32dp"
             android:ems="10"
             android:inputType="text"
-            android:textColor="@color/white"
-            />
+            android:textColor="@color/white" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_adminLogin_SignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:backgroundTint="@color/primary_blue"
         android:text="Sign In"
-        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textField_adminLoginFrag_password" />
