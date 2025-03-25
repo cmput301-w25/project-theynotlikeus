@@ -4,70 +4,104 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black_background"
     tools:context=".view.AdminLoginFrag">
 
-    <!-- TODO: Update blank fragment layout -->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="0dp"
-        android:layout_height="340dp"
-        android:background="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/button_AdminLoginFrag_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:navigationIcon="@drawable/ic_white_back_button" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <TextView
-        android:id="@+id/textView_AdminLoginFrag"
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/textView_AdminLoginFrag_apptitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Admin Login Page"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="100dp"
+        android:fontFamily=""
+        android:text="Moods"
+        android:textColor="?attr/colorOnPrimary"
+        android:textSize="90sp"
+        android:textStyle="bold"
+        app:fontFamily="sans-serif-black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/button_AdminLoginFrag_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
+        app:navigationIcon="@drawable/ic_white_back_button" />
 
-    <EditText
-        android:id="@+id/editText_adminLoginFrag_password"
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/textView_AdminLoginFrag_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:ems="10"
-        android:hint="password"
-        android:inputType="textPassword"
+        android:layout_marginTop="150dp"
+        android:text="Admin Login Page"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_adminLoginFrag_username" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_AdminLoginFrag_apptitle" />
 
-    <EditText
-        android:id="@+id/editText_adminLoginFrag_username"
-        android:layout_width="wrap_content"
+    <!-- Input password-->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textField_adminLoginFrag_password"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:ems="10"
-        android:hint="username"
-        android:inputType="text"
+        android:hint="@string/password_user_login"
+
+        app:boxStrokeColor="@color/selector"
+        app:hintTextColor="@color/selector"
+        app:cursorColor="@color/selector"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_AdminLoginFrag" />
+        app:layout_constraintTop_toBottomOf="@+id/textField_adminLoginFrag_username">
 
-    <Button
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editText_adminLoginFrag_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:textColor="@color/white"
+            android:textColorHint="#FFFFFF"
+            android:textColorLink="@color/primary_blue" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Input username -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textField_adminLoginFrag_username"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="@string/username_user_login"
+
+        app:boxStrokeColor="@color/selector"
+        app:hintTextColor="@color/selector"
+        app:cursorColor="@color/selector"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_AdminLoginFrag_title">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editText_adminLoginFrag_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:ems="10"
+            android:inputType="text"
+            android:textColor="@color/white" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/button_adminLogin_SignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/primary_blue"
         android:text="Sign In"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_AdminLoginFrag" />
+        app:layout_constraintTop_toBottomOf="@+id/textField_adminLoginFrag_password" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,6 +13,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.theynotlikeus.R;
+import com.google.android.material.materialswitch.MaterialSwitch;
+import com.google.android.material.switchmaterial.SwitchMaterial;
+
 /**
  * This activity provides the interface for admin users, implements UI experience and adjusts
  * the layout to account for system insets (such as the status bar and navigation bar) to allows admin users
@@ -20,14 +23,14 @@ import com.example.theynotlikeus.R;
 public class AdminActivity extends AppCompatActivity {
     private static final String PREFS_NAME = "AdminPrefs";
     private static final String LIMIT_ON = "limit_on";
-    private Switch limitSwitch;
+    private MaterialSwitch limitSwitch;
     private Button logoutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
-        limitSwitch = findViewById(R.id.switch1);
+        limitSwitch = findViewById(R.id.switch_ActivityAdmin_materialSwitch);
 
         //Load saved switch state from SharedPreferences
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
