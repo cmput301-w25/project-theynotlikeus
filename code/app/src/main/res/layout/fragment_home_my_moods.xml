@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/custom_background_color"
+    android:background="@color/black_background"
     tools:context=".view.HomeMyMoodsFrag">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -83,8 +83,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/recent_week"
-            android:textColor="@color/custom_text_primary"
-            android:buttonTint="@color/primary_blue"
+            android:textColor="@color/custom_background_color"
+            android:buttonTint="@color/custom_light_grey"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@id/search_layout"
