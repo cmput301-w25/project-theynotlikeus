@@ -6,25 +6,18 @@
     android:layout_height="match_parent"
     android:background="@color/black_background">
 
-    <Spinner
-        android:id="@+id/spinner_ActivityAddMoodEvent_socialsituation"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:entries="@array/social_situations"
-        android:popupBackground="@color/black_background"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_ActivityAddMoodEvent_selectsocialsituation" />
-
 
     <ImageButton
-        android:id="@+id/imagebutton_ActivityViewComments_backbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/imageButton_ActivityAddMoodEvent_backbutton"
+        android:layout_width="48dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="87dp"
         android:background="@color/black_background"
-        android:contentDescription="@string/select_image_for_mood_event"
+        android:contentDescription="Back_button"
         android:src="@drawable/ic_white_back_button"
+        android:translationY="15dp"
+        app:layout_constraintEnd_toStartOf="@+id/textview_ActivityAddMoodEvent_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,6 +29,7 @@
         android:text="@string/mood_event"
         android:textColor="@color/white"
         android:textSize="24sp"
+        android:layout_marginTop="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -68,36 +62,98 @@
         android:layout_height="wrap_content"
         android:text="@string/select_image_optional"
         android:textColor="@color/white"
+        android:layout_marginTop="3dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_ActivityAddMoodEvent_selectPhoto" />
 
-    <Spinner
-
-        android:id="@+id/spinner_ActivityAddMoodEvent_currentmood"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:entries="@array/moods"
-        android:popupBackground="@color/black_background"
-        app:layout_constraintEnd_toEndOf="parent"
+    <TextView
+        android:id="@+id/textView_ActivityAddMoodEvent_moodLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="4dp"
+        android:text="Mood"
+        android:textColor="@color/white"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textview_ActivityAddMoodEvent_selectimagetext" />
 
-    <EditText
-        android:id="@+id/edittext_ActivityAddMoodEvent_trigger"
+    <Spinner
+        android:id="@+id/spinner_ActivityAddMoodEvent_currentMoodspinner"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:hint="@string/reason_optional"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="#282727"
+        android:backgroundTintMode="screen"
+        android:entries="@array/moods"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_ActivityAddMoodEvent_moodLabel" />
+
+    <TextView
+        android:id="@+id/textView_ActivityAddMoodEvent_triggerLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="Trigger"
         android:textColor="@color/white"
-        android:textColorHint="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/editText_ActivityAddMoodEvent_triggerInput"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_ActivityAddMoodEvent_currentMoodspinner" />
+
+    <EditText
+        android:id="@+id/editText_ActivityAddMoodEvent_triggerInput"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="32dp"
+        android:background="@color/text_box_background"
+        android:backgroundTint="#282727"
+        android:backgroundTintMode="src_over"
+        android:hint="Trigger"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/spinner_ActivityAddMoodEvent_currentmood" />
+        app:layout_constraintTop_toBottomOf="@id/spinner_ActivityAddMoodEvent_currentMoodspinner" />
+
+    <TextView
+        android:id="@+id/textView_ActivityAddMoodEvent_socialSituationLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:text="Social Situation"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/spinner_ActivityAddMoodEvent_socialsituation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editText_ActivityAddMoodEvent_triggerInput" />
+
+    <Spinner
+        android:id="@+id/spinner_ActivityAddMoodEvent_socialsituation"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:entries="@array/social_situations"
+        android:popupBackground="@color/black_background"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_ActivityAddMoodEvent_socialSituationLabel" />
+
 
     <Switch
         android:id="@+id/switch_ActivityAddMoodEvent_geolocation"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
         android:text="Geolocation (Optional)"
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
@@ -107,31 +163,29 @@
         android:id="@+id/switch_ActivityAddMoodEvent_privacy"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="15dp"
         android:text="Public Mood Entry"
         android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/button_ActivityAddMoodEvent_save"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.75"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/switch_ActivityAddMoodEvent_geolocation"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_ActivityAddMoodEvent_socialsituation" />
+        app:layout_constraintTop_toBottomOf="@+id/spinner_ActivityAddMoodEvent_socialsituation"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/button_ActivityAddMoodEvent_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="@color/primary_blue"
         android:text="@string/save"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/switch_ActivityAddMoodEvent_geolocation" />
+        app:layout_constraintTop_toBottomOf="@id/switch_ActivityAddMoodEvent_geolocation"
+        app:layout_constraintVertical_bias="0.18" />
 
-
-
-    <TextView
-        android:id="@+id/textView_ActivityAddMoodEvent_selectsocialsituation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/select_social_situation"
-        android:textColor="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edittext_ActivityAddMoodEvent_trigger" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
