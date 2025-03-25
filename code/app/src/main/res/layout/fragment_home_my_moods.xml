@@ -35,7 +35,8 @@
             android:layout_marginEnd="16dp"
             android:hint="Filter by Mood"
             app:boxBackgroundColor="@color/black_background"
-            app:boxStrokeColor="@color/white"
+            android:background="@drawable/white_border"
+            app:boxStrokeWidth="10dp"
             app:hintTextColor="@color/white"
             app:endIconTint="@color/primary_blue"
             app:layout_constraintTop_toTopOf="parent"
@@ -47,11 +48,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:padding="12dp"
-                android:textColor="@color/custom_text_primary"
+                android:textColor="@color/primary_blue"
                 android:textSize="16sp"
                 android:dropDownHeight="wrap_content"
                 android:dropDownVerticalOffset="8dp"
                 android:popupBackground="@color/white"
+                android:background="@drawable/white_border"
+                app:boxStrokeWidth="5dp"
                 android:popupElevation="6dp"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -62,9 +65,10 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
+            app:boxBackgroundColor="@color/black_background"
             android:hint="Search moods"
-            app:boxBackgroundColor="@color/light_grey"
-            app:boxStrokeColor="@color/primary_blue"
+            android:background="@drawable/white_border"
+            app:boxStrokeWidth="2dp"
             app:hintTextColor="@color/primary_blue"
             app:endIconTint="@color/primary_blue"
             app:endIconMode="clear_text"
@@ -78,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:imeOptions="actionSearch"
                 android:inputType="text"
-                android:textColor="@color/custom_text_primary"
+                app:boxStrokeColor="@android:color/white"
                 android:textSize="16sp"/>
         </com.google.android.material.textfield.TextInputLayout>
 
