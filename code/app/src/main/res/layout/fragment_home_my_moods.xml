@@ -63,7 +63,7 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
 
-        <CheckBox
+        <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/checkBox_HomeMyMoodsFragment_recentWeek"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/textView_HomeMyMoodsFragment_welcomeUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
