@@ -129,4 +129,27 @@
     <string name="select_image_for_mood_event_comments">Select image for mood event</string>
     <string name="select_image_for_mood_event_comments_imagebutton">Select image for mood event</string>
     <string name="comments_comments">Comments</string>
+    <string name="moods_admin_login">Moods</string>
+    <string name="admin_login_page_admin_login">Admin Login Page</string>
+    <string name="sign_in_admin_login">Sign In</string>
+    <string name="recent_week_community">Recent Week</string>
+    <string name="community_community">Community</string>
+    <string name="username_follower_layout">Username</string>
+    <string name="accept_follower_layout">Accept</string>
+    <string name="decline_follower_layout">Decline</string>
+    <string name="follow_requests_follower_request">Follow Requests</string>
+    <string name="my_locations_map">My Locations</string>
+    <string name="go_to_community_map_map">Go to Community Map</string>
+    <string name="username_comminity_mood">Username</string>
+    <string name="mood_title_community_mood">Mood Title</string>
+    <string name="trigger_description_community_mood">Trigger description</string>
+    <string name="social_situation_community_mood">Social Situation</string>
+    <string name="feb_01_2025_community_mood">Feb 01, 2025</string>
+    <string name="moods_user_select">Moods</string>
+    <string name="user_user_select">User</string>
+    <string name="admin_user_select">Admin</string>
+    <string name="social_situation_mood_event">Social Situation</string>
+    <string name="moods_user_login">Moods</string>
+    <string name="moods_signup">Moods</string>
+    <string name="sign_up_signup">Sign up</string>
 </resources>
