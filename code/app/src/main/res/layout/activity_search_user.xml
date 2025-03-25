@@ -36,7 +36,9 @@
                 android:id="@+id/searchBar_SearchUserActivity_searchBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/black_background"
+                app:titleTextColor="@color/white"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/white"
                 android:outlineSpotShadowColor="@color/white"
                 android:outlineAmbientShadowColor="@color/white"/>
         </com.google.android.material.appbar.AppBarLayout>
@@ -46,7 +48,10 @@
             android:id="@+id/searchView_SearchUserActivity_searchView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_anchor="@id/searchBar_SearchUserActivity_searchBar" />
+            android:textAppearance="@style/Platform.MaterialComponents.Light"
+            android:textColor="@color/white"
+            app:layout_anchor="@id/searchBar_SearchUserActivity_searchBar"
+            app:queryBackground="@color/black_background" />
 
         <!-- RecyclerView to show filtered results -->
         <androidx.recyclerview.widget.RecyclerView
