@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:fontFamily=""
-        android:text="Moods"
+        android:text="@string/moods_user_login"
         android:textColor="?attr/colorOnPrimary"
         android:textSize="90sp"
         android:textStyle="bold"

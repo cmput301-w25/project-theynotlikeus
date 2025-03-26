@@ -48,7 +48,7 @@
                 android:id="@+id/textView_userDetailsTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="User Details"
+                android:text="@string/user_details_personal_profile"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
             <!-- TextView to display the username -->
@@ -56,7 +56,7 @@
                 android:id="@+id/textView_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Username: "
+                android:text="@string/username_personal_profile"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 android:layout_marginTop="8dp" />
 
