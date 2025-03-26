@@ -50,6 +50,10 @@ public class Mood implements Serializable {
     // Document ID for Firestore reference.
     private String docId;
     private boolean isPublic = false;
+
+    // New field to mark if a mood is pending admin review.
+    private boolean pendingReview = false;
+
     private SharedPreferences prefs;
     private boolean isLimitEnabled;
 
@@ -58,24 +62,6 @@ public class Mood implements Serializable {
      */
     public Mood() {
         // Empty instance to satisfy Firestore requirement.
-    }
-
-    /**
-     * Retrieves the document ID associated with this mood entry.
-     *
-     * @return the document ID.
-     */
-    public String getDocId() {
-        return docId;
-    }
-
-    /**
-     * Sets the document ID for this mood entry.
-     *
-     * @param docId the document ID to set.
-     */
-    public void setDocId(String docId) {
-        this.docId = docId;
     }
 
     /**
@@ -99,92 +85,49 @@ public class Mood implements Serializable {
         this.moodState = moodState;
     }
 
-    /**
-     * Gets the date and time of the mood event.
-     *
-     * @return the date and time.
-     */
+    // Getters and Setters.
+
+    public String getDocId() {
+        return docId;
+    }
+    public void setDocId(String docId) {
+        this.docId = docId;
+    }
     public Date getDateTime() {
         return dateTime;
     }
-
-    /**
-     * Sets the date and time of the mood event.
-     *
-     * @param dateTime the date and time to set.
-     */
     public void setDateTime(Date dateTime) {
         this.dateTime = dateTime;
     }
-
-    /**
-     * Gets the mood state of the event.
-     *
-     * @return the mood state.
-     */
     public MoodState getMoodState() {
         return moodState;
     }
-
-    /**
-     * Sets the mood state for the event.
-     *
-     * @param moodState the mood state to set.
-     */
     public void setMoodState(MoodState moodState) {
         this.moodState = moodState;
     }
-
-    /**
-     * Gets the trigger for the mood event.
-     *
-     * @return the trigger.
-     */
     public String getTrigger() {
         return trigger;
     }
-
-    /**
-     * Sets the trigger for the mood event.
-     *
-     * @param trigger the trigger to set.
-     */
     public void setTrigger(String trigger) {
         this.trigger = trigger;
     }
-
-    /**
-     * Gets the social situation of the mood event.
-     *
-     * @return the social situation.
-     */
     public SocialSituation getSocialSituation() {
         return socialSituation;
     }
-
-    /**
-     * Sets the social situation for the mood event.
-     *
-     * @param socialSituation the social situation to set.
-     */
     public void setSocialSituation(SocialSituation socialSituation) {
         this.socialSituation = socialSituation;
     }
+
 
     /**
      * Gets the maximum allowed photo size.
      *
      * @return the photo size in bytes.
      */
+
     public int getPhotoSize() {
         return photoSize;
     }
-
-    /**
-     * Sets the maximum allowed photo size.
-     *
-     * @param photoSize the photo size in bytes.
-     */
     public void setPhotoSize(int photoSize) {
         this.photoSize = photoSize;
     }
@@ -193,6 +136,7 @@ public class Mood implements Serializable {
      * Gets the photo url.
      * @return photoUrl as a string
      */
+
     public String getPhotoUrl() {
         return photoUrl;
     }
@@ -204,77 +148,36 @@ public class Mood implements Serializable {
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
     }
-
-    /**
-     * Gets the latitude coordinate of the mood event.
-     *
-     * @return the latitude.
-     */
     public Double getLatitude() {
         return latitude;
     }
-
-    /**
-     * Gets the longitude coordinate of the mood event.
-     *
-     * @return the longitude.
-     */
     public Double getLongitude() {
         return longitude;
     }
-
-    /**
-     * Sets the location (latitude and longitude) of the mood event.
-     *
-     * @param latitude  the latitude to set.
-     * @param longitude the longitude to set.
-     */
     public void setLocation(Double latitude, Double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
-
-    /**
-     * Gets the username associated with the mood event.
-     *
-     * @return the username.
-     */
     public String getUsername() {
         return username;
     }
-
-    /**
-     * Sets the username associated with the mood event.
-     *
-     * @param username the username to set.
-     */
     public void setUsername(String username) {
         this.username = username;
     }
-
-    /**
-     * Gets the visibility status of the mood event.
-     *
-     * @return true if public, false if private.
-     */
     public boolean isPublic() {
         return isPublic;
     }
-
-    /**
-     * Sets the visibility status of the mood event.
-     *
-     * @param isPublic true to make public, false to make private.
-     */
     public void setPublic(boolean isPublic) {
         this.isPublic = isPublic;
     }
 
-    /**
-     * Returns a string representation of the Mood object.
-     *
-     * @return a formatted string containing mood details.
-     */
+    public boolean isPendingReview() {
+        return pendingReview;
+    }
+    public void setPendingReview(boolean pendingReview) {
+        this.pendingReview = pendingReview;
+    }
+
     @Override
     public String toString() {
         return "Mood{" +
@@ -285,6 +188,8 @@ public class Mood implements Serializable {
                 ", reason='" + reason + '\'' +
                 ", photo=" + (photoUrl != null ? "present" : "none") +
                 ", location=" + (latitude != null && longitude != null ? "(" + latitude + ", " + longitude + ")" : "none") +
+                ", isPublic=" + isPublic +
+                ", pendingReview=" + pendingReview +
                 '}';
     }
 }

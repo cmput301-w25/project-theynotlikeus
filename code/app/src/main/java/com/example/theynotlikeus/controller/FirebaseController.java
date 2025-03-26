@@ -2,9 +2,8 @@ package com.example.theynotlikeus.controller;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
-import com.google.firebase.firestore.MemoryCacheSettings;
 import com.google.firebase.firestore.PersistentCacheIndexManager;
-import com.google.firebase.firestore.PersistentCacheSettings;
+
 
 // FirebaseController
 
@@ -12,60 +11,25 @@ import com.google.firebase.firestore.PersistentCacheSettings;
  * FirebaseController is a singleton class that manages the configuration and access to the Firebase Firestore instance, including setting up caching and auto-indexing.
  * Provides a centralized way to interact with the Firestore within the whole application.
  */
+
 public class FirebaseController {
-    /* Singleton pattern taken from: https://www.geeksforgeeks.org/singleton-class-java/
-     * Authored by: GeeksForGeeks
-     * Taken by: Ercel Angeles
-     * Taken on: March 14, 2025
-     */
-    private FirebaseFirestore db;
+    // Static singleton instance of Firestore.
+    private static FirebaseFirestore db;
+    // Singleton instance of this controller.
     private static FirebaseController singleInstance;
-    private static PersistentCacheIndexManager indexManager;
+    // Cached Firestore settings.
     private static FirebaseFirestoreSettings settings;
+    // Optional: Cache index manager.
+    private static PersistentCacheIndexManager indexManager;
 
-    /**
-     * Constructor for the FirebaseController
-     */
-    public FirebaseController() {
-        this.db = getFirebase();
+    // Private constructor to prevent direct instantiation.
+    FirebaseController() {
+        // Ensure Firestore is initialized.
+        getFirebase();
     }
 
     /**
-     * Gets the Firebase database.
-     * @return this.db
-     */
-    public FirebaseFirestore getFirebase() {
-        if (db == null) {
-            // Obtain the Firestore instance.
-            db = FirebaseFirestore.getInstance();
-
-            // Build your settings without relying on db.getFirestoreSettings().
-            settings = new FirebaseFirestoreSettings.Builder()
-                    .setLocalCacheSettings(MemoryCacheSettings.newBuilder().build())
-                    .setLocalCacheSettings(PersistentCacheSettings.newBuilder().build())
-                    .build();
-
-            // Immediately apply the settings before any other Firestore calls.
-            db.setFirestoreSettings(settings);
-
-            // Now it’s safe to get the PersistentCacheIndexManager from the same instance.
-            indexManager = db.getPersistentCacheIndexManager();
-            if (indexManager != null) {
-                // Enable auto-indexing.
-                indexManager.enableIndexAutoCreation();
-            }
-        }
-        return db;
-    }
-
-    /**
-     * Get a single instance of the controller
-     * @return singleInstance
-     */
-    /*  Synchronization for singleton pattern: https://stackoverflow.com/questions/11165852/java-singleton-and-synchronization
-     * Authored by: Jeffrey
-     * Taken by: Ercel Angeles
-     * Taken on: March 14, 2025
+     * Returns the singleton instance of FirebaseController.
      */
     public static synchronized FirebaseController getInstance() {
         if (singleInstance == null) {
@@ -74,4 +38,28 @@ public class FirebaseController {
         return singleInstance;
     }
 
+    /**
+     * Returns the singleton instance of FirebaseFirestore. Settings are configured
+     * only once—before any Firestore operations occur.
+     */
+    public static synchronized FirebaseFirestore getFirebase() {
+        if (db == null) {
+            // Obtain the Firestore instance.
+            db = FirebaseFirestore.getInstance();
+
+            // Configure Firestore settings only once.
+            settings = new FirebaseFirestoreSettings.Builder()
+                    // Enable local persistence.
+                    .setPersistenceEnabled(true)
+                    .build();
+            db.setFirestoreSettings(settings);
+
+            // Now that the settings have been applied, get the cache index manager.
+            indexManager = db.getPersistentCacheIndexManager();
+            if (indexManager != null) {
+                indexManager.enableIndexAutoCreation();
+            }
+        }
+        return db;
+    }
 }

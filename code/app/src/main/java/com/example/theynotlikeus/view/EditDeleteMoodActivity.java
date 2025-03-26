@@ -27,6 +27,7 @@ import androidx.core.app.ActivityCompat;
 import com.bumptech.glide.Glide;
 import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.controller.MoodController;
+import com.example.theynotlikeus.controller.TriggerWordsController;
 import com.example.theynotlikeus.model.Mood;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -37,6 +38,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class EditDeleteMoodActivity extends AppCompatActivity {
 
@@ -44,6 +46,7 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1001;
 
     private MoodController moodController;
+    private TriggerWordsController triggerWordsController;
     private String moodId;
     private Mood moodToEdit;
     private final int trigger_length_limit = 200;
@@ -54,16 +57,20 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
     private Spinner socialSituationSpinner;
     private Switch geolocationSwitch;
     private Switch privacySwitch;
+
     private Button selectImageButton;
     private ImageButton deleteButton;
+
     private ImageButton backButton;
+
     private Button saveButton;
+
+    private ImageView setImage;
 
     // Image handling.
     private Uri imageUri;
     private StorageReference storageRef;
 
-    private ImageView setImage;
 
     // Geolocation fields.
     private FusedLocationProviderClient fusedLocationClient;
@@ -92,8 +99,9 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
         selectImageButton = findViewById(R.id.button_DeleteEditMoodActivity_selectImage);
         setImage = findViewById(R.id.imageview_DeleteEditMoodActivity_photo);
 
-        // Initialize the MoodController.
+        // Initialize controllers.
         moodController = new MoodController();
+        triggerWordsController = new TriggerWordsController();
 
         // Initialize geolocation components.
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -108,7 +116,6 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                 for (android.location.Location location : locationResult.getLocations()) {
                     if (location != null && location.getAccuracy() < 50) {
                         currentLocation = location;
-                        // Once a good location is found, stop updates.
                         fusedLocationClient.removeLocationUpdates(locationCallback);
                         requestingLocationUpdates = false;
                         break;
@@ -128,15 +135,13 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
 
         // Setup mood spinner.
         ArrayAdapter<CharSequence> moodAdapter = ArrayAdapter.createFromResource(
-                this, R.array.moods, R.layout.add_mood_event_spinner
-        );
+                this, R.array.moods, R.layout.add_mood_event_spinner);
         moodAdapter.setDropDownViewResource(R.layout.add_mood_event_spinner);
         moodSpinner.setAdapter(moodAdapter);
 
         // Setup social situation spinner.
         ArrayAdapter<CharSequence> socialAdapter = ArrayAdapter.createFromResource(
-                this, R.array.social_situations, R.layout.add_mood_event_spinner
-        );
+                this, R.array.social_situations, R.layout.add_mood_event_spinner);
         socialAdapter.setDropDownViewResource(R.layout.add_mood_event_spinner);
         socialSituationSpinner.setAdapter(socialAdapter);
 
@@ -147,23 +152,20 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
             if (moodToEdit.getSocialSituation() != null) {
                 socialSituationSpinner.setSelection(getSocialSituationIndex(moodToEdit.getSocialSituation()));
             }
-            // Load the previous image if available.
             if (moodToEdit.getPhotoUrl() != null && !moodToEdit.getPhotoUrl().isEmpty()) {
                 Glide.with(this)
                         .load(moodToEdit.getPhotoUrl())
                         .into(setImage);
             }
-            // Set privacy switch accordingly.
             privacySwitch.setChecked(moodToEdit.isPublic());
         } else if (moodId != null) {
-            // Otherwise, load mood data from the database.
             loadMoodData();
         }
 
-        // Set up image selection.
+        // Setup image selection.
         selectImageButton.setOnClickListener(v -> openImagePicker());
 
-        // Save button: Update mood details.
+        // Save button: Update mood details with trigger word checking.
         saveButton.setOnClickListener(v -> {
             if (moodToEdit == null) {
                 Toast.makeText(this, "Mood not loaded yet.", Toast.LENGTH_SHORT).show();
@@ -225,11 +227,11 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                     return;
                 }
             }
-            // If a new image was selected, upload it; otherwise, update mood directly.
+            // If a new image was selected, upload it; otherwise, check trigger words and update mood.
             if (imageUri != null) {
-                uploadImageAndSaveMood(moodToEdit);
+                uploadImageAndUpdateMood(moodToEdit);
             } else {
-                updateMoodInDatabase(moodToEdit);
+                checkAndUpdateMood(moodToEdit);
             }
         });
 
@@ -268,37 +270,65 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             imageUri = data.getData();
+
             // Update the image button to preview the selected image.
+
             setImage.setImageURI(imageUri);
         }
     }
 
-    // Uploads the selected image and then updates the mood.
-    private void uploadImageAndSaveMood(Mood mood) {
+    /**
+     * Checks trigger words and then updates the mood in the database.
+     * If banned words are found, sets pendingReview to true.
+     */
+    private void checkAndUpdateMood(Mood mood) {
+        String trigger = mood.getTrigger();
+        if (trigger == null || trigger.isEmpty()) {
+            updateMoodInDatabase(mood);
+            return;
+        }
+        triggerWordsController.getAllTriggerWords(triggerWordList -> {
+            boolean containsBanned = false;
+            for (com.example.theynotlikeus.model.TriggerWord bannedWord : triggerWordList) {
+                if (trigger.toLowerCase().contains(bannedWord.getWord().toLowerCase())) {
+                    containsBanned = true;
+                    break;
+                }
+            }
+            if (containsBanned) {
+                mood.setPendingReview(true);
+                //Toast.makeText(EditDeleteMoodActivity.this, "Mood pending admin review", Toast.LENGTH_SHORT).show();
+            }
+            updateMoodInDatabase(mood);
+        }, error -> Toast.makeText(EditDeleteMoodActivity.this,
+                "Error checking trigger words: " + error.getMessage(), Toast.LENGTH_SHORT).show());
+    }
+
+    /**
+     * Uploads a new image and then checks trigger words and updates the mood.
+     */
+    private void uploadImageAndUpdateMood(Mood mood) {
         String fileName = System.currentTimeMillis() + ".jpg";
         StorageReference fileRef = storageRef.child(fileName);
 
-        // Get the file size.
         Cursor returnCursor = getContentResolver().query(imageUri, null, null, null, null);
         int sizeIndex = returnCursor.getColumnIndex(OpenableColumns.SIZE);
         returnCursor.moveToFirst();
         long fileSizeInBytes = returnCursor.getLong(sizeIndex);
         returnCursor.close();
 
-        // Check admin preference for image size limit.
         SharedPreferences prefs = getSharedPreferences("AdminPrefs", MODE_PRIVATE);
         boolean isLimitOn = AdminActivity.isLimitEnabled(prefs);
         if (isLimitOn && fileSizeInBytes > 65536) {
             Toast.makeText(this, "Image too large. Must be under 65536 bytes.", Toast.LENGTH_SHORT).show();
             return;
         }
-
         fileRef.putFile(imageUri)
                 .addOnSuccessListener(taskSnapshot ->
                         fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
                             String imageUrl = uri.toString();
                             mood.setPhotoUrl(imageUrl);
-                            updateMoodInDatabase(mood);
+                            checkAndUpdateMood(mood);
                         }))
                 .addOnFailureListener(e ->
                         Toast.makeText(this, "Image upload failed.", Toast.LENGTH_SHORT).show());
@@ -306,16 +336,28 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
 
     // Updates the mood record in the database.
     private void updateMoodInDatabase(Mood mood) {
+        // Force an update by setting the current time.
+        //mood.setDateTime(new Date());
         moodController.updateMood(mood, () -> {
-            Toast.makeText(EditDeleteMoodActivity.this,
-                    "Mood updated successfully!", Toast.LENGTH_SHORT).show();
-            Intent resultIntent = new Intent();
-            resultIntent.putExtra("mood", (Serializable) mood);
-            setResult(RESULT_OK, resultIntent);
-            finish();
+            runOnUiThread(() -> {
+                if (mood.isPendingReview()) {
+                    Toast.makeText(EditDeleteMoodActivity.this, "Mood pending admin review", Toast.LENGTH_SHORT).show();
+                    // Navigate to HomeMyMoodsFrag.
+                    Intent intent = new Intent(EditDeleteMoodActivity.this, MainActivity.class);
+                    intent.putExtra("fragmentToLoad", "HomeMyMoodsFrag");
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(EditDeleteMoodActivity.this, "Mood updated successfully!", Toast.LENGTH_SHORT).show();
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra("mood", (Serializable) mood);
+                    setResult(RESULT_OK, resultIntent);
+                }
+                finish();
+            });
         }, e -> {
-            Toast.makeText(EditDeleteMoodActivity.this,
-                    "Error updating mood: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            runOnUiThread(() -> Toast.makeText(EditDeleteMoodActivity.this,
+                    "Error updating mood: " + e.getMessage(), Toast.LENGTH_SHORT).show());
         });
     }
 
@@ -329,7 +371,6 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                 if (moodToEdit.getSocialSituation() != null) {
                     socialSituationSpinner.setSelection(getSocialSituationIndex(moodToEdit.getSocialSituation()));
                 }
-                // Load the existing image if available.
                 if (moodToEdit.getPhotoUrl() != null && !moodToEdit.getPhotoUrl().isEmpty()) {
                     Glide.with(EditDeleteMoodActivity.this)
                             .load(moodToEdit.getPhotoUrl())
@@ -337,20 +378,16 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                 }
                 privacySwitch.setChecked(moodToEdit.isPublic());
             }
-        }, e -> {
-            Toast.makeText(EditDeleteMoodActivity.this,
-                    "Error loading mood: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-        });
+        }, e -> Toast.makeText(EditDeleteMoodActivity.this,
+                "Error loading mood: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
     // Starts location updates.
     private void startLocationUpdates() {
         if (!requestingLocationUpdates) {
             requestingLocationUpdates = true;
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                            != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
             fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
@@ -368,7 +405,6 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // If geolocation is enabled, start location updates.
         if (geolocationSwitch.isChecked()) {
             startLocationUpdates();
         }
@@ -380,7 +416,6 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
         stopLocationUpdates();
     }
 
-    // Handle location permission results.
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -399,8 +434,7 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
     private int getSocialSituationIndex(Mood.SocialSituation socialSituation) {
         ArrayAdapter<CharSequence> adapter = (ArrayAdapter<CharSequence>) socialSituationSpinner.getAdapter();
         for (int i = 0; i < adapter.getCount(); i++) {
-            if (adapter.getItem(i).toString().equalsIgnoreCase(
-                    socialSituation.toString().replace("_", " "))) {
+            if (adapter.getItem(i).toString().equalsIgnoreCase(socialSituation.toString().replace("_", " "))) {
                 return i;
             }
         }
