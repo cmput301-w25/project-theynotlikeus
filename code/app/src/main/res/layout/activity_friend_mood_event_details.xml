@@ -18,6 +18,8 @@
         android:id="@+id/imagebutton_ActivityFriendMoodEventDetails_backbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
         android:adjustViewBounds="true"
         android:background="@android:color/transparent"
         android:contentDescription="@string/go_back"
@@ -26,52 +28,32 @@
         android:scaleType="fitXY"
         android:src="@drawable/ic_white_back_button"
         android:translationY="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textview_ActivityFriendMoodEventDetails_title"
-        app:layout_constraintEnd_toStartOf="@+id/textview_ActivityFriendMoodEventDetails_title"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textview_ActivityFriendMoodEventDetails_title"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:id="@+id/imagebutton_ActivityFriendMoodEventDetails_editbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:background="@android:color/transparent"
-        android:visibility="invisible"
-        android:maxWidth="40dp"
-        android:maxHeight="40dp"
-        android:scaleType="fitXY"
-        android:translationY="8dp"
-
-        app:layout_constraintBottom_toBottomOf="@+id/textview_ActivityFriendMoodEventDetails_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/textview_ActivityFriendMoodEventDetails_title"
-        app:layout_constraintTop_toTopOf="@+id/textview_ActivityFriendMoodEventDetails_title"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/ic_edit_button" />
 
     <TextView
         android:id="@+id/textview_ActivityFriendMoodEventDetails_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:fontFamily="monospace"
         android:text="@string/friend_mood_details_edit_delete_mood"
         android:textColor="@color/white"
         android:textSize="24sp"
-        app:layout_constraintEnd_toStartOf="@id/imagebutton_ActivityFriendMoodEventDetails_editbutton"
-        app:layout_constraintStart_toEndOf="@id/imagebutton_ActivityFriendMoodEventDetails_backbutton"
+        android:layout_marginLeft="40dp"
+        app:layout_constraintStart_toEndOf="@+id/imagebutton_ActivityFriendMoodEventDetails_backbutton"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
+        android:layout_marginTop="30dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview_ActivityFriendMoodEventDetails_title">
+        app:layout_constraintTop_toBottomOf="@+id/textview_ActivityFriendMoodEventDetails_title"
+        app:layout_constraintVertical_bias="1.0">
 
 
         <View
@@ -79,16 +61,15 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="12dp"
             android:layout_marginBottom="-16dp"
             android:background="#282727"
             app:layout_constraintBottom_toBottomOf="@+id/button_ActivityFriendMoodEventDetails_commentButton"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="1.0" />
 
         <TextView
             android:id="@+id/textview_ActivityFriendMoodEventDetails_username"
