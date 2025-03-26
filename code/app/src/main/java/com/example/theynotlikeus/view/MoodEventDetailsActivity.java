@@ -104,7 +104,7 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
         titleTextView.setText(getString(R.string.your_mood_details));
 
         // Display the username.
-        usernameTextView.setText(mood.getUsername() != null ? mood.getUsername() : "Unknown");
+        usernameTextView.setText(mood.getMoodState().toString() != null ? mood.getMoodState().toString() : "Unknown");
 
         // Display social situation.
         if (mood.getSocialSituation() != null) {
