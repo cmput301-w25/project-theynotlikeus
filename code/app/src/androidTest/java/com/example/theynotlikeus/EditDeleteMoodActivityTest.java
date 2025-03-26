@@ -43,8 +43,6 @@ public class EditDeleteMoodActivityTest {
 
     private static String generatedMoodId;
     private static String expectedDateString;
-
-    // for geolocation implementation in part 4
     private static final double testLatitude = 37.7749;
     private static final double testLongitude = -122.4194;
 
