@@ -30,19 +30,18 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/dropDownMenuLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/white_border"
             android:hint="@string/filter_by_mood"
             android:textColorHint="@color/grey"
+
+
             android:paddingTop="0dp"
             android:paddingBottom="0dp"
-
-            app:boxStrokeWidth="10dp"
+            app:boxStrokeWidth="2dp"
             app:endIconTint="@color/white"
             app:hintTextColor="@color/grey"
             app:layout_constraintEnd_toEndOf="parent"
@@ -54,7 +53,8 @@
                 android:id="@+id/autoCompleteTextView"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-
+                android:paddingStart="16dp"
+                android:paddingLeft="16dp"
                 android:dropDownHeight="wrap_content"
                 android:dropDownVerticalOffset="8dp"
                 android:padding="2dp"
