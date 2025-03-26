@@ -11,7 +11,7 @@
         android:id="@+id/imageButton_ActivityAddMoodEvent_backbutton"
         android:layout_width="48dp"
         android:layout_height="52dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="25dp"
         android:layout_marginEnd="87dp"
         android:background="@color/black_background"
         android:contentDescription="@string/back_button_add_mood"
@@ -25,11 +25,11 @@
         android:id="@+id/textview_ActivityAddMoodEvent_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
         android:fontFamily="monospace"
         android:text="@string/mood_event"
         android:textColor="@color/white"
         android:textSize="24sp"
-        android:layout_marginTop="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -179,13 +179,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
+        android:layout_marginEnd="28dp"
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/primary_blue"
         android:text="@string/save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/switch_ActivityAddMoodEvent_geolocation"
-        app:layout_constraintVertical_bias="0.18" />
+        app:layout_constraintVertical_bias="0.21" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
