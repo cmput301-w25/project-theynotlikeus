@@ -158,6 +158,7 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                         .into(setImage);
             }
             privacySwitch.setChecked(moodToEdit.isPublic());
+            geolocationSwitch.setChecked(moodToEdit.isGeolocationEnabled());
         } else if (moodId != null) {
             loadMoodData();
         }
@@ -206,6 +207,7 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
 
             // Update privacy.
             moodToEdit.setPublic(privacySwitch.isChecked());
+            moodToEdit.setGeolocationEnabled(geolocationSwitch.isChecked());
 
             // Update location if geolocation toggle is enabled.
             if (geolocationSwitch.isChecked()) {
@@ -377,6 +379,7 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                             .into(setImage);
                 }
                 privacySwitch.setChecked(moodToEdit.isPublic());
+                geolocationSwitch.setChecked(moodToEdit.isGeolocationEnabled());
             }
         }, e -> Toast.makeText(EditDeleteMoodActivity.this,
                 "Error loading mood: " + e.getMessage(), Toast.LENGTH_SHORT).show());

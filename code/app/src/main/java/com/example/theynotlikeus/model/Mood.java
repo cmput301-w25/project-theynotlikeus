@@ -50,6 +50,7 @@ public class Mood implements Serializable {
     // Document ID for Firestore reference.
     private String docId;
     private boolean isPublic = false;
+    private boolean isGeolocationEnabled = false;
 
     // New field to mark if a mood is pending admin review.
     private boolean pendingReview = false;
@@ -158,6 +159,13 @@ public class Mood implements Serializable {
         this.latitude = latitude;
         this.longitude = longitude;
     }
+    public boolean isGeolocationEnabled() {
+        return isGeolocationEnabled;
+    }
+    public void setGeolocationEnabled(boolean isGeolocationEnabled) {
+        this.isGeolocationEnabled = isGeolocationEnabled;
+    }
+
     public String getUsername() {
         return username;
     }
