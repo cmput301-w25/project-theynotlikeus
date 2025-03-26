@@ -21,12 +21,30 @@ import com.example.theynotlikeus.controller.UserController;
 import com.example.theynotlikeus.model.User;
 import com.google.android.material.appbar.MaterialToolbar;
 
+/**
+ * A fragment that handles the user sign-up process, including collecting the user's input
+ * (username, password, and re-entered password), validating the input, and using the UserController to create a new user account.
+ *
+ * If the account creation is successful, the fragment stores the user's username in a global singleton
+ * and navigates the user to the main activity. In case of an error (example, username already exists),
+ * a message is displayed, and the user is navigated to the login screen.
+ */
 public class UserSignUpFrag extends Fragment {
 
+    /**
+     * Default constructor for UserSignUpFrag.
+     */
     public UserSignUpFrag() {
         // Required empty public constructor
     }
 
+    /**
+     * Creates a new instance of UserSignUpFrag
+     *
+     * @param param1 First parameter to pass to the fragment.
+     * @param param2 Second parameter to pass to the fragment.
+     * @return A new instance of UserSignUpFrag.
+     */
     public static UserSignUpFrag newInstance(String param1, String param2) {
         UserSignUpFrag fragment = new UserSignUpFrag();
         Bundle args = new Bundle();
@@ -36,12 +54,32 @@ public class UserSignUpFrag extends Fragment {
         return fragment;
     }
 
+    /**
+     * For when the fragment is initially created.
+     *
+     * @param savedInstanceState If the fragment is being re-created from
+     * a previous saved state, this is the state.
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Retrieve arguments if needed.
     }
 
+    /**
+     * Inflates the layout for the fragment, which includes fields for entering the username,
+     * password, and confirming the password.
+     *
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return The inflated view for the fragment.
+     */
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
@@ -50,6 +88,13 @@ public class UserSignUpFrag extends Fragment {
         return inflater.inflate(R.layout.fragment_user_sign_up, container, false);
     }
 
+    /**
+     * Called after the view has been created. This method sets up the user interface.
+     *
+     * @param view The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     */
     @Override
     public void onViewCreated(
             @NonNull View view,
@@ -93,6 +138,11 @@ public class UserSignUpFrag extends Fragment {
 
             // Use the controller to sign up the user
             userController.signUpUser(username, password, new UserController.SignUpCallback() {
+                /**
+                 * For successful user sign up. Stores username in the global singleton.
+                 *
+                 * @param user Newly created user.
+                 */
                 @Override
                 public void onSuccess(User user) {
                     // Update the global singleton with the logged-in username
@@ -106,6 +156,11 @@ public class UserSignUpFrag extends Fragment {
                     requireActivity().finish();
                 }
 
+                /**
+                 * For error during sign up. Handles error during sign up.
+                 *
+                 * @param error
+                 */
                 @Override
                 public void onError(String error) {
                     Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show();

@@ -4,6 +4,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.PersistentCacheIndexManager;
 
+
+// FirebaseController
+
+/**
+ * FirebaseController is a singleton class that manages the configuration and access to the Firebase Firestore instance, including setting up caching and auto-indexing.
+ * Provides a centralized way to interact with the Firestore within the whole application.
+ */
+
 public class FirebaseController {
     // Static singleton instance of Firestore.
     private static FirebaseFirestore db;

@@ -4,25 +4,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.LoginUserSelectionFrag">
+    tools:context=".view.LoginUserSelectionFrag"
+    android:background="@color/black_background">
 
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/textView_HomeMyMoodsFragment_welcomeUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:fontFamily=""
+        android:text="Moods"
+        android:textColor="?attr/colorOnPrimary"
+        android:textSize="90sp"
+        android:textStyle="bold"
+        app:fontFamily="sans-serif-black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button_LoginUserSelectionFragment_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="User"
+        android:backgroundTint="@color/primary_blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
 
     <Button
         android:id="@+id/button_LoginUserSelectionFragment_admin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Admin"
+        android:backgroundTint="@color/primary_blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

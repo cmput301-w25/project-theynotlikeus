@@ -28,6 +28,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Activity to display a community map where the current user's location is shown, along with the locations of their friends' moods.
+ */
 public class CommunityMapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private static final String TAG = "CommunityMapActivity";

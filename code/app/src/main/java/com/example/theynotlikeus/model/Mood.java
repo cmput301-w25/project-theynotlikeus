@@ -117,37 +117,34 @@ public class Mood implements Serializable {
     public void setSocialSituation(SocialSituation socialSituation) {
         this.socialSituation = socialSituation;
     }
-    public String getReason() {
-        return reason;
-    }
-    public void setReason(String reason) {
-        if (reason != null && (reason.length() > 20 || reason.split("\\s+").length > 3)) {
-            throw new IllegalArgumentException("Reason must be at most 20 characters or 3 words.");
-        }
-        this.reason = reason;
-    }
+
+
+    /**
+     * Gets the maximum allowed photo size.
+     *
+     * @return the photo size in bytes.
+     */
+
     public int getPhotoSize() {
         return photoSize;
     }
     public void setPhotoSize(int photoSize) {
         this.photoSize = photoSize;
     }
-    public byte[] getPhoto() {
-        return photo;
-    }
+
+    /**
+     * Gets the photo url.
+     * @return photoUrl as a string
+     */
+
     public String getPhotoUrl() {
         return photoUrl;
     }
-    public void setPhoto(byte[] photo) {
-        boolean isLimitEnabled = true; // Default to true if prefs is null
-        if (prefs != null) {
-            isLimitEnabled = AdminActivity.isLimitEnabled(prefs);
-        }
-        if (isLimitEnabled  && photo != null && photo.length > photoSize) {
-            throw new IllegalArgumentException("Photo size must be under 65536 bytes.");
-        }
-        this.photo = photo;
-    }
+
+    /**
+     * Sets the photo Url
+     * @param photoUrl
+     */
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
     }

@@ -23,6 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.bumptech.glide.Glide;
 import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.controller.MoodController;
 import com.example.theynotlikeus.controller.TriggerWordsController;
@@ -35,12 +36,13 @@ import com.google.android.gms.location.LocationServices;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.File;
+import java.util.Date;
 
 public class AddMoodEventActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1001;
+
     private String username;
     private final int trigger_length_limit = 200;
     private MoodController moodController;
@@ -52,14 +54,14 @@ public class AddMoodEventActivity extends AppCompatActivity {
 
     private StorageReference storageRef; // Firebase Storage reference
 
-    // FusedLocationProviderClient and location objects.
+    // Location components.
     private FusedLocationProviderClient fusedLocationClient;
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
     private boolean requestingLocationUpdates = false;
-    private android.location.Location currentLocation; // Updated location
+    private android.location.Location currentLocation;
 
-    // Toggle switches for public and geolocation.
+    // Toggles for privacy and geolocation.
     private Switch togglePublic;
     private Switch toggleGeolocation;
 
@@ -77,14 +79,11 @@ public class AddMoodEventActivity extends AppCompatActivity {
 
         // Initialize FusedLocationProviderClient.
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-        // Create a LocationRequest with high accuracy.
         locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(5000);         // Every 5 seconds.
         locationRequest.setFastestInterval(2000);    // At most every 2 seconds.
 
-        // Define the LocationCallback.
         locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
@@ -100,12 +99,12 @@ public class AddMoodEventActivity extends AppCompatActivity {
             }
         };
 
-        // UI Elements setup.
-        Spinner moodSpinner = findViewById(R.id.spinner_ActivityAddMoodEvent_currentmood);
-        EditText triggerEditText = findViewById(R.id.edittext_ActivityAddMoodEvent_trigger);
+        // Bind UI elements.
+        Spinner moodSpinner = findViewById(R.id.spinner_ActivityAddMoodEvent_currentMoodspinner);
+        EditText triggerEditText = findViewById(R.id.editText_ActivityAddMoodEvent_triggerInput);
         Spinner socialSituationSpinner = findViewById(R.id.spinner_ActivityAddMoodEvent_socialsituation);
-        addImageButton = findViewById(R.id.button_select_photo);
-        imagePreview = findViewById(R.id.imageview_mood_photo);
+        addImageButton = findViewById(R.id.button_ActivityAddMoodEvent_selectPhoto);
+        imagePreview = findViewById(R.id.imageview_ActivityAddMoodEvent_photo);
         Button saveButton = findViewById(R.id.button_ActivityAddMoodEvent_save);
         togglePublic = findViewById(R.id.switch_ActivityAddMoodEvent_privacy);
         toggleGeolocation = findViewById(R.id.switch_ActivityAddMoodEvent_geolocation);
@@ -125,7 +124,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
         // Set up image selection button.
         addImageButton.setOnClickListener(v -> openImagePicker());
 
-        // Save Button: Create the Mood object and then check trigger words before saving.
+        // Save button: Create the Mood object and check trigger words before saving.
         saveButton.setOnClickListener(v -> {
             String selectedMood = moodSpinner.getSelectedItem().toString();
             Mood.MoodState moodState;
@@ -162,43 +161,45 @@ public class AddMoodEventActivity extends AppCompatActivity {
             mood.setUsername(username);
             mood.setPublic(togglePublic.isChecked());
 
-            // Check trigger words before saving.
+            // Check trigger words and then save the mood.
             checkAndSaveMood(mood);
         });
 
-        findViewById(R.id.imagebutton_ActivityViewComments_backbutton).setOnClickListener(v -> finish());
+        findViewById(R.id.imageButton_ActivityAddMoodEvent_backbutton).setOnClickListener(v -> finish());
     }
 
     /**
      * Checks if the mood's trigger text contains any banned words.
-     * If a banned word is found, marks the mood as pending review so that it is hidden from feeds until approved,
-     * then saves the mood.
-     * If no banned words are found, saves the mood normally.
+     * Passes along a flag to indicate whether banned words were found.
      */
     private void checkAndSaveMood(Mood mood) {
         String trigger = mood.getTrigger();
         if (trigger == null || trigger.isEmpty()) {
-            saveMoodNormally(mood);
+            // No trigger provided; save normally.
+            saveMoodNormally(mood, false);
             return;
         }
         triggerWordsController.getAllTriggerWords(triggerWordList -> {
             boolean containsBanned = false;
             for (com.example.theynotlikeus.model.TriggerWord bannedWord : triggerWordList) {
-                // Use getWord() on each TriggerWord for comparison.
                 if (trigger.toLowerCase().contains(bannedWord.getWord().toLowerCase())) {
                     containsBanned = true;
                     break;
                 }
             }
-            if (containsBanned) {
-                mood.setPendingReview(true);
-            }
-            saveMoodNormally(mood);
+            saveMoodNormally(mood, containsBanned);
         }, error -> Toast.makeText(AddMoodEventActivity.this,
                 "Error checking trigger words: " + error.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
-    private void saveMoodNormally(Mood mood) {
+    /**
+     * Saves the mood normally, taking into account whether banned words were found.
+     * If banned words were found, the mood's pendingReview flag is set.
+     */
+    private void saveMoodNormally(Mood mood, boolean containsBanned) {
+        if (containsBanned) {
+            mood.setPendingReview(true);
+        }
         if (toggleGeolocation.isChecked()) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED &&
@@ -213,21 +214,21 @@ public class AddMoodEventActivity extends AppCompatActivity {
             startLocationUpdates();
             if (currentLocation != null) {
                 mood.setLocation(currentLocation.getLatitude(), currentLocation.getLongitude());
-                processMoodSaving(mood);
+                processMoodSaving(mood, containsBanned);
             } else {
                 Toast.makeText(this, "Acquiring location, please try again in a few seconds.", Toast.LENGTH_SHORT).show();
             }
         } else {
-            processMoodSaving(mood);
+            processMoodSaving(mood, containsBanned);
         }
     }
 
-    // Helper method: Continue saving mood (with image upload if needed).
-    private void processMoodSaving(Mood mood) {
+    // Helper method: Continues saving the mood (with image upload if needed).
+    private void processMoodSaving(Mood mood, boolean containsBanned) {
         if (imageUri != null) {
-            uploadImage(mood);
+            uploadImage(mood, containsBanned);
         } else {
-            saveMoodToDatabase(mood, null);
+            saveMoodToDatabase(mood, null, containsBanned);
         }
     }
 
@@ -263,7 +264,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
         }
     }
 
-    private void uploadImage(Mood mood) {
+    private void uploadImage(Mood mood, boolean containsBanned) {
         String fileName = System.currentTimeMillis() + ".jpg";
         StorageReference fileRef = storageRef.child(fileName);
 
@@ -282,29 +283,30 @@ public class AddMoodEventActivity extends AppCompatActivity {
         }
 
         fileRef.putFile(imageUri)
-                .addOnSuccessListener(taskSnapshot -> fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                    String imageUrl = uri.toString();
-                    saveMoodToDatabase(mood, imageUrl);
-                }))
+                .addOnSuccessListener(taskSnapshot ->
+                        fileRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                            String imageUrl = uri.toString();
+                            saveMoodToDatabase(mood, imageUrl, containsBanned);
+                        }))
                 .addOnFailureListener(e ->
                         Toast.makeText(this, "Image upload failed.", Toast.LENGTH_SHORT).show());
     }
 
-    private void saveMoodToDatabase(Mood mood, String imageUrl) {
+    private void saveMoodToDatabase(Mood mood, String imageUrl, boolean containsBanned) {
         if (imageUrl != null) {
             mood.setPhotoUrl(imageUrl);
         }
+        // Save the mood using the MoodController.
         moodController.addMood(mood, () -> runOnUiThread(() -> {
-            // Check pending review flag and display appropriate message.
-            if (mood.isPendingReview()) {
+            // Display only one message depending on whether banned words were found.
+            if (containsBanned) {
                 Toast.makeText(AddMoodEventActivity.this, "Mood pending admin review", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(AddMoodEventActivity.this, "Mood saved successfully!", Toast.LENGTH_SHORT).show();
             }
             finish();
-        }), e -> runOnUiThread(() -> {
-            Toast.makeText(AddMoodEventActivity.this, "Error saving mood: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }));
+        }), e -> runOnUiThread(() ->
+                Toast.makeText(AddMoodEventActivity.this, "Error saving mood: " + e.getMessage(), Toast.LENGTH_SHORT).show()));
     }
 
     public static void validateTrigger(String trigger, int limit) {

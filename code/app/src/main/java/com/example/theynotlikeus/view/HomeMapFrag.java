@@ -34,6 +34,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A fragment that displays a map showing mood markers based on the current user's mood events.
+ * The user’s location is retrieved, and the map is updated with markers representing their mood events.
+ * The fragment allows the user to navigate to a community map by clicking a button.
+ *
+ */
 public class HomeMapFrag extends Fragment implements OnMapReadyCallback {
 
     private static final String TAG = "HomeMapFrag";
@@ -95,7 +101,7 @@ public class HomeMapFrag extends Fragment implements OnMapReadyCallback {
         }
 
         // Setup the community map button.
-        ImageButton btnCommunity = view.findViewById(R.id.button_toCommunityMap);
+        ImageButton btnCommunity = view.findViewById(R.id.button_MapUserFrag_toCommunityMap);
         btnCommunity.setOnClickListener(v -> {
             if (currentLocation != null) {
                 Intent intent = new Intent(getActivity(), CommunityMapActivity.class);

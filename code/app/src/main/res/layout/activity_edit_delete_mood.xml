@@ -26,16 +26,20 @@
 
 
 
-    <ImageButton
+
+    <!-- Material Icon Button for Back -->
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/imageButton_DeleteEditMoodActivity_back"
+        style="@style/Widget.Material3.Button.Icon"
         android:layout_width="48dp"
         android:layout_height="52dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="87dp"
-        android:background="@color/black_background"
-        android:contentDescription="Back_button"
-        android:src="@drawable/ic_white_back_button"
+        android:backgroundTint="@color/black_background"
+        android:icon="@drawable/ic_white_back_button"
+        android:contentDescription="Back button"
         android:translationY="15dp"
+        app:iconTint="@color/white"
         app:layout_constraintEnd_toStartOf="@+id/textView_DeleteEditMoodActivity_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

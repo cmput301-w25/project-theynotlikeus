@@ -23,6 +23,9 @@ import com.example.theynotlikeus.model.Comment;
 
 import java.util.Date;
 
+/**
+ * This class represents a DialogFragment that allows users to add a comment. It returns a comment object.
+ */
 public class AddCommentDialogFrag extends DialogFragment {
     private String background_color = "#212020";
 

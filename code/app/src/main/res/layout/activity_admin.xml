@@ -21,6 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
+            android:textStyle="bold"
             android:text="@string/welcome_administrator"
             android:textColor="@color/white"
             android:textSize="20dp"
@@ -37,6 +38,7 @@
             android:layout_marginEnd="12dp"
             android:layout_marginBottom="7dp"
             android:text="@string/logout"
+            android:backgroundTint="@color/primary_blue"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
@@ -79,6 +81,7 @@
 
     <TextView
         android:id="@+id/textView2"
+        android:textStyle="bold"
         android:layout_marginLeft="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -105,6 +108,7 @@
         android:layout_height="wrap_content"
         android:text="Trigger Words"
         android:layout_marginRight="10dp"
+        android:backgroundTint="@color/primary_blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
 
