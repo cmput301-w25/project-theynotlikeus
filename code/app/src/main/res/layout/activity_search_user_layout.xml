@@ -13,7 +13,7 @@
         android:id="@+id/textview_ActivitySearchUserLayout_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Username"
+        android:text="@string/username_search_user"
         android:textColor="@android:color/white"
         android:textSize="16sp"
         android:textStyle="bold"

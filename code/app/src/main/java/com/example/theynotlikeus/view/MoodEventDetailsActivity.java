@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,23 +16,28 @@ import com.bumptech.glide.Glide;
 import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.model.Mood;
 
+import java.io.Serializable;
+
 /**
  * Activity for displaying the details of a mood event.
- *
- * It now receives the full Mood object via Intent and updates the UI directly.
+ * It receives a full Mood object via Intent and updates the UI directly.
  */
 public class MoodEventDetailsActivity extends AppCompatActivity {
 
-    TextView socialSituationTextView;
-    TextView dateTextView;
-    TextView triggerTextView;
-    TextView usernameTextView;
-    ImageView moodImageView;
-    ImageButton backButton;
-    ImageButton editButton;
-    ImageView uploadedImage;
-    Button commentButton;
     private static final int EDIT_MOOD_REQUEST = 1;
+
+    // UI elements bound to IDs defined in the updated XML layout.
+    private ImageButton backButton;
+    private ImageButton editButton;
+    private TextView titleTextView;
+    private TextView usernameTextView;
+    private ImageView moodImageView;
+    private TextView socialSituationTextView;
+    private TextView dateTextView;
+    private TextView triggerTextView;
+    private TextView locationTextView;
+    private Button commentButton;
+    private ImageView uploadedImage;
 
     // Hold the passed Mood object.
     private Mood mood;
@@ -42,38 +47,38 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood_event_details);
 
+        // Bind UI elements using the IDs from the provided XML.
+        backButton = findViewById(R.id.imagebutton_ActivityMoodEventDetails_backbutton);
+        editButton = findViewById(R.id.imagebutton_ActivityMoodEventDetails_editbutton);
+        titleTextView = findViewById(R.id.textview_ActivityMoodEventDetails_title);
+        usernameTextView = findViewById(R.id.textview_ActivityMoodEventDetails_username);
+        moodImageView = findViewById(R.id.imageview_ActivityMoodEventDetails_moodimage);
         socialSituationTextView = findViewById(R.id.textview_ActivityMoodEventDetails_socialsituation);
         dateTextView = findViewById(R.id.textview_ActivityMoodEventDetails_dateandtime);
         triggerTextView = findViewById(R.id.textview_ActivityMoodEventDetails_triggervalue);
-        usernameTextView = findViewById(R.id.textview_ActivityMoodEventDetails_username);
-        moodImageView = findViewById(R.id.imageview_ActivityMoodEventDetails_moodimage);
-        editButton = findViewById(R.id.imagebutton_ActivityMoodEventDetails_editbutton);
-        backButton = findViewById(R.id.imagebutton_ActivityMoodEventDetails_backbutton);
+        locationTextView = findViewById(R.id.textview_ActivityMoodEventDetails_location);
         commentButton = findViewById(R.id.commentButton);
         uploadedImage = findViewById(R.id.imageview_ActivityMoodEventDetails_uploadedphoto);
 
         // Retrieve the full Mood object from the Intent extras.
         mood = (Mood) getIntent().getSerializableExtra("mood");
-
         if (mood == null) {
-            //Toast.makeText(this, "Mood details unavailable", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Mood data not available.", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
 
         updateUI();
-        
-        /* Code for startActivityForResult to update the edited moods from: https://stackoverflow.com/questions/37768604/how-to-use-startactivityforresult
-         * Authored by: Farbod Salamat-Zadeh
-         * Taken by: Ercel Angeles
-         * Taken from: March 15, 2025
-         */
+
+        // Edit button: launch the edit/delete activity and wait for a result.
         editButton.setOnClickListener(v -> {
             Log.d("MoodEventDetailsActivity", "Edit button clicked");
             Intent intent = new Intent(MoodEventDetailsActivity.this, EditDeleteMoodActivity.class);
             intent.putExtra("mood", mood);
             startActivityForResult(intent, EDIT_MOOD_REQUEST);
         });
+
+        // Back button: navigate back to MainActivity and load the "HomeMyMoodsFrag" fragment.
         backButton.setOnClickListener(v -> {
             Intent intent = new Intent(MoodEventDetailsActivity.this, MainActivity.class);
             intent.putExtra("fragmentToLoad", "HomeMyMoodsFrag");
@@ -82,6 +87,7 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
             finish();
         });
 
+        // Comments button: launch the ViewCommentsActivity.
         commentButton.setOnClickListener(v -> {
             Log.d("MoodEventDetailsActivity", "Comment button clicked");
             Intent intent = new Intent(MoodEventDetailsActivity.this, ViewCommentsActivity.class);
@@ -91,34 +97,39 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
     }
 
     /**
-     * Updates the UI elements based on the passed Mood object.
+     * Updates the UI elements with values from the Mood object.
      */
     private void updateUI() {
-        socialSituationTextView.setText(mood.getSocialSituation() != null
-                ? mood.getSocialSituation().toString() : "Unknown");
-        triggerTextView.setText(mood.getTrigger() != null
-                ? mood.getTrigger() : "No reason provided");
-        usernameTextView.setText(mood.getMoodState() != null
-                ? mood.getMoodState().toString() : "Unknown");
+        // Update title if needed.
+        titleTextView.setText(getString(R.string.your_mood_details));
 
-        int iconRes = getMoodIcon(mood.getMoodState());
-        moodImageView.setImageResource(iconRes);
+        // Display the username.
+        usernameTextView.setText(mood.getUsername() != null ? mood.getUsername() : "Unknown");
 
+        // Display social situation.
+        if (mood.getSocialSituation() != null) {
+            socialSituationTextView.setText(mood.getSocialSituation().toString());
+        } else {
+            socialSituationTextView.setText("Unknown");
+        }
+
+        // Display the trigger text.
+        triggerTextView.setText(mood.getTrigger() != null ? mood.getTrigger() : "No reason provided");
+
+        // Display the date/time (assuming mood.getDateTime() returns a Date or String).
         dateTextView.setText(mood.getDateTime() != null ? mood.getDateTime().toString() : "Unknown");
-        // Update location TextView
 
-        TextView locationTextView = findViewById(R.id.textview_ActivityMoodEventDetails_location);
-        Double latitude = mood.getLatitude();
-        Double longitude = mood.getLongitude();
-
-        // show latitude and longitude, display unknown if null value
-        if (latitude != null && longitude != null) {
-            locationTextView.setText("Location: " + latitude + ", " + longitude);
+        // Display the location if available.
+        if (mood.getLatitude() != null && mood.getLongitude() != null) {
+            locationTextView.setText("Location: " + mood.getLatitude() + ", " + mood.getLongitude());
         } else {
             locationTextView.setText("Location: Unknown");
         }
 
-        // Load the mood image using Glide
+        // Set the mood emoticon image based on the mood state.
+        moodImageView.setImageResource(getMoodIcon(mood.getMoodState()));
+
+        // Load the uploaded photo using Glide if a URL is available.
         if (mood.getPhotoUrl() != null && !mood.getPhotoUrl().isEmpty()) {
             Glide.with(this)
                     .load(mood.getPhotoUrl())
@@ -167,6 +178,9 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
         updateUI();
     }
 
+    /**
+     * Handles the result from the edit/delete activity.
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

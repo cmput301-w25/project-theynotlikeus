@@ -85,7 +85,7 @@ public class MoodEventDetailsActivityTest {
         mood.setSocialSituation(Mood.SocialSituation.ALONE);
         mood.setMoodState(Mood.MoodState.HAPPINESS);
         mood.setDateTime(now);
-        //mood.setLocation(testLatitude, testLongitude); When geolocation is implemented in part 4
+        mood.setLocation(testLatitude, testLongitude); //When geolocation is implemented in part 4
 
         //Waiting for the emulator to populate
         CountDownLatch latch = new CountDownLatch(1);
@@ -118,11 +118,10 @@ public class MoodEventDetailsActivityTest {
             onView(withId(R.id.textview_ActivityMoodEventDetails_triggervalue)).check(matches(withText("Finished a great book"))); //trigger value
             onView(withId(R.id.textview_ActivityMoodEventDetails_dateandtime)).check(matches(withText(expectedDateString))); //date and time
 
-            /* Geolocation for part 4
+
             String expectedCoordinates = testLatitude + ", " + testLongitude;
-            onView(withId(R.id.textview_ActivityMoodEventDetails_location))
-                    .check(matches(withText(expectedCoordinates)));
-            */
+            onView(withId(R.id.textview_ActivityMoodEventDetails_location)).check(matches(withText(expectedCoordinates)));
+
             onView(withId(R.id.imageview_ActivityMoodEventDetails_moodimage)).check(matches(withDrawable(R.drawable.ic_happy_emoticon))); //mood icon
         }
     }

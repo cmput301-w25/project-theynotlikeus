@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black_background"
     tools:context=".view.HomeMyMoodsFrag">
 
     <!-- RecyclerView for the mood list -->
@@ -27,48 +28,82 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <Spinner
-            android:id="@+id/moodSpinner"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/dropDownMenuLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:background="@color/white"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            style="@style/Widget.Material3.Spinner" />
+            android:hint="@string/filter_by_mood"
+            android:textColorHint="@color/grey"
 
-        <!-- Other controls (SearchView, CheckBox) remain as needed -->
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/searchView_HomeMyMoodsFragment"
-            android:backgroundTint="@color/white"
+
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
+            app:boxStrokeWidth="2dp"
+            app:endIconTint="@color/white"
+            app:hintTextColor="@color/grey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/autoCompleteTextView"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:paddingStart="16dp"
+                android:paddingLeft="16dp"
+                android:dropDownHeight="wrap_content"
+                android:dropDownVerticalOffset="8dp"
+                android:padding="2dp"
+                android:popupBackground="@color/white"
+                android:popupElevation="6dp"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:boxStrokeWidth="5dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/search_layout"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:background="?attr/colorSurfaceVariant"
-            android:focusable="true"
-            android:clickable="true"
-            android:iconifiedByDefault="false"
-            app:layout_constraintTop_toBottomOf="@id/moodSpinner"
+
+            android:hint="@string/search_moods"
+            android:textColorHint="@color/grey"
+            app:boxStrokeWidth="2dp"
+            app:hintTextColor="@color/grey"
+            app:endIconTint="@color/grey_button"
+            app:endIconMode="clear_text"
+            app:layout_constraintTop_toBottomOf="@id/dropDownMenuLayout"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/search_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:boxStrokeColor="@android:color/white" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/checkBox_HomeMyMoodsFragment_recentWeek"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Recent Week"
-            android:textColor="?attr/colorOnPrimary"
-            app:buttonTint="?attr/colorOnPrimary"
+            android:text="@string/recent_week"
+            android:textColor="@color/custom_background_color"
+            android:buttonTint="@color/custom_light_grey"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="-8dp"
-            app:layout_constraintTop_toBottomOf="@id/searchView_HomeMyMoodsFragment"
+            app:layout_constraintTop_toBottomOf="@id/search_layout"
             app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -78,6 +113,7 @@
         android:id="@+id/constraintLayout3"
         android:layout_width="0dp"
         android:layout_height="70dp"
+        android:background="@color/primary_blue"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -87,8 +123,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:text="Welcome Username"
-            android:textColor="?attr/colorOnPrimary"
+            android:text="@string/welcome_username_home_moods"
+            android:textColor="@color/white"
             android:textSize="20sp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -106,17 +142,14 @@
             app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Material 3 Floating Action Button -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton_HomeMyMoodsFragment_addmood"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="16dp"
         app:backgroundTint="@color/primary_blue"
+        app:tint="@color/white"
+        app:srcCompat="@drawable/ic_add"
         app:layout_constraintBottom_toBottomOf="parent"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:rippleColor="#3E2B2B"
-        app:srcCompat="@drawable/ic_add" />
-
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

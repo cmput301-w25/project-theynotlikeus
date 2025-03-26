@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:fontFamily="monospace"
-        android:text="Friend Mood Details"
+        android:text="@string/friend_mood_details_edit_delete_mood"
         android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_constraintEnd_toStartOf="@id/imagebutton_ActivityFriendMoodEventDetails_editbutton"
@@ -178,7 +178,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:backgroundTint="#22238B"
-            android:text="Comments"
+            android:text="@string/comments_friend_mood"
             app:layout_constraintEnd_toEndOf="@+id/view_ActivityFriendMoodEventDetails_moodeventcontainer"
             app:layout_constraintStart_toStartOf="@+id/view_ActivityFriendMoodEventDetails_moodeventcontainer"
             app:layout_constraintTop_toBottomOf="@id/imageview_ActivityFriendMoodEventDetails_uploadedphoto" />

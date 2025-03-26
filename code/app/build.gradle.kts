@@ -76,6 +76,8 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation("androidx.fragment:fragment-testing:1.5.7")
     androidTestImplementation("androidx.navigation:navigation-testing:2.8.8")
+    androidTestImplementation ("androidx.test.espresso:espresso-intents:3.5.1")
+
 
     // Byte Buddy for runtime code generation (if needed)
     implementation("net.bytebuddy:byte-buddy:1.17.1")
