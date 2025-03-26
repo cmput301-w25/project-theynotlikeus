@@ -32,17 +32,17 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-
     <TextView
         android:id="@+id/textview_ActivityFriendMoodEventDetails_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:text="@string/friend_mood_details_edit_delete_mood"
         android:textColor="@color/white"
         android:textSize="24sp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="79dp" />
+        android:layout_marginLeft="40dp"
+        app:layout_constraintStart_toEndOf="@+id/imagebutton_ActivityFriendMoodEventDetails_backbutton"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
