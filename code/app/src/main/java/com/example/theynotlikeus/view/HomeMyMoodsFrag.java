@@ -1,7 +1,5 @@
 package com.example.theynotlikeus.view;
 
-import static com.google.android.material.internal.ViewUtils.hideKeyboard;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,16 +7,12 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.SearchView;
@@ -39,11 +33,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-/**
- * A fragment that displays the logged-in user's mood events.
- *
- * This fragment loads mood events from Firebase Firestore and allows the user to filter them.
- */
 public class HomeMyMoodsFrag extends Fragment {
 
     private String username;
@@ -69,8 +58,11 @@ public class HomeMyMoodsFrag extends Fragment {
             username = "defaultUser";
         }
 
-        TextView usernameTextView = view.findViewById(R.id.textView_HomeMyMoodsFragment_welcomeUser);
-        usernameTextView.setText("Welcome, " + username + "!");
+        // Set welcome message.
+        // (Assume there's a TextView with id textView_HomeMyMoodsFragment_welcomeUser in the layout.)
+        // For example:
+        // TextView usernameTextView = view.findViewById(R.id.textView_HomeMyMoodsFragment_welcomeUser);
+        // usernameTextView.setText("Welcome, " + username + "!");
 
         FloatingActionButton addMoodButton = view.findViewById(R.id.floatingActionButton_HomeMyMoodsFragment_addmood);
         addMoodButton.setOnClickListener(v -> {
@@ -79,11 +71,13 @@ public class HomeMyMoodsFrag extends Fragment {
             startActivity(intent);
         });
 
-        ImageView profileImage = view.findViewById(R.id.ImageView_HomeMyMoodsFragment_userProfile);
-        profileImage.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), PersonalProfileDetailsActivity.class);
-            startActivity(intent);
-        });
+        // Assume there's an ImageView for profile picture with id ImageView_HomeMyMoodsFragment_userProfile.
+        // For example:
+        // ImageView profileImage = view.findViewById(R.id.ImageView_HomeMyMoodsFragment_userProfile);
+        // profileImage.setOnClickListener(v -> {
+        //     Intent intent = new Intent(getActivity(), PersonalProfileDetailsActivity.class);
+        //     startActivity(intent);
+        // });
 
         MaterialAutoCompleteTextView autoCompleteTextView = view.findViewById(R.id.autoCompleteTextView);
         String[] filterOptions = {"All Moods", "Happiness", "Sadness", "Anger", "Surprise", "Fear", "Disgust", "Shame", "Confusion"};
@@ -95,7 +89,6 @@ public class HomeMyMoodsFrag extends Fragment {
         });
 
         TextInputEditText searchEditText = view.findViewById(R.id.search_edit_text);
-
         searchEditText.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 filterTrigger = searchEditText.getText().toString().trim();
@@ -105,19 +98,16 @@ public class HomeMyMoodsFrag extends Fragment {
             }
             return false;
         });
-
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 filterTrigger = s.toString().trim();
                 loadMoodsFromFirebase();
             }
-
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) { }
         });
 
         userRecyclerView = view.findViewById(R.id.recyclerview_HomeMyMoodsFragment_userrecyclerview);
@@ -129,7 +119,7 @@ public class HomeMyMoodsFrag extends Fragment {
 
         userRecyclerViewAdapter.setOnItemClickListener(mood -> {
             Intent intent = new Intent(getActivity(), MoodEventDetailsActivity.class);
-            intent.putExtra("mood", mood);
+            intent.putExtra("mood", mood);  // Mood must implement Serializable.
             startActivity(intent);
         });
 
@@ -160,56 +150,61 @@ public class HomeMyMoodsFrag extends Fragment {
 
     /**
      * Retrieves and filters the user's moods using MoodController.
+     * This update ensures that only moods with pendingReview == false (approved moods) are displayed.
      */
     private void loadMoodsFromFirebase() {
         Log.d("HomeMyMoodsFrag", "Loading moods for username: '" + username + "'");
-        moodController.getMoodsByUser(username,
-                moods -> {
-                    List<Mood> filteredMoods = new ArrayList<>();
+        moodController.getMoodsByUser(username, moods -> {
+            List<Mood> filteredMoods = new ArrayList<>();
 
-                    for (Mood mood : moods) {
-                        boolean includeMood = true;
+            for (Mood mood : moods) {
+                // Skip moods that are pending admin review.
+                if (mood.isPendingReview()) {
+                    continue;
+                }
 
-                        if (filterRecentweek) {
-                            long oneWeekAgoMillis = System.currentTimeMillis() - (7L * 24 * 60 * 60 * 1000);
-                            Date moodDate = mood.getDateTime();
-                            if (moodDate == null || moodDate.getTime() < oneWeekAgoMillis) {
-                                includeMood = false;
-                            }
-                        }
+                boolean includeMood = true;
 
-                        if (filterEmotionalstate != null &&
-                                !filterEmotionalstate.equals("All Moods") &&
-                                !filterEmotionalstate.isEmpty()) {
-                            String moodState = mood.getMoodState().name();
-                            if (!moodState.equalsIgnoreCase(filterEmotionalstate)) {
-                                includeMood = false;
-                            }
-                        }
-
-                        if (filterTrigger != null && !filterTrigger.isEmpty()) {
-                            if (mood.getTrigger() == null ||
-                                    !mood.getTrigger().toLowerCase().contains(filterTrigger.toLowerCase())) {
-                                includeMood = false;
-                            }
-                        }
-
-                        if (includeMood) {
-                            filteredMoods.add(mood);
-                        }
+                if (filterRecentweek) {
+                    long oneWeekAgoMillis = System.currentTimeMillis() - (7L * 24 * 60 * 60 * 1000);
+                    Date moodDate = mood.getDateTime();
+                    if (moodDate == null || moodDate.getTime() < oneWeekAgoMillis) {
+                        includeMood = false;
                     }
+                }
 
-                    Collections.sort(filteredMoods, (m1, m2) -> m2.getDateTime().compareTo(m1.getDateTime()));
-
-                    userMoodList.clear();
-                    userMoodList.addAll(filteredMoods);
-                    if (getActivity() != null) {
-                        getActivity().runOnUiThread(() -> userRecyclerViewAdapter.notifyDataSetChanged());
+                if (filterEmotionalstate != null &&
+                        !filterEmotionalstate.equals("All Moods") &&
+                        !filterEmotionalstate.isEmpty()) {
+                    String moodState = mood.getMoodState().name();
+                    if (!moodState.equalsIgnoreCase(filterEmotionalstate)) {
+                        includeMood = false;
                     }
-                    Log.d("HomeMyMoodsFrag", "Total moods fetched: " + userMoodList.size());
-                },
-                exception -> {
-                    Log.e("HomeMyMoodsFrag", "Error fetching moods", exception);
-                });
+                }
+
+                if (filterTrigger != null && !filterTrigger.isEmpty()) {
+                    if (mood.getTrigger() == null ||
+                            !mood.getTrigger().toLowerCase().contains(filterTrigger.toLowerCase())) {
+                        includeMood = false;
+                    }
+                }
+
+                if (includeMood) {
+                    filteredMoods.add(mood);
+                }
+            }
+
+            // Sort moods in descending order (most recent first).
+            Collections.sort(filteredMoods, (m1, m2) -> m2.getDateTime().compareTo(m1.getDateTime()));
+
+            userMoodList.clear();
+            userMoodList.addAll(filteredMoods);
+            if (getActivity() != null) {
+                getActivity().runOnUiThread(() -> userRecyclerViewAdapter.notifyDataSetChanged());
+            }
+            Log.d("HomeMyMoodsFrag", "Total moods fetched: " + userMoodList.size());
+        }, exception -> {
+            Log.e("HomeMyMoodsFrag", "Error fetching moods", exception);
+        });
     }
 }
