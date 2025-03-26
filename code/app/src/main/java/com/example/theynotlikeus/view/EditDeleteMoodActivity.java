@@ -57,6 +57,8 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
     private Spinner socialSituationSpinner;
     private Switch geolocationSwitch;
     private Switch privacySwitch;
+    private Button selectImageButton;
+    private ImageButton deleteButton;
     private ImageButton backButton;
     private ImageButton deleteButton;
     private Button saveButton;
@@ -66,6 +68,8 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
     // Image handling.
     private Uri imageUri;
     private StorageReference storageRef;
+
+    private ImageView setImage;
 
     // Geolocation fields.
     private FusedLocationProviderClient fusedLocationClient;
@@ -265,7 +269,7 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             imageUri = data.getData();
-            // Update the preview ImageView.
+            // Update the image button to preview the selected image.
             setImage.setImageURI(imageUri);
         }
     }

@@ -9,5 +9,6 @@
     <color name="grey_button">#2F2F2F</color>
     <color name="text_box_background">#282727</color>
     <color name="light_grey">#B6B6B6</color>
+    <color name="grey">#726D76</color>
 
 </resources>

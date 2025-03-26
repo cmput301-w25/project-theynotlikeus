@@ -23,10 +23,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.android.material.materialswitch.MaterialSwitch;
+import com.google.android.material.switchmaterial.SwitchMaterial;
+
+/**
+ * This activity provides the interface for admin users, implements UI experience and adjusts
+ * the layout to account for system insets (such as the status bar and navigation bar) to allows admin users
+ */
 public class AdminActivity extends AppCompatActivity {
     private static final String PREFS_NAME = "AdminPrefs";
     private static final String LIMIT_ON = "limit_on";
-    private Switch limitSwitch;
+    private MaterialSwitch limitSwitch;
     private Button logoutButton;
     private RecyclerView moodsRecyclerView;
     private ApproveMoodAdapter adapter;
@@ -37,6 +44,7 @@ public class AdminActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
+        limitSwitch = findViewById(R.id.switch_ActivityAdmin_materialSwitch);
 
         // Bind views.
         limitSwitch = findViewById(R.id.switch1);
@@ -50,9 +58,12 @@ public class AdminActivity extends AppCompatActivity {
 
         // Listener for toggle switch.
         limitSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            //Save new switch state in SharedPreferences
             SharedPreferences.Editor editor = prefs.edit();
             editor.putBoolean(LIMIT_ON, isChecked);
             editor.apply();
+
+            //Toast a message to notify
             Toast.makeText(this, isChecked ?
                     "Image size limit enabled (65536 bytes max)" :
                     "Image size limit disabled", Toast.LENGTH_SHORT).show();
@@ -74,8 +85,9 @@ public class AdminActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Logout button logic.
+        logoutButton = findViewById(R.id.button_logoutButton); //logout button
         logoutButton.setOnClickListener(v -> {
+            //Redirect to LoginActivity
             Intent intent = new Intent(AdminActivity.this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

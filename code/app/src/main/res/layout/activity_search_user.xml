@@ -1,0 +1,63 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black_background">
+
+    <!-- CoordinatorLayout that holds the search components and RecyclerView -->
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Scrolling container -->
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/searchbar_scrolling_view_behavior"
+            android:backgroundTint="@color/black_background"/>
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBar"
+                app:title="Search Users"
+                app:titleCentered="true"
+                app:titleTextAppearance="@style/ToolbarTitleText"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@color/primary_blue"
+                android:minHeight="?attr/actionBarSize" />
+
+            <!-- The anchored SearchBar; tapping it will expand the SearchView -->
+            <com.google.android.material.search.SearchBar
+                android:id="@+id/searchBar_SearchUserActivity_searchBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:titleTextColor="@color/white"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/white"
+                android:outlineSpotShadowColor="@color/white"
+                android:outlineAmbientShadowColor="@color/white"/>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <!-- The Material SearchView overlays the content when expanded -->
+        <com.google.android.material.search.SearchView
+            android:id="@+id/searchView_SearchUserActivity_searchView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAppearance="@style/Platform.MaterialComponents.Light"
+            android:textColor="@color/white"
+            app:layout_anchor="@id/searchBar_SearchUserActivity_searchBar"
+            app:queryBackground="@color/black_background" />
+
+        <!-- RecyclerView to show filtered results -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_SearchUserActivity"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

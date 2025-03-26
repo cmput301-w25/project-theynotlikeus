@@ -15,6 +15,17 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Adapter used to display a list of public Mood events in a RecyclerView.
+ * Each item shows:
+ * - Mood icon based on mood state
+ * - Username of the mood's owner
+ * - Mood state title
+ * - Optional trigger text
+ * - Social situation (if provided)
+ * - Formatted date/time
+ */
+
 public class CommunityRecyclerViewAdapter
         extends RecyclerView.Adapter<CommunityRecyclerViewAdapter.ViewHolder> {
 
@@ -22,10 +33,18 @@ public class CommunityRecyclerViewAdapter
     private static final SimpleDateFormat DATE_FORMAT =
             new SimpleDateFormat("MMM dd, yyyy hh:mm a", Locale.getDefault());
 
+    /**
+     * Constructor for the adapter.
+     *
+     * @param moodList List of Mood objects to display.
+     */
     public CommunityRecyclerViewAdapter(List<Mood> moodList) {
         this.moodList = moodList;
     }
 
+    /**
+     * Inflates the layout and creates a new ViewHolder.
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
@@ -35,6 +54,9 @@ public class CommunityRecyclerViewAdapter
         return new ViewHolder(itemView);
     }
 
+    /**
+     * Binds data from a Mood object to the ViewHolder.
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder,
                                  int position) {
@@ -42,69 +64,83 @@ public class CommunityRecyclerViewAdapter
         holder.bind(mood);
     }
 
+    /**
+     * Returns the number of Mood items in the list.
+     */
     @Override
     public int getItemCount() {
         return moodList.size();
     }
 
+    /**
+     * ViewHolder class representing one item in the RecyclerView.
+     */
     static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView moodIconImageView;
         TextView usernameTextView, moodStateTextView, triggerTextView, dateTextView, socialSituation;
 
+        /**
+         * Initializes all views from the layout.
+         */
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            // Retrieve views using IDs from the Community layout
-            moodIconImageView = itemView.findViewById(R.id.imageView_itemCommunity_moodicon);
-            usernameTextView = itemView.findViewById(R.id.textView_itemCommunity_username);
-            moodStateTextView = itemView.findViewById(R.id.textView_itemCommunity_moodtitle);
-            triggerTextView   = itemView.findViewById(R.id.textView_itemCommunity_trigger);
-            dateTextView      = itemView.findViewById(R.id.textView_itemCommunity_date);
-            socialSituation   = itemView.findViewById(R.id.textView_itemCommunity_socialsituation);
+            //instantiating the items in the xml file
+            moodIconImageView = itemView.findViewById(R.id.imageView_fragmentItemCommunity_moodicon);
+            usernameTextView = itemView.findViewById(R.id.textView_fragmentItemCommunity_username);
+            moodStateTextView = itemView.findViewById(R.id.textView_fragmentItemCommunity_moodtitle);
+            triggerTextView   = itemView.findViewById(R.id.textView_fragmentItemCommunity_trigger);
+            dateTextView      = itemView.findViewById(R.id.textView_fragmentItemCommunity_date);
+            socialSituation   = itemView.findViewById(R.id.textView_fragmentItemCommunity_socialsituation);
         }
 
+        /**
+         * Binds the Mood data to the respective views in the layout.
+         *
+         * @param mood The Mood object to display.
+         */
         void bind(Mood mood) {
-            // Set username (fallback to "Unknown" if null)
+            //Username fallback
             usernameTextView.setText(mood.getUsername() != null ? mood.getUsername() : "Unknown");
 
-            // Set mood state title
+            //Mood state fallback
             moodStateTextView.setText(mood.getMoodState() != null ? mood.getMoodState().name() : "Unknown");
 
-            // Set social situation with a null check
+            //Social situation fallback
             socialSituation.setText(mood.getSocialSituation() != null
                     ? mood.getSocialSituation().toString()
                     : "Unknown");
 
-            // Set trigger text, if available
+            //Optional trigger text
             triggerTextView.setText(mood.getTrigger() != null ? mood.getTrigger() : "");
 
-            // Set formatted date or empty string if null
+            //Format and set date
             if (mood.getDateTime() != null) {
                 dateTextView.setText(DATE_FORMAT.format(mood.getDateTime()));
             } else {
                 dateTextView.setText("");
             }
 
-            // Set mood icon based on mood state
+            //Set the correct mood icon
             int moodIconRes = getMoodIcon(mood.getMoodState());
             moodIconImageView.setImageResource(moodIconRes);
 
-            // Set click listener on the entire item view to launch FriendMoodEventDetailsActivity.
+            //Launch detail view when item is clicked
             itemView.setOnClickListener(v -> {
                 Intent intent = new Intent(v.getContext(), FriendMoodEventDetailsActivity.class);
-                intent.putExtra("mood", mood); // Ensure Mood implements Serializable or Parcelable.
+                intent.putExtra("mood", mood); //Ensure Mood is Serializable or Parcelable
                 v.getContext().startActivity(intent);
             });
         }
 
         /**
-         * Returns the appropriate icon resource based on the given mood state.
+         * Returns the appropriate drawable resource ID for a given MoodState.
          *
-         * @param moodState The mood state for which to get the icon.
-         * @return The drawable resource id of the mood icon.
+         * @param moodState The mood state.
+         * @return Drawable resource ID.
          */
         private int getMoodIcon(Mood.MoodState moodState) {
             if (moodState == null) {
-                moodState = Mood.MoodState.HAPPINESS; // Default mood if null
+                moodState = Mood.MoodState.HAPPINESS; //Default fallback icon
             }
             switch (moodState) {
                 case ANGER:

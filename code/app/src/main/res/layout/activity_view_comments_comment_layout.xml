@@ -11,7 +11,7 @@
     android:radius="12dp">
 
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/textview_ViewCommentsActivityCommentLayout_commentAuthor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/textview_ViewCommentsActivityCommentLayout_commentText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textview_ViewCommentsActivityCommentLayout_commentAuthor" />
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/textview_ViewCommentsActivityCommentLayout_dateTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

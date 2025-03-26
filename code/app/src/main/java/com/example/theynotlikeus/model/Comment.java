@@ -3,6 +3,11 @@ package com.example.theynotlikeus.model;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * A model class that represents a given comment underneath a mood event.
+ * Stores comment fields within the comment collection on Firestore.
+ * An empty constructor is provided for Firestore deserialization.
+ */
 public class Comment implements Serializable {
     private String associatedMoodID;
     private String commentAuthor;
