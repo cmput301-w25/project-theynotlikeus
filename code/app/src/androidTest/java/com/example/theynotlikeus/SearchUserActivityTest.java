@@ -92,9 +92,9 @@ public class SearchUserActivityTest {
         onView(withId(R.id.searchBar_SearchUserActivity_searchBar))
                 .perform(click());
 
-        // Type search query into the search bar
-        onView(withId(R.id.searchBar_SearchUserActivity_searchBar))
-                .perform(click()); // Open the search view
+        // Wait for SearchView to be displayed
+        onView(withId(R.id.searchView_SearchUserActivity_searchView))
+                .check(matches(isDisplayed()));
 
         onView(withId(R.id.searchView_SearchUserActivity_searchView))
                 .perform(typeText("testUser"), closeSoftKeyboard());
