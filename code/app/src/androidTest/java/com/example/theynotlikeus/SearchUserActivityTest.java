@@ -48,13 +48,6 @@ import java.util.Objects;
 @LargeTest
 public class SearchUserActivityTest {
 
-    @Before
-    public void disableAnimations() {
-        // Disable animations for Espresso tests
-        System.setProperty("ro.zygote.disable.translucent", "true");
-        System.setProperty("ro.zygote.disable.surfaceflinger", "true");
-    }
-
     /**
      * Scenario is in SearchUserActivity
      */
