@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.SearchView;
@@ -71,13 +72,11 @@ public class HomeMyMoodsFrag extends Fragment {
             startActivity(intent);
         });
 
-        // Assume there's an ImageView for profile picture with id ImageView_HomeMyMoodsFragment_userProfile.
-        // For example:
-        // ImageView profileImage = view.findViewById(R.id.ImageView_HomeMyMoodsFragment_userProfile);
-        // profileImage.setOnClickListener(v -> {
-        //     Intent intent = new Intent(getActivity(), PersonalProfileDetailsActivity.class);
-        //     startActivity(intent);
-        // });
+         ImageView profileImage = view.findViewById(R.id.ImageView_HomeMyMoodsFragment_userProfile);
+         profileImage.setOnClickListener(v -> {
+             Intent intent = new Intent(getActivity(), PersonalProfileDetailsActivity.class);
+             startActivity(intent);
+         });
 
         MaterialAutoCompleteTextView autoCompleteTextView = view.findViewById(R.id.autoCompleteTextView);
         String[] filterOptions = {"All Moods", "Happiness", "Sadness", "Anger", "Surprise", "Fear", "Disgust", "Shame", "Confusion"};
