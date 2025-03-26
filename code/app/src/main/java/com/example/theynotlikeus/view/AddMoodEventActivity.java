@@ -260,8 +260,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
     }
 
     // Helper method: Continue saving mood (with image upload if needed).
-     * Handles mood saving and image upload, if an image is selected.
-     */
+
     private void processMoodSaving(Mood mood) {
         if (imageUri != null) {
             uploadImage(mood);
