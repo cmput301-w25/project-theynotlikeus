@@ -27,7 +27,7 @@
         android:id="@+id/imageButton_DeleteEditMoodActivity_back"
         android:layout_width="48dp"
         android:layout_height="52dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="25dp"
         android:layout_marginEnd="87dp"
         android:background="@null"
         android:src="@drawable/ic_white_back_button"
@@ -42,7 +42,7 @@
         android:layout_width="63dp"
         android:layout_height="57dp"
         android:layout_marginStart="76dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="25dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/delete_button_edit_delete_mood"
         android:maxWidth="100dp"
@@ -59,8 +59,8 @@
         android:id="@+id/textView_DeleteEditMoodActivity_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="132dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="128dp"
+        android:layout_marginTop="48dp"
         android:fontFamily="monospace"
         android:text="@string/mood_event_edit_delete_mood"
         android:textColor="@color/white"
@@ -199,11 +199,13 @@
         android:id="@+id/button_DeleteEditMoodActivity_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/primary_blue"
         android:text="@string/save_edit_delete_mood"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/switch_DeleteEditMoodActivity_geoSwitch" />
+        app:layout_constraintTop_toBottomOf="@id/switch_DeleteEditMoodActivity_geoSwitch"
+        app:layout_constraintVertical_bias="0.492" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
