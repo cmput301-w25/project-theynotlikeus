@@ -39,6 +39,9 @@
                 app:titleTextColor="@color/white"
                 android:textColor="@color/white"
                 android:backgroundTint="@color/white"
+                android:focusable="true"
+                android:clickable="true"
+                android:focusableInTouchMode="true"
                 android:outlineSpotShadowColor="@color/white"
                 android:outlineAmbientShadowColor="@color/white"/>
         </com.google.android.material.appbar.AppBarLayout>
