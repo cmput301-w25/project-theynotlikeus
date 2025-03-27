@@ -81,14 +81,25 @@ public class HomeMyMoodsFrag extends Fragment {
              startActivity(intent);
          });
 
+
+
         MaterialAutoCompleteTextView autoCompleteTextView = view.findViewById(R.id.autoCompleteTextView);
         String[] filterOptions = {"All Moods", "Happiness", "Sadness", "Anger", "Surprise", "Fear", "Disgust", "Shame", "Confusion"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, filterOptions);
         autoCompleteTextView.setAdapter(adapter);
+        // Show dropdown when clicked or focused
+        autoCompleteTextView.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                autoCompleteTextView.showDropDown();
+            }
+        });
+        autoCompleteTextView.setOnClickListener(v -> autoCompleteTextView.showDropDown());
         autoCompleteTextView.setOnItemClickListener((parent, view1, position, id) -> {
             filterEmotionalstate = parent.getItemAtPosition(position).toString();
             loadMoodsFromFirebase();
         });
+
+
 
         TextInputEditText searchEditText = view.findViewById(R.id.search_edit_text);
         searchEditText.setOnEditorActionListener((v, actionId, event) -> {
