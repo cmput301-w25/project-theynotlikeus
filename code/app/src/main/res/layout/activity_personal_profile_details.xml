@@ -6,10 +6,10 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="@color/black_background"
     android:background="@color/black_background"
     tools:context=".view.PersonalProfileDetailsActivity">
 
+    <!-- Toolbar with a back button -->
     <!-- Material Toolbar with a back button -->
 
 
@@ -18,8 +18,9 @@
         android:id="@+id/button_PersonalProfileDetailsActivity_back"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
-        android:layout_marginTop="25dp"
         android:background="@color/black_background"
+        android:src="@drawable/ic_profile"
+        android:layout_marginTop="32dp"
         app:navigationIcon="@drawable/ic_white_back_button"
         app:title="Profile"
         app:titleTextColor="@android:color/white"
@@ -27,43 +28,38 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Material Card to encapsulate the user details -->
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card_user_details"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="4dp"
-        android:layout_margin="16dp"
-        app:layout_constraintTop_toBottomOf="@id/button_PersonalProfileDetailsActivity_back"
+    <!-- Profile Picture -->
+    <ImageView
+        android:id="@+id/imageView_PersonalProfileDetailsActivity_profilePicture"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/ic_profile"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/button_PersonalProfileDetailsActivity_back" />
 
-        <!-- Container for user details -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+    <!-- Username -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/textView_PersonalProfileDetailsActivity_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/username_personal_profile"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageView_PersonalProfileDetailsActivity_profilePicture" />
 
-            <!-- Title for user details -->
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/textView_userDetailsTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/user_details_personal_profile"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
-
-            <!-- TextView to display the username -->
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/textView_username"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/username_personal_profile"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                android:layout_marginTop="8dp" />
-
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_PersonalProfileDetailsActivity_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:backgroundTint="@color/primary_blue"
+        android:text="Log Out"
+        app:layout_constraintEnd_toEndOf="@+id/button_PersonalProfileDetailsActivity_back"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

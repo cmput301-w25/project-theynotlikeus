@@ -131,6 +131,7 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
 
         // Load the uploaded photo using Glide if a URL is available.
         if (mood.getPhotoUrl() != null && !mood.getPhotoUrl().isEmpty()) {
+            uploadedImage.setVisibility(View.VISIBLE);
             Glide.with(this)
                     .load(mood.getPhotoUrl())
                     .placeholder(R.drawable.ic_placeholder)
