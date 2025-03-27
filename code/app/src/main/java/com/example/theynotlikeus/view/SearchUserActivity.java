@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.SearchView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -22,6 +24,7 @@ import com.example.theynotlikeus.adapters.SearchUserAdapter;
 import com.example.theynotlikeus.model.User;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.search.SearchBar;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
@@ -90,7 +93,8 @@ public class SearchUserActivity extends AppCompatActivity {
 
         //Initialize UI components
         recyclerView = findViewById(R.id.recyclerview_SearchUserActivity);
-        searchView = findViewById(R.id.searchView_SearchUserActivity_searchView);
+
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //Initialize data structures and adapter
@@ -109,18 +113,28 @@ public class SearchUserActivity extends AppCompatActivity {
          * Taken by: Ercel Angeles
          * Taken on: March 25, 2025
          */
-        searchBar = findViewById(R.id.searchBar_SearchUserActivity_searchBar);
-        searchView = findViewById(R.id.searchView_SearchUserActivity_searchView);
-        searchView
-                .getEditText()
-                .setOnEditorActionListener(
-                        (v , actionId, event) -> {
-                            searchBar.setText(searchView.getText());
-                            filterUsers(String.valueOf(searchView.getText()));
-                            searchView.hide();
-                            return false;
-                        });
+
+
+        TextInputEditText searchEditText = findViewById(R.id.search_edit_text);
+
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterUsers(s.toString().trim());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
     }
+
+
+
+
+
 
     /**
      * Callback triggered when a user is clicked in the list.
@@ -177,6 +191,11 @@ public class SearchUserActivity extends AppCompatActivity {
 
         adapter.updateList(filteredList);
     }
+
+
+
+
+
 
     /**
      * Navigates to the selected user's profile.
