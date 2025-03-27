@@ -97,6 +97,13 @@ public class CommunityFrag extends Fragment {
             filterEmotionalState = parent.getItemAtPosition(position).toString();
             applyFilters();
         });
+        // Show dropdown when clicked or focused
+        autoCompleteTextView.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                autoCompleteTextView.showDropDown();
+            }
+        });
+        autoCompleteTextView.setOnClickListener(v -> autoCompleteTextView.showDropDown());
 
 
 
@@ -111,6 +118,7 @@ public class CommunityFrag extends Fragment {
             }
             return false;
         });
+
 
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
