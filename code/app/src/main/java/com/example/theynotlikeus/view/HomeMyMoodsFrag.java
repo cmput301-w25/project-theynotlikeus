@@ -1,5 +1,6 @@
 package com.example.theynotlikeus.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -47,6 +48,7 @@ public class HomeMyMoodsFrag extends Fragment {
     private String filterTrigger = "";
     private MoodController moodController;
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home_my_moods, container, false);
@@ -62,7 +64,7 @@ public class HomeMyMoodsFrag extends Fragment {
 
         // Set welcome message.
         // (Assume there's a TextView with id textView_HomeMyMoodsFragment_welcomeUser in the layout.)
-        // For example
+        // For example:
         TextView usernameTextView = view.findViewById(R.id.textView_HomeMyMoodsFragment_welcomeUser);
         usernameTextView.setText("Welcome, " + username + "!");
 
@@ -79,14 +81,25 @@ public class HomeMyMoodsFrag extends Fragment {
              startActivity(intent);
          });
 
+
+
         MaterialAutoCompleteTextView autoCompleteTextView = view.findViewById(R.id.autoCompleteTextView);
         String[] filterOptions = {"All Moods", "Happiness", "Sadness", "Anger", "Surprise", "Fear", "Disgust", "Shame", "Confusion"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, filterOptions);
         autoCompleteTextView.setAdapter(adapter);
+        // Show dropdown when clicked or focused
+        autoCompleteTextView.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                autoCompleteTextView.showDropDown();
+            }
+        });
+        autoCompleteTextView.setOnClickListener(v -> autoCompleteTextView.showDropDown());
         autoCompleteTextView.setOnItemClickListener((parent, view1, position, id) -> {
             filterEmotionalstate = parent.getItemAtPosition(position).toString();
             loadMoodsFromFirebase();
         });
+
+
 
         TextInputEditText searchEditText = view.findViewById(R.id.search_edit_text);
         searchEditText.setOnEditorActionListener((v, actionId, event) -> {

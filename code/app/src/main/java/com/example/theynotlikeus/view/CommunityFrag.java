@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.SearchView.OnQueryTextListener;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -68,6 +69,7 @@ public class CommunityFrag extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
+        // Inflate layout.
         return inflater.inflate(R.layout.fragment_community, container, false);
     }
 
@@ -87,6 +89,7 @@ public class CommunityFrag extends Fragment {
         communityRecyclerView.setAdapter(communityAdapter);
 
         // 3) Setup autoCompleteTextView (emotional states).
+        MaterialAutoCompleteTextView autoCompleteTextView = view.findViewById(R.id.community_autoCompleteTextView);
         String[] filterOptions = {"All Moods", "Happiness", "Sadness", "Anger", "Surprise", "Fear", "Disgust", "Shame", "Confusion"};
         ArrayAdapter<String> autoAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, filterOptions);
         communityAutoCompleteTextView.setAdapter(autoAdapter);
@@ -94,6 +97,13 @@ public class CommunityFrag extends Fragment {
             filterEmotionalState = parent.getItemAtPosition(position).toString();
             applyFilters();
         });
+        // Show dropdown when clicked or focused
+        autoCompleteTextView.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                autoCompleteTextView.showDropDown();
+            }
+        });
+        autoCompleteTextView.setOnClickListener(v -> autoCompleteTextView.showDropDown());
 
         // 4) Setup searchEditText for trigger filtering.
         searchEditText.setOnEditorActionListener((v, actionId, event) -> {
@@ -105,6 +115,7 @@ public class CommunityFrag extends Fragment {
             }
             return false;
         });
+
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -196,6 +207,7 @@ public class CommunityFrag extends Fragment {
 
         filteredMoods.clear();
 
+        // Filter logic.
         long oneWeekAgoMillis = System.currentTimeMillis() - (7L * 24 * 60 * 60 * 1000);
         for (Mood mood : allCommunityMoods) {
             // Only include approved moods (pendingReview must be false).
@@ -204,12 +216,14 @@ public class CommunityFrag extends Fragment {
             }
             boolean include = true;
 
+            // Filter by "recent week" if checkbox is checked.
             if (filterRecentWeek) {
                 if (mood.getDateTime() == null || mood.getDateTime().getTime() < oneWeekAgoMillis) {
                     include = false;
                 }
             }
 
+            // Filter by emotional state.
             if (!TextUtils.isEmpty(filterEmotionalState) &&
                     !"All Moods".equalsIgnoreCase(filterEmotionalState)) {
                 if (!mood.getMoodState().name().equalsIgnoreCase(filterEmotionalState)) {
@@ -217,6 +231,7 @@ public class CommunityFrag extends Fragment {
                 }
             }
 
+            // Filter by trigger text.
             if (!TextUtils.isEmpty(filterTriggerText)) {
                 if (mood.getTrigger() == null ||
                         !mood.getTrigger().toLowerCase().contains(filterTriggerText.toLowerCase())) {
