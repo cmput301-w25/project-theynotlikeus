@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.SearchView;
@@ -61,9 +62,9 @@ public class HomeMyMoodsFrag extends Fragment {
 
         // Set welcome message.
         // (Assume there's a TextView with id textView_HomeMyMoodsFragment_welcomeUser in the layout.)
-        // For example:
-        // TextView usernameTextView = view.findViewById(R.id.textView_HomeMyMoodsFragment_welcomeUser);
-        // usernameTextView.setText("Welcome, " + username + "!");
+        // For example
+        TextView usernameTextView = view.findViewById(R.id.textView_HomeMyMoodsFragment_welcomeUser);
+        usernameTextView.setText("Welcome, " + username + "!");
 
         FloatingActionButton addMoodButton = view.findViewById(R.id.floatingActionButton_HomeMyMoodsFragment_addmood);
         addMoodButton.setOnClickListener(v -> {
