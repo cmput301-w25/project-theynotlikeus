@@ -11,6 +11,9 @@
     tools:context=".view.PersonalProfileDetailsActivity">
 
     <!-- Material Toolbar with a back button -->
+
+
+
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/button_PersonalProfileDetailsActivity_back"
         android:layout_width="0dp"
