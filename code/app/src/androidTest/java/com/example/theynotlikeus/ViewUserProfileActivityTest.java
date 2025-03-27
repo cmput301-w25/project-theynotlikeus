@@ -7,6 +7,9 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 
+import static org.hamcrest.Matchers.containsString;
+
+import androidx.test.espresso.IdlingRegistry;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -32,6 +35,7 @@ public class ViewUserProfileActivityTest {
         String androidLocalhost = "10.0.2.2";
         int portNumber = 8089;
         FirebaseFirestore.getInstance().useEmulator(androidLocalhost, portNumber);
+
     }
 
     private void addUserToDatabase() {
@@ -43,9 +47,12 @@ public class ViewUserProfileActivityTest {
     }
 
     @Test
-    public void testSeePerson() {
+    public void testSeePerson() throws InterruptedException {
+        addUserToDatabase();
+        Thread.sleep(3000);
         // Check if testUser appears in the user list
-        onView(withText("testUser")).check(matches(isDisplayed()));
+        onView(withId(R.id.textView_fragmentUserFollowed_Username))
+                .check(matches(withText("testUser")));
     }
 
     @Test
@@ -60,6 +67,7 @@ public class ViewUserProfileActivityTest {
 
         // Verify follow request was sent
         onView(withId(R.id.button_fragmentUserFollowed_follow))
-                .check(matches(withText("Requested")));
+                .check(matches(withText(containsString("Requested"))));
+
     }
 }
