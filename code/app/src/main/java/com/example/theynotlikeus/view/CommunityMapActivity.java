@@ -24,13 +24,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Activity to display a community map where the current user's location is shown, along with the locations of their friends' moods.
- */
 public class CommunityMapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private static final String TAG = "CommunityMapActivity";
@@ -60,7 +58,7 @@ public class CommunityMapActivity extends AppCompatActivity implements OnMapRead
         ImageButton backButton = findViewById(R.id.imageButton_CommunityMapActivity_back);
         backButton.setOnClickListener(v -> finish());
 
-        // Instead of getting location from extras, we now fetch the current user's latest mood with geolocation.
+        // Instead of getting location from extras, fetch the current user's latest mood with geolocation.
         getCurrentUserLatestLocation();
     }
 
@@ -84,7 +82,7 @@ public class CommunityMapActivity extends AppCompatActivity implements OnMapRead
                 currentLocation = new LatLng(0, 0);
             } else {
                 // Sort in descending order by date (most recent first).
-                geoMoods.sort((m1, m2) -> m2.getDateTime().compareTo(m1.getDateTime()));
+                Collections.sort(geoMoods, (m1, m2) -> m2.getDateTime().compareTo(m1.getDateTime()));
                 Mood latestMood = geoMoods.get(0);
                 currentLocation = new LatLng(latestMood.getLatitude(), latestMood.getLongitude());
             }
@@ -122,7 +120,8 @@ public class CommunityMapActivity extends AppCompatActivity implements OnMapRead
     /**
      * Loads the friend list from the "follow" collection.
      * For each friend, fetches their mood events using the MoodController.
-     * For each friend, all mood events are processed (not limited), and only those that are public are added.
+     * For each friend, all mood events are processed (not limited), and only those that are public
+     * and approved (pendingReview == false) are added.
      * If an event is within 5 km of the current user's latest location, a marker is added.
      * If multiple moods share the same coordinates, subsequent markers are offset slightly.
      */
@@ -157,26 +156,23 @@ public class CommunityMapActivity extends AppCompatActivity implements OnMapRead
                                         Log.d(TAG, "No moods for friend: " + friend);
                                     } else {
                                         // Process all moods for this friend.
-
-                                        // Create a local map to track markers at the same coordinate.
                                         Map<String, Integer> locationCount = new HashMap<>();
                                         Log.d(TAG, "Friend " + friend + " has " + moods.size() + " mood(s).");
                                         for (Mood mood : moods) {
-                                            // Only process the mood if it is public.
-                                            if (mood.isPublic()) {
+                                            // Only process the mood if it is public and approved.
+                                            if (mood.isPublic() && !mood.isPendingReview()) {
                                                 if (mood.getLatitude() != null && mood.getLongitude() != null) {
                                                     double lat = mood.getLatitude();
                                                     double lng = mood.getLongitude();
                                                     String key = lat + "," + lng;
                                                     int count = locationCount.containsKey(key) ? locationCount.get(key) : 0;
                                                     locationCount.put(key, count + 1);
-                                                    // Offset subsequent markers if they share the same coordinate.
                                                     if (count > 0) {
                                                         lat += count * 0.00005;
                                                         lng += count * 0.00005;
                                                     }
                                                     LatLng moodLocation = new LatLng(lat, lng);
-                                                    // Calculate the distance (in meters) between currentLocation and moodLocation.
+                                                    // Calculate distance between currentLocation and moodLocation.
                                                     float[] results = new float[1];
                                                     Location.distanceBetween(
                                                             currentLocation.latitude, currentLocation.longitude,
@@ -204,11 +200,10 @@ public class CommunityMapActivity extends AppCompatActivity implements OnMapRead
                                                     Log.d(TAG, "Mood for friend " + friend + " does not have valid geo data.");
                                                 }
                                             } else {
-                                                Log.d(TAG, "Skipping mood for friend " + friend + " because it's not public.");
+                                                Log.d(TAG, "Skipping mood for friend " + friend + " because it's either not public or not approved.");
                                             }
                                         }
                                     }
-                                    // Increment the processed friend counter.
                                     int processed = queriesProcessed.incrementAndGet();
                                     if (processed == friendList.size() && markerCount.get() == 0) {
                                         Toast.makeText(CommunityMapActivity.this, "No friend moods within 5 km.", Toast.LENGTH_SHORT).show();

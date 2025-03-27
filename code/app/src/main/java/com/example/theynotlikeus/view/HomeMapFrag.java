@@ -150,45 +150,56 @@ public class HomeMapFrag extends Fragment implements OnMapReadyCallback {
      */
     private void loadUserMoodMarkers() {
         moodController.getMoodsByUser(currentUser, moods -> {
-            if (moods == null || moods.isEmpty()) {
-                Log.d(TAG, "No mood events found for user: " + currentUser);
-                return;
-            }
-            LatLng firstLocation = null;
-            Map<String, Integer> locationCount = new HashMap<>();
-            for (Mood mood : moods) {
-                if (mood.getLatitude() != null && mood.getLongitude() != null) {
-                    double lat = mood.getLatitude();
-                    double lng = mood.getLongitude();
-                    String key = lat + "," + lng;
-                    int count = locationCount.containsKey(key) ? locationCount.get(key) : 0;
-                    locationCount.put(key, count + 1);
-                    if (count > 0) {
-                        lat += count * 0.00005;
-                        lng += count * 0.00005;
-                    }
-                    LatLng location = new LatLng(lat, lng);
-                    if (firstLocation == null) {
-                        firstLocation = location;
-                    }
-                    String title = (mood.getUsername() != null)
-                            ? mood.getUsername() + "'s Mood"
-                            : "My Mood";
-                    String snippet = (mood.getMoodState() != null)
-                            ? mood.getMoodState().name()
-                            : "Unknown";
-                    MarkerOptions markerOptions = new MarkerOptions()
-                            .position(location)
-                            .title(title)
-                            .snippet(snippet)
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-                    mMap.addMarker(markerOptions);
+            // Ensure UI thread for UI updates
+            requireActivity().runOnUiThread(() -> {
+                mMap.clear(); // Clear any previously added markers.
+                if (moods == null || moods.isEmpty()) {
+                    Log.d(TAG, "No mood events found for user: " + currentUser);
+                    Toast.makeText(getContext(), "No mood events found.", Toast.LENGTH_SHORT).show();
+                    return;
                 }
-            }
-            if (firstLocation != null) {
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLocation, 12f));
-                currentLocation = firstLocation;
-            }
+                LatLng firstLocation = null;
+                Map<String, Integer> locationCount = new HashMap<>();
+                int markersAdded = 0;
+                for (Mood mood : moods) {
+                    // Only add moods that are approved (pendingReview is false) and have valid location data.
+                    if (mood.getLatitude() != null && mood.getLongitude() != null && !mood.isPendingReview()) {
+                        double lat = mood.getLatitude();
+                        double lng = mood.getLongitude();
+                        String key = lat + "," + lng;
+                        int count = locationCount.containsKey(key) ? locationCount.get(key) : 0;
+                        locationCount.put(key, count + 1);
+                        if (count > 0) {
+                            lat += count * 0.00005;
+                            lng += count * 0.00005;
+                        }
+                        LatLng location = new LatLng(lat, lng);
+                        if (firstLocation == null) {
+                            firstLocation = location;
+                        }
+                        String title = (mood.getUsername() != null)
+                                ? mood.getUsername() + "'s Mood"
+                                : "My Mood";
+                        String snippet = (mood.getMoodState() != null)
+                                ? mood.getMoodState().name()
+                                : "Unknown";
+                        MarkerOptions markerOptions = new MarkerOptions()
+                                .position(location)
+                                .title(title)
+                                .snippet(snippet)
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                        mMap.addMarker(markerOptions);
+                        markersAdded++;
+                    }
+                }
+                if (firstLocation != null) {
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLocation, 12f));
+                    currentLocation = firstLocation;
+                }
+                if (markersAdded == 0) {
+                    Toast.makeText(getContext(), "No approved mood events to display.", Toast.LENGTH_SHORT).show();
+                }
+            });
         }, error -> Log.e(TAG, "Error fetching moods for user " + currentUser + ": " + error.getMessage()));
     }
 
