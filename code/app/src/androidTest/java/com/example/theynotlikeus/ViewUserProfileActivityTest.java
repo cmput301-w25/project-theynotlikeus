@@ -5,16 +5,13 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-
-import android.util.Log;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.example.theynotlikeus.view.ViewUserProfileActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import static org.hamcrest.Matchers.equalTo;
 
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -46,15 +43,23 @@ public class ViewUserProfileActivityTest {
     }
 
     @Test
-    public void testFollowRequestButton() throws InterruptedException {
+    public void testSeePerson() {
+        // Check if testUser appears in the user list
+        onView(withText("testUser")).check(matches(isDisplayed()));
+    }
 
+    @Test
+    public void testFollowRequestAndUserVisibility() throws InterruptedException {
         addUserToDatabase();
+
+        // Click the follow request button
         onView(withId(R.id.button_fragmentUserFollowed_follow)).perform(click());
 
         // Wait for UI update
-        Thread.sleep(3000); // Adjust time if needed
+        Thread.sleep(3000);
 
+        // Verify follow request was sent
         onView(withId(R.id.button_fragmentUserFollowed_follow))
-                .check(matches(withText(equalTo("Requested"))));
+                .check(matches(withText("Requested")));
     }
 }
