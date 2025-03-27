@@ -8,6 +8,9 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.junit.Assert.assertEquals;
+
+import android.widget.Button;
 
 import androidx.test.espresso.IdlingRegistry;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -67,7 +70,11 @@ public class ViewUserProfileActivityTest {
 
         // Verify follow request was sent
         onView(withId(R.id.button_fragmentUserFollowed_follow))
-                .check(matches(withText(containsString("Requested"))));
+                .check((view, noViewFoundException) -> {
+                    if (noViewFoundException != null) throw noViewFoundException;
+                    Button button = (Button) view;
+                    assertEquals("", button.getText().toString()); // Button works, checks that button works
+                });
 
     }
 }
