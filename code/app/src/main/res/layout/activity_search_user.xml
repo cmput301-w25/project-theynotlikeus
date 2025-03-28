@@ -48,7 +48,7 @@
             <!-- The anchored SearchBar; tapping it will expand the SearchView -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/search_layout"
-                android:layout_width="420dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
@@ -70,7 +70,7 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/search_edit_text"
-                    android:layout_width="405dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionSearch"
                     android:inputType="text"
