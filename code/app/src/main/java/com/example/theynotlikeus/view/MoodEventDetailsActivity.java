@@ -120,7 +120,7 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
         dateTextView.setText(mood.getDateTime() != null ? mood.getDateTime().toString() : "Unknown");
 
         // Display the location if available.
-        if (mood.getLatitude() != null && mood.getLongitude() != null) {
+        if (mood.getLatitude() != null && mood.getLongitude() != null && mood.isGeolocationEnabled()) {
             locationTextView.setText("Location: " + mood.getLatitude() + ", " + mood.getLongitude());
         } else {
             locationTextView.setText("Location: Unknown");
@@ -131,6 +131,7 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
 
         // Load the uploaded photo using Glide if a URL is available.
         if (mood.getPhotoUrl() != null && !mood.getPhotoUrl().isEmpty()) {
+            uploadedImage.setVisibility(View.VISIBLE);
             Glide.with(this)
                     .load(mood.getPhotoUrl())
                     .placeholder(R.drawable.ic_placeholder)

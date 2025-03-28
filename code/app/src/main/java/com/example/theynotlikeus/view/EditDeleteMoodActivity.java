@@ -158,6 +158,7 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                         .into(setImage);
             }
             privacySwitch.setChecked(moodToEdit.isPublic());
+            geolocationSwitch.setChecked(moodToEdit.isGeolocationEnabled());
         } else if (moodId != null) {
             loadMoodData();
         }
@@ -206,6 +207,7 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
 
             // Update privacy.
             moodToEdit.setPublic(privacySwitch.isChecked());
+            moodToEdit.setGeolocationEnabled(geolocationSwitch.isChecked());
 
             // Update location if geolocation toggle is enabled.
             if (geolocationSwitch.isChecked()) {
@@ -226,6 +228,9 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                     Toast.makeText(this, "Acquiring location, please try again in a few seconds.", Toast.LENGTH_SHORT).show();
                     return;
                 }
+            }else {
+                // Clear any existing location data.
+                moodToEdit.setLocation(null, null);
             }
             // If a new image was selected, upload it; otherwise, check trigger words and update mood.
             if (imageUri != null) {
@@ -297,7 +302,7 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
             }
             if (containsBanned) {
                 mood.setPendingReview(true);
-                //Toast.makeText(EditDeleteMoodActivity.this, "Mood pending admin review", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditDeleteMoodActivity.this, "Mood pending admin review", Toast.LENGTH_SHORT).show();
             }
             updateMoodInDatabase(mood);
         }, error -> Toast.makeText(EditDeleteMoodActivity.this,
@@ -377,6 +382,7 @@ public class EditDeleteMoodActivity extends AppCompatActivity {
                             .into(setImage);
                 }
                 privacySwitch.setChecked(moodToEdit.isPublic());
+               // geolocationSwitch.setChecked(moodToEdit.isGeolocationEnabled());
             }
         }, e -> Toast.makeText(EditDeleteMoodActivity.this,
                 "Error loading mood: " + e.getMessage(), Toast.LENGTH_SHORT).show());

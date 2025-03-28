@@ -1,5 +1,6 @@
 package com.example.theynotlikeus.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.SearchView;
@@ -45,6 +48,7 @@ public class HomeMyMoodsFrag extends Fragment {
     private String filterTrigger = "";
     private MoodController moodController;
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home_my_moods, container, false);
@@ -61,8 +65,8 @@ public class HomeMyMoodsFrag extends Fragment {
         // Set welcome message.
         // (Assume there's a TextView with id textView_HomeMyMoodsFragment_welcomeUser in the layout.)
         // For example:
-        // TextView usernameTextView = view.findViewById(R.id.textView_HomeMyMoodsFragment_welcomeUser);
-        // usernameTextView.setText("Welcome, " + username + "!");
+        TextView usernameTextView = view.findViewById(R.id.textView_HomeMyMoodsFragment_welcomeUser);
+        usernameTextView.setText("Welcome, " + username + "!");
 
         FloatingActionButton addMoodButton = view.findViewById(R.id.floatingActionButton_HomeMyMoodsFragment_addmood);
         addMoodButton.setOnClickListener(v -> {
@@ -71,22 +75,31 @@ public class HomeMyMoodsFrag extends Fragment {
             startActivity(intent);
         });
 
-        // Assume there's an ImageView for profile picture with id ImageView_HomeMyMoodsFragment_userProfile.
-        // For example:
-        // ImageView profileImage = view.findViewById(R.id.ImageView_HomeMyMoodsFragment_userProfile);
-        // profileImage.setOnClickListener(v -> {
-        //     Intent intent = new Intent(getActivity(), PersonalProfileDetailsActivity.class);
-        //     startActivity(intent);
-        // });
+         ImageView profileImage = view.findViewById(R.id.ImageView_HomeMyMoodsFragment_userProfile);
+         profileImage.setOnClickListener(v -> {
+             Intent intent = new Intent(getActivity(), PersonalProfileDetailsActivity.class);
+             startActivity(intent);
+         });
+
+
 
         MaterialAutoCompleteTextView autoCompleteTextView = view.findViewById(R.id.autoCompleteTextView);
         String[] filterOptions = {"All Moods", "Happiness", "Sadness", "Anger", "Surprise", "Fear", "Disgust", "Shame", "Confusion"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, filterOptions);
         autoCompleteTextView.setAdapter(adapter);
+        // Show dropdown when clicked or focused
+        autoCompleteTextView.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                autoCompleteTextView.showDropDown();
+            }
+        });
+        autoCompleteTextView.setOnClickListener(v -> autoCompleteTextView.showDropDown());
         autoCompleteTextView.setOnItemClickListener((parent, view1, position, id) -> {
             filterEmotionalstate = parent.getItemAtPosition(position).toString();
             loadMoodsFromFirebase();
         });
+
+
 
         TextInputEditText searchEditText = view.findViewById(R.id.search_edit_text);
         searchEditText.setOnEditorActionListener((v, actionId, event) -> {
