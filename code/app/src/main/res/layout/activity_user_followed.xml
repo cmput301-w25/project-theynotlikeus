@@ -13,6 +13,8 @@
         android:id="@+id/button_fragmentUserFollowed_backbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginLeft="16dp"
         android:background="@color/black_background"
         android:contentDescription="@string/select_image_for_mood_event_followed"
         android:src="@drawable/ic_white_back_button"
@@ -34,16 +36,15 @@
         android:id="@+id/textView_fragmentUserFollowed_Username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="108dp"
         android:text="@string/username_followed"
         android:textColor="@color/mimi_pink"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
