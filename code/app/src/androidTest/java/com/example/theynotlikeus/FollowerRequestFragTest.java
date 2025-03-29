@@ -1,6 +1,7 @@
 package com.example.theynotlikeus;
 
 import android.content.Intent;
+import android.os.SystemClock;
 import android.util.Log;
 
 import androidx.test.core.app.ActivityScenario;
@@ -27,6 +28,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
@@ -82,28 +84,36 @@ public class FollowerRequestFragTest {
      */
     @Test
     public void appShouldDisplayExistingFollowRequestOnLaunch() {
-        //Create an Intent with the required extra.
+        // Create an Intent with the required extra.
         Intent intent = new Intent(ApplicationProvider.getApplicationContext(), MainActivity.class);
         intent.putExtra("username", "wasp");
 
-        //Launch MainActivity with the custom intent.
+        // Launch MainActivity with the custom intent.
         try (ActivityScenario<MainActivity> scenario = ActivityScenario.launch(intent)) {
-            //Espresso assertions to verify UI components.
 
-            //Verify that the title TextView is displayed and not empty.
+            // Navigate to the FollowerRequestFrag by clicking on the bottom navigation item "Requests".
+            onView(withId(R.id.nav_profile)).perform(click());
+
+            // *** Add a short delay so Firestore can load and populate the RecyclerView. ***
+            // NOTE: This is a quick hack; a better approach is using an IdlingResource.
+            SystemClock.sleep(2000);
+
+            // Verify that the title TextView is displayed and not empty.
             onView(withId(R.id.textview_FollowerRequestFrag_title))
                     .check(matches(isDisplayed()));
             onView(withId(R.id.textview_FollowerRequestFrag_title))
                     .check(matches(not(withText(""))));
 
-            //Verify that the RecyclerView displays an item with the text "nymur".
+            // Verify that the RecyclerView displays an item with the text "nymur".
             onView(withText("nymur")).check(matches(isDisplayed()));
 
-            //Verify that the FloatingActionButton is visible.
+            // Verify that the FloatingActionButton is visible.
             onView(withId(R.id.floatingActionButton_FollowerRequestFrag_addfollow))
                     .check(matches(isDisplayed()));
         }
     }
+
+
 
     /**
      * Clean up the Firestore emulator after each test.
