@@ -7,30 +7,27 @@
     tools:context=".view.LoginUserSelectionFrag"
     android:background="@color/black_background">
 
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ImageView_LoginUserSelection_appTitle"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="80dp"
+        android:scaleType="centerCrop"
 
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/textView_HomeMyMoodsFragment_welcomeUser"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:fontFamily=""
-        android:text="@string/moods_user_select"
-        android:textColor="?attr/colorOnPrimary"
-        android:textSize="90sp"
-        android:textStyle="bold"
-        app:fontFamily="sans-serif-black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
+
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_moods_title" />
 
     <Button
         android:id="@+id/button_LoginUserSelectionFragment_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/user_user_select"
-        android:backgroundTint="@color/primary_blue"
+        android:textColor="@color/mimi_pink"
+        android:backgroundTint="@color/primary_dark_grape"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -44,7 +41,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/admin_user_select"
-        android:backgroundTint="@color/primary_blue"
+        android:textColor="@color/mimi_pink"
+        android:backgroundTint="@color/primary_dark_grape"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

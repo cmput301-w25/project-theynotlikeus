@@ -48,13 +48,15 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="New trigger word"
-            android:textColor="@color/white" />
+            android:textColor="@color/mimi_pink" />
 
         <!-- Add button -->
         <Button
             android:id="@+id/button_TriggerWordsFrag_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/primary_dark_grape"
+            android:textColor="@color/mimi_pink"
             android:text="Add"
             android:layout_marginStart="8dp" />
 

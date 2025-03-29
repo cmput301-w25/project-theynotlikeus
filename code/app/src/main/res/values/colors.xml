@@ -4,12 +4,13 @@
     <color name="white">#FFFFFFFF</color>
 
     <!--App's custom color-->
-    <color name="primary_blue">#22238B</color>
+    <color name="primary_dark_grape">#5C164E</color>
     <color name="black_background">#212020</color>
     <color name="grey_button">#2F2F2F</color>
     <color name="text_box_background">#282727</color>
     <color name="light_grey">#B6B6B6</color>
     <color name="grey">#726D76</color>
+    <color name="mimi_pink">#FDCFF3</color>
 
     <color name="custom_primary_blue">#3F51B5</color>
     <color name="custom_light_grey">#FAFAFA</color>

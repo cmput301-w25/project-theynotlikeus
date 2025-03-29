@@ -5,7 +5,7 @@
     android:id="@+id/constraintLayout_mapUser"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#282727"
+    android:background="@color/primary_dark_grape"
     tools:context=".view.HomeMapFrag">
 
 
@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="@string/my_locations_map"
-        android:textColor="@android:color/white"
+        android:textColor="@color/mimi_pink"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/mapUserFragment"
         app:layout_constraintEnd_toEndOf="parent"
