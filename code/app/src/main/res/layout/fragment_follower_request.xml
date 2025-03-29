@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#282727"
+    android:background="@color/black_background"
     android:id="@+id/followerRequestFrag"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.FollowerRequestFrag">
