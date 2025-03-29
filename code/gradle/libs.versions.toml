@@ -1,5 +1,7 @@
 [versions]
 agp = "8.8.0"
+androidxJunitVersion = "1.1.5"
+coreVersion = "1.6.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
@@ -12,12 +14,16 @@ navigationUi = "2.8.7"
 espressoCoreVersion = "3.5.1"
 firebaseAuth = "23.2.0"
 playServicesLocation = "21.3.0"
+rules = "1.6.1"
+runner = "1.5.2"
 
 [libraries]
+androidx-runner = { module = "androidx.test:runner", version.ref = "runner" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+junit-v115 = { module = "androidx.test.ext:junit", version.ref = "androidxJunitVersion" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
@@ -26,6 +32,8 @@ navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCoreVersion" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
+androidx-rules = { group = "androidx.test", name = "rules", version.ref = "rules" }
+test-core = { module = "androidx.test:core", version.ref = "coreVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
