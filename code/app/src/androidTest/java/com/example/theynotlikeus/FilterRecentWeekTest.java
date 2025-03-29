@@ -25,6 +25,17 @@ import org.junit.runner.RunWith;
 import java.util.Calendar;
 import java.util.Date;
 
+
+/*
+* Test for the recent week checkbox in HomeMyMoodsFrag
+*  Inserts a test Mood into the Firestore emulator that is dated within the last 7 days.
+*   Launches the main activity and simulates the user checking the "Recent Week" checkbox filter.
+*   Verifies that at least one mood appears in the RecyclerView, confirming that the recent mood is correctly filtered and displayed.
+ *
+*
+* */
+
+
 @RunWith(AndroidJUnit4.class)
 public class FilterRecentWeekTest {
 

@@ -32,6 +32,15 @@ import org.junit.runner.RunWith;
 
 import java.util.Date;
 
+/*
+ * Test the filter bar in HomeMyMoodsFrag
+ *Inserts a Mood with the state HAPPINESS into the Firestore emulator.
+ *Simulates the user selecting "Happiness" from the dropdown filter.
+ *Verifies that the mood appears in the list, confirming that filtering by emotional state works as expected.
+ *
+ * */
+
+
 @RunWith(AndroidJUnit4.class)
 public class FilterCombinedTest {
 

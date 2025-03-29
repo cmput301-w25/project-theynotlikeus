@@ -24,6 +24,17 @@ import org.junit.runner.RunWith;
 
 import java.util.Date;
 
+
+/*
+
+* Test for the search bar in HomeMyMoodsFrag
+* Inserts a Mood with the word "cat" in its trigger text
+*  Simulates the user typing "cat" into the search field.
+* Verifies that the mood is shown in the list, proving that filtering by keyword in the trigger field is working properly.
+*
+* */
+
+
 @RunWith(AndroidJUnit4.class)
 public class FilterTriggerTextCatTest {
 
@@ -64,6 +75,7 @@ public class FilterTriggerTextCatTest {
 
     @Test
     public void testFilterByTriggerText_Cat() throws InterruptedException {
+        // Type cat
         onView(withId(R.id.search_edit_text)).perform(typeText("cat"));
         androidx.test.espresso.Espresso.closeSoftKeyboard();
         Thread.sleep(2000);
