@@ -81,7 +81,7 @@ public class AddMoodEventActivityTest {
         ActivityScenario<AddMoodEventActivity> scenario = ActivityScenario.launch(intent);
 
         scenario.onActivity(activity -> {
-            View triggerView = activity.findViewById(R.id.edittext_ActivityAddMoodEvent_trigger);
+            View triggerView = activity.findViewById(R.id.editText_ActivityAddMoodEvent_triggerInput);
             if (triggerView instanceof android.widget.EditText) {
                 ((android.widget.EditText) triggerView).setText("The Los Angeles Lakers are winning the NBA Championship in 2025.");
             }
@@ -110,7 +110,7 @@ public class AddMoodEventActivityTest {
 
         // Replace the mood spinner adapter with an invalid selection.
         scenario.onActivity(activity -> {
-            Spinner moodSpinner = activity.findViewById(R.id.spinner_ActivityAddMoodEvent_currentmood);
+            Spinner moodSpinner = activity.findViewById(R.id.spinner_ActivityAddMoodEvent_currentMoodspinner);
 
             // Simulate an invalid mood selection.
             String[] invalidMoodArray = { "" };
@@ -141,10 +141,10 @@ public class AddMoodEventActivityTest {
         ActivityScenario<AddMoodEventActivity> scenario = ActivityScenario.launch(intent);
 
         // Adds a valid mood event
-        onView(withId(R.id.edittext_ActivityAddMoodEvent_trigger))
+        onView(withId(R.id.editText_ActivityAddMoodEvent_triggerInput))
                 .perform(clearText(), typeText("Lakers"));
 
-        onView(withId(R.id.spinner_ActivityAddMoodEvent_currentmood))
+        onView(withId(R.id.spinner_ActivityAddMoodEvent_currentMoodspinner))
                 .perform(click());
         onData(is("Happiness")).perform(click());
 
