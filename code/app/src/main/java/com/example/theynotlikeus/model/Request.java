@@ -17,6 +17,16 @@ public class Request {
     // Required empty constructor for Firestore
     public Request() {}
 
+    /**
+     * This will construct a new request between two users.
+     * @param follower
+     * @param followee
+     */
+    public Request(String follower, String followee){
+        this.follower = follower;
+        this.followee = followee;
+    }
+
     // Getters and setters
 
     /**

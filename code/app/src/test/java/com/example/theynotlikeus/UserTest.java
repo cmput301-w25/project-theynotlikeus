@@ -11,7 +11,6 @@ import org.junit.Test;
 Unit test class for the User class.
 Will test the User class.
  */
-
 public class UserTest {
     private User user;
 

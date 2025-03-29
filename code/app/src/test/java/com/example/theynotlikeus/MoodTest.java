@@ -9,6 +9,9 @@ import org.junit.Test;
 
 import java.util.Date;
 
+/*
+Unit test for mood model
+ */
 public class MoodTest {
     private Mood mood;
 
