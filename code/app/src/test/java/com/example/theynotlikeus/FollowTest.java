@@ -21,12 +21,14 @@ public class FollowTest {
         follow = new Follow("testFollowed", "testFollower");
     }
 
+    // Test getters
     @Test
     public void testFollowGetters() {
         assertEquals("testFollowed", follow.getFollowed());
         assertEquals("testFollower", follow.getFollower());
     }
 
+    // Test setters
     @Test
     public void testFollowSetters() {
         follow.setFollowed("user1");

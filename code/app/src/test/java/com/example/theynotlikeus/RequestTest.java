@@ -20,12 +20,14 @@ public class RequestTest {
         request = new Request("testFollower", "testFollowee");
     }
 
+    // Test getters
     @Test
     public void testRequestGetters() {
         assertEquals("testFollower", request.getFollower());
         assertEquals("testFollowee", request.getFollowee());
     }
 
+    // Test setters
     @Test
     public void testRequestSetters() {
         request.setFollower("user1");

@@ -26,6 +26,7 @@ public class CommentTest {
         comment = new Comment("Test comment", testDate);
     }
 
+    // Test getters
     @Test
     public void testCommentGetters() {
         assertEquals("Test comment", comment.getCommentText());
@@ -34,6 +35,7 @@ public class CommentTest {
         assertNull(comment.getCommentDateTime());
     }
 
+    // Test setters
     @Test
     public void testCommentSetters() {
         comment.setAssociatedMoodID("mood123");
