@@ -26,6 +26,16 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyB3dZO776_vZmbmkulua7mMLg8-vJFsskM"/>
 
+        <!-- FileProvider for sharing temporary image files -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
 
         <activity android:name=".view.FriendMoodEventDetailsActivity" />
 
@@ -43,10 +53,10 @@
             android:theme="@style/Theme.Theynotlikeus" />
         <activity
             android:name=".view.PersonalProfileDetailsActivity"
-            android:exported="false" /> <!-- Admin Activity -->
+            android:exported="false" />
         <activity
             android:name=".view.AdminActivity"
-            android:exported="false" /> <!-- Login Activity (Launcher Activity) -->
+            android:exported="false" />
         <activity
             android:name=".view.LoginActivity"
             android:exported="true">
@@ -55,10 +65,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- Main Activity -->
+        </activity>
         <activity
             android:name=".view.MainActivity"
-            android:exported="true" /> <!-- Mood Event Activity (Newly Added) -->
+            android:exported="true" />
         <activity
             android:name=".view.AddMoodEventActivity"
             android:exported="false" />

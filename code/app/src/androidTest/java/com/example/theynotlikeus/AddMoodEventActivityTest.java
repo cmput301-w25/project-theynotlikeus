@@ -6,31 +6,21 @@ import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.intent.Intents.init;
-import static androidx.test.espresso.intent.Intents.intending;
 import static androidx.test.espresso.intent.Intents.release;
-import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
-//import static com.bumptech.glide.Glide.init;
-import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
-import static java.util.regex.Pattern.matches;
-
-import android.app.Activity;
-import android.app.Instrumentation;
 import android.content.Intent;
 import android.net.Uri;
+import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
+import androidx.core.content.FileProvider;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -61,30 +51,19 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;
-
-
-/**
- * UI test for adding a mood event
- * Launches the add mood event activity from home my moods fragment
- * Then verifies a valid mood event submission
-*/
-
+import java.util.concurrent.TimeUnit;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class AddMoodEventActivityTest {
-    /**
-     * Scenario is in MainActivity
-     */
-    @Rule
-    public ActivityScenarioRule<MainActivity> scenario = new ActivityScenarioRule<>(MainActivity.class);
 
-    /**
-     * Set up Firestore locally
-     */
+    // Launch MainActivity (from which you navigate to AddMoodEventActivity)
+    @Rule
+    public ActivityScenarioRule<MainActivity> mainActivityScenario = new ActivityScenarioRule<>(MainActivity.class);
+
     @BeforeClass
     public static void setup() {
-        //Specific address for emulated device to access our localhost.
+        // Configure Firebase emulators.
         String androidLocalhost = "10.0.2.2";
         int portNumber = 8089;
         FirebaseFirestore.getInstance().useEmulator(androidLocalhost, portNumber);
@@ -92,15 +71,11 @@ public class AddMoodEventActivityTest {
         storage.useEmulator("10.0.2.2", 9299);
     }
 
-
-    /**
-     * Test: Trigger too long
-     * @throws InterruptedException
-     * @throws ArithmeticException
-     */
     @Test
-    public void testTriggerTooLongShows() throws InterruptedException, ArithmeticException {
-        Intent intent = new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), AddMoodEventActivity.class);
+    public void testTriggerTooLongShows() throws InterruptedException {
+        Intent intent = new Intent(
+                InstrumentationRegistry.getInstrumentation().getTargetContext(),
+                AddMoodEventActivity.class);
         intent.putExtra("Lebron", "Luka");
         ActivityScenario<AddMoodEventActivity> scenario = ActivityScenario.launch(intent);
 
@@ -111,144 +86,153 @@ public class AddMoodEventActivityTest {
             }
         });
 
-        //click the save button.
         scenario.onActivity(activity -> {
             View saveButton = activity.findViewById(R.id.button_ActivityAddMoodEvent_save);
             saveButton.performClick();
         });
 
         Thread.sleep(2000);
-
     }
 
-    /**
-     * Test: No Mood Selected
-     * @throws InterruptedException
-     * @throws IllegalArgumentException
-     */
     @Test
-    public void testNoMoodSelectedShowsInvalidMood() throws InterruptedException, IllegalArgumentException {
-        Intent intent = new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), AddMoodEventActivity.class);
+    public void testNoMoodSelectedShowsInvalidMood() throws InterruptedException {
+        Intent intent = new Intent(
+                InstrumentationRegistry.getInstrumentation().getTargetContext(),
+                AddMoodEventActivity.class);
         intent.putExtra("Lebron", "Luka");
         ActivityScenario<AddMoodEventActivity> scenario = ActivityScenario.launch(intent);
 
-        //Replace the mood spinner adapter with an invalid selection.
         scenario.onActivity(activity -> {
             Spinner moodSpinner = activity.findViewById(R.id.spinner_ActivityAddMoodEvent_currentMoodspinner);
-
-            //Simulate an invalid mood selection.
+            // Simulate an invalid mood selection.
             String[] invalidMoodArray = { "" };
-            ArrayAdapter<String> invalidAdapter = new ArrayAdapter<>(activity, R.layout.add_mood_event_spinner, invalidMoodArray);
+            ArrayAdapter<String> invalidAdapter = new ArrayAdapter<>(activity,
+                    R.layout.add_mood_event_spinner, invalidMoodArray);
             invalidAdapter.setDropDownViewResource(R.layout.add_mood_event_spinner);
             moodSpinner.setAdapter(invalidAdapter);
         });
 
-        //click the save button.
         scenario.onActivity(activity -> {
             View saveButton = activity.findViewById(R.id.button_ActivityAddMoodEvent_save);
             saveButton.performClick();
         });
 
         Thread.sleep(2000);
-
     }
 
     @Test
     public void testAddPhotoUploadsImage() throws Exception {
-        //Initialize Espresso Intents if needed.
+        // Initialize Espresso Intents.
         init();
 
-        //Launch the AddMoodEventActivity.
-        Intent intent = new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), AddMoodEventActivity.class);
+        // Launch AddMoodEventActivity.
+        Intent intent = new Intent(
+                InstrumentationRegistry.getInstrumentation().getTargetContext(),
+                AddMoodEventActivity.class);
         ActivityScenario<AddMoodEventActivity> scenario = ActivityScenario.launch(intent);
 
-        //Set the ImageView's drawable and update the activity's internal imageUri field.
+        // In the activity, set up the image from the drawable resource.
         scenario.onActivity(activity -> {
-            //Set the drawable resource manually.
+            // Set the ImageView's drawable to the desired image.
             ImageView imageView = activity.findViewById(R.id.imageview_ActivityAddMoodEvent_photo);
-            imageView.setImageResource(R.drawable.ic_add);
+            imageView.setImageResource(R.drawable.ic_happy_emoticon);
 
-            //Create a dummy URI pointing to the drawable resource.
-            Uri dummyUri = Uri.parse("android.resource://com.example.theynotlikeus/" + R.drawable.ic_add);
+            // Copy the drawable (ic_happy_emoticon.png) from res/drawable into a temporary file.
+            File tempFile = new File(activity.getCacheDir(), "temp_image.png");
+            try (InputStream is = activity.getResources().openRawResource(R.drawable.ic_happy_emoticon);
+                 FileOutputStream fos = new FileOutputStream(tempFile)) {
+                byte[] buffer = new byte[1024];
+                int len;
+                while ((len = is.read(buffer)) != -1) {
+                    fos.write(buffer, 0, len);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to create temp image file", e);
+            }
 
-            //Use reflection to set the private imageUri field in the activity.
+            // Obtain a content URI for the temporary file using FileProvider.
+            Uri contentUri = FileProvider.getUriForFile(
+                    activity,
+                    activity.getPackageName() + ".fileprovider",
+                    tempFile);
+
+            // Use reflection to set the private field "imageUri" in AddMoodEventActivity.
             try {
                 Field imageUriField = AddMoodEventActivity.class.getDeclaredField("imageUri");
                 imageUriField.setAccessible(true);
-                imageUriField.set(activity, dummyUri);
+                imageUriField.set(activity, contentUri);
             } catch (NoSuchFieldException | IllegalAccessException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("Failed to set imageUri field", e);
             }
         });
 
-        //Click the "Save" button to trigger the image upload.
+        // Click the "Save" button to trigger the upload.
         onView(withId(R.id.button_ActivityAddMoodEvent_save)).perform(click());
 
-        //Wait for the upload process to complete (adjust timing as needed).
+        // Allow some time for the upload process to start.
         Thread.sleep(5000);
 
-        //Query Firebase Storage to verify the image was uploaded.
+        // Query Firebase Storage to verify the image was uploaded.
+        // (This part assumes your upload logic uploads to the "mood_images" folder.)
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
-        //The app uploads the image to the "mood_images" folder.
         StorageReference moodImagesRef = storageRef.child("mood_images");
 
-        //List all items in the "mood_images" folder.
-        Task<ListResult> listTask = moodImagesRef.listAll();
-        ListResult listResult = Tasks.await(listTask);
+        // Use a CountDownLatch to wait for the listAll() task to complete.
+        java.util.concurrent.CountDownLatch latch = new java.util.concurrent.CountDownLatch(1);
+        final ListResult[] resultHolder = new ListResult[1];
+        final Exception[] exceptionHolder = new Exception[1];
 
-        //Assert that at least one item exists in the folder.
+        moodImagesRef.listAll().addOnSuccessListener(result -> {
+            resultHolder[0] = result;
+            latch.countDown();
+        }).addOnFailureListener(e -> {
+            exceptionHolder[0] = e;
+            latch.countDown();
+        });
+
+        // Wait up to 20 seconds for the query to complete.
+        if (!latch.await(20, TimeUnit.SECONDS)) {
+            throw new RuntimeException("Timed out waiting for Firebase Storage query");
+        }
+        if (exceptionHolder[0] != null) {
+            throw new RuntimeException("Failed to list Firebase Storage files", exceptionHolder[0]);
+        }
+        ListResult listResult = resultHolder[0];
         assertTrue("No images were uploaded to Firebase Storage", listResult.getItems().size() > 0);
 
-        //Release Espresso Intents.
+        // Release Espresso Intents.
         release();
     }
 
-
-
-
-
-
-    /**
-     * Test: Set geolocation
-     */
     @Test
     public void testSetGeolocation() throws InterruptedException {
-        Intent intent = new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), AddMoodEventActivity.class);
+        Intent intent = new Intent(
+                InstrumentationRegistry.getInstrumentation().getTargetContext(),
+                AddMoodEventActivity.class);
         ActivityScenario<AddMoodEventActivity> scenario = ActivityScenario.launch(intent);
-
-        onView(withId(R.id.switch_ActivityAddMoodEvent_geolocation))
-                .perform(click());
-
+        onView(withId(R.id.switch_ActivityAddMoodEvent_geolocation)).perform(click());
         Thread.sleep(2000);
     }
 
-    /**
-     * Test: Mark mood event as public
-     */
     @Test
     public void testMarkMoodAsPublic() throws InterruptedException {
-        Intent intent = new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), AddMoodEventActivity.class);
+        Intent intent = new Intent(
+                InstrumentationRegistry.getInstrumentation().getTargetContext(),
+                AddMoodEventActivity.class);
         ActivityScenario<AddMoodEventActivity> scenario = ActivityScenario.launch(intent);
-
-        onView(withId(R.id.switch_ActivityAddMoodEvent_privacy))
-                .perform(click());
-
+        onView(withId(R.id.switch_ActivityAddMoodEvent_privacy)).perform(click());
         Thread.sleep(2000);
     }
 
-    /**
-     * Test: Valid Submission
-     * @throws InterruptedException
-     * @throws IllegalArgumentException
-     */
     @Test
-    public void testValidSubmissionFinishesActivity() throws InterruptedException, IllegalArgumentException{
-        Intent intent = new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), AddMoodEventActivity.class);
+    public void testValidSubmissionFinishesActivity() throws InterruptedException {
+        Intent intent = new Intent(
+                InstrumentationRegistry.getInstrumentation().getTargetContext(),
+                AddMoodEventActivity.class);
         intent.putExtra("Lebron", "Luka");
         ActivityScenario<AddMoodEventActivity> scenario = ActivityScenario.launch(intent);
 
-        //Adds a valid mood event
         onView(withId(R.id.editText_ActivityAddMoodEvent_triggerInput))
                 .perform(clearText(), typeText("Lakers"));
 
@@ -260,21 +244,13 @@ public class AddMoodEventActivityTest {
                 .perform(click());
         onData(is("Alone")).perform(click());
 
-        onView(withId(R.id.switch_ActivityAddMoodEvent_geolocation))
-                .perform(click());
+        onView(withId(R.id.switch_ActivityAddMoodEvent_geolocation)).perform(click());
+        onView(withId(R.id.switch_ActivityAddMoodEvent_privacy)).perform(click());
 
-        onView(withId(R.id.switch_ActivityAddMoodEvent_privacy))
-                .perform(click());
-
-        //clicks the save button
         scenario.onActivity(activity -> activity.findViewById(R.id.button_ActivityAddMoodEvent_save).performClick());
-
         Thread.sleep(2000);
     }
 
-
-    /**
-     *  Tear down: Clear all documents from the emulator after each test */
     @After
     public void tearDown() {
         String projectId = "theynotlikeus-6a9f1";
@@ -298,5 +274,4 @@ public class AddMoodEventActivityTest {
             }
         }
     }
-
 }
