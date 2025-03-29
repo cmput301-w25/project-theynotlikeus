@@ -10,9 +10,12 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static androidx.test.espresso.Espresso.onData;
+import static androidx.test.espresso.matcher.RootMatchers.isPlatformPopup;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
 import android.util.Log;
 
+import androidx.test.espresso.matcher.RootMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.rule.GrantPermissionRule;
@@ -42,6 +45,8 @@ public class FilterCombinedTest {
     public ActivityTestRule<MainActivity> activityRule =
             new ActivityTestRule<>(MainActivity.class);
 
+
+
     @BeforeClass
     public static void setupEmulator() {
         String androidLocalhost = "10.0.2.2";
@@ -58,20 +63,32 @@ public class FilterCombinedTest {
         testMood.setPendingReview(false);
         testMood.setPublic(true);
 
+        // log for testing
         db.collection("moods").document("filter_test_mood").set(testMood)
                 .addOnSuccessListener(unused -> Log.d("TestSetup", "Test mood added"))
                 .addOnFailureListener(e -> Log.e("TestSetup", "Failed to add test mood", e));
     }
 
+
+
+
     @Test
     public void testCombinedFilters() throws InterruptedException {
         onView(withId(R.id.checkBox_HomeMyMoodsFragment_recentWeek)).perform(click());
         onView(withId(R.id.autoCompleteTextView)).perform(click());
-        onData(allOf(is(instanceOf(String.class)), is("Happiness"))).perform(click());
+        onView(withId(R.id.autoCompleteTextView)).perform(click());
+        Thread.sleep(500); // Give time for dropdown to render
+        // Important! Only this works for material UI
+        onView(withText("Happiness"))
+                .inRoot(RootMatchers.isPlatformPopup())
+                .perform(click());
+
         onView(withId(R.id.search_edit_text)).perform(typeText("cat"));
         androidx.test.espresso.Espresso.closeSoftKeyboard();
         Thread.sleep(2000);
         onView(withId(R.id.recyclerview_HomeMyMoodsFragment_userrecyclerview))
                 .check(matches(isDisplayed()));
     }
+
+
 }

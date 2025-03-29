@@ -43,7 +43,7 @@ public class FilterTriggerTextCatTest {
         int portNumber = 8089;
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.useEmulator(androidLocalhost, portNumber);
-
+        // created mood for testing
         Mood catMood = new Mood();
         catMood.setUsername("testuser");
         catMood.setMoodState(MoodState.SURPRISE);
@@ -52,10 +52,15 @@ public class FilterTriggerTextCatTest {
         catMood.setPendingReview(false);
         catMood.setPublic(true);
 
+        // log for testing
         db.collection("moods").document("cat_trigger_test_mood").set(catMood)
                 .addOnSuccessListener(unused -> Log.d("TestSetup", "Cat mood added"))
                 .addOnFailureListener(e -> Log.e("TestSetup", "Failed to add cat mood", e));
     }
+
+
+
+
 
     @Test
     public void testFilterByTriggerText_Cat() throws InterruptedException {
@@ -65,4 +70,6 @@ public class FilterTriggerTextCatTest {
         onView(withId(R.id.recyclerview_HomeMyMoodsFragment_userrecyclerview))
                 .check(matches(isDisplayed()));
     }
+
+
 }

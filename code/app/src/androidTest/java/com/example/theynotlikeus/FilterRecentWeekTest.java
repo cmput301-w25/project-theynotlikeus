@@ -56,11 +56,17 @@ public class FilterRecentWeekTest {
         recentMood.setDateTime(calendar.getTime());
         recentMood.setPendingReview(false);
         recentMood.setPublic(true);
+        // log for testing
+
 
         db.collection("moods").document("recent_week_test_mood").set(recentMood)
                 .addOnSuccessListener(aVoid -> Log.d("TestSetup", "Recent week test mood added"))
                 .addOnFailureListener(e -> Log.e("TestSetup", "Failed to add recent week mood", e));
     }
+
+
+
+
 
     @Test
     public void testFilterByRecentWeek() throws InterruptedException {
@@ -69,4 +75,6 @@ public class FilterRecentWeekTest {
         onView(withId(R.id.recyclerview_HomeMyMoodsFragment_userrecyclerview))
                 .check(matches(isDisplayed()));
     }
+
+
 }
