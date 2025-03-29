@@ -7,22 +7,19 @@
     android:background="@color/black_background"
     tools:context=".view.AdminLoginFrag">
 
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ImageView_LoginUserSelection_appTitle"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="80dp"
+        android:scaleType="centerCrop"
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/textView_AdminLoginFrag_apptitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:fontFamily=""
-        android:text="@string/moods_admin_login"
-        android:textColor="?attr/colorOnPrimary"
-        android:textSize="90sp"
-        android:textStyle="bold"
-        app:fontFamily="sans-serif-black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
+
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_moods_title" />
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/button_AdminLoginFrag_back"
@@ -38,10 +35,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="150dp"
         android:text="@string/admin_login_page_admin_login"
-        android:textColor="@color/white"
+        android:textColor="@color/mimi_pink"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_AdminLoginFrag_apptitle" />
+        app:layout_constraintTop_toBottomOf="@+id/ImageView_LoginUserSelection_appTitle" />
 
     <!-- Input password-->
     <com.google.android.material.textfield.TextInputLayout
@@ -65,7 +62,7 @@
             android:inputType="textPassword"
             android:textColor="@color/white"
             android:textColorHint="#FFFFFF"
-            android:textColorLink="@color/primary_blue" />
+            android:textColorLink="@color/primary_dark_grape" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Input username -->
@@ -99,8 +96,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:backgroundTint="@color/primary_blue"
+        android:backgroundTint="@color/primary_dark_grape"
         android:text="@string/sign_in_admin_login"
+        android:textColor="@color/mimi_pink"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textField_adminLoginFrag_password" />

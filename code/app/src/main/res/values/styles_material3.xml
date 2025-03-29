@@ -18,7 +18,7 @@
 
     <style name="Widget.Material3.MaterialSwitch" parent="Widget.MaterialComponents.CompoundButton.Switch">
         <item name="trackColorActive">@color/white</item>
-        <item name="thumbTint">@color/primary_blue</item>
+        <item name="thumbTint">@color/primary_dark_grape</item>
         <item name="trackColorInactive">@color/black</item>
     </style>
 

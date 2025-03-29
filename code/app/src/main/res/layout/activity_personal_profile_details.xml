@@ -23,7 +23,7 @@
         android:layout_marginTop="32dp"
         app:navigationIcon="@drawable/ic_white_back_button"
         app:title="Profile"
-        app:titleTextColor="@android:color/white"
+        app:titleTextColor="@color/mimi_pink"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -47,7 +47,7 @@
         android:layout_marginTop="8dp"
         android:text="@string/username_personal_profile"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-        android:textColor="@android:color/white"
+        android:textColor="@color/mimi_pink"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imageView_PersonalProfileDetailsActivity_profilePicture" />
@@ -57,8 +57,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
-        android:backgroundTint="@color/primary_blue"
+        android:backgroundTint="@color/primary_dark_grape"
         android:text="Log Out"
+        android:textColor="@color/mimi_pink"
         app:layout_constraintEnd_toEndOf="@+id/button_PersonalProfileDetailsActivity_back"
         app:layout_constraintTop_toTopOf="parent" />
 
