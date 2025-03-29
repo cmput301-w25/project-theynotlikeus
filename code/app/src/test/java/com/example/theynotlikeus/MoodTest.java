@@ -59,34 +59,17 @@ public class MoodTest {
     }
 
     @Test
-    public void testSetAndGetReasonValid() {
-        mood.setReason("Too tired");
-        assertEquals("Too tired", mood.getReason());
+    public void testSetAndGetPhotoUrl() {
+        mood.setPhotoUrl("http://example.com/photo.jpg");
+        assertEquals("http://example.com/photo.jpg", mood.getPhotoUrl());
     }
 
     @Test
-    public void testSetReasonInvalidTooLong() {
-        assertThrows(IllegalArgumentException.class, () -> mood.setReason("This reason is way too long"));
+    public void testSetAndGetPhotoSize() {
+        mood.setPhotoSize(50000);
+        assertEquals(50000, mood.getPhotoSize());
     }
 
-    @Test
-    public void testSetReasonInvalidTooManyWords() {
-        assertThrows(IllegalArgumentException.class, () -> mood.setReason("Too many words here"));
-    }
-/*
-    @Test
-    public void testSetAndGetPhotoValid() {
-        byte[] validPhoto=new byte[5000];  //Within the size limit
-        mood.setPhoto(validPhoto);
-        assertArrayEquals(validPhoto, mood.getPhoto());
-    }
-
-    @Test
-    public void testSetPhotoInvalidTooLarge() {
-        byte[] oversizedPhoto=new byte[70000];  //Exceeds 65536 bytes
-        assertThrows(IllegalArgumentException.class, () -> mood.setPhoto(oversizedPhoto));
-    }
-*/
     @Test
     public void testSetAndGetLocation() {
         mood.setLocation(45.0, 90.0);
@@ -104,14 +87,13 @@ public class MoodTest {
     public void testToString() {
         mood.setTrigger("Workload");
         mood.setSocialSituation(Mood.SocialSituation.ALONE);
-        mood.setReason("Too stressed");
         mood.setLocation(12.34, 56.78);
-        //mood.setPhoto(new byte[5000]);
+        mood.setPhotoUrl("http://example.com/photo.jpg");
 
         String moodString=mood.toString();
         assertTrue(moodString.contains("HAPPINESS"));
         assertTrue(moodString.contains("Workload"));
-        assertTrue(moodString.contains("Too stressed"));
+        assertTrue(moodString.contains("ALONE"));
         assertTrue(moodString.contains("(12.34, 56.78)"));
         assertTrue(moodString.contains("present"));
     }

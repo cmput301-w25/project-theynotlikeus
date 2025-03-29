@@ -5,13 +5,17 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.bumptech.glide.Glide.init;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
+
+import static java.util.regex.Pattern.matches;
 
 import android.content.Intent;
 import android.util.Log;
@@ -40,6 +44,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;
+
 
 /**
  * UI test for adding a mood event
@@ -130,6 +135,49 @@ public class AddMoodEventActivityTest {
     }
 
     /**
+     * Test: Add a photo
+     */
+    @Test
+    public void testAddPhoto() throws InterruptedException {
+        Intent intent = new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), AddMoodEventActivity.class);
+        ActivityScenario<AddMoodEventActivity> scenario = ActivityScenario.launch(intent);
+
+        onView(withId(R.id.button_ActivityAddMoodEvent_selectPhoto))
+                .perform(click());
+
+        Thread.sleep(2000);
+    }
+
+
+    /**
+     * Test: Set geolocation
+     */
+    @Test
+    public void testSetGeolocation() throws InterruptedException {
+        Intent intent = new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), AddMoodEventActivity.class);
+        ActivityScenario<AddMoodEventActivity> scenario = ActivityScenario.launch(intent);
+
+        onView(withId(R.id.switch_ActivityAddMoodEvent_geolocation))
+                .perform(click());
+
+        Thread.sleep(2000);
+    }
+
+    /**
+     * Test: Mark mood event as public
+     */
+    @Test
+    public void testMarkMoodAsPublic() throws InterruptedException {
+        Intent intent = new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), AddMoodEventActivity.class);
+        ActivityScenario<AddMoodEventActivity> scenario = ActivityScenario.launch(intent);
+
+        onView(withId(R.id.switch_ActivityAddMoodEvent_privacy))
+                .perform(click());
+
+        Thread.sleep(2000);
+    }
+
+    /**
      * Test: Valid Submission
      * @throws InterruptedException
      * @throws IllegalArgumentException
@@ -151,6 +199,12 @@ public class AddMoodEventActivityTest {
         onView(withId(R.id.spinner_ActivityAddMoodEvent_socialsituation))
                 .perform(click());
         onData(is("Alone")).perform(click());
+
+        onView(withId(R.id.switch_ActivityAddMoodEvent_geolocation))
+                .perform(click());
+
+        onView(withId(R.id.switch_ActivityAddMoodEvent_privacy))
+                .perform(click());
 
         // clicks the save button
         scenario.onActivity(activity -> activity.findViewById(R.id.button_ActivityAddMoodEvent_save).performClick());

@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -50,6 +52,18 @@ public class UserSignUpFragTest {
         String androidLocalhost = "10.0.2.2";
         int portNumber = 8089;
         FirebaseFirestore.getInstance().useEmulator(androidLocalhost, portNumber);
+    }
+
+    /**
+     * Helper method to add a user to the database.
+     */
+    private void addUserToDatabase() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String, Object> user = new HashMap<>();
+        user.put("username", "nour");
+        user.put("password", "123");
+        // Write the user data to the "users" collection with document id "nour".
+        db.collection("users").document("nour").set(user);
     }
 
     /**
@@ -96,6 +110,32 @@ public class UserSignUpFragTest {
         onView(withId(R.id.button_UserSignUpFrag_createandlogin)).perform(click());
 
         // 4. Verify that the sign-up fragment remains displayed (indicating failure).
+        onView(withId(R.id.fragment_user_sign_up_layout)).check(matches(isDisplayed()));
+    }
+
+    /**
+     * Tests: if sign up fails due to having an already existing user.
+     * @throws InterruptedException
+     */
+    @Test
+    public void testExistingUserFailure() throws InterruptedException {
+        // Add user to database
+        addUserToDatabase();
+
+        // 1. Navigate from LoginUserSelectionFrag to UserSignUpFrag.
+        onView(withId(R.id.button_LoginUserSelectionFragment_user)).perform(click());
+        Thread.sleep(2000);
+        onView(withId(R.id.textButton_UserLoginFrag_signUp)).perform(click());
+
+        // 2. Enter credentials with an already existing user.
+        onView(withId(R.id.editText_UserSignUpFrag_username)).perform(replaceText("nour"));
+        onView(withId(R.id.editText_UserSignUpFrag_password)).perform(replaceText("123"));
+        onView(withId(R.id.editText_UserSignUpFrag_reEnterPassword)).perform(replaceText("123"));
+
+        // 3. Attempt to create an account.
+        onView(withId(R.id.button_UserSignUpFrag_createandlogin)).perform(click());
+
+        // 4. Verify that the sign up fragment is still displayed.
         onView(withId(R.id.fragment_user_sign_up_layout)).check(matches(isDisplayed()));
     }
 
