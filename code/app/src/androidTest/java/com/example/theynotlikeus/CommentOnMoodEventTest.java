@@ -33,23 +33,25 @@ public class CommentOnMoodEventTest {
 
     @Test
     public void testAbleToCommentOnMoodEvent() {
-        // Create a test Mood event.
+        // Generate a unique username using the current time.
+        String uniqueUsername = "testUser_" + System.currentTimeMillis();
+
+        // Create a test Mood event with the unique username.
         Mood testMood = new Mood();
-        testMood.setUsername("friend1");
+        testMood.setUsername(uniqueUsername);
         testMood.setMoodState(Mood.MoodState.HAPPINESS);
         testMood.setTrigger("happy event");
         testMood.setDateTime(new Date());
-        testMood.setDocId("testMoodId"); // assuming Mood has a setter for the document ID
+        testMood.setDocId("testMoodId"); // You can also make this unique if desired.
 
-        // Set the logged-in username.
+        // Set the logged-in username in your app's singleton.
         MyApp myApp = (MyApp) ApplicationProvider.getApplicationContext();
-        myApp.setUsername("testUser");
+        myApp.setUsername(uniqueUsername);
 
-        // Launch FriendMoodEventDetailsActivity with the test Mood.
+        // Launch the FriendMoodEventDetailsActivity with the test Mood and unique username.
         Intent intent = new Intent(ApplicationProvider.getApplicationContext(), FriendMoodEventDetailsActivity.class);
         intent.putExtra("mood", testMood);
-        intent.putExtra("username", "testUser");
-
+        intent.putExtra("username", uniqueUsername);
         ActivityScenario.launch(intent);
 
         // Tap the "Comments" button.
@@ -62,9 +64,12 @@ public class CommentOnMoodEventTest {
 
     @Test
     public void testAddCommentToMoodEvent() throws InterruptedException {
-        // Create a test Mood event.
+        // Generate a unique username.
+        String uniqueUsername = "testUser_" + System.currentTimeMillis();
+
+        // Create a test Mood event with the unique username.
         Mood testMood = new Mood();
-        testMood.setUsername("friend1");
+        testMood.setUsername(uniqueUsername);
         testMood.setMoodState(Mood.MoodState.HAPPINESS);
         testMood.setTrigger("happy event");
         testMood.setDateTime(new Date());
@@ -72,38 +77,37 @@ public class CommentOnMoodEventTest {
 
         // Set the logged-in username.
         MyApp myApp = (MyApp) ApplicationProvider.getApplicationContext();
-        myApp.setUsername("testUser");
+        myApp.setUsername(uniqueUsername);
 
-        // Launch FriendMoodEventDetailsActivity with the test Mood.
+        // Launch the FriendMoodEventDetailsActivity with the test Mood.
         Intent intent = new Intent(ApplicationProvider.getApplicationContext(), FriendMoodEventDetailsActivity.class);
         intent.putExtra("mood", testMood);
-        intent.putExtra("username", "testUser");
-
+        intent.putExtra("username", uniqueUsername);
         ActivityScenario.launch(intent);
 
-        // Tap the "Comments" button to navigate to ViewCommentsActivity.
+        // Tap the "Comments" button to navigate to the comments screen.
         onView(withId(R.id.button_ActivityFriendMoodEventDetails_commentButton)).perform(click());
 
-        // Tap the "add comment" button in ViewCommentsActivity.
+        // Tap the "add comment" button in the comments screen.
         onView(withId(R.id.imagebutton_ActivityViewComments_addcommentsbutton)).perform(click());
 
-        // In the displayed AddCommentDialogFrag, type a test comment.
-        String testComment = "This is a test comment from Espresso";
+        // Create a unique comment using current time.
+        String testComment = "This is a test comment from Espresso " + System.currentTimeMillis();
+
+        // In the AddCommentDialogFrag, type the comment and tap "Post".
         onView(withId(R.id.edittext_FragmentAddCommentsDialogFrag_editCommentText))
                 .perform(replaceText(testComment), closeSoftKeyboard());
-
-        // Tap the "Post" button in the dialog.
         onView(withText("Post")).perform(click());
 
-        // Verify that the new comment appears in the RecyclerView.
+        // Verify that the new comment appears in the UI.
         onView(withText(testComment)).check(matches(isDisplayed()));
 
-        // Now verify the comment was saved in Firestore's "comments" collection.
+        // Now verify that the comment was saved in Firestore's "comments" collection.
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         CountDownLatch latch = new CountDownLatch(1);
         final boolean[] commentSaved = { false };
 
-        // Assuming that the Comment object is saved with a field "commentText".
+        // Assuming the Comment object is saved with a field "commentText".
         db.collection("comments")
                 .whereEqualTo("commentText", testComment)
                 .get()
@@ -114,10 +118,10 @@ public class CommentOnMoodEventTest {
                     latch.countDown();
                 });
 
-        // Wait up to 5 seconds for the query to complete.
+        // Wait up to 5 seconds for the Firestore query to complete.
         latch.await(5, TimeUnit.SECONDS);
 
-        // Assert that the comment exists in the database.
+        // Assert that the comment exists in Firestore.
         assertTrue("The comment was not saved in Firestore", commentSaved[0]);
     }
 }
