@@ -28,6 +28,7 @@ import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 import androidx.test.core.app.ActivityScenario;
@@ -51,7 +52,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -150,48 +155,58 @@ public class AddMoodEventActivityTest {
 
     @Test
     public void testAddPhotoUploadsImage() throws Exception {
-        //Initialize Espresso Intents to intercept outgoing intents.
+        //Initialize Espresso Intents if needed.
         init();
-
-        //Create a dummy URI. In a real test, you might create or reference an actual test image.
-        Uri dummyUri = Uri.parse("content://com.example.theynotlikeus/dummy.jpg");
-
-        //Prepare an intent result that simulates the user picking an image.
-        Intent resultData = new Intent();
-        resultData.setData(dummyUri);
-        Instrumentation.ActivityResult result =
-                new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
-
-        //Intercept intents with action 
-        intending(hasAction(Intent.ACTION_PICK)).respondWith(result);
 
         //Launch the AddMoodEventActivity.
         Intent intent = new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), AddMoodEventActivity.class);
         ActivityScenario<AddMoodEventActivity> scenario = ActivityScenario.launch(intent);
 
-        //Click the select photo button.
-        onView(withId(R.id.button_ActivityAddMoodEvent_selectPhoto))
-                .perform(click());
+        //Set the ImageView's drawable and update the activity's internal imageUri field.
+        scenario.onActivity(activity -> {
+            //Set the drawable resource manually.
+            ImageView imageView = activity.findViewById(R.id.imageview_ActivityAddMoodEvent_photo);
+            imageView.setImageResource(R.drawable.ic_add);
 
-        //Wait for the upload process to finish (adjust timing as needed).
+            //Create a dummy URI pointing to the drawable resource.
+            Uri dummyUri = Uri.parse("android.resource://com.example.theynotlikeus/" + R.drawable.ic_add);
+
+            //Use reflection to set the private imageUri field in the activity.
+            try {
+                Field imageUriField = AddMoodEventActivity.class.getDeclaredField("imageUri");
+                imageUriField.setAccessible(true);
+                imageUriField.set(activity, dummyUri);
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        //Click the "Save" button to trigger the image upload.
+        onView(withId(R.id.button_ActivityAddMoodEvent_save)).perform(click());
+
+        //Wait for the upload process to complete (adjust timing as needed).
         Thread.sleep(5000);
 
-        //Now, query Firebase Storage (via the emulator) to verify the image was uploaded.
+        //Query Firebase Storage to verify the image was uploaded.
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
-        //Assume your app uploads the image to a folder named "images"
-        StorageReference imagesRef = storageRef.child("images");
+        //The app uploads the image to the "mood_images" folder.
+        StorageReference moodImagesRef = storageRef.child("mood_images");
 
-        //List all items in the images folder
-        Task<ListResult> listTask = imagesRef.listAll();
+        //List all items in the "mood_images" folder.
+        Task<ListResult> listTask = moodImagesRef.listAll();
         ListResult listResult = Tasks.await(listTask);
 
-        //Check that at least one item exists in the folder.
+        //Assert that at least one item exists in the folder.
         assertTrue("No images were uploaded to Firebase Storage", listResult.getItems().size() > 0);
 
         //Release Espresso Intents.
         release();
     }
+
+
+
+
 
 
     /**
