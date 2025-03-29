@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:padding="12dp"
     android:layout_margin="10dp"
-    android:backgroundTint="@color/primary_blue"
+    android:backgroundTint="@color/primary_dark_grape"
     android:background="@color/black_background">
 
     <!-- Container for text content -->
@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:text="Username"
             android:textStyle="bold"
-            android:textColor="@color/white"
+            android:textColor="@color/mimi_pink"
             android:textSize="16sp" />
 
         <!-- Mood Text TextView -->
@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Mood text goes here. This is a longer description that should wrap nicely."
-            android:textColor="@color/white"
+            android:textColor="@color/mimi_pink"
             android:textSize="14sp"
             android:layout_marginTop="4dp" />
 
@@ -44,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Date and Time"
-            android:textColor="@color/white"
+            android:textColor="@color/mimi_pink"
             android:textSize="12sp"
             android:layout_marginTop="4dp" />
 
@@ -68,6 +68,7 @@
             android:layout_weight="1"
             android:backgroundTint="#2B572B"
             android:text="Approve"
+
             android:layout_marginEnd="4dp" />
 
         <Button

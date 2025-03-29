@@ -16,8 +16,6 @@ import com.bumptech.glide.Glide;
 import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.model.Mood;
 
-import java.io.Serializable;
-
 /**
  * Activity for displaying the details of a mood event.
  * It receives a full Mood object via Intent and updates the UI directly.
@@ -57,7 +55,7 @@ public class MoodEventDetailsActivity extends AppCompatActivity {
         dateTextView = findViewById(R.id.textview_ActivityMoodEventDetails_dateandtime);
         triggerTextView = findViewById(R.id.textview_ActivityMoodEventDetails_triggervalue);
         locationTextView = findViewById(R.id.textview_ActivityMoodEventDetails_location);
-        commentButton = findViewById(R.id.commentButton);
+        commentButton = findViewById(R.id.button_ActivitYMoodEventDetails_commentButton);
         uploadedImage = findViewById(R.id.imageview_ActivityMoodEventDetails_uploadedphoto);
 
         // Retrieve the full Mood object from the Intent extras.

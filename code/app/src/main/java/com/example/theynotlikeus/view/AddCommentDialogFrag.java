@@ -72,6 +72,7 @@ public class AddCommentDialogFrag extends DialogFragment {
         customTitle.setTextSize(20);
         customTitle.setPadding(32, 32, 32, 32);
         customTitle.setGravity(Gravity.CENTER);
+        customTitle.setTextColor(Color.parseColor("#FDCFF3"));
         builder.setCustomTitle(customTitle);
 
 
@@ -108,8 +109,10 @@ public class AddCommentDialogFrag extends DialogFragment {
              */
             Button negativeButton = ((AlertDialog) alertDialog).getButton(AlertDialog.BUTTON_NEGATIVE);
             Button positiveButton = ((AlertDialog) alertDialog).getButton(AlertDialog.BUTTON_POSITIVE);
-            negativeButton.setTextColor(Color.WHITE);
-            positiveButton.setTextColor(Color.WHITE);
+
+
+            negativeButton.setTextColor(Color.parseColor("#FDCFF3"));
+            positiveButton.setTextColor(Color.parseColor("#FDCFF3"));
         }
     }
 }
