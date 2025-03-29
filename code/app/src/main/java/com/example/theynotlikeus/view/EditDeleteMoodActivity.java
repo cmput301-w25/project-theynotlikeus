@@ -38,8 +38,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.Serializable;
-import java.util.Date;
 
+/**
+ * An activity that allows the user to edit and delete a mood event.
+ */
 public class EditDeleteMoodActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST = 1;

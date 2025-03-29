@@ -20,6 +20,12 @@ import com.example.theynotlikeus.model.TriggerWord;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A fragment that allows an admin user to:
+ * - add trigger words
+ * - edit/delete trigger words
+ * (Trigger words are words that are words that the admin may want to censor from other users mood events)
+ */
 public class TriggerWordsFrag extends Fragment {
 
     private ImageButton buttonBack;

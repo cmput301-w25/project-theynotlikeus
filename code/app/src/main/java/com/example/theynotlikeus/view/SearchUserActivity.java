@@ -4,16 +4,12 @@ package com.example.theynotlikeus.view;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.SearchView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
-import android.view.MenuItem;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -43,12 +39,6 @@ public class SearchUserActivity extends AppCompatActivity {
     private SearchUserAdapter adapter;
     private List<User> userList;
     private FirebaseFirestore db;
-    private com.google.android.material.search.SearchView searchView;
-    private SearchBar searchBar;
-    private MaterialToolbar actionBar;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -11,6 +11,11 @@ import com.example.theynotlikeus.singleton.MyApp;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textview.MaterialTextView;
 
+/**
+ * An activity that allows the user to:
+ * - see their own profile (username)
+ * - logout and go back to login menu.
+ */
 public class PersonalProfileDetailsActivity extends AppCompatActivity {
 
     private MaterialTextView textViewUsername;
