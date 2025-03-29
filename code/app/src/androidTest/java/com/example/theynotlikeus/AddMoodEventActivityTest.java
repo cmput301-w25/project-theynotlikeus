@@ -5,10 +5,14 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
+import static androidx.test.espresso.intent.Intents.init;
+import static androidx.test.espresso.intent.Intents.intending;
+import static androidx.test.espresso.intent.Intents.release;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static com.bumptech.glide.Glide.init;
+//import static com.bumptech.glide.Glide.init;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
@@ -17,7 +21,10 @@ import static org.junit.Assert.assertTrue;
 
 import static java.util.regex.Pattern.matches;
 
+import android.app.Activity;
+import android.app.Instrumentation;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -31,7 +38,12 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.example.theynotlikeus.view.AddMoodEventActivity;
 import com.example.theynotlikeus.view.MainActivity;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
+import com.google.firebase.storage.StorageReference;
 
 import org.junit.After;
 import org.junit.BeforeClass;
@@ -67,10 +79,12 @@ public class AddMoodEventActivityTest {
      */
     @BeforeClass
     public static void setup() {
-        // Specific address for emulated device to access our localhost.
+        //Specific address for emulated device to access our localhost.
         String androidLocalhost = "10.0.2.2";
         int portNumber = 8089;
         FirebaseFirestore.getInstance().useEmulator(androidLocalhost, portNumber);
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        storage.useEmulator("10.0.2.2", 9299);
     }
 
 
@@ -92,7 +106,7 @@ public class AddMoodEventActivityTest {
             }
         });
 
-        // click the save button.
+        //click the save button.
         scenario.onActivity(activity -> {
             View saveButton = activity.findViewById(R.id.button_ActivityAddMoodEvent_save);
             saveButton.performClick();
@@ -113,18 +127,18 @@ public class AddMoodEventActivityTest {
         intent.putExtra("Lebron", "Luka");
         ActivityScenario<AddMoodEventActivity> scenario = ActivityScenario.launch(intent);
 
-        // Replace the mood spinner adapter with an invalid selection.
+        //Replace the mood spinner adapter with an invalid selection.
         scenario.onActivity(activity -> {
             Spinner moodSpinner = activity.findViewById(R.id.spinner_ActivityAddMoodEvent_currentMoodspinner);
 
-            // Simulate an invalid mood selection.
+            //Simulate an invalid mood selection.
             String[] invalidMoodArray = { "" };
             ArrayAdapter<String> invalidAdapter = new ArrayAdapter<>(activity, R.layout.add_mood_event_spinner, invalidMoodArray);
             invalidAdapter.setDropDownViewResource(R.layout.add_mood_event_spinner);
             moodSpinner.setAdapter(invalidAdapter);
         });
 
-        // click the save button.
+        //click the save button.
         scenario.onActivity(activity -> {
             View saveButton = activity.findViewById(R.id.button_ActivityAddMoodEvent_save);
             saveButton.performClick();
@@ -134,18 +148,49 @@ public class AddMoodEventActivityTest {
 
     }
 
-    /**
-     * Test: Add a photo
-     */
     @Test
-    public void testAddPhoto() throws InterruptedException {
+    public void testAddPhotoUploadsImage() throws Exception {
+        //Initialize Espresso Intents to intercept outgoing intents.
+        init();
+
+        //Create a dummy URI. In a real test, you might create or reference an actual test image.
+        Uri dummyUri = Uri.parse("content://com.example.theynotlikeus/dummy.jpg");
+
+        //Prepare an intent result that simulates the user picking an image.
+        Intent resultData = new Intent();
+        resultData.setData(dummyUri);
+        Instrumentation.ActivityResult result =
+                new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
+
+        //Intercept intents with action 
+        intending(hasAction(Intent.ACTION_PICK)).respondWith(result);
+
+        //Launch the AddMoodEventActivity.
         Intent intent = new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), AddMoodEventActivity.class);
         ActivityScenario<AddMoodEventActivity> scenario = ActivityScenario.launch(intent);
 
+        //Click the select photo button.
         onView(withId(R.id.button_ActivityAddMoodEvent_selectPhoto))
                 .perform(click());
 
-        Thread.sleep(2000);
+        //Wait for the upload process to finish (adjust timing as needed).
+        Thread.sleep(5000);
+
+        //Now, query Firebase Storage (via the emulator) to verify the image was uploaded.
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
+        //Assume your app uploads the image to a folder named "images"
+        StorageReference imagesRef = storageRef.child("images");
+
+        //List all items in the images folder
+        Task<ListResult> listTask = imagesRef.listAll();
+        ListResult listResult = Tasks.await(listTask);
+
+        //Check that at least one item exists in the folder.
+        assertTrue("No images were uploaded to Firebase Storage", listResult.getItems().size() > 0);
+
+        //Release Espresso Intents.
+        release();
     }
 
 
@@ -188,7 +233,7 @@ public class AddMoodEventActivityTest {
         intent.putExtra("Lebron", "Luka");
         ActivityScenario<AddMoodEventActivity> scenario = ActivityScenario.launch(intent);
 
-        // Adds a valid mood event
+        //Adds a valid mood event
         onView(withId(R.id.editText_ActivityAddMoodEvent_triggerInput))
                 .perform(clearText(), typeText("Lakers"));
 
@@ -206,7 +251,7 @@ public class AddMoodEventActivityTest {
         onView(withId(R.id.switch_ActivityAddMoodEvent_privacy))
                 .perform(click());
 
-        // clicks the save button
+        //clicks the save button
         scenario.onActivity(activity -> activity.findViewById(R.id.button_ActivityAddMoodEvent_save).performClick());
 
         Thread.sleep(2000);
