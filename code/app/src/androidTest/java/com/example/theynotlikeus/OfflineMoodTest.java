@@ -148,22 +148,29 @@ public class OfflineMoodTest {
         db.enableNetwork().addOnCompleteListener(task -> enableLatch.countDown());
         enableLatch.await(5, TimeUnit.SECONDS);
 
-        // Wait a bit to ensure synchronization.
-        Thread.sleep(5000);
-
-        // Query Firestore to verify that the mood event was updated.
-        CountDownLatch queryLatch = new CountDownLatch(1);
-        final Mood[] updatedMood = {null};
-        db.collection("moods").whereEqualTo("docId", moodDocId).get().addOnCompleteListener(task -> {
-            if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
-                updatedMood[0] = task.getResult().getDocuments().get(0).toObject(Mood.class);
+        // Poll Firestore until the updated mood is found or timeout (15 seconds).
+        final long timeoutMillis = 15000; // 15-second timeout
+        final long pollingInterval = 1000; // 1-second interval
+        long startTime = System.currentTimeMillis();
+        Mood updatedMood = null;
+        while (System.currentTimeMillis() - startTime < timeoutMillis) {
+            CountDownLatch queryLatch = new CountDownLatch(1);
+            final Mood[] queryResult = new Mood[1];
+            db.collection("moods").whereEqualTo("docId", moodDocId).get().addOnCompleteListener(task -> {
+                if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
+                    queryResult[0] = task.getResult().getDocuments().get(0).toObject(Mood.class);
+                }
+                queryLatch.countDown();
+            });
+            queryLatch.await(5, TimeUnit.SECONDS);
+            if (queryResult[0] != null &&
+                    "Updated offline mood event".equals(queryResult[0].getTrigger()) &&
+                    queryResult[0].getMoodState() == Mood.MoodState.HAPPINESS) {
+                updatedMood = queryResult[0];
+                break;
             }
-            queryLatch.countDown();
-        });
-        queryLatch.await(5, TimeUnit.SECONDS);
-        assertTrue("Offline updated mood should be synced when online",
-                updatedMood[0] != null &&
-                        "Updated offline mood event".equals(updatedMood[0].getTrigger()) &&
-                        updatedMood[0].getMoodState() == Mood.MoodState.HAPPINESS);
+            Thread.sleep(pollingInterval);
+        }
+        assertTrue("Offline updated mood should be synced when online", updatedMood != null);
     }
 }
