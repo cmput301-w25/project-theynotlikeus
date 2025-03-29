@@ -43,6 +43,7 @@ dependencies {
 
     // Glide to display photos
     implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation(libs.androidx.rules)
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 
     // UI
