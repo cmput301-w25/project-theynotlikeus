@@ -130,18 +130,19 @@ public class AddMoodEventActivityInteractionTest extends com.example.theynotlike
         String projectId = "theynotlikeus-6a9f1";
         URL url = null;
         try {
-            url = new URL("http://10.0.2.2:8089/emulator/v1/projects/" + projectId + "/databases/(default)/documents");
+            // Use the same port as in FirestoreEmulatorTestBase (8080)
+            url = new URL("http://10.0.2.2:8080/emulator/v1/projects/" + projectId + "/databases/(default)/documents");
         } catch (MalformedURLException exception) {
-            // Log or handle the error if needed.
+            // Optionally log the exception message.
         }
         HttpURLConnection urlConnection = null;
         try {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("DELETE");
             int response = urlConnection.getResponseCode();
-            // Optionally, log the response code.
+            // Optionally log the response code.
         } catch (IOException exception) {
-            // Log or handle the error if needed.
+            // Optionally log the exception message.
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();

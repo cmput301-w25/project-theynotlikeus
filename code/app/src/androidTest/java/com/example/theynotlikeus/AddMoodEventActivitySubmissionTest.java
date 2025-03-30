@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Objects;
 
 /**
  * UI test for submitting a valid mood event.
@@ -78,9 +77,10 @@ public class AddMoodEventActivitySubmissionTest extends com.example.theynotlikeu
         String projectId = "theynotlikeus-6a9f1";
         URL url = null;
         try {
-            url = new URL("http://10.0.2.2:8089/emulator/v1/projects/" + projectId + "/databases/(default)/documents");
+            // Use port 8080 to match the emulator configuration.
+            url = new URL("http://10.0.2.2:8080/emulator/v1/projects/" + projectId + "/databases/(default)/documents");
         } catch (MalformedURLException exception) {
-            // Log or handle the error if needed.
+            // Optionally log the error.
         }
         HttpURLConnection urlConnection = null;
         try {
@@ -89,7 +89,7 @@ public class AddMoodEventActivitySubmissionTest extends com.example.theynotlikeu
             int response = urlConnection.getResponseCode();
             // Optionally, log the response code.
         } catch (IOException exception) {
-            // Log or handle the error if needed.
+            // Optionally log the error.
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
