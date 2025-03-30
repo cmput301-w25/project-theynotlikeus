@@ -1,4 +1,4 @@
-package com.example.theynotlikeus.adapter;
+package com.example.theynotlikeus.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;

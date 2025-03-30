@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.theynotlikeus.R;
-import com.example.theynotlikeus.adapter.TriggerWordsAdapter;
+import com.example.theynotlikeus.adapters.TriggerWordsAdapter;
 import com.example.theynotlikeus.controller.TriggerWordsController;
 import com.example.theynotlikeus.model.TriggerWord;
 import java.util.ArrayList;

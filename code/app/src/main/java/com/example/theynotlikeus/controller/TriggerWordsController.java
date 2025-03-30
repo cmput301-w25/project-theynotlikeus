@@ -28,6 +28,7 @@ public class TriggerWordsController {
                     onSuccess.accept(words);
                 })
                 .addOnFailureListener(onFailure::accept);
+
     }
 
     // Add a new trigger word.
@@ -42,6 +43,7 @@ public class TriggerWordsController {
                 .addOnFailureListener(onFailure::accept);
     }
 
+
     // Delete a trigger word by document ID.
     public void deleteTriggerWord(String documentId, Runnable onSuccess, Consumer<Exception> onFailure) {
         db.collection("triggerWords")
@@ -50,4 +52,5 @@ public class TriggerWordsController {
                 .addOnSuccessListener(aVoid -> onSuccess.run())
                 .addOnFailureListener(onFailure::accept);
     }
+
 }

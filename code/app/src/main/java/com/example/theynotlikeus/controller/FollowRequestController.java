@@ -2,7 +2,6 @@ package com.example.theynotlikeus.controller;
 
 import com.example.theynotlikeus.model.Request;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
