@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "884342513396",
+    "project_id": "theynotlikeus-6a9f1",
+    "storage_bucket": "theynotlikeus-6a9f1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:884342513396:android:b598aaa88e6b3b3a2508a1",
+        "android_client_info": {
+          "package_name": "com.example.theynotlikeus"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBGFbcpmIe_r4dj259tSFMzhOtySNHiNA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
