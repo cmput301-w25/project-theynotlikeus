@@ -5,16 +5,20 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
+import static androidx.test.espresso.matcher.RootMatchers.isPlatformPopup;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.bumptech.glide.Glide.init;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
+import static java.util.EnumSet.allOf;
 import static java.util.regex.Pattern.matches;
 
 import android.content.Intent;
@@ -24,6 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import androidx.test.core.app.ActivityScenario;
+import androidx.test.espresso.action.ViewActions;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
@@ -164,16 +169,19 @@ public class AddMoodEventActivityTest {
     }
 
     /**
-     * Test: Mark mood event as public
+     * Test: Mark mood event as public by clicking the privacy switch.
      */
     @Test
     public void testMarkMoodAsPublic() throws InterruptedException {
+        // Launch the AddMoodEventActivity.
         Intent intent = new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), AddMoodEventActivity.class);
         ActivityScenario<AddMoodEventActivity> scenario = ActivityScenario.launch(intent);
 
+        // Scroll to the switch if necessary, then click it.
         onView(withId(R.id.switch_ActivityAddMoodEvent_privacy))
-                .perform(click());
+                .perform(ViewActions.scrollTo(), ViewActions.click());
 
+        // Wait to see the effect (for testing purposes)
         Thread.sleep(2000);
     }
 
@@ -192,13 +200,19 @@ public class AddMoodEventActivityTest {
         onView(withId(R.id.editText_ActivityAddMoodEvent_triggerInput))
                 .perform(clearText(), typeText("Lakers"));
 
+// For the current mood spinner:
         onView(withId(R.id.spinner_ActivityAddMoodEvent_currentMoodspinner))
                 .perform(click());
-        onData(is("Happiness")).perform(click());
+        onData(equalTo("Happiness"))
+                .inRoot(isPlatformPopup())
+                .perform(click());
 
+// For the social situation spinner:
         onView(withId(R.id.spinner_ActivityAddMoodEvent_socialsituation))
                 .perform(click());
-        onData(is("Alone")).perform(click());
+        onData(equalTo("Alone"))
+                .inRoot(isPlatformPopup())
+                .perform(click());
 
         onView(withId(R.id.switch_ActivityAddMoodEvent_geolocation))
                 .perform(click());
