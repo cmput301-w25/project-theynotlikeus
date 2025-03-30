@@ -7,13 +7,15 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
+import androidx.fragment.app.testing.FragmentScenario;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-
+import com.example.theynotlikeus.view.AdminLoginFrag;
 import com.example.theynotlikeus.view.LoginActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +29,18 @@ import java.util.Map;
  * by clicking the "Admin" button, then verifies both successful and failed login attempts.
  */
 @RunWith(AndroidJUnit4.class)
-public class AdminLoginFragTest extends com.example.theynotlikeus.FirestoreEmulatorTestBase {
+public class AdminLoginFragTest {
+
+    /**
+     * Set up Firestore to use the local emulator.
+     * "10.0.2.2" is the special IP address to access localhost from an Android emulator.
+     */
+    @BeforeClass
+    public static void setup() {
+        String androidLocalhost = "10.0.2.2";
+        int portNumber = 8089;
+        FirebaseFirestore.getInstance().useEmulator(androidLocalhost, portNumber);
+    }
 
     /**
      * Launch LoginActivity for testing.
@@ -35,6 +48,7 @@ public class AdminLoginFragTest extends com.example.theynotlikeus.FirestoreEmula
     @Rule
     public ActivityScenarioRule<LoginActivity> activityScenarioRule =
             new ActivityScenarioRule<>(LoginActivity.class);
+
 
     /**
      * Helper method to add an admin user to the local database.
@@ -44,7 +58,7 @@ public class AdminLoginFragTest extends com.example.theynotlikeus.FirestoreEmula
         Map<String, Object> admin = new HashMap<>();
         admin.put("username", "admin");
         admin.put("password", "adminpass");
-        // Write the admin data to the "admin" collection with document id "admin".
+        // Write the admin data to the "admins" collection with document id "admin".
         db.collection("admin").document("admin").set(admin);
     }
 
