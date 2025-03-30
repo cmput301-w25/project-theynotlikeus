@@ -42,7 +42,7 @@ public class CommunityMapActivityUnitTest {
         Mood userMood = new Mood(Mood.MoodState.HAPPINESS);
         userMood.setLocation(37.4220, -122.0841);
 
-        // Create a mood for a friend that is very close (e.g., only a few meters apart).
+        // Create a mood for a friend that is very close (e.g., only a few meters apart)
         Mood friendMood = new Mood(Mood.MoodState.HAPPINESS);
         friendMood.setLocation(37.4225, -122.0838);
 
