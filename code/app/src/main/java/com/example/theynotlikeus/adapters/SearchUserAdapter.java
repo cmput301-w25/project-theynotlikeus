@@ -5,13 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.model.User;
-
 import java.util.List;
 
 /**
@@ -60,6 +57,7 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.My
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_search_user_layout, parent, false);
         return new MyViewHolder(view);
+
     }
 
     /**
@@ -75,6 +73,7 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.My
         holder.textViewUsername.setText(user.getUsername());
 
         holder.itemView.setOnClickListener(v -> listener.onUserClick(user));
+
     }
 
     /**
@@ -95,6 +94,7 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.My
     public void updateList(List<User> newList) {
         this.userList = newList;
         notifyDataSetChanged();
+
     }
 
     /**
@@ -112,6 +112,9 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.My
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewUsername = itemView.findViewById(R.id.textview_ActivitySearchUserLayout_username);
+
         }
+
     }
+
 }

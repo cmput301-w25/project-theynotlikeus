@@ -1,7 +1,6 @@
 package com.example.theynotlikeus.model;
 
 import android.content.SharedPreferences;
-import com.example.theynotlikeus.view.AdminActivity;
 import java.io.Serializable;
 import java.util.Date;
 

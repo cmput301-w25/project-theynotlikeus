@@ -38,7 +38,7 @@ public class Comment implements Serializable {
     public void setAssociatedMoodID(String associatedMoodID) {
         this.associatedMoodID = associatedMoodID;
     }
-
+    // get the comment author
     public String getCommentAuthor() {
         return commentAuthor;
     }
@@ -46,7 +46,7 @@ public class Comment implements Serializable {
     public void setCommentAuthor(String commentAuthor) {
         this.commentAuthor = commentAuthor;
     }
-
+    // get comment text
     public String getCommentText() {
         return commentText;
     }
@@ -54,10 +54,12 @@ public class Comment implements Serializable {
     public void setCommentText(String commentText) {
         this.commentText = commentText;
     }
-
+    //get comment date and time
     public Date getCommentDateTime() {
         return commentDateTime;
     }
+
+
 
     public void setCommentDateTime() {
         this.commentDateTime = new Date();

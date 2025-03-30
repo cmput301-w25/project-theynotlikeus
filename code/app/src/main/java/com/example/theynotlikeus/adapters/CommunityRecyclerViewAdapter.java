@@ -52,6 +52,7 @@ public class CommunityRecyclerViewAdapter
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_item_community_mood, parent, false);
         return new ViewHolder(itemView);
+
     }
 
     /**
@@ -62,6 +63,7 @@ public class CommunityRecyclerViewAdapter
                                  int position) {
         Mood mood = moodList.get(position);
         holder.bind(mood);
+
     }
 
     /**
@@ -91,6 +93,7 @@ public class CommunityRecyclerViewAdapter
             triggerTextView   = itemView.findViewById(R.id.textView_fragmentItemCommunity_trigger);
             dateTextView      = itemView.findViewById(R.id.textView_fragmentItemCommunity_date);
             socialSituation   = itemView.findViewById(R.id.textView_fragmentItemCommunity_socialsituation);
+
         }
 
         /**
@@ -120,6 +123,7 @@ public class CommunityRecyclerViewAdapter
                 dateTextView.setText("");
             }
 
+
             //Set the correct mood icon
             int moodIconRes = getMoodIcon(mood.getMoodState());
             moodIconImageView.setImageResource(moodIconRes);
@@ -131,6 +135,7 @@ public class CommunityRecyclerViewAdapter
                 v.getContext().startActivity(intent);
             });
         }
+
 
         /**
          * Returns the appropriate drawable resource ID for a given MoodState.

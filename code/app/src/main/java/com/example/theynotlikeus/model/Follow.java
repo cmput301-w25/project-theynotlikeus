@@ -52,4 +52,6 @@ public class Follow {
     public void setFollower(String follower) {
         this.follower = follower;
     }
+
+
 }

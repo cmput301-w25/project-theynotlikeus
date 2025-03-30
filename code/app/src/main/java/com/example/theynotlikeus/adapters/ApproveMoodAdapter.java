@@ -19,6 +19,7 @@ public class ApproveMoodAdapter extends RecyclerView.Adapter<ApproveMoodAdapter.
     public interface OnMoodActionListener {
         void onApprove(Mood mood);
         void onDelete(Mood mood);
+
     }
 
     private List<Mood> moodList;
@@ -28,6 +29,7 @@ public class ApproveMoodAdapter extends RecyclerView.Adapter<ApproveMoodAdapter.
     public ApproveMoodAdapter(List<Mood> moodList, OnMoodActionListener actionListener) {
         this.moodList = moodList;
         this.actionListener = actionListener;
+
     }
 
     @NonNull
@@ -35,6 +37,7 @@ public class ApproveMoodAdapter extends RecyclerView.Adapter<ApproveMoodAdapter.
     public MoodViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_approve_mood, parent, false);
         return new MoodViewHolder(view);
+
     }
 
     @Override
@@ -44,6 +47,7 @@ public class ApproveMoodAdapter extends RecyclerView.Adapter<ApproveMoodAdapter.
         String username = (mood.getUsername() != null && !mood.getUsername().isEmpty())
                 ? mood.getUsername() : "Sample User";
         holder.usernameTextView.setText(username);
+
 
         // Compose a mood description using the mood state and trigger.
         String moodDescription = (mood.getMoodState() != null)
@@ -55,6 +59,8 @@ public class ApproveMoodAdapter extends RecyclerView.Adapter<ApproveMoodAdapter.
         }
         holder.moodTextView.setText(moodDescription);
 
+
+
         if (mood.getDateTime() != null) {
             String formattedDate = dateFormat.format(mood.getDateTime());
             holder.dateTimeTextView.setText(formattedDate);
@@ -62,17 +68,22 @@ public class ApproveMoodAdapter extends RecyclerView.Adapter<ApproveMoodAdapter.
             holder.dateTimeTextView.setText("Unknown date");
         }
 
+
         // Set click listeners for the buttons.
         holder.approveButton.setOnClickListener(v -> {
             if (actionListener != null) {
                 actionListener.onApprove(mood);
             }
         });
+
+
         holder.deleteButton.setOnClickListener(v -> {
             if (actionListener != null) {
                 actionListener.onDelete(mood);
             }
+
         });
+
     }
 
     @Override
@@ -84,6 +95,7 @@ public class ApproveMoodAdapter extends RecyclerView.Adapter<ApproveMoodAdapter.
     public void updateMoodList(List<Mood> moodList) {
         this.moodList = moodList;
         notifyDataSetChanged();
+
     }
 
     // ViewHolder to hold item views.
@@ -101,6 +113,9 @@ public class ApproveMoodAdapter extends RecyclerView.Adapter<ApproveMoodAdapter.
             dateTimeTextView = itemView.findViewById(R.id.textView_dateTime); // Make sure this ID exists in your layout.
             approveButton = itemView.findViewById(R.id.button_approve);
             deleteButton = itemView.findViewById(R.id.button_delete);
+
         }
+
     }
+
 }

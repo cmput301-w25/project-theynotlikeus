@@ -28,4 +28,6 @@ public class TriggerWord {
     public void setId(String id) {
         this.id = id;
     }
+
+
 }

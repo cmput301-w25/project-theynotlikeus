@@ -31,6 +31,7 @@ public class FollowerRecyclerViewAdapter extends RecyclerView.Adapter<FollowerRe
      * @param requestList              The list of follow requests to be displayed.
      * @param followRequestController  The controller to handle accepting and declining requests.
      */
+
     public FollowerRecyclerViewAdapter(Context context, List<Request> requestList, FollowRequestController followRequestController) {
         this.requestList = requestList;
         this.context = context;
@@ -46,6 +47,7 @@ public class FollowerRecyclerViewAdapter extends RecyclerView.Adapter<FollowerRe
      *
      * @return A new instance of MyViewHolder
      */
+
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -76,6 +78,7 @@ public class FollowerRecyclerViewAdapter extends RecyclerView.Adapter<FollowerRe
             });
         });
 
+
         holder.buttonDeclineRequest.setOnClickListener(v -> {
             followRequestController.declineRequest(request, () -> {
                 Toast.makeText(context, "Follow request declined", Toast.LENGTH_SHORT).show();
@@ -98,6 +101,7 @@ public class FollowerRecyclerViewAdapter extends RecyclerView.Adapter<FollowerRe
         return requestList.size();
     }
 
+
     /**
      * ViewHolder class that holds references to the views for displaying the request data (username)
      * and the buttons for accepting or declining the request.
@@ -117,6 +121,9 @@ public class FollowerRecyclerViewAdapter extends RecyclerView.Adapter<FollowerRe
             textViewUsername = itemView.findViewById(R.id.textview_FragmentFollowerLayout_username);
             buttonAcceptRequest = itemView.findViewById(R.id.button_FragmentFollowerLayout_acceptButton);
             buttonDeclineRequest = itemView.findViewById(R.id.button_FragmentFollowerLayout_declineButton);
+
         }
+
     }
+
 }
