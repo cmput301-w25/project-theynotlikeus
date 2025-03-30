@@ -1,4 +1,4 @@
-package com.example.theynotlikeus.adapter;
+package com.example.theynotlikeus.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +16,7 @@ public class TriggerWordsAdapter extends RecyclerView.Adapter<TriggerWordsAdapte
     // Callback interface for delete action.
     public interface OnTriggerWordActionListener {
         void onDelete(TriggerWord triggerWord);
+
     }
 
     private List<TriggerWord> triggerWords;
@@ -24,6 +25,7 @@ public class TriggerWordsAdapter extends RecyclerView.Adapter<TriggerWordsAdapte
     public TriggerWordsAdapter(List<TriggerWord> triggerWords, OnTriggerWordActionListener actionListener) {
         this.triggerWords = triggerWords;
         this.actionListener = actionListener;
+
     }
 
     @NonNull
@@ -31,6 +33,7 @@ public class TriggerWordsAdapter extends RecyclerView.Adapter<TriggerWordsAdapte
     public TriggerWordViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_trigger_word, parent, false);
         return new TriggerWordViewHolder(view);
+
     }
 
     @Override
@@ -41,7 +44,9 @@ public class TriggerWordsAdapter extends RecyclerView.Adapter<TriggerWordsAdapte
             if (actionListener != null) {
                 actionListener.onDelete(triggerWord);
             }
+
         });
+
     }
 
     @Override
@@ -52,6 +57,7 @@ public class TriggerWordsAdapter extends RecyclerView.Adapter<TriggerWordsAdapte
     public void updateTriggerWords(List<TriggerWord> words) {
         this.triggerWords = words;
         notifyDataSetChanged();
+
     }
 
     static class TriggerWordViewHolder extends RecyclerView.ViewHolder {
@@ -61,6 +67,9 @@ public class TriggerWordsAdapter extends RecyclerView.Adapter<TriggerWordsAdapte
             super(itemView);
             textViewWord = itemView.findViewById(R.id.textview_trigger_word);
             buttonDelete = itemView.findViewById(R.id.button_TriggerWordsFrag_delete);
+
         }
+
     }
+
 }

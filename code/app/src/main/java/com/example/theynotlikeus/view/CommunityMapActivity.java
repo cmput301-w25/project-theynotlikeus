@@ -29,6 +29,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A fragment to view all follower mood event locations
+ */
 public class CommunityMapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private static final String TAG = "CommunityMapActivity";

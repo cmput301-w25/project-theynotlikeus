@@ -78,6 +78,7 @@ public class MoodController extends FirebaseController {
                 onFailure.accept(e);
             }
         });
+
     }
     /**
      * Updates an existing mood in the database.
@@ -119,6 +120,7 @@ public class MoodController extends FirebaseController {
                     registrationHolder.remove();
                     onFailure.accept(e);
                 });
+
     }
 
     /**
@@ -150,7 +152,9 @@ public class MoodController extends FirebaseController {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                             onFailure.accept(e);
                         }
+
                     }
+
                 });
 
 
@@ -193,6 +197,7 @@ public class MoodController extends FirebaseController {
                         }
                     }
                 });
+
     }
 
     /**
@@ -225,6 +230,7 @@ public class MoodController extends FirebaseController {
                         }
                     }
                 });
+
     }
 
 
@@ -254,6 +260,7 @@ public class MoodController extends FirebaseController {
                         onFailure.accept(e);
                     }
                 });
+
     }
 
     public void getApprovedMoods(Consumer<List<Mood>> onSuccess, Consumer<Exception> onFailure) {
@@ -276,6 +283,7 @@ public class MoodController extends FirebaseController {
                         onFailure.accept(e);
                     }
                 });
+
     }
 
 }

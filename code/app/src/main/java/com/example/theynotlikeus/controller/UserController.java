@@ -44,6 +44,7 @@ public class UserController extends FirebaseController {
                     }
                 })
                 .addOnFailureListener(e -> callback.onError("Error: " + e.getMessage()));
+
     }
 
     /**
@@ -68,6 +69,7 @@ public class UserController extends FirebaseController {
                                 .addOnFailureListener(e -> callback.onError("Error creating account: " + e.getMessage()));
                     }
                 })
+
                 .addOnFailureListener(e -> callback.onError("Error checking username: " + e.getMessage()));
     }
 
@@ -86,4 +88,5 @@ public class UserController extends FirebaseController {
         void onSuccess(User user);
         void onError(String error);
     }
+
 }

@@ -40,6 +40,8 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<CommentsRe
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.activity_view_comments_comment_layout, parent, false);
         return new CommentsViewHolder(view);
+
+
     }
 
     /**
@@ -49,6 +51,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<CommentsRe
     public int getItemCount() {
         return commentList.size();
     }
+
 
     /**
      * Binds data to the view elements for each comment item.
@@ -67,8 +70,11 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<CommentsRe
             holder.commentDateTime.setText(dateFormat.format(comment.getCommentDateTime()));
         } else {
             holder.commentDateTime.setText("Unknown");
+
         }
+
     }
+
 
     /**
      * ViewHolder class to hold references to the UI components for each comment item.
@@ -84,5 +90,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<CommentsRe
             commentText = itemView.findViewById(R.id.textview_ViewCommentsActivityCommentLayout_commentText);
             commentDateTime = itemView.findViewById(R.id.textview_ViewCommentsActivityCommentLayout_dateTime);
         }
+
     }
+
 }

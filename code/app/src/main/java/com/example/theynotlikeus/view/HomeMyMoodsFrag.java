@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,6 +35,12 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * A fragment in which the user can see all of their mood events and filter through them with a:
+ * - drop down menu of all mood options
+ * - a search bar to search for a specific word
+ * - a check box for the most recent mood events from that week
+ */
 public class HomeMyMoodsFrag extends Fragment {
 
     private String username;

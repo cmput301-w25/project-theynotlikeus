@@ -14,12 +14,18 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.theynotlikeus.R;
-import com.example.theynotlikeus.adapter.TriggerWordsAdapter;
+import com.example.theynotlikeus.adapters.TriggerWordsAdapter;
 import com.example.theynotlikeus.controller.TriggerWordsController;
 import com.example.theynotlikeus.model.TriggerWord;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A fragment that allows an admin user to:
+ * - add trigger words
+ * - edit/delete trigger words
+ * (Trigger words are words that are words that the admin may want to censor from other users mood events)
+ */
 public class TriggerWordsFrag extends Fragment {
 
     private ImageButton buttonBack;

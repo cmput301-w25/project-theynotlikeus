@@ -15,15 +15,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.theynotlikeus.R;
-import com.example.theynotlikeus.adapter.ApproveMoodAdapter;
+import com.example.theynotlikeus.adapters.ApproveMoodAdapter;
 import com.example.theynotlikeus.controller.MoodController;
 import com.example.theynotlikeus.model.Mood;
-import com.google.android.material.materialswitch.MaterialSwitch;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * An activity that functions as the page for the admin in which they can:
+ * - set picture limit
+ * - approve or delete any moods with trigger words.
+ */
 public class AdminActivity extends AppCompatActivity {
 
     private static final String PREFS_NAME = "AdminPrefs";

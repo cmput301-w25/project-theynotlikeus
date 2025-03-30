@@ -1,8 +1,5 @@
 package com.example.theynotlikeus.model;
-/*
-    User class with a username and password.
-*   Used for authentication and storing user data in Firestore.
-* */
+
 /**
  * The User class represents a user with a username and password.
  * This class is used for authentication and storing user data in Firestore.

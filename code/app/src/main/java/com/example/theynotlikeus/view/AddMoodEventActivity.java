@@ -23,7 +23,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import com.bumptech.glide.Glide;
 import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.controller.MoodController;
 import com.example.theynotlikeus.controller.TriggerWordsController;
@@ -36,8 +35,13 @@ import com.google.android.gms.location.LocationServices;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.Date;
-
+/**
+ * An activity that will allow the user to add a mood with:
+ * - an optional image
+ * - a required mood
+ * - an optional reason and social situation
+ * - ability to toggle geolocation and publicity of the mood.
+ */
 public class AddMoodEventActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST = 1;
