@@ -4,24 +4,16 @@ import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.matcher.RootMatchers.isPlatformPopup;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static com.bumptech.glide.Glide.init;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
-
-import static java.util.EnumSet.allOf;
-import static java.util.regex.Pattern.matches;
 
 import android.content.Intent;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -50,42 +42,27 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;
 
-
-/**
- * UI test for adding a mood event
- * Launches the add mood event activity from home my moods fragment
- * Then verifies a valid mood event submission
-*/
-
-
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class AddMoodEventActivityTest {
-    /**
-     * Scenario is in MainActivity
-     */
-    @Rule
-    public ActivityScenarioRule<MainActivity> scenario = new ActivityScenarioRule<>(MainActivity.class);
 
-    /**
-     * Set up Firestore locally
-     */
+    @Rule
+    public ActivityScenarioRule<MainActivity> scenario =
+            new ActivityScenarioRule<>(MainActivity.class);
+
     @BeforeClass
     public static void setup() {
-        // Specific address for emulated device to access our localhost.
-        String androidLocalhost = "10.0.2.2";
+        // Configure Firestore to use the local emulator.
+        String androidLocalhost = "10.0.2.2";  // Emulator's alias to host's localhost
         int portNumber = 8089;
         FirebaseFirestore.getInstance().useEmulator(androidLocalhost, portNumber);
     }
 
-
     /**
-     * Test: Trigger too long
-     * @throws InterruptedException
-     * @throws ArithmeticException
+     * Test: Trigger text is too long.
      */
     @Test
-    public void testTriggerTooLongShows() throws InterruptedException, ArithmeticException {
+    public void testTriggerTooLongShows() throws InterruptedException {
         Intent intent = new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), AddMoodEventActivity.class);
         intent.putExtra("Lebron", "Luka");
         ActivityScenario<AddMoodEventActivity> scenario = ActivityScenario.launch(intent);
@@ -97,50 +74,44 @@ public class AddMoodEventActivityTest {
             }
         });
 
-        // click the save button.
+        // Click the save button.
         scenario.onActivity(activity -> {
             View saveButton = activity.findViewById(R.id.button_ActivityAddMoodEvent_save);
             saveButton.performClick();
         });
 
-        Thread.sleep(2000);
-
+        SystemClock.sleep(2000);
     }
 
     /**
-     * Test: No Mood Selected
-     * @throws InterruptedException
-     * @throws IllegalArgumentException
+     * Test: No Mood Selected.
      */
     @Test
-    public void testNoMoodSelectedShowsInvalidMood() throws InterruptedException, IllegalArgumentException {
+    public void testNoMoodSelectedShowsInvalidMood() throws InterruptedException {
         Intent intent = new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), AddMoodEventActivity.class);
         intent.putExtra("Lebron", "Luka");
         ActivityScenario<AddMoodEventActivity> scenario = ActivityScenario.launch(intent);
 
-        // Replace the mood spinner adapter with an invalid selection.
         scenario.onActivity(activity -> {
             Spinner moodSpinner = activity.findViewById(R.id.spinner_ActivityAddMoodEvent_currentMoodspinner);
-
-            // Simulate an invalid mood selection.
+            // Simulate an invalid mood selection by setting adapter with empty string.
             String[] invalidMoodArray = { "" };
             ArrayAdapter<String> invalidAdapter = new ArrayAdapter<>(activity, R.layout.add_mood_event_spinner, invalidMoodArray);
             invalidAdapter.setDropDownViewResource(R.layout.add_mood_event_spinner);
             moodSpinner.setAdapter(invalidAdapter);
         });
 
-        // click the save button.
+        // Click the save button.
         scenario.onActivity(activity -> {
             View saveButton = activity.findViewById(R.id.button_ActivityAddMoodEvent_save);
             saveButton.performClick();
         });
 
-        Thread.sleep(2000);
-
+        SystemClock.sleep(2000);
     }
 
     /**
-     * Test: Add a photo
+     * Test: Add a photo.
      */
     @Test
     public void testAddPhoto() throws InterruptedException {
@@ -150,12 +121,11 @@ public class AddMoodEventActivityTest {
         onView(withId(R.id.button_ActivityAddMoodEvent_selectPhoto))
                 .perform(click());
 
-        Thread.sleep(2000);
+        SystemClock.sleep(2000);
     }
 
-
     /**
-     * Test: Set geolocation
+     * Test: Set geolocation toggle.
      */
     @Test
     public void testSetGeolocation() throws InterruptedException {
@@ -163,9 +133,9 @@ public class AddMoodEventActivityTest {
         ActivityScenario<AddMoodEventActivity> scenario = ActivityScenario.launch(intent);
 
         onView(withId(R.id.switch_ActivityAddMoodEvent_geolocation))
-                .perform(click());
+                .perform(scrollTo(), click());
 
-        Thread.sleep(2000);
+        SystemClock.sleep(2000);
     }
 
     /**
@@ -173,84 +143,75 @@ public class AddMoodEventActivityTest {
      */
     @Test
     public void testMarkMoodAsPublic() throws InterruptedException {
-        // Launch the AddMoodEventActivity.
         Intent intent = new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), AddMoodEventActivity.class);
         ActivityScenario<AddMoodEventActivity> scenario = ActivityScenario.launch(intent);
 
-        // Scroll to the switch if necessary, then click it.
         onView(withId(R.id.switch_ActivityAddMoodEvent_privacy))
-                .perform(ViewActions.scrollTo(), ViewActions.click());
+                .perform(scrollTo(), click());
 
-        // Wait to see the effect (for testing purposes)
-        Thread.sleep(2000);
+        SystemClock.sleep(2000);
     }
 
     /**
-     * Test: Valid Submission
-     * @throws InterruptedException
-     * @throws IllegalArgumentException
+     * Test: Valid Submission.
      */
     @Test
-    public void testValidSubmissionFinishesActivity() throws InterruptedException, IllegalArgumentException{
+    public void testValidSubmissionFinishesActivity() throws InterruptedException {
         Intent intent = new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), AddMoodEventActivity.class);
         intent.putExtra("Lebron", "Luka");
         ActivityScenario<AddMoodEventActivity> scenario = ActivityScenario.launch(intent);
 
-        // Adds a valid mood event
+        // Fill in the trigger input.
         onView(withId(R.id.editText_ActivityAddMoodEvent_triggerInput))
                 .perform(clearText(), typeText("Lakers"));
 
-// For the current mood spinner:
+        // For the mood spinner:
         onView(withId(R.id.spinner_ActivityAddMoodEvent_currentMoodspinner))
-                .perform(click());
+                .perform(scrollTo(), click());
         onData(equalTo("Happiness"))
                 .inRoot(isPlatformPopup())
                 .perform(click());
 
-// For the social situation spinner:
+        // For the social situation spinner:
         onView(withId(R.id.spinner_ActivityAddMoodEvent_socialsituation))
-                .perform(click());
+                .perform(scrollTo(), click());
         onData(equalTo("Alone"))
                 .inRoot(isPlatformPopup())
                 .perform(click());
 
+        // Toggle geolocation and privacy.
         onView(withId(R.id.switch_ActivityAddMoodEvent_geolocation))
-                .perform(click());
-
+                .perform(scrollTo(), click());
         onView(withId(R.id.switch_ActivityAddMoodEvent_privacy))
-                .perform(click());
+                .perform(scrollTo(), click());
 
-        // clicks the save button
-        scenario.onActivity(activity -> activity.findViewById(R.id.button_ActivityAddMoodEvent_save).performClick());
+        // Click the save button.
+        scenario.onActivity(activity -> {
+            View saveButton = activity.findViewById(R.id.button_ActivityAddMoodEvent_save);
+            saveButton.performClick();
+        });
 
-        Thread.sleep(2000);
+        SystemClock.sleep(2000);
     }
 
-
     /**
-     *  Tear down: Clear all documents from the emulator after each test */
+     * Tear down: Clear all documents from the Firestore emulator after each test.
+     */
     @After
     public void tearDown() {
         String projectId = "theynotlikeus-6a9f1";
-        URL url = null;
         try {
-            url = new URL("http://10.0.2.2:8089/emulator/v1/projects/" + projectId + "/databases/(default)/documents");
-        } catch (MalformedURLException exception) {
-            Log.e("URL Error", Objects.requireNonNull(exception.getMessage()));
-        }
-        HttpURLConnection urlConnection = null;
-        try {
-            urlConnection = (HttpURLConnection) url.openConnection();
+            URL url = new URL("http://10.0.2.2:8089/emulator/v1/projects/" + projectId +
+                    "/databases/(default)/documents");
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("DELETE");
             int response = urlConnection.getResponseCode();
             Log.i("Response Code", "Response Code: " + response);
-        } catch (IOException exception) {
-            Log.e("IO Error", Objects.requireNonNull(exception.getMessage()));
-        } finally {
-            if (urlConnection != null) {
-                urlConnection.disconnect();
-            }
+            urlConnection.disconnect();
+        } catch (MalformedURLException e) {
+            Log.e("URL Error", Objects.requireNonNull(e.getMessage()));
+        } catch (IOException e) {
+            Log.e("IO Error", Objects.requireNonNull(e.getMessage()));
         }
     }
-
 }
