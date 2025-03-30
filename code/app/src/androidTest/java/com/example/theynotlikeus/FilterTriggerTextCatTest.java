@@ -1,31 +1,36 @@
 package com.example.theynotlikeus;
 
-import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.typeText;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import android.content.Intent;
 
-import android.util.Log;
-
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.rule.ActivityTestRule;
-import androidx.test.rule.GrantPermissionRule;
 
-import com.example.theynotlikeus.model.Mood;
-import com.example.theynotlikeus.model.Mood.MoodState;
 import com.example.theynotlikeus.view.MainActivity;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.junit.BeforeClass;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.Date;
+import java.util.Calendar;
 
+import com.example.theynotlikeus.model.Mood;
+import com.example.theynotlikeus.model.Mood.MoodState;
 
-/*
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.typeText;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
+import static androidx.test.espresso.matcher.ViewMatchers.isNotChecked;
+import static androidx.test.espresso.matcher.RootMatchers.isPlatformPopup;
+
+/**
 
 * Test for the search bar in HomeMyMoodsFrag
 * Inserts a Mood with the word "cat" in its trigger text
@@ -38,50 +43,41 @@ import java.util.Date;
 @RunWith(AndroidJUnit4.class)
 public class FilterTriggerTextCatTest {
 
-    @Rule
-    public GrantPermissionRule permissionRule = GrantPermissionRule.grant(
-            android.Manifest.permission.ACCESS_FINE_LOCATION,
-            android.Manifest.permission.ACCESS_COARSE_LOCATION
-    );
 
-    @Rule
-    public ActivityTestRule<MainActivity> activityRule =
-            new ActivityTestRule<>(MainActivity.class);
 
     @BeforeClass
     public static void setupEmulator() {
-        String androidLocalhost = "10.0.2.2";
-        int portNumber = 8089;
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.useEmulator(androidLocalhost, portNumber);
-        // created mood for testing
-        Mood catMood = new Mood();
-        catMood.setUsername("testuser");
-        catMood.setMoodState(MoodState.SURPRISE);
-        catMood.setTrigger("cat knocked");
-        catMood.setDateTime(new Date());
-        catMood.setPendingReview(false);
-        catMood.setPublic(true);
+        db.useEmulator("10.0.2.2", 8089);
+        // Create and upload a Mood object
+        Mood mood = new Mood();
+        mood.setUsername("testuser");
+        mood.setMoodState(MoodState.SURPRISE);
+        mood.setTrigger("my cat played piano");
+        mood.setDateTime(new Date());
+        mood.setPendingReview(false);
+        mood.setPublic(true);
 
-        // log for testing
-        db.collection("moods").document("cat_trigger_test_mood").set(catMood)
-                .addOnSuccessListener(unused -> Log.d("TestSetup", "Cat mood added"))
-                .addOnFailureListener(e -> Log.e("TestSetup", "Failed to add cat mood", e));
+        db.collection("moods").document("cat_test").set(mood);
     }
-
-
 
 
 
     @Test
-    public void testFilterByTriggerText_Cat() throws InterruptedException {
-        // Type cat
-        onView(withId(R.id.search_edit_text)).perform(typeText("cat"));
-        androidx.test.espresso.Espresso.closeSoftKeyboard();
+    public void testTriggerFilter() throws Exception {
+        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), MainActivity.class);
+        intent.putExtra("username", "testuser");
+        intent.putExtra("fragmentToLoad", "HomeMyMoodsFrag");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        ApplicationProvider.getApplicationContext().startActivity(intent);
+
+
         Thread.sleep(2000);
-        onView(withId(R.id.recyclerview_HomeMyMoodsFragment_userrecyclerview))
-                .check(matches(isDisplayed()));
+        onView(withId(R.id.search_edit_text)).perform(typeText("cat"));
+        Thread.sleep(1000);
+        onView(withId(R.id.recyclerview_HomeMyMoodsFragment_userrecyclerview)).check(matches(isDisplayed()));
     }
+
 
 
 }

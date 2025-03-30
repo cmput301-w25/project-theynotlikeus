@@ -7,16 +7,15 @@ import static androidx.test.espresso.matcher.ViewMatchers.*;
 
 import android.content.Intent;
 
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.rule.ActivityTestRule;
 
 import com.example.theynotlikeus.view.AddMoodEventActivity;
 
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-/*
+/**
 * Test the geolocation button in AddMoodEventActivity
 *Check for on and off
 *
@@ -27,26 +26,25 @@ import org.junit.runner.RunWith;
 public class GeolocationToggleTest {
 
 
-    @Rule
-    public ActivityTestRule<AddMoodEventActivity> activityRule =
-            new ActivityTestRule<>(AddMoodEventActivity.class, true, false);
-
-
 
     @Test
-    public void testGeolocationSwitchToggle() throws InterruptedException {
-        // Add dummy username
-        Intent intent = new Intent();
+    public void testGeolocationToggle() throws InterruptedException {
+        // Launch AddMoodEventActivity manually
+        Intent intent = new Intent(ApplicationProvider.getApplicationContext(), AddMoodEventActivity.class);
         intent.putExtra("username", "testuser");
-        activityRule.launchActivity(intent);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        ApplicationProvider.getApplicationContext().startActivity(intent);
 
-        // Toggle the geolocation switch on
+
+        Thread.sleep(1000); // Wait for UI to render
+
+
+        // Toggle ON
         onView(withId(R.id.switch_ActivityAddMoodEvent_geolocation)).perform(click());
-
-        // Check that if it's checked
         onView(withId(R.id.switch_ActivityAddMoodEvent_geolocation)).check(matches(isChecked()));
 
-        // Toggle off again and check
+
+        // Toggle OFF
         onView(withId(R.id.switch_ActivityAddMoodEvent_geolocation)).perform(click());
         onView(withId(R.id.switch_ActivityAddMoodEvent_geolocation)).check(matches(isNotChecked()));
     }
