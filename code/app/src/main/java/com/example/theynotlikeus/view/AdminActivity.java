@@ -17,6 +17,9 @@ import com.example.theynotlikeus.adapters.ApproveMoodAdapter;
 import com.example.theynotlikeus.controller.MoodController;
 import com.example.theynotlikeus.model.Mood;
 import com.example.theynotlikeus.notifications.NotificationHelper;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -117,28 +120,42 @@ public class AdminActivity extends AppCompatActivity {
      * Listens for real-time updates of moods and filters for those pending review.
      */
     private void loadPendingMoods() {
-        moodController.listenToAllMoods(moods -> {
-            List<Mood> pendingMoods = new ArrayList<>();
-            for (Mood mood : moods) {
-                if (mood.isPendingReview()) {
-                    pendingMoods.add(mood);
-                }
-            }
-            Collections.sort(pendingMoods, (m1, m2) -> m2.getDateTime().compareTo(m1.getDateTime()));
-            runOnUiThread(() -> {
-                adapter.updateMoodList(pendingMoods);
-                // Optionally send a notification when there are pending moods.
-                if (!pendingMoods.isEmpty()) {
-                    NotificationHelper.sendNotification(
-                            AdminActivity.this,
-                            "Mood Review Needed",
-                            "There are " + pendingMoods.size() + " mood events pending review."
-                    );
-                }
-            });
-        }, exception -> runOnUiThread(() -> Toast.makeText(AdminActivity.this,
-                "Error loading moods: " + exception.getMessage(), Toast.LENGTH_SHORT).show()));
+        // Listen in real time for moods with pendingReview == true.
+        FirebaseFirestore.getInstance()
+                .collection("moods")
+                .whereEqualTo("pendingReview", true)
+                .addSnapshotListener((queryDocumentSnapshots, error) -> {
+                    if (error != null) {
+                        runOnUiThread(() -> Toast.makeText(AdminActivity.this,
+                                "Error loading moods: " + error.getMessage(), Toast.LENGTH_SHORT).show());
+                        return;
+                    }
+                    if (queryDocumentSnapshots != null) {
+                        List<Mood> pendingMoods = new ArrayList<>();
+                        for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                            Mood mood = doc.toObject(Mood.class);
+                            if (mood != null) {
+                                mood.setDocId(doc.getId());
+                                pendingMoods.add(mood);
+                            }
+                        }
+                        // Sort moods in descending order by date.
+                        Collections.sort(pendingMoods, (m1, m2) -> m2.getDateTime().compareTo(m1.getDateTime()));
+                        runOnUiThread(() -> {
+                            adapter.updateMoodList(pendingMoods);
+                            // If there are any pending moods, send a notification to the admin.
+                            if (!pendingMoods.isEmpty()) {
+                                NotificationHelper.sendNotification(
+                                        AdminActivity.this,
+                                        "Mood Review Needed",
+                                        "There are " + pendingMoods.size() + " mood events pending review."
+                                );
+                            }
+                        });
+                    }
+                });
     }
+
 
     // Public method for other classes to check if the image size limit is enabled.
     public static boolean isLimitEnabled(SharedPreferences prefs) {
