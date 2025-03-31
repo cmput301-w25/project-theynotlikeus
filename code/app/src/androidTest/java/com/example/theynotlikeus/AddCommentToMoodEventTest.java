@@ -9,7 +9,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import android.content.Intent;
 import android.util.Log;
@@ -76,28 +75,29 @@ public class AddCommentToMoodEventTest {
                 .perform(replaceText(testComment), closeSoftKeyboard());
         onView(withText("Post")).perform(click());
 
-        // Wait a short time for the UI to update.
+        // Wait for UI to update.
         Thread.sleep(5000);
 
         // Verify that the new comment appears in the UI.
         onView(withText(testComment)).check(matches(isDisplayed()));
 
-        // Now verify that the comment was saved in Firestore's "comments" collection.
+        // Now verify that the comment was saved in Firestore's top-level "comments" collection.
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Query query = db.collection("comments").whereEqualTo("commentText", testComment);
 
         boolean commentFound = false;
         long startTime = System.currentTimeMillis();
-        long timeout = 30000; // total timeout of 30 seconds
+        // Increase total timeout to 60 seconds for CI delays.
+        long timeout = 60000;
 
         // Poll for the comment to appear in Firestore.
         while ((System.currentTimeMillis() - startTime) < timeout && !commentFound) {
             try {
-                QuerySnapshot querySnapshot = Tasks.await(query.get(), 5, TimeUnit.SECONDS);
+                QuerySnapshot querySnapshot = Tasks.await(query.get(), 10, TimeUnit.SECONDS);
                 List<DocumentSnapshot> docs = querySnapshot.getDocuments();
                 if (!docs.isEmpty()) {
                     commentFound = true;
-                    Log.d(TAG, "Comment found in Firestore.");
+                    Log.d(TAG, "Comment found in Firestore: " + docs.get(0).getData());
                 } else {
                     Log.d(TAG, "Comment not found yet, retrying...");
                 }
@@ -105,7 +105,7 @@ public class AddCommentToMoodEventTest {
                 Log.d(TAG, "Firestore query failed: " + e.getMessage());
             }
             if (!commentFound) {
-                Thread.sleep(1000);
+                Thread.sleep(2000);
             }
         }
         assertTrue("The comment was not saved in Firestore", commentFound);
