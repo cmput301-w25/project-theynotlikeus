@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -28,7 +29,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AdminActivity extends AppCompatActivity {
     private static final String PREFS_NAME = "AdminPrefs";
@@ -114,6 +117,9 @@ public class AdminActivity extends AppCompatActivity {
                 mood.setPendingReview(false);
                 moodController.updateMood(mood, () -> runOnUiThread(() -> {
                     Toast.makeText(AdminActivity.this, "Approved mood from " + mood.getUsername(), Toast.LENGTH_SHORT).show();
+                    // Assuming your Mood model stores the creator's identifier in getUsername() (or getUserId())
+                    sendNotificationToUser(mood.getUsername(), "Mood Approved", "Your mood event was approved by the admin.");
+
                     // The snapshot listener will update the list in real time.
                 }), e -> runOnUiThread(() ->
                         Toast.makeText(AdminActivity.this, "Error approving mood: " + e.getMessage(), Toast.LENGTH_SHORT).show()));
@@ -124,6 +130,8 @@ public class AdminActivity extends AppCompatActivity {
                 // Delete the mood from Firestore.
                 moodController.deleteMood(mood.getDocId(), () -> runOnUiThread(() -> {
                     Toast.makeText(AdminActivity.this, "Deleted mood from " + mood.getUsername(), Toast.LENGTH_SHORT).show();
+                    sendNotificationToUser(mood.getUsername(), "Mood Deleted", "Your mood event was deleted by the admin.");
+
                     // The snapshot listener will update the list in real time.
                 }), e -> runOnUiThread(() ->
                         Toast.makeText(AdminActivity.this, "Error deleting mood: " + e.getMessage(), Toast.LENGTH_SHORT).show()));
@@ -134,6 +142,21 @@ public class AdminActivity extends AppCompatActivity {
 
         // Set up a real-time snapshot listener for moods pending review.
         listenForPendingMoods();
+    }
+
+    private void sendNotificationToUser(String userId, String title, String message) {
+        // Get Firestore instance.
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String, Object> notificationData = new HashMap<>();
+        notificationData.put("userId", userId); // The UID (or username) of the mood's creator.
+        notificationData.put("title", title);
+        notificationData.put("message", message);
+        notificationData.put("timestamp", com.google.firebase.firestore.FieldValue.serverTimestamp());
+
+        // Write to a "notifications" collection.
+        db.collection("notifications").add(notificationData)
+                .addOnSuccessListener(documentReference -> Log.d("AdminActivity", "Notification document written: " + documentReference.getId()))
+                .addOnFailureListener(e -> Log.e("AdminActivity", "Error writing notification", e));
     }
 
     /**

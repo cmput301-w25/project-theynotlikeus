@@ -3,6 +3,7 @@ package com.example.theynotlikeus.view;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,10 +13,15 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
+import com.example.theynotlikeus.singleton.MyApp;
+
+
 
 import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.notifications.NotificationHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.FirebaseFirestore;
 /*
  * This activity is the main entry point of the application and it
  *  sets up and initializes bottom navigation and navigation controller for fragment navigation.
@@ -31,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
+        setupNotificationListener();
 
         // Request POST_NOTIFICATIONS permission for Android 13+ (API 33+)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -76,6 +84,36 @@ public class MainActivity extends AppCompatActivity {
         }
 */
 
+    }
+    private void setupNotificationListener() {
+        // Retrieve the current user's id (or username) from your Application singleton.
+        String userId = MyApp.getInstance().getUsername();
+        // If for some reason the username is still null, you can provide a fallback.
+        if (userId == null || userId.isEmpty()) {
+            userId = "defaultUser";
+        }
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("notifications")
+                .whereEqualTo("userId", userId)
+                .addSnapshotListener((snapshots, e) -> {
+                    if (e != null) {
+                        Log.w("MainActivity", "Listen failed.", e);
+                        return;
+                    }
+                    if (snapshots != null && !snapshots.isEmpty()) {
+                        snapshots.getDocumentChanges().forEach(change -> {
+                            if (change.getType() == DocumentChange.Type.ADDED) {
+                                String title = change.getDocument().getString("title");
+                                String message = change.getDocument().getString("message");
+                                // Show a local notification.
+                                NotificationHelper.sendNotification(MainActivity.this, title, message);
+                                // Optionally, delete the notification document after handling.
+                                change.getDocument().getReference().delete();
+                            }
+                        });
+                    }
+                });
     }
 
 }
