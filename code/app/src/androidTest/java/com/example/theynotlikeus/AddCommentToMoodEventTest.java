@@ -68,7 +68,7 @@ public class AddCommentToMoodEventTest {
                 .perform(replaceText(testComment), closeSoftKeyboard());
         onView(withText("Post")).perform(click());
 
-        // Add a delay to allow the comment to load (for example, 5 seconds).
+        // Optionally, wait a short time for the UI to update.
         Thread.sleep(5000);
 
         // Verify that the new comment appears in the UI.
@@ -76,24 +76,35 @@ public class AddCommentToMoodEventTest {
 
         // Now verify that the comment was saved in Firestore's "comments" collection.
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CountDownLatch latch = new CountDownLatch(1);
-        final boolean[] commentSaved = { false };
+        boolean commentFound = false;
+        long timeout = 15000; // total timeout period of 15 seconds
+        long startTime = System.currentTimeMillis();
 
-        // Assuming the Comment object is saved with a field "commentText".
-        db.collection("comments")
-                .whereEqualTo("commentText", testComment)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
-                        commentSaved[0] = true;
-                    }
-                    latch.countDown();
-                });
+        while (System.currentTimeMillis() - startTime < timeout && !commentFound) {
+            CountDownLatch latch = new CountDownLatch(1);
+            final boolean[] tempFound = { false };
 
-        // Wait up to 5 seconds for the Firestore query to complete.
-        latch.await(5, TimeUnit.SECONDS);
+            db.collection("comments")
+                    .whereEqualTo("commentText", testComment)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
+                            tempFound[0] = true;
+                        }
+                        latch.countDown();
+                    });
+            // Wait up to 5 seconds for this query attempt.
+            latch.await(5, TimeUnit.SECONDS);
+
+            if (tempFound[0]) {
+                commentFound = true;
+            } else {
+                // Wait a bit before retrying
+                Thread.sleep(1000);
+            }
+        }
 
         // Assert that the comment exists in Firestore.
-        assertTrue("The comment was not saved in Firestore", commentSaved[0]);
+        assertTrue("The comment was not saved in Firestore", commentFound);
     }
 }
