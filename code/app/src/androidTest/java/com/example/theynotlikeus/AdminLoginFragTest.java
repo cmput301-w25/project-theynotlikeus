@@ -5,6 +5,7 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -36,8 +37,7 @@ public class AdminLoginFragTest {
             new ActivityScenarioRule<>(LoginActivity.class);
 
     /**
-     * Helper method to add an admin user to the local Firestore database.
-     * Note: For better synchronization, consider implementing an Espresso IdlingResource for async Firebase tasks.
+     * Helper method to add an admin user to the local database.
      */
     private void addAdminToDatabase() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -58,8 +58,8 @@ public class AdminLoginFragTest {
         // Add admin to the local database before logging in.
         addAdminToDatabase();
 
-        // Wait briefly for the admin data to be added.
-        Thread.sleep(2000);
+        // Wait briefly for the admin data to be added (consider using an Espresso IdlingResource for production tests).
+        Thread.sleep(3000);
 
         // 1. Navigate to the AdminLoginFrag.
         onView(withId(R.id.button_LoginUserSelectionFragment_admin))
@@ -74,9 +74,13 @@ public class AdminLoginFragTest {
         onView(withId(R.id.editText_adminLoginFrag_username)).perform(replaceText("admin"));
         onView(withId(R.id.editText_adminLoginFrag_password)).perform(replaceText("adminpass"));
 
-        // 4. Wait for the sign-in button to be visible and perform click.
+        // Optional: wait a bit to allow any UI state changes.
+        Thread.sleep(2000);
+
+        // 4. Ensure the sign-in button is visible and enabled, then click it.
         onView(withId(R.id.button_adminLogin_SignIn))
                 .check(matches(isDisplayed()))
+                .check(matches(isEnabled()))
                 .perform(click());
     }
 
@@ -100,12 +104,16 @@ public class AdminLoginFragTest {
         onView(withId(R.id.editText_adminLoginFrag_username)).perform(replaceText("wrongAdmin"));
         onView(withId(R.id.editText_adminLoginFrag_password)).perform(replaceText("wrongPass"));
 
-        // 4. Wait for the sign-in button to be visible and perform click.
+        // Optional: wait a bit to allow UI updates.
+        Thread.sleep(2000);
+
+        // 4. Ensure the sign-in button is visible and enabled, then click it.
         onView(withId(R.id.button_adminLogin_SignIn))
                 .check(matches(isDisplayed()))
+                .check(matches(isEnabled()))
                 .perform(click());
 
-        // 5. Verify that the admin login fragment is still displayed.
+        // 5. Verify that the admin login fragment is still displayed (indicating login failure).
         onView(withId(R.id.ImageView_LoginUserSelection_appTitle))
                 .check(matches(isDisplayed()));
     }
