@@ -57,19 +57,26 @@ public class AdminLoginFragTest {
         // Add admin to the local database before logging in.
         addAdminToDatabase();
 
-        // Wait briefly to allow the admin data to be added.
+        // Wait briefly for the admin data to be added.
         Thread.sleep(2000);
 
         // 1. Navigate to the AdminLoginFrag.
-        onView(withId(R.id.button_LoginUserSelectionFragment_admin)).perform(click());
+        onView(withId(R.id.button_LoginUserSelectionFragment_admin))
+                .check(matches(isDisplayed()))
+                .perform(click());
 
-        // 2. Wait briefly for navigation to complete.
-        Thread.sleep(2000);
+        // 2. Wait for the admin login fragment to appear.
+        onView(withId(R.id.editText_adminLoginFrag_username))
+                .check(matches(isDisplayed()));
 
-        // 3. Enter the correct admin credentials and click the sign-in button.
+        // 3. Enter the correct admin credentials.
         onView(withId(R.id.editText_adminLoginFrag_username)).perform(replaceText("admin"));
         onView(withId(R.id.editText_adminLoginFrag_password)).perform(replaceText("adminpass"));
-        onView(withId(R.id.button_adminLogin_SignIn)).perform(click());
+
+        // 4. Wait for the sign-in button to be visible and perform click.
+        onView(withId(R.id.button_adminLogin_SignIn))
+                .check(matches(isDisplayed()))
+                .perform(click());
     }
 
     /**
@@ -78,16 +85,25 @@ public class AdminLoginFragTest {
     @Test
     public void testAdminLoginFailure() throws InterruptedException {
         // 1. Navigate to the AdminLoginFrag.
-        onView(withId(R.id.button_LoginUserSelectionFragment_admin)).perform(click());
+        onView(withId(R.id.button_LoginUserSelectionFragment_admin))
+                .check(matches(isDisplayed()))
+                .perform(click());
 
-        // 2. Enter incorrect admin credentials.
+        // 2. Wait for the admin login fragment to appear.
+        onView(withId(R.id.editText_adminLoginFrag_username))
+                .check(matches(isDisplayed()));
+
+        // 3. Enter incorrect admin credentials.
         onView(withId(R.id.editText_adminLoginFrag_username)).perform(replaceText("wrongAdmin"));
         onView(withId(R.id.editText_adminLoginFrag_password)).perform(replaceText("wrongPass"));
 
-        // 3. Click the sign-in button.
-        onView(withId(R.id.button_adminLogin_SignIn)).perform(click());
+        // 4. Wait for the sign-in button to be visible and perform click.
+        onView(withId(R.id.button_adminLogin_SignIn))
+                .check(matches(isDisplayed()))
+                .perform(click());
 
-        // 4. Verify that the admin login fragment is still displayed.
-        onView(withId(R.id.ImageView_LoginUserSelection_appTitle)).check(matches(isDisplayed()));
+        // 5. Verify that the admin login fragment is still displayed.
+        onView(withId(R.id.ImageView_LoginUserSelection_appTitle))
+                .check(matches(isDisplayed()));
     }
 }
