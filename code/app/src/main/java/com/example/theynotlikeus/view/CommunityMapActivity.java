@@ -39,9 +39,9 @@ public class CommunityMapActivity extends AppCompatActivity implements OnMapRead
     private MoodController moodController;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    // Current user's identifier (needed for fetching friend list)
+    //Current user's identifier (needed for fetching friend list)
     private String currentUser;
-    // Latest location derived from current user's mood events.
+    //Latest location derived from current user's mood events.
     private LatLng currentLocation;
 
     @Override
@@ -49,7 +49,7 @@ public class CommunityMapActivity extends AppCompatActivity implements OnMapRead
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_community_map);
 
-        // Retrieve current user's identifier from intent extras.
+        //Retrieve current user's identifier from intent extras.
         currentUser = getIntent().getStringExtra("username");
         if (currentUser == null || currentUser.isEmpty()) {
             currentUser = "defaultUser";
@@ -89,7 +89,7 @@ public class CommunityMapActivity extends AppCompatActivity implements OnMapRead
                 Mood latestMood = geoMoods.get(0);
                 currentLocation = new LatLng(latestMood.getLatitude(), latestMood.getLongitude());
             }
-            // Now initialize the map.
+            //Now initialize the map.
             initMap();
         }, error -> {
             Log.e(TAG, "Error fetching current user's moods: " + error.getMessage());
@@ -113,10 +113,10 @@ public class CommunityMapActivity extends AppCompatActivity implements OnMapRead
         mMap = googleMap;
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
-        // Center the map on the current user's latest location.
+        //Center the map on the current user's latest location.
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 12f));
 
-        // Load friends' mood markers within a 5 km radius.
+        //Load friends' mood markers within a 5 km radius.
         loadFriendsMoodMarkers(currentLocation);
     }
 
@@ -147,22 +147,22 @@ public class CommunityMapActivity extends AppCompatActivity implements OnMapRead
                         return;
                     }
 
-                    // Use AtomicIntegers to track markers added and queries processed.
+                    //Use AtomicIntegers to track markers added and queries processed.
                     final java.util.concurrent.atomic.AtomicInteger markerCount = new java.util.concurrent.atomic.AtomicInteger(0);
                     final java.util.concurrent.atomic.AtomicInteger queriesProcessed = new java.util.concurrent.atomic.AtomicInteger(0);
 
-                    // For each friend, fetch their moods.
+                    //For each friend, fetch their moods.
                     for (String friend : friendList) {
                         moodController.getMoodsByUser(friend,
                                 moods -> {
                                     if (moods == null || moods.isEmpty()) {
                                         Log.d(TAG, "No moods for friend: " + friend);
                                     } else {
-                                        // Process all moods for this friend.
+                                        //Process all moods for this friend.
                                         Map<String, Integer> locationCount = new HashMap<>();
                                         Log.d(TAG, "Friend " + friend + " has " + moods.size() + " mood(s).");
                                         for (Mood mood : moods) {
-                                            // Only process the mood if it is public and approved.
+                                            //Only process the mood if it is public and approved.
                                             if (mood.isPublic() && !mood.isPendingReview()) {
                                                 if (mood.getLatitude() != null && mood.getLongitude() != null) {
                                                     double lat = mood.getLatitude();
@@ -175,13 +175,13 @@ public class CommunityMapActivity extends AppCompatActivity implements OnMapRead
                                                         lng += count * 0.00005;
                                                     }
                                                     LatLng moodLocation = new LatLng(lat, lng);
-                                                    // Calculate distance between currentLocation and moodLocation.
+                                                    //Calculate distance between currentLocation and moodLocation.
                                                     float[] results = new float[1];
                                                     Location.distanceBetween(
                                                             currentLocation.latitude, currentLocation.longitude,
                                                             moodLocation.latitude, moodLocation.longitude, results);
                                                     Log.d(TAG, "Distance for mood from friend " + friend + ": " + results[0] + " meters.");
-                                                    if (results[0] <= 5000) { // within 5 km
+                                                    if (results[0] <= 5000) { //within 5 km
                                                         String title = (mood.getUsername() != null)
                                                                 ? mood.getUsername() + "'s Mood"
                                                                 : "Friend Mood";
