@@ -45,15 +45,15 @@ public class CommunityFrag extends Fragment {
 
     private static final String TAG = "CommunityFrag";
 
-    // Views
+    //Views
     private RecyclerView communityRecyclerView;
     private CheckBox recentWeekCheckBox;
     private MaterialAutoCompleteTextView communityAutoCompleteTextView;
     private TextInputEditText searchEditText;
 
-    // Data lists.
-    private List<Mood> allCommunityMoods = new ArrayList<>();  // Cached moods from friends.
-    private List<Mood> filteredMoods = new ArrayList<>();        // Filtered moods for adapter.
+    //Data lists.
+    private List<Mood> allCommunityMoods = new ArrayList<>();  //Cached moods from friends.
+    private List<Mood> filteredMoods = new ArrayList<>();        //Filtered moods for adapter.
     private CommunityRecyclerViewAdapter communityAdapter;
 
     // Filter states.
@@ -80,18 +80,18 @@ public class CommunityFrag extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // 1) Find views.
+        //1) Find views.
         communityRecyclerView = view.findViewById(R.id.recyclerview_CommunityFrag_users);
         recentWeekCheckBox = view.findViewById(R.id.checkBox_CommunityFrag_recentWeek);
         communityAutoCompleteTextView = view.findViewById(R.id.community_autoCompleteTextView);
         searchEditText = view.findViewById(R.id.community_search_edit_text);
 
-        // 2) Setup RecyclerView and its adapter.
+        //2) Setup RecyclerView and its adapter.
         communityRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         communityAdapter = new CommunityRecyclerViewAdapter(filteredMoods);
         communityRecyclerView.setAdapter(communityAdapter);
 
-        // 3) Setup autoCompleteTextView (emotional states).
+        //3) Setup autoCompleteTextView (emotional states).
         MaterialAutoCompleteTextView autoCompleteTextView = view.findViewById(R.id.community_autoCompleteTextView);
         String[] filterOptions = {"All Moods", "Happiness", "Sadness", "Anger", "Surprise", "Fear", "Disgust", "Shame", "Confusion"};
         ArrayAdapter<String> autoAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_dropdown_item_1line, filterOptions);
@@ -100,7 +100,7 @@ public class CommunityFrag extends Fragment {
             filterEmotionalState = parent.getItemAtPosition(position).toString();
             applyFilters();
         });
-        // Show dropdown when clicked or focused
+        //Show dropdown when clicked or focused
         autoCompleteTextView.setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
                 autoCompleteTextView.showDropDown();
