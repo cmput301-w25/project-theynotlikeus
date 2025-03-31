@@ -1,5 +1,6 @@
 # CMPUT 301 W25 - Team `TheyNotLikeUs`
 
+
 ## Team Members
 
 | Name        | CCID   | GitHub Username |
@@ -10,6 +11,7 @@
 | Ercel Angeles | erceljoh | ercelangeles     |
 | Nymur Rahman Nyar | nyar | nymur-rahman-nyar  |
 | Abhi Patel | abhi | ap001AP    |
+
 
 ## Project Description
 
@@ -64,11 +66,13 @@ This Android application will serve as a tool to understand and track moods, pro
 ## Setup Instructions
 
 Prerequisites:
+   
     - Android Studio: Ensure you have Android Studio installed. You can download it from the Android Studio website.
 
     - Java Development Kit (JDK): Android Studio requires a JDK installed, but it usually comes with a bundled version of the JDK. Make sure it is properly set up by checking the SDK Manager in Android Studio.
 
 Setup:
+
 1. [Step 1] Clone the Repository: If the project source code is hosted on a version control system like Git, clone the repository to your local machine.
   
 2. [Step 2] Open the Project in Android Studio:
@@ -78,10 +82,18 @@ Setup:
           - Select 'Open an Existing Project' and navigate to the directory where you cloned the repository.
 
           - Select the project folder and click 'OK'.
+
+3. [Step 3] Build the Project:
+
+          - Click on 'Build' in the menu bar.
+
+          - Select 'Make Project' or press Ctrl+F9 to build the project.
+
+          - Resolve any issues or errors that arise during the build process.
    
-3. [Step 3] Run the app.
+4. [Step 4] Run the app.
    
-4. [Step 4] Create an Account:
+5. [Step 5] Create an Account:
           - Register for a New User Account:
 
           - On the user login page, tap on 'Sign Up'.
@@ -94,11 +106,14 @@ Setup:
 
           - If you already have an account, just enter your credentials on the login screen and tap 'Login'.
   
-5. [Step 5] Enjoy the app.
+6. [Step 6] Enjoy the app.
+
 
 ## Documentation
+
 
 - [Wiki Link](https://github.com/cmput301-w25/project-theynotlikeus/wiki)
 - [Scrum Board](https://github.com/orgs/cmput301-w25/projects/39)
 - [UI Mockups](https://github.com/cmput301-w25/project-theynotlikeus/wiki/UI-Mockups)
 - [UML](https://github.com/cmput301-w25/project-theynotlikeus/wiki/UML)
+
