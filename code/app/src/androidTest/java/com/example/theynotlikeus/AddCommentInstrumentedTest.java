@@ -85,7 +85,7 @@ public class AddCommentInstrumentedTest {
         onView(withId(R.id.edittext_FragmentAddCommentsDialogFrag_editCommentText))
                 .perform(replaceText(sampleComment));
 
-        onView(withText("OK")).perform(click());
+        onView(withText("Post")).perform(click());
 
         Thread.sleep(1500); // allow Firebase save and UI update
 
