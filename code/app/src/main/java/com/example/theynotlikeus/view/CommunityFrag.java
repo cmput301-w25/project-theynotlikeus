@@ -32,6 +32,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -208,19 +209,19 @@ public class CommunityFrag extends Fragment {
                 + ", triggerText=" + filterTriggerText);
 
         filteredMoods.clear();
+        // Compute the Date for one week ago.
+        Date oneWeekAgo = new Date(System.currentTimeMillis() - 7L * 24 * 60 * 60 * 1000);
 
-        // Filter logic.
-        long oneWeekAgoMillis = System.currentTimeMillis() - (7L * 24 * 60 * 60 * 1000);
         for (Mood mood : allCommunityMoods) {
-            // Only include approved moods (pendingReview must be false).
+            // Only include approved moods.
             if (mood.isPendingReview()) {
                 continue;
             }
             boolean include = true;
 
-            // Filter by "recent week" if checkbox is checked.
+            // Filter by "recent week" if the checkbox is checked.
             if (filterRecentWeek) {
-                if (mood.getDateTime() == null || mood.getDateTime().getTime() < oneWeekAgoMillis) {
+                if (mood.getDateTime() == null || mood.getDateTime().before(oneWeekAgo)) {
                     include = false;
                 }
             }
@@ -246,9 +247,11 @@ public class CommunityFrag extends Fragment {
             }
         }
 
+        // Sort moods in descending order by date.
         Collections.sort(filteredMoods, (m1, m2) -> m2.getDateTime().compareTo(m1.getDateTime()));
 
         // Update adapter on the UI thread.
         communityRecyclerView.post(() -> communityAdapter.notifyDataSetChanged());
     }
+
 }
