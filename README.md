@@ -24,12 +24,15 @@ This Android application will serve as a tool to understand and track moods, pro
     - The application supports a variety of emotional states such as anger, happiness, sadness, and more.
 
     - Mood events can be marked as private for personal journaling or public for communal visibility.
+      
 - [Feature 2]: User Interaction and Profile Management:
+  
     - Each user has a unique profile which can be searched by others.
 
     - Users can edit details of their mood events or delete them as desired.
 
     - The application allows users to follow other participants and view their mood history updates.
+      
 - [Feature 3]: Social and Sharing Features:
 
     - Mood events can be explained through brief text or photographs.
@@ -37,6 +40,7 @@ This Android application will serve as a tool to understand and track moods, pro
     - Users can specify the social context of each mood event, enhancing the understanding of their emotional triggers.
 
     - There are features to comment on mood events and see comments from others, fostering a supportive community interaction.
+      
 - [Feature 4]: Data Visualization and Filtering:
 
     - Mood histories can be visualized and filtered by date, emotional state, or specific keywords in the description.
@@ -52,8 +56,13 @@ This Android application will serve as a tool to understand and track moods, pro
     - Users have the flexibility to post mood events publicly or keep them private.
 
     - The app uses consistent emoticons and colors to depict various emotional states, making the user interface intuitive and engaging.
+      
+- [Feature 6]: Admin censorship:
+  
+    - The admin can censor sensitive trigger word, and ban it across the app.
 
 ## Setup Instructions
+
 Prerequisites:
     - Android Studio: Ensure you have Android Studio installed. You can download it from the Android Studio website.
 
@@ -70,7 +79,7 @@ Setup:
 
           - Select the project folder and click 'OK'.
    
-3. [Step 3] Run the app
+3. [Step 3] Run the app.
    
 4. [Step 4] Create an Account:
           - Register for a New User Account:
@@ -92,4 +101,4 @@ Setup:
 - [Wiki Link](https://github.com/cmput301-w25/project-theynotlikeus/wiki)
 - [Scrum Board](https://github.com/orgs/cmput301-w25/projects/39)
 - [UI Mockups](https://github.com/cmput301-w25/project-theynotlikeus/wiki/UI-Mockups)
-- [UML]
+- [UML](https://github.com/cmput301-w25/project-theynotlikeus/wiki/UML)
