@@ -6,34 +6,24 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Switch;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.adapters.ApproveMoodAdapter;
 import com.example.theynotlikeus.controller.MoodController;
 import com.example.theynotlikeus.model.Mood;
 import com.example.theynotlikeus.notifications.NotificationHelper;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * An activity that functions as the page for the admin in which they can:
- * - set picture limit
- * - approve or delete any moods with trigger words.
- */
 public class AdminActivity extends AppCompatActivity {
-
     private static final String PREFS_NAME = "AdminPrefs";
     private static final String LIMIT_ON = "limit_on";
-
     private Switch limitSwitch;
     private Button logoutButton;
     private RecyclerView moodsRecyclerView;
@@ -71,7 +61,6 @@ public class AdminActivity extends AppCompatActivity {
 
         Button setTriggerWordsButton = findViewById(R.id.button_adminPage_setTriggerWords);
         setTriggerWordsButton.setOnClickListener(v -> {
-            // Perform a fragment transaction to display TriggerWordsFrag.
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, new TriggerWordsFrag())
                     .addToBackStack(null)
@@ -85,7 +74,6 @@ public class AdminActivity extends AppCompatActivity {
             return insets;
         });
 
-        logoutButton = findViewById(R.id.button_logoutButton);
         logoutButton.setOnClickListener(v -> {
             Intent intent = new Intent(AdminActivity.this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -101,21 +89,19 @@ public class AdminActivity extends AppCompatActivity {
         adapter = new ApproveMoodAdapter(moodList, new ApproveMoodAdapter.OnMoodActionListener() {
             @Override
             public void onApprove(Mood mood) {
-                // Set pendingReview to false to approve the mood.
                 mood.setPendingReview(false);
                 moodController.updateMood(mood, () -> runOnUiThread(() -> {
                     Toast.makeText(AdminActivity.this, "Approved mood from " + mood.getUsername(), Toast.LENGTH_SHORT).show();
-                    loadPendingMoods();
+                    // The real-time listener will update the list automatically.
                 }), e -> runOnUiThread(() ->
                         Toast.makeText(AdminActivity.this, "Error approving mood: " + e.getMessage(), Toast.LENGTH_SHORT).show()));
             }
 
             @Override
             public void onDelete(Mood mood) {
-                // Delete the mood from Firestore.
                 moodController.deleteMood(mood.getDocId(), () -> runOnUiThread(() -> {
                     Toast.makeText(AdminActivity.this, "Deleted mood from " + mood.getUsername(), Toast.LENGTH_SHORT).show();
-                    loadPendingMoods();
+                    // The real-time listener will update the list automatically.
                 }), e -> runOnUiThread(() ->
                         Toast.makeText(AdminActivity.this, "Error deleting mood: " + e.getMessage(), Toast.LENGTH_SHORT).show()));
             }
@@ -123,16 +109,15 @@ public class AdminActivity extends AppCompatActivity {
         moodsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         moodsRecyclerView.setAdapter(adapter);
 
-        // Load all pending moods.
+        // Start listening for real-time updates.
         loadPendingMoods();
     }
 
     /**
-     * Loads moods from Firestore that are pending review (i.e. pendingReview == true)
-     * and sorts them in descending order by date.
+     * Listens for real-time updates of moods and filters for those pending review.
      */
     private void loadPendingMoods() {
-        moodController.getAllMoods(moods -> {
+        moodController.listenToAllMoods(moods -> {
             List<Mood> pendingMoods = new ArrayList<>();
             for (Mood mood : moods) {
                 if (mood.isPendingReview()) {
@@ -142,7 +127,7 @@ public class AdminActivity extends AppCompatActivity {
             Collections.sort(pendingMoods, (m1, m2) -> m2.getDateTime().compareTo(m1.getDateTime()));
             runOnUiThread(() -> {
                 adapter.updateMoodList(pendingMoods);
-                // If there are pending moods, notify the admin.
+                // Optionally send a notification when there are pending moods.
                 if (!pendingMoods.isEmpty()) {
                     NotificationHelper.sendNotification(
                             AdminActivity.this,
