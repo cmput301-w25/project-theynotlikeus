@@ -36,7 +36,8 @@ public class AdminLoginFragTest {
             new ActivityScenarioRule<>(LoginActivity.class);
 
     /**
-     * Helper method to add an admin user to the local database.
+     * Helper method to add an admin user to the local Firestore database.
+     * Note: For better synchronization, consider implementing an Espresso IdlingResource for async Firebase tasks.
      */
     private void addAdminToDatabase() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -81,6 +82,8 @@ public class AdminLoginFragTest {
 
     /**
      * Test: Verify that an admin login attempt fails with incorrect credentials.
+     *
+     * @throws InterruptedException
      */
     @Test
     public void testAdminLoginFailure() throws InterruptedException {
