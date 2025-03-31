@@ -18,6 +18,7 @@ import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.adapters.ApproveMoodAdapter;
 import com.example.theynotlikeus.controller.MoodController;
 import com.example.theynotlikeus.model.Mood;
+import com.example.theynotlikeus.notifications.NotificationHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,6 +45,9 @@ public class AdminActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
+
+        // Create notification channel for admin notifications.
+        NotificationHelper.createNotificationChannel(this);
 
         // Bind views.
         limitSwitch = findViewById(R.id.switch1);
@@ -135,11 +139,20 @@ public class AdminActivity extends AppCompatActivity {
                     pendingMoods.add(mood);
                 }
             }
-            // Sort pending moods by date (most recent first).
             Collections.sort(pendingMoods, (m1, m2) -> m2.getDateTime().compareTo(m1.getDateTime()));
-            runOnUiThread(() -> adapter.updateMoodList(pendingMoods));
-        }, exception -> runOnUiThread(() ->
-                Toast.makeText(AdminActivity.this, "Error loading moods: " + exception.getMessage(), Toast.LENGTH_SHORT).show()));
+            runOnUiThread(() -> {
+                adapter.updateMoodList(pendingMoods);
+                // If there are pending moods, notify the admin.
+                if (!pendingMoods.isEmpty()) {
+                    NotificationHelper.sendNotification(
+                            AdminActivity.this,
+                            "Mood Review Needed",
+                            "There are " + pendingMoods.size() + " mood events pending review."
+                    );
+                }
+            });
+        }, exception -> runOnUiThread(() -> Toast.makeText(AdminActivity.this,
+                "Error loading moods: " + exception.getMessage(), Toast.LENGTH_SHORT).show()));
     }
 
     // Public method for other classes to check if the image size limit is enabled.

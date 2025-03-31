@@ -1,5 +1,7 @@
 package com.example.theynotlikeus.view;
 
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -12,6 +14,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.theynotlikeus.R;
+import com.example.theynotlikeus.notifications.NotificationHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 /*
  * This activity is the main entry point of the application and it
@@ -28,6 +31,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
+        // Request POST_NOTIFICATIONS permission for Android 13+ (API 33+)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 100);
+            }
+        }
+
+
+        // Create notification channel for push notifications.
+        // This ensures that notifications sent from the app will be displayed on devices running Android O (API 26) or later.
+        NotificationHelper.createNotificationChannel(this);
+
 
         ////Apply system insets to the main view to ensure UI elements are not overlapped by system bars.
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {

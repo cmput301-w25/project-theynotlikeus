@@ -27,6 +27,7 @@ import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.controller.MoodController;
 import com.example.theynotlikeus.controller.TriggerWordsController;
 import com.example.theynotlikeus.model.Mood;
+import com.example.theynotlikeus.notifications.NotificationHelper;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -306,6 +307,7 @@ public class AddMoodEventActivity extends AppCompatActivity {
             // Display only one message depending on whether banned words were found.
             if (containsBanned) {
                 Toast.makeText(AddMoodEventActivity.this, "Mood pending admin review", Toast.LENGTH_SHORT).show();
+
             } else {
                 Toast.makeText(AddMoodEventActivity.this, "Mood saved successfully!", Toast.LENGTH_SHORT).show();
             }
