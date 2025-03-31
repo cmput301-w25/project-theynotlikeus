@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import com.example.theynotlikeus.model.Mood;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.MetadataChanges;
@@ -285,5 +286,28 @@ public class MoodController extends FirebaseController {
                 });
 
     }
+
+    // In MoodController.java
+    public void listenToAllMoods(Consumer<List<Mood>> onSuccess, Consumer<Exception> onFailure) {
+        db.collection("moods")
+                .addSnapshotListener((querySnapshot, error) -> {
+                    if (error != null) {
+                        onFailure.accept(error);
+                        return;
+                    }
+                    List<Mood> moods = new ArrayList<>();
+                    if (querySnapshot != null) {
+                        for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                            Mood mood = document.toObject(Mood.class);
+                            if (mood != null) {
+                                mood.setDocId(document.getId());
+                                moods.add(mood);
+                            }
+                        }
+                    }
+                    onSuccess.accept(moods);
+                });
+    }
+
 
 }

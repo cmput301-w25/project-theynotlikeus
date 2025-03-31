@@ -1,12 +1,16 @@
 package com.example.theynotlikeus.view;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -18,20 +22,21 @@ import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.adapters.ApproveMoodAdapter;
 import com.example.theynotlikeus.controller.MoodController;
 import com.example.theynotlikeus.model.Mood;
+import com.example.theynotlikeus.notifications.NotificationHelper;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-/**
- * An activity that functions as the page for the admin in which they can:
- * - set picture limit
- * - approve or delete any moods with trigger words.
- */
 public class AdminActivity extends AppCompatActivity {
-
     private static final String PREFS_NAME = "AdminPrefs";
     private static final String LIMIT_ON = "limit_on";
+    private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 101;
 
     private Switch limitSwitch;
     private Button logoutButton;
@@ -39,11 +44,24 @@ public class AdminActivity extends AppCompatActivity {
     private ApproveMoodAdapter adapter;
     private List<Mood> moodList;
     private MoodController moodController;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
+
+        // Create notification channel for admin notifications.
+        NotificationHelper.createNotificationChannel(this);
+
+        // Request POST_NOTIFICATIONS permission for Android 13+.
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS},
+                        NOTIFICATION_PERMISSION_REQUEST_CODE);
+            }
+        }
 
         // Bind views.
         limitSwitch = findViewById(R.id.switch1);
@@ -67,7 +85,6 @@ public class AdminActivity extends AppCompatActivity {
 
         Button setTriggerWordsButton = findViewById(R.id.button_adminPage_setTriggerWords);
         setTriggerWordsButton.setOnClickListener(v -> {
-            // Perform a fragment transaction to display TriggerWordsFrag.
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, new TriggerWordsFrag())
                     .addToBackStack(null)
@@ -81,7 +98,6 @@ public class AdminActivity extends AppCompatActivity {
             return insets;
         });
 
-        logoutButton = findViewById(R.id.button_logoutButton);
         logoutButton.setOnClickListener(v -> {
             Intent intent = new Intent(AdminActivity.this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -101,7 +117,10 @@ public class AdminActivity extends AppCompatActivity {
                 mood.setPendingReview(false);
                 moodController.updateMood(mood, () -> runOnUiThread(() -> {
                     Toast.makeText(AdminActivity.this, "Approved mood from " + mood.getUsername(), Toast.LENGTH_SHORT).show();
-                    loadPendingMoods();
+                    // Assuming your Mood model stores the creator's identifier in getUsername() (or getUserId())
+                    sendNotificationToUser(mood.getUsername(), "Mood Approved", "Your mood event was approved by the admin.");
+
+                    // The snapshot listener will update the list in real time.
                 }), e -> runOnUiThread(() ->
                         Toast.makeText(AdminActivity.this, "Error approving mood: " + e.getMessage(), Toast.LENGTH_SHORT).show()));
             }
@@ -111,7 +130,9 @@ public class AdminActivity extends AppCompatActivity {
                 // Delete the mood from Firestore.
                 moodController.deleteMood(mood.getDocId(), () -> runOnUiThread(() -> {
                     Toast.makeText(AdminActivity.this, "Deleted mood from " + mood.getUsername(), Toast.LENGTH_SHORT).show();
-                    loadPendingMoods();
+                    sendNotificationToUser(mood.getUsername(), "Mood Deleted", "Your mood event was deleted by the admin.");
+
+                    // The snapshot listener will update the list in real time.
                 }), e -> runOnUiThread(() ->
                         Toast.makeText(AdminActivity.this, "Error deleting mood: " + e.getMessage(), Toast.LENGTH_SHORT).show()));
             }
@@ -119,31 +140,80 @@ public class AdminActivity extends AppCompatActivity {
         moodsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         moodsRecyclerView.setAdapter(adapter);
 
-        // Load all pending moods.
-        loadPendingMoods();
+        // Set up a real-time snapshot listener for moods pending review.
+        listenForPendingMoods();
+    }
+
+    private void sendNotificationToUser(String userId, String title, String message) {
+        // Get Firestore instance.
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String, Object> notificationData = new HashMap<>();
+        notificationData.put("userId", userId); // The UID (or username) of the mood's creator.
+        notificationData.put("title", title);
+        notificationData.put("message", message);
+        notificationData.put("timestamp", com.google.firebase.firestore.FieldValue.serverTimestamp());
+
+        // Write to a "notifications" collection.
+        db.collection("notifications").add(notificationData)
+                .addOnSuccessListener(documentReference -> Log.d("AdminActivity", "Notification document written: " + documentReference.getId()))
+                .addOnFailureListener(e -> Log.e("AdminActivity", "Error writing notification", e));
     }
 
     /**
-     * Loads moods from Firestore that are pending review (i.e. pendingReview == true)
-     * and sorts them in descending order by date.
+     * Attaches a snapshot listener to the "moods" collection where pendingReview == true.
+     * This listener updates the admin UI in real time and sends a local notification if there are pending moods.
      */
-    private void loadPendingMoods() {
-        moodController.getAllMoods(moods -> {
-            List<Mood> pendingMoods = new ArrayList<>();
-            for (Mood mood : moods) {
-                if (mood.isPendingReview()) {
-                    pendingMoods.add(mood);
-                }
-            }
-            // Sort pending moods by date (most recent first).
-            Collections.sort(pendingMoods, (m1, m2) -> m2.getDateTime().compareTo(m1.getDateTime()));
-            runOnUiThread(() -> adapter.updateMoodList(pendingMoods));
-        }, exception -> runOnUiThread(() ->
-                Toast.makeText(AdminActivity.this, "Error loading moods: " + exception.getMessage(), Toast.LENGTH_SHORT).show()));
+    private void listenForPendingMoods() {
+        db.collection("moods")
+                .whereEqualTo("pendingReview", true)
+                .addSnapshotListener((queryDocumentSnapshots, error) -> {
+                    if (error != null) {
+                        runOnUiThread(() -> Toast.makeText(AdminActivity.this,
+                                "Error loading moods: " + error.getMessage(), Toast.LENGTH_SHORT).show());
+                        return;
+                    }
+                    if (queryDocumentSnapshots != null) {
+                        List<Mood> pendingMoods = new ArrayList<>();
+                        for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                            Mood mood = doc.toObject(Mood.class);
+                            if (mood != null) {
+                                mood.setDocId(doc.getId());
+                                pendingMoods.add(mood);
+                            }
+                        }
+                        // Sort moods in descending order by date.
+                        Collections.sort(pendingMoods, (m1, m2) -> m2.getDateTime().compareTo(m1.getDateTime()));
+                        runOnUiThread(() -> {
+                            adapter.updateMoodList(pendingMoods);
+                            // Send a notification to the admin if there are any pending moods.
+                            if (!pendingMoods.isEmpty()) {
+                                NotificationHelper.sendNotification(
+                                        AdminActivity.this,
+                                        "Mood Review Needed",
+                                        "There are " + pendingMoods.size() + " mood events pending review."
+                                );
+                            }
+                        });
+                    }
+                });
     }
 
     // Public method for other classes to check if the image size limit is enabled.
     public static boolean isLimitEnabled(SharedPreferences prefs) {
         return prefs.getBoolean(LIMIT_ON, true);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // Handle POST_NOTIFICATIONS permission request.
+        if (requestCode == NOTIFICATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Notifications permission granted.", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Notifications permission denied. Admin may not receive notifications.", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }
