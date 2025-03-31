@@ -72,8 +72,6 @@ public class HomeMapFragTest {
 
     @Test
     public void testMapFragmentIsDisplayed() throws InterruptedException {
-        // Launch MainActivity.
-        ActivityScenario.launch(MainActivity.class);
 
         // Simulate clicking on the bottom navigation item for the map.
         // Ensure that the menu item id for the map in your BottomNavigationView is "nav_map".
