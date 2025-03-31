@@ -85,15 +85,29 @@ public class AddCommentToMoodEventTest {
         // Now verify that the comment was saved in Firestore's "comments" collection.
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Query query = db.collection("comments").whereEqualTo("commentText", testComment);
-        try {
-            // Wait synchronously for the query to complete (up to 30 seconds).
-            QuerySnapshot querySnapshot = Tasks.await(query.get(), 30, TimeUnit.SECONDS);
-            List<DocumentSnapshot> docs = querySnapshot.getDocuments();
-            assertTrue("The comment was not saved in Firestore", !docs.isEmpty());
-            Log.d(TAG, "Comment found in Firestore.");
-        } catch (Exception e) {
-            Log.d(TAG, "Firestore query failed: " + e.getMessage());
-            fail("Firestore query failed: " + e.getMessage());
+
+        boolean commentFound = false;
+        long startTime = System.currentTimeMillis();
+        long timeout = 30000; // total timeout of 30 seconds
+
+        // Poll for the comment to appear in Firestore.
+        while ((System.currentTimeMillis() - startTime) < timeout && !commentFound) {
+            try {
+                QuerySnapshot querySnapshot = Tasks.await(query.get(), 5, TimeUnit.SECONDS);
+                List<DocumentSnapshot> docs = querySnapshot.getDocuments();
+                if (!docs.isEmpty()) {
+                    commentFound = true;
+                    Log.d(TAG, "Comment found in Firestore.");
+                } else {
+                    Log.d(TAG, "Comment not found yet, retrying...");
+                }
+            } catch (Exception e) {
+                Log.d(TAG, "Firestore query failed: " + e.getMessage());
+            }
+            if (!commentFound) {
+                Thread.sleep(1000);
+            }
         }
+        assertTrue("The comment was not saved in Firestore", commentFound);
     }
 }
