@@ -137,5 +137,6 @@ public class OfflineMoodTest {
                 });
         queryLatch.await(5, TimeUnit.SECONDS);
         assertTrue("Offline added mood should be synced when online", found[0]);
+
     }
 }
