@@ -11,10 +11,8 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import com.example.theynotlikeus.model.Request;
 import com.example.theynotlikeus.view.MainActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,13 +28,10 @@ import java.util.concurrent.TimeUnit;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.fail;
 
 public class FollowerRequestFragTest {
 
@@ -46,21 +41,12 @@ public class FollowerRequestFragTest {
 
     @BeforeClass
     public static void setup() {
-        //Point Firebase to the local emulator.
-        String androidLocalhost = "10.0.2.2";
-        int portNumber = 8089;
-        FirebaseFirestore.getInstance().useEmulator(androidLocalhost, portNumber);
-    }
+        // Remove the emulator configuration call here because it's already set in CustomTestRunner.
+        // FirebaseFirestore.getInstance().useEmulator("10.0.2.2", 8089);
 
-    /**
-     * Seed the Firestore database before each test.
-     * Here we add a follow request using your Request model with followee "wasp" and follower "nymur".
-     */
-    @Before
-    public void seedDatabase() throws InterruptedException {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        //Create a follow request using your Request model.
+        // Create a follow request using your Request model.
         Request followRequest = new Request();
         followRequest.setFollowee("wasp");
         followRequest.setFollower("nymur");
@@ -70,18 +56,13 @@ public class FollowerRequestFragTest {
                 .add(followRequest)
                 .addOnSuccessListener(documentReference -> latch.countDown())
                 .addOnFailureListener(e -> latch.countDown());
-        latch.await(30, TimeUnit.SECONDS);
+        try {
+            latch.await(30, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
-    /**
-     * Test: Display existing follow requests on launch.
-     *
-     * This test launches MainActivity with an intent extra "username" set to "wasp".
-     * It then verifies that the fragment displays:
-     * - A non-empty title,
-     * - An item with the follower "nymur" in the RecyclerView,
-     * - The FloatingActionButton is visible.
-     */
     @Test
     public void appShouldDisplayExistingFollowRequestOnLaunch() {
         // Create an Intent with the required extra.
@@ -94,8 +75,7 @@ public class FollowerRequestFragTest {
             // Navigate to the FollowerRequestFrag by clicking on the bottom navigation item "Requests".
             onView(withId(R.id.nav_profile)).perform(click());
 
-            // *** Add a short delay so Firestore can load and populate the RecyclerView. ***
-            // NOTE: This is a quick hack; a better approach is using an IdlingResource.
+            // Add a short delay so Firestore can load and populate the RecyclerView.
             SystemClock.sleep(2000);
 
             // Verify that the title TextView is displayed and not empty.
@@ -113,14 +93,9 @@ public class FollowerRequestFragTest {
         }
     }
 
-
-
-    /**
-     * Clean up the Firestore emulator after each test.
-     */
     @After
     public void tearDown() {
-        String projectId = "theynotlikeus-6a9f1"; //Your Firebase project ID.
+        String projectId = "theynotlikeus-6a9f1"; // Your Firebase project ID.
         URL url = null;
         try {
             url = new URL("http://10.0.2.2:8089/emulator/v1/projects/"
@@ -143,5 +118,4 @@ public class FollowerRequestFragTest {
             }
         }
     }
-
 }

@@ -35,33 +35,20 @@ import java.util.Map;
  *
  * This test adds 10 mood events with titles "Mood 1" through "Mood 10" to Firestore
  * (with increasing dateTime values so that "Mood 10" is the most recent) and then verifies that
- * the RecyclerView in HomeMyMoodsFrag displays them in descending order by date (i.e. the most recent mood
- * appears first). In our test data, the mood event "mood_10" has moodState "HAPPINESS" and "mood_9" has "BOREDOM".
+ * the RecyclerView in HomeMyMoodsFrag displays them in descending order by date
+ * (i.e. the most recent mood appears first). In our test data, the mood event "mood_10" has moodState "HAPPINESS"
+ * and "mood_9" has "BOREDOM".
  */
 @RunWith(AndroidJUnit4.class)
 public class HomeMyMoodsFragTest {
 
     @BeforeClass
     public static void setup() {
-        // Configure Firestore to use the local emulator.
-        // "10.0.2.2" allows the Android emulator to access localhost.
-        String androidLocalhost = "10.0.2.2";
-        int portNumber = 8089;
-        FirebaseFirestore.getInstance().useEmulator(androidLocalhost, portNumber);
-    }
+        // Remove duplicate emulator configuration because Firestore is already configured in CustomTestRunner.
+        // FirebaseFirestore.getInstance().useEmulator("10.0.2.2", 8089);
 
-    @Rule
-    public ActivityScenarioRule<MainActivity> activityScenarioRule =
-            new ActivityScenarioRule<>(MainActivity.class);
-
-    /**
-     * Helper method to add 10 mood events with different mood states to the local Firestore database.
-     * The document IDs are set as "mood_1", "mood_2", ..., "mood_10".
-     */
-    private void addMoodsToDatabase() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        // Array of mood states for testing.
+        // Array of mood states for test data.
         String[] moodStates = {
                 "ANGER", "CONFUSION", "DISGUST", "FEAR", "HAPPINESS",
                 "SADNESS", "SHAME", "SURPRISE", "BOREDOM", "HAPPINESS"
@@ -70,35 +57,32 @@ public class HomeMyMoodsFragTest {
         // Add 10 mood events with increasing dateTime values so that higher index = more recent.
         for (int i = 0; i < 10; i++) {
             Map<String, Object> mood = new HashMap<>();
-            // Add a title (for clarity, though your UI might display moodState instead).
+            // Title for clarity.
             mood.put("title", "Mood " + (i + 1));
             mood.put("description", "Description for Mood " + (i + 1));
-            // Set dateTime so that mood_10 is the most recent.
+            // Set dateTime so that "Mood 10" (i=9) is the most recent.
             mood.put("dateTime", new Date(System.currentTimeMillis() + i * 1000));
-            // Use "defaultUser" as the username.
             mood.put("username", "defaultUser");
-            // Set the mood state.
             mood.put("moodState", moodStates[i]);
-            // Mark the mood as approved (pendingReview false).
             mood.put("pendingReview", false);
 
-            // Write the mood data to the "moods" collection with document id "mood_(i+1)"
+            // Write the mood data to the "moods" collection with document id "mood_(i+1)".
             db.collection("moods").document("mood_" + (i + 1)).set(mood);
         }
+        // Wait a few seconds to ensure all documents are written.
+        SystemClock.sleep(3000);
     }
+
+    @Rule
+    public ActivityScenarioRule<MainActivity> activityScenarioRule =
+            new ActivityScenarioRule<>(MainActivity.class);
 
     @Test
     public void testMoodsAreSortedByDate() throws InterruptedException {
-        // Populate the local database with 10 mood events.
-        addMoodsToDatabase();
-
-        // Wait for data to be written.
-        SystemClock.sleep(3000);
-
         // Launch MainActivity (which hosts HomeMyMoodsFrag).
         ActivityScenario.launch(MainActivity.class);
 
-        // Wait for the fragment to load the moods.
+        // Wait for the fragment to load the mood data.
         SystemClock.sleep(3000);
 
         // Verify that the RecyclerView is displayed.

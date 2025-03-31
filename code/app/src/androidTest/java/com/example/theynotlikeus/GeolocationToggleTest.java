@@ -3,7 +3,10 @@ package com.example.theynotlikeus;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.*;
+import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isNotChecked;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 import android.content.Intent;
 
@@ -16,38 +19,29 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
-* Test the geolocation button in AddMoodEventActivity
-*Check for on and off
-*
-* */
-
-
+ * Test the geolocation toggle in AddMoodEventActivity.
+ * Verifies that toggling the geolocation switch works correctly.
+ */
 @RunWith(AndroidJUnit4.class)
 public class GeolocationToggleTest {
 
-
-
     @Test
-    public void testGeolocationToggle() throws InterruptedException {
-        // Launch AddMoodEventActivity manually
+    public void testGeolocationToggle() {
+        // Launch AddMoodEventActivity.
         Intent intent = new Intent(ApplicationProvider.getApplicationContext(), AddMoodEventActivity.class);
         intent.putExtra("username", "testuser");
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         ApplicationProvider.getApplicationContext().startActivity(intent);
 
+        // Wait until the geolocation switch is displayed.
+        onView(withId(R.id.switch_ActivityAddMoodEvent_geolocation)).check(matches(isDisplayed()));
 
-        Thread.sleep(1000); // Wait for UI to render
-
-
-        // Toggle ON
+        // Toggle ON: click the switch and verify it becomes checked.
         onView(withId(R.id.switch_ActivityAddMoodEvent_geolocation)).perform(click());
         onView(withId(R.id.switch_ActivityAddMoodEvent_geolocation)).check(matches(isChecked()));
 
-
-        // Toggle OFF
+        // Toggle OFF: click the switch again and verify it becomes unchecked.
         onView(withId(R.id.switch_ActivityAddMoodEvent_geolocation)).perform(click());
         onView(withId(R.id.switch_ActivityAddMoodEvent_geolocation)).check(matches(isNotChecked()));
     }
-
-
 }
