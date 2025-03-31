@@ -20,19 +20,21 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.example.theynotlikeus.model.Mood;
 import com.example.theynotlikeus.singleton.MyApp;
 import com.example.theynotlikeus.view.FriendMoodEventDetailsActivity;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 @RunWith(AndroidJUnit4.class)
 public class AddCommentToMoodEventTest {
 
-    private static final String TAG = "AddCommentToMoodEventTest";
+    private static final String TAG = "AddCommentTest";
 
     @Test
     public void testAddCommentToMoodEvent() throws InterruptedException {
@@ -80,7 +82,7 @@ public class AddCommentToMoodEventTest {
         // Now verify that the comment was saved in Firestore's "comments" collection.
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         boolean commentFound = false;
-        long timeout = 20000; // Increase total timeout to 20 seconds.
+        long timeout = 30000; // Increase total timeout to 30 seconds.
         long startTime = System.currentTimeMillis();
 
         while (System.currentTimeMillis() - startTime < timeout && !commentFound) {
@@ -91,8 +93,19 @@ public class AddCommentToMoodEventTest {
                     .whereEqualTo("commentText", testComment)
                     .get()
                     .addOnCompleteListener(task -> {
-                        if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
-                            tempFound[0] = true;
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            List<DocumentSnapshot> docs = task.getResult().getDocuments();
+                            if (!docs.isEmpty()) {
+                                tempFound[0] = true;
+                            } else {
+                                Log.d(TAG, "No document found for comment: " + testComment);
+                            }
+                            // Log any documents returned for debugging.
+                            for (DocumentSnapshot doc : docs) {
+                                Log.d(TAG, "Found doc: " + doc.getId() + " with data: " + doc.getData());
+                            }
+                        } else {
+                            Log.d(TAG, "Firestore query failed: " + (task.getException() != null ? task.getException().getMessage() : "unknown error"));
                         }
                         latch.countDown();
                     });
