@@ -7,6 +7,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 import android.os.SystemClock;
+import android.util.Log;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -35,12 +36,19 @@ import java.util.Map;
 @RunWith(AndroidJUnit4.class)
 public class HomeMapFragTest {
 
+    private static final String TAG = "HomeMapFragTest";
+
     @BeforeClass
     public static void setup() throws InterruptedException {
         // Configure Firestore to use the local emulator.
         String androidLocalhost = "10.0.2.2";
         int portNumber = 8089;
-        FirebaseFirestore.getInstance().useEmulator(androidLocalhost, portNumber);
+        try {
+            FirebaseFirestore.getInstance().useEmulator(androidLocalhost, portNumber);
+        } catch (IllegalStateException e) {
+            // Firestore has already been initialized.
+            Log.d(TAG, "Firestore already initialized, skipping emulator configuration: " + e.getMessage());
+        }
 
         // Insert a test mood event for "defaultUser" with valid geo coordinates.
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -68,7 +76,7 @@ public class HomeMapFragTest {
         ActivityScenario.launch(MainActivity.class);
 
         // Simulate clicking on the bottom navigation item for the map.
-        // Make sure that the menu item id for the map in your BottomNavigationView is "nav_map".
+        // Ensure that the menu item id for the map in your BottomNavigationView is "nav_map".
         onView(withId(R.id.nav_map)).perform(click());
 
         // Wait for HomeMapFrag to load its data and display the map.
