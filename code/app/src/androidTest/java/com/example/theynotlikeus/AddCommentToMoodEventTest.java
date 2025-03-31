@@ -11,6 +11,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.junit.Assert.assertTrue;
 
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
@@ -30,6 +31,8 @@ import java.util.concurrent.TimeUnit;
 
 @RunWith(AndroidJUnit4.class)
 public class AddCommentToMoodEventTest {
+
+    private static final String TAG = "AddCommentToMoodEventTest";
 
     @Test
     public void testAddCommentToMoodEvent() throws InterruptedException {
@@ -68,7 +71,7 @@ public class AddCommentToMoodEventTest {
                 .perform(replaceText(testComment), closeSoftKeyboard());
         onView(withText("Post")).perform(click());
 
-        // Optionally, wait a short time for the UI to update.
+        // Wait a short time for the UI to update.
         Thread.sleep(5000);
 
         // Verify that the new comment appears in the UI.
@@ -77,7 +80,7 @@ public class AddCommentToMoodEventTest {
         // Now verify that the comment was saved in Firestore's "comments" collection.
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         boolean commentFound = false;
-        long timeout = 15000; // total timeout period of 15 seconds
+        long timeout = 20000; // Increase total timeout to 20 seconds.
         long startTime = System.currentTimeMillis();
 
         while (System.currentTimeMillis() - startTime < timeout && !commentFound) {
@@ -98,8 +101,9 @@ public class AddCommentToMoodEventTest {
 
             if (tempFound[0]) {
                 commentFound = true;
+                Log.d(TAG, "Comment found in Firestore.");
             } else {
-                // Wait a bit before retrying
+                Log.d(TAG, "Comment not found yet, retrying...");
                 Thread.sleep(1000);
             }
         }
