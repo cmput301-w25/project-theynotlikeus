@@ -13,9 +13,13 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * RecyclerView Adapter for displaying a list of moods that need approval.
+ * It provides functionality to approve or delete individual mood entries.
+ */
 public class ApproveMoodAdapter extends RecyclerView.Adapter<ApproveMoodAdapter.MoodViewHolder> {
 
-    // Callback interface for button actions.
+    //Callback interface for button actions.
     public interface OnMoodActionListener {
         void onApprove(Mood mood);
         void onDelete(Mood mood);
@@ -26,6 +30,9 @@ public class ApproveMoodAdapter extends RecyclerView.Adapter<ApproveMoodAdapter.
     private OnMoodActionListener actionListener;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm a", Locale.getDefault());
 
+    /**
+     * Constructor for ApproveMoodAdapter.
+     */
     public ApproveMoodAdapter(List<Mood> moodList, OnMoodActionListener actionListener) {
         this.moodList = moodList;
         this.actionListener = actionListener;
@@ -43,13 +50,13 @@ public class ApproveMoodAdapter extends RecyclerView.Adapter<ApproveMoodAdapter.
     @Override
     public void onBindViewHolder(@NonNull MoodViewHolder holder, int position) {
         Mood mood = moodList.get(position);
-        // Use placeholder if username is missing.
+        //Use placeholder if username is missing.
         String username = (mood.getUsername() != null && !mood.getUsername().isEmpty())
                 ? mood.getUsername() : "Sample User";
         holder.usernameTextView.setText(username);
 
 
-        // Compose a mood description using the mood state and trigger.
+        //Compose a mood description using the mood state and trigger.
         String moodDescription = (mood.getMoodState() != null)
                 ? mood.getMoodState().toString() : "Sample Mood";
         if (mood.getTrigger() != null && !mood.getTrigger().isEmpty()) {
@@ -69,7 +76,7 @@ public class ApproveMoodAdapter extends RecyclerView.Adapter<ApproveMoodAdapter.
         }
 
 
-        // Set click listeners for the buttons.
+        //Set click listeners for the buttons.
         holder.approveButton.setOnClickListener(v -> {
             if (actionListener != null) {
                 actionListener.onApprove(mood);
@@ -86,19 +93,24 @@ public class ApproveMoodAdapter extends RecyclerView.Adapter<ApproveMoodAdapter.
 
     }
 
+    /**
+     * Returns the total number of items.
+     */
     @Override
     public int getItemCount() {
         return moodList != null ? moodList.size() : 0;
     }
 
-    // Call this method to update the list of moods.
+    /**
+     * Updates the mood list and refreshes the view.
+     */
     public void updateMoodList(List<Mood> moodList) {
         this.moodList = moodList;
         notifyDataSetChanged();
 
     }
 
-    // ViewHolder to hold item views.
+    //ViewHolder to hold item views.
     static class MoodViewHolder extends RecyclerView.ViewHolder {
         TextView usernameTextView;
         TextView moodTextView;
@@ -110,7 +122,7 @@ public class ApproveMoodAdapter extends RecyclerView.Adapter<ApproveMoodAdapter.
             super(itemView);
             usernameTextView = itemView.findViewById(R.id.textView_username);
             moodTextView = itemView.findViewById(R.id.textView_moodText);
-            dateTimeTextView = itemView.findViewById(R.id.textView_dateTime); // Make sure this ID exists in your layout.
+            dateTimeTextView = itemView.findViewById(R.id.textView_dateTime); //Make sure this ID exists in your layout.
             approveButton = itemView.findViewById(R.id.button_approve);
             deleteButton = itemView.findViewById(R.id.button_delete);
 

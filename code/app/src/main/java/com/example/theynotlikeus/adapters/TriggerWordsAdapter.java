@@ -11,9 +11,14 @@ import com.example.theynotlikeus.R;
 import com.example.theynotlikeus.model.TriggerWord;
 import java.util.List;
 
+/**
+ * Adapter for displaying a list of trigger words with a delete button.
+ */
 public class TriggerWordsAdapter extends RecyclerView.Adapter<TriggerWordsAdapter.TriggerWordViewHolder> {
 
-    // Callback interface for delete action.
+    /**
+     * Listener for trigger word delete actions.
+     */
     public interface OnTriggerWordActionListener {
         void onDelete(TriggerWord triggerWord);
 
@@ -49,17 +54,26 @@ public class TriggerWordsAdapter extends RecyclerView.Adapter<TriggerWordsAdapte
 
     }
 
+    /**
+     * Returns the number of trigger words.
+     */
     @Override
     public int getItemCount() {
         return triggerWords != null ? triggerWords.size() : 0;
     }
 
+    /**
+     * Updates the trigger words list and refreshes the view.
+     */
     public void updateTriggerWords(List<TriggerWord> words) {
         this.triggerWords = words;
         notifyDataSetChanged();
 
     }
 
+    /**
+     * ViewHolder for a trigger word item.
+     */
     static class TriggerWordViewHolder extends RecyclerView.ViewHolder {
         TextView textViewWord;
         Button buttonDelete;
